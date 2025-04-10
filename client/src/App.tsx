@@ -60,6 +60,32 @@ function ProtectedAdminRoute({ component: Component }: { component: React.Compon
 }
 
 function Router() {
+  const { language, addPrefix } = useLanguage();
+  const [, setLocation] = useLocation();
+  
+  // If route doesn't have language prefix, redirect to prefixed route
+  useEffect(() => {
+    const handleInitialRoute = () => {
+      // Don't redirect admin routes
+      if (window.location.pathname.startsWith('/admin')) {
+        return;
+      }
+      
+      // Check if current path has a language prefix
+      const hasLangPrefix = /^\/(tr|en|ru|ka)(\/|$)/.test(window.location.pathname);
+      
+      // If no language prefix, redirect to the default language
+      if (!hasLangPrefix && window.location.pathname === '/') {
+        setLocation(`/${language.toLowerCase()}`);
+      } else if (!hasLangPrefix && window.location.pathname !== '/') {
+        // For other paths without language prefix, add the prefix
+        setLocation(`/${language.toLowerCase()}${window.location.pathname}`);
+      }
+    };
+    
+    handleInitialRoute();
+  }, [language, setLocation]);
+  
   return (
     <Switch>
       {/* Admin routes */}
@@ -98,9 +124,48 @@ function Router() {
       <Route path="/:lang/appointment" component={AppointmentPage} />
       <Route path="/:lang/appointment-tracker" component={AppointmentTracker} />
       
-      {/* Redirect to language prefix */}
+      {/* Root redirect to language prefix */}
       <Route path="/">
-        <HomePage />
+        {() => {
+          // Redirect to appropriate language route
+          setLocation(addPrefix('/'));
+          return null;
+        }}
+      </Route>
+      
+      {/* Direct routes without language prefix - redirect to language prefixed version */}
+      <Route path="/services">
+        {() => { setLocation(addPrefix('/services')); return null; }}
+      </Route>
+      <Route path="/services/:slug">
+        {({slug}) => { setLocation(addPrefix(`/services/${slug}`)); return null; }}
+      </Route>
+      <Route path="/gallery">
+        {() => { setLocation(addPrefix('/gallery')); return null; }}
+      </Route>
+      <Route path="/packages">
+        {() => { setLocation(addPrefix('/packages')); return null; }}
+      </Route>
+      <Route path="/products">
+        {() => { setLocation(addPrefix('/products')); return null; }}
+      </Route>
+      <Route path="/blog">
+        {() => { setLocation(addPrefix('/blog')); return null; }}
+      </Route>
+      <Route path="/blog/:slug">
+        {({slug}) => { setLocation(addPrefix(`/blog/${slug}`)); return null; }}
+      </Route>
+      <Route path="/about">
+        {() => { setLocation(addPrefix('/about')); return null; }}
+      </Route>
+      <Route path="/contact">
+        {() => { setLocation(addPrefix('/contact')); return null; }}
+      </Route>
+      <Route path="/appointment">
+        {() => { setLocation(addPrefix('/appointment')); return null; }}
+      </Route>
+      <Route path="/appointment-tracker">
+        {() => { setLocation(addPrefix('/appointment-tracker')); return null; }}
       </Route>
       
       {/* Fallback to 404 */}

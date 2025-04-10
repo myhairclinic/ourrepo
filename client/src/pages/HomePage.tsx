@@ -1,54 +1,46 @@
 import { useLanguage } from "@/hooks/use-language";
 import { Helmet } from "react-helmet";
-import { Language } from "@/lib/languages";
+import { Language } from "@shared/types";
 import HeroSlider from "@/components/home/HeroSlider";
 import ServiceCards from "@/components/home/ServiceCards";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import BeforeAfterSlider from "@/components/home/BeforeAfterSlider";
 import Testimonials from "@/components/home/Testimonials";
+import { useTranslation } from "@/lib/translations";
 
 export default function HomePage() {
   const { language } = useLanguage();
+  const { t, formatCurrency } = useTranslation(language);
   
-  // Dile göre meta başlık ve açıklama
-  const getTitle = () => {
-    switch (language) {
-      case Language.Turkish:
-        return "MyHair Clinic | Saç Ekimi ve Estetik Merkezi";
-      case Language.English:
-        return "MyHair Clinic | Hair Transplant and Aesthetic Center";
-      case Language.Russian:
-        return "MyHair Clinic | Центр трансплантации волос и эстетики";
-      case Language.Georgian:
-        return "MyHair Clinic | თმის გადანერგვის და ესთეტიკის ცენტრი";
-      default:
-        return "MyHair Clinic | Hair Transplant Center";
-    }
-  };
+  // Sayfa başlık ve açıklaması - çeviri sistemi kullanılıyor
+  const pageTitle = t("home.title");
+  const pageDescription = t("home.description");
   
-  const getDescription = () => {
-    switch (language) {
-      case Language.Turkish:
-        return "Tiflis'in lider saç ekimi ve estetik merkezi. FUE ve DHI tekniklerini kullanarak en iyi sonuçları elde ediyoruz. Doğal görünüm garantisi.";
-      case Language.English:
-        return "Leading hair transplant and aesthetic center in Tbilisi. We use FUE and DHI techniques to achieve the best results. Natural appearance guaranteed.";
-      case Language.Russian:
-        return "Ведущий центр трансплантации волос и эстетики в Тбилиси. Мы используем методы FUE и DHI для достижения наилучших результатов. Гарантия естественного вида.";
-      case Language.Georgian:
-        return "წამყვანი თმის გადანერგვისა და ესთეტიკის ცენტრი თბილისში. ჩვენ ვიყენებთ FUE და DHI ტექნიკას საუკეთესო შედეგების მისაღწევად. ბუნებრივი გარეგნობის გარანტია.";
-      default:
-        return "Hair transplant center in Tbilisi with the best techniques and natural results.";
-    }
-  };
+  // Yer tutucu değişkenli örnek çeviriler (örnek olarak eklenmiştir)
+  const exampleTranslation1 = t("home.procedure_cost", { procedure: "FUE" });
+  const exampleTranslation2 = t("home.welcome_user", { name: "John" });
+  const exampleTranslation3 = t("home.results_time", { months: 6 });
+  
+  // Para birimi formatlama örneği
+  const packagePrice = formatCurrency(1500);
   
   return (
     <>
       <Helmet>
-        <title>{getTitle()}</title>
-        <meta name="description" content={getDescription()} />
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
       </Helmet>
       
       <main>
+        {/* Yeni çeviri sistemi örneği - sadece gösterim amaçlı 
+        (Bu kısım gerçek önyüzde görünmez, örnek bir kullanımdır) */}
+        <div className="hidden">
+          <p>{exampleTranslation1}</p>
+          <p>{exampleTranslation2}</p>
+          <p>{exampleTranslation3}</p>
+          <p>Pakete başlangıç fiyatı: {packagePrice}</p>
+        </div>
+        
         <HeroSlider />
         <ServiceCards />
         <WhyChooseUs />

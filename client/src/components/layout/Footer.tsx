@@ -1,9 +1,12 @@
 import { Link } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { PUBLIC_PATHS, CONTACT, SOCIAL } from "@/lib/constants";
+import { Language } from "@shared/types";
+import { useTranslation } from "@/lib/translations";
 
 export default function Footer() {
   const { language } = useLanguage();
+  const { t } = useTranslation(language);
 
   return (
     <footer className="bg-neutral-900 text-white pt-16 pb-8">
@@ -124,7 +127,15 @@ export default function Footer() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span className="text-neutral-400">{CONTACT.ADDRESS}</span>
+                <span className="text-neutral-400">
+                  {language === Language.Turkish 
+                    ? CONTACT.ADDRESS.TR 
+                    : language === Language.English 
+                      ? CONTACT.ADDRESS.EN 
+                      : language === Language.Russian 
+                        ? CONTACT.ADDRESS.RU 
+                        : CONTACT.ADDRESS.KA}
+                </span>
               </li>
               <li className="flex items-start">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-neutral-400 mr-3 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

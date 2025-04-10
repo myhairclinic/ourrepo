@@ -156,6 +156,40 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Georgian]: "ყველა სერვისი"
   },
   
+  // HomePage çevirileri 
+  "home.title": {
+    [Language.Turkish]: "MyHair Clinic | Saç Ekimi ve Estetik Merkezi",
+    [Language.English]: "MyHair Clinic | Hair Transplant and Aesthetic Center",
+    [Language.Russian]: "MyHair Clinic | Центр трансплантации волос и эстетики",
+    [Language.Georgian]: "MyHair Clinic | თმის გადანერგვის და ესთეტიკის ცენტრი"
+  },
+  "home.description": {
+    [Language.Turkish]: "Tiflis'in lider saç ekimi ve estetik merkezi. FUE ve DHI tekniklerini kullanarak en iyi sonuçları elde ediyoruz. Doğal görünüm garantisi.",
+    [Language.English]: "Leading hair transplant and aesthetic center in Tbilisi. We use FUE and DHI techniques to achieve the best results. Natural appearance guaranteed.",
+    [Language.Russian]: "Ведущий центр трансплантации волос и эстетики в Тбилиси. Мы используем методы FUE и DHI для достижения наилучших результатов. Гарантия естественного вида.",
+    [Language.Georgian]: "წამყვანი თმის გადანერგვისა და ესთეტიკის ცენტრი თბილისში. ჩვენ ვიყენებთ FUE და DHI ტექნიკას საუკეთესო შედეგების მისაღწევად. ბუნებრივი გარეგნობის გარანტია."
+  },
+  
+  // Yer tutucu değişken örnekleri
+  "home.procedure_cost": {
+    [Language.Turkish]: "{procedure} işlemimizin fiyatı sadece $1500'dan başlıyor",
+    [Language.English]: "Our {procedure} procedure starts at only $1500",
+    [Language.Russian]: "Наша процедура {procedure} начинается всего от $1500",
+    [Language.Georgian]: "ჩვენი {procedure} პროცედურა იწყება მხოლოდ $1500-დან"
+  },
+  "home.welcome_user": {
+    [Language.Turkish]: "Hoş geldiniz {name}, size nasıl yardımcı olabiliriz?",
+    [Language.English]: "Welcome {name}, how can we help you?",
+    [Language.Russian]: "Добро пожаловать, {name}, чем мы можем вам помочь?",
+    [Language.Georgian]: "მოგესალმებით {name}, როგორ შეგვიძლია დაგეხმაროთ?"
+  },
+  "home.results_time": {
+    [Language.Turkish]: "Tam sonuçlar {months} ay içinde görülecektir",
+    [Language.English]: "Full results will be visible within {months} months",
+    [Language.Russian]: "Полные результаты будут видны через {months} месяцев",
+    [Language.Georgian]: "სრული შედეგები გამოჩნდება {months} თვის განმავლობაში"
+  },
+  
   // Error messages
   "errors.loading_services": {
     [Language.Turkish]: "Hizmetler yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
