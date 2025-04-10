@@ -198,24 +198,27 @@ export default function BlogPostPage() {
             <div className="prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: content }}></div>
           </div>
           
-          {/* Social Share */}
+          {/* Social Share & Follow */}
           <div className="max-w-4xl mx-auto mb-12">
             <div className="border-t border-b border-neutral-200 py-6">
-              <div className="flex items-center justify-between flex-wrap gap-4">
-                <span className="font-medium">{t('blog.share')}:</span>
-                <div className="flex gap-4">
-                  <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`} target="_blank" rel="noopener noreferrer" className="text-[#1877F2] hover:opacity-80">
-                    <i className="fab fa-facebook-f text-xl"></i>
-                  </a>
-                  <a href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(title)}`} target="_blank" rel="noopener noreferrer" className="text-[#1DA1F2] hover:opacity-80">
-                    <i className="fab fa-twitter text-xl"></i>
-                  </a>
-                  <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`} target="_blank" rel="noopener noreferrer" className="text-[#0A66C2] hover:opacity-80">
-                    <i className="fab fa-linkedin-in text-xl"></i>
-                  </a>
-                  <a href={`https://wa.me/?text=${encodeURIComponent(title + ' ' + window.location.href)}`} target="_blank" rel="noopener noreferrer" className="text-[#25D366] hover:opacity-80">
-                    <i className="fab fa-whatsapp text-xl"></i>
-                  </a>
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                  <p className="font-medium mb-2">{t('blog.share')}:</p>
+                  <SocialShareButtons 
+                    title={title}
+                    description={metaDescription}
+                    hashtags={["MyHairClinic", "HairTransplant", "Tbilisi"]}
+                    showCopyLink={true}
+                    size="md"
+                  />
+                </div>
+                <div>
+                  <p className="font-medium mb-2">{t('common.follow_us')}:</p>
+                  <SocialFollowButtons 
+                    showText={false} 
+                    size="default"
+                    variant="outline"
+                  />
                 </div>
               </div>
             </div>

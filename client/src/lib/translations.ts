@@ -317,6 +317,18 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Свяжитесь с нами",
     [Language.Georgian]: "დაგვიკავშირდით"
   },
+  "common.share": {
+    [Language.Turkish]: "Paylaş",
+    [Language.English]: "Share",
+    [Language.Russian]: "Поделиться",
+    [Language.Georgian]: "გაზიარება"
+  },
+  "common.follow_us": {
+    [Language.Turkish]: "Bizi Takip Edin",
+    [Language.English]: "Follow Us",
+    [Language.Russian]: "Подписывайтесь на нас",
+    [Language.Georgian]: "გამოგვყევით"
+  },
   
   // Error messages
   "errors.loading_services": {
