@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { useParams, Link } from "wouter";
 import { Helmet } from "react-helmet";
+import { useQuery } from "@tanstack/react-query";
 import { useLanguage } from "@/hooks/use-language";
 import { useTranslation } from "@/lib/translations";
 import { META } from "@/lib/constants";
@@ -32,8 +32,16 @@ export default function ProductPage() {
   });
   
   // Sayfa başlığını oluştur
+  // Dil koduna göre alanları oluşturma (Türkçe için TR, İngilizce için EN, vb.)
+  const langCode = language.toUpperCase();
+  const nameKey = `name${langCode}` as keyof Product;
+  const descriptionKey = `description${langCode}` as keyof Product;
+  const usageKey = `usage${langCode}` as keyof Product;
+  const ingredientsKey = `ingredients${langCode}` as keyof Product;
+  
+  // Sayfa başlığını oluştur
   const pageTitle = product 
-    ? `${product[`name${language}`]} ${META.TITLE_SUFFIX}` 
+    ? `${product[nameKey]} ${META.TITLE_SUFFIX}` 
     : `${t("products.title")} ${META.TITLE_SUFFIX}`;
 
   if (error) {
@@ -121,7 +129,7 @@ export default function ProductPage() {
     <div className="container mx-auto py-10 px-4">
       <Helmet>
         <title>{pageTitle}</title>
-        <meta name="description" content={product[`description${language}`]} />
+        <meta name="description" content={String(product[descriptionKey])} />
       </Helmet>
       
       <div className="flex mb-6">
@@ -138,19 +146,19 @@ export default function ProductPage() {
         <div>
           <img 
             src={product.imageUrl} 
-            alt={product[`name${language}`]} 
+            alt={String(product[nameKey])} 
             className="w-full h-auto rounded-lg shadow-md object-cover"
           />
         </div>
         
         {/* Ürün Bilgileri */}
         <div>
-          <h1 className="text-3xl font-bold mb-2">{product[`name${language}`]}</h1>
+          <h1 className="text-3xl font-bold mb-2">{String(product[nameKey])}</h1>
           <p className="text-lg font-semibold text-primary mb-6">
-            {product.price && `$${product.price.toFixed(2)}`}
+            {`${t("products.productCode")}: ${product.slug}`}
           </p>
           
-          <p className="text-gray-700 mb-6">{product[`description${language}`]}</p>
+          <p className="text-gray-700 mb-6">{String(product[descriptionKey])}</p>
           
           <Tabs defaultValue="ingredients" className="mb-8">
             <TabsList>
@@ -158,10 +166,10 @@ export default function ProductPage() {
               <TabsTrigger value="usage">{t("products.usage")}</TabsTrigger>
             </TabsList>
             <TabsContent value="ingredients" className="mt-4">
-              <div className="text-gray-700">{product[`ingredients${language}`]}</div>
+              <div className="text-gray-700">{String(product[ingredientsKey])}</div>
             </TabsContent>
             <TabsContent value="usage" className="mt-4">
-              <div className="text-gray-700">{product[`usage${language}`]}</div>
+              <div className="text-gray-700">{String(product[usageKey])}</div>
             </TabsContent>
           </Tabs>
           
