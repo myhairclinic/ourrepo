@@ -9,6 +9,12 @@ interface LanguageContextType {
   changeLanguage: (language: Language) => void;
   currentLanguage: Language;
   addPrefix: (path: string) => string;
+  getContentByLanguage: (content: {
+    TR: string;
+    EN: string;
+    RU: string;
+    KA: string;
+  }) => string;
 }
 
 // Varsayılan değerlerle context oluştur
@@ -17,7 +23,8 @@ export const LanguageContext = createContext<LanguageContextType>({
   setLanguage: () => {},
   changeLanguage: () => {},
   currentLanguage: Language.Turkish,
-  addPrefix: (path) => path
+  addPrefix: (path) => path,
+  getContentByLanguage: (content) => content.TR,
 });
 
 interface LanguageProviderProps {
@@ -68,6 +75,27 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
     }
   };
   
+  // Seçilen dile göre içerik döndürmek için yardımcı fonksiyon
+  const getContentByLanguage = (content: { 
+    TR: string;
+    EN: string;
+    RU: string;
+    KA: string;
+  }) => {
+    switch (language) {
+      case Language.Turkish:
+        return content.TR;
+      case Language.English:
+        return content.EN;
+      case Language.Russian:
+        return content.RU;
+      case Language.Georgian:
+        return content.KA;
+      default:
+        return content.TR;
+    }
+  };
+  
   // URL'lere dil öneki eklemek için yardımcı fonksiyon
   const addPrefix = (path: string) => {
     // Eğer yol zaten bir dil öneki içeriyorsa veya admin yoluysa, dokunma
@@ -111,7 +139,8 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
         setLanguage, 
         changeLanguage, 
         currentLanguage: language,
-        addPrefix 
+        addPrefix,
+        getContentByLanguage
       }}
     >
       {children}

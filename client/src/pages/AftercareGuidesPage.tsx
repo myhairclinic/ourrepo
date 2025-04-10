@@ -90,12 +90,16 @@ export default function AftercareGuidesPage() {
   // Get PDF by language
   const getPdfUrl = (guide?: AftercareGuide) => {
     if (!guide) return null;
-    return getContentByLanguage({
-      TR: guide.pdfUrlTR,
-      EN: guide.pdfUrlEN,
-      RU: guide.pdfUrlRU,
-      KA: guide.pdfUrlKA,
-    });
+    
+    // Handle null values for PDF URLs
+    const pdfMap = {
+      TR: guide.pdfUrlTR || "",
+      EN: guide.pdfUrlEN || "",
+      RU: guide.pdfUrlRU || "",
+      KA: guide.pdfUrlKA || "",
+    };
+    
+    return getContentByLanguage(pdfMap);
   };
 
   // Handle download PDF
