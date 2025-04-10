@@ -25,7 +25,7 @@ const FeatureIcon = ({ index }: { index: number }) => {
   }
 };
 
-// Basitleştirilmiş hizmet kartı bileşeni
+// Modern ve profesyonel hizmet kartı bileşeni
 function ServiceCard({ 
   service, 
   getTitle, 
@@ -41,13 +41,22 @@ function ServiceCard({
   addPrefix: (path: string) => string;
   t: (key: string) => string;
 }) {
+  const [isHovered, setIsHovered] = useState(false);
+  
   return (
-    <Card className="h-full overflow-hidden border border-border/30 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col bg-background group">
-      <div className="h-52 overflow-hidden relative">
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-70 group-hover:opacity-50 transition-opacity duration-300 z-10"></div>
+    <Card 
+      className="h-full overflow-hidden border-0 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-500 flex flex-col bg-gradient-to-br from-white to-primary/5 group"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="h-64 overflow-hidden relative">
+        {/* Arka plan gradient efekti */}
+        <div className={`absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent opacity-70 transition-opacity duration-500 z-10 ${isHovered ? 'opacity-40' : 'opacity-70'}`}></div>
+        
+        {/* Resim */}
         <img 
           src={service.imageUrl || '/images/placeholder.jpg'} 
-          alt={getTitle(service)} 
+          alt={getTitle(service)}
           className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
@@ -56,40 +65,61 @@ function ServiceCard({
             target.src = 'https://via.placeholder.com/400x250/cccccc/666666?text=MyHair+Clinic';
           }}
         />
+        
+        {/* Profesyonel rozet */}
         <div className="absolute top-4 right-4 z-20">
-          <Badge className="bg-gradient-to-r from-primary to-primary/80 text-white border-none shadow-md">
+          <Badge className={`border-0 shadow-lg ${isHovered ? 'bg-primary text-white' : 'bg-white/90 text-primary'} transition-all duration-300 py-1.5 px-3 font-medium`}>
             {t("services.popular")}
           </Badge>
         </div>
-      </div>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-xl font-bold group-hover:text-primary transition-colors flex items-center justify-between">
-          <span>{getTitle(service)}</span>
-          <TrendingUp className="h-5 w-5 text-primary opacity-70" />
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="flex-grow pb-2">
-        <CardDescription className="text-muted-foreground mb-4 line-clamp-2">
-          {getDescription(service)}
-        </CardDescription>
         
-        <div className="space-y-2 mt-4">
-          <h4 className="text-sm font-medium">{t("services.keyFeatures")}</h4>
-          <div className="flex flex-wrap gap-2">
-            {features.slice(0, 3).map((feature, index) => (
-              <Badge key={index} variant="outline" className="bg-background/50 text-xs font-normal py-1">
-                <FeatureIcon index={index} />
-                <span className="ml-1">{feature}</span>
-              </Badge>
-            ))}
+        {/* Başlık overlay */}
+        <div className={`absolute bottom-0 left-0 right-0 p-4 z-20 transition-all duration-500 ${isHovered ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-90'}`}>
+          <h3 className="text-2xl font-bold text-white drop-shadow-md">
+            {getTitle(service)}
+          </h3>
+          <div className="flex items-center gap-2 text-xs font-medium text-white/90 mt-1.5">
+            <Clock className="h-3.5 w-3.5" />
+            <span className="tracking-wide">60-90 {t("common.duration")}</span>
+          </div>
+        </div>
+      </div>
+      
+      <CardContent className="flex-grow p-6 pt-5">
+        <div className={`transition-all duration-500 ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-90'}`}>
+          <CardDescription className="text-foreground/80 text-base mb-5 line-clamp-2">
+            {getDescription(service)}
+          </CardDescription>
+          
+          <div className="space-y-3 mt-5">
+            <h4 className="text-sm font-medium flex items-center text-primary">
+              <Star className="h-4 w-4 mr-1.5" />
+              {t("services.keyFeatures")}
+            </h4>
+            <div className="grid grid-cols-1 gap-2">
+              {features.slice(0, 3).map((feature, index) => (
+                <div key={index} className="flex items-center gap-2 bg-white p-2 rounded-lg shadow-sm border border-primary/10">
+                  <FeatureIcon index={index} />
+                  <span className="ml-1 text-sm font-medium text-foreground/80">{feature}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </CardContent>
-      <CardFooter className="pt-2">
+      
+      <CardFooter className="pb-6 px-6">
         <Link href={addPrefix(`/services/${service.slug}`)} className="w-full">
-          <Button variant="default" className="w-full group bg-gradient-to-r from-primary to-primary/80">
-            <span>{t("common.learnMore")}</span>
-            <ArrowRight className="ml-2 h-4 w-4 transform transition-transform group-hover:translate-x-1" />
+          <Button 
+            variant="default" 
+            className={`w-full group transition-all duration-500 rounded-lg h-11 ${
+              isHovered 
+                ? 'bg-gradient-to-r from-primary to-primary/90 shadow-md shadow-primary/20' 
+                : 'bg-primary'
+            }`}
+          >
+            <span className="font-medium">{t("common.learnMore")}</span>
+            <ArrowRight className={`ml-2 h-4 w-4 transition-transform duration-300 ${isHovered ? 'translate-x-1' : ''}`} />
           </Button>
         </Link>
       </CardFooter>
@@ -189,35 +219,45 @@ export default function ServiceCards() {
   return (
     <section 
       ref={sectionRef}
-      className="relative py-20 overflow-hidden bg-gradient-to-b from-background to-muted/30"
+      className="relative py-28 overflow-hidden bg-gradient-to-b from-white to-primary/5"
     >
-      {/* Background patterns */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-      <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-background to-transparent z-10"></div>
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background/80 to-transparent z-10"></div>
+      {/* Modern arka plan desenleri */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white to-transparent z-10"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background/90 to-transparent z-10"></div>
       
-      {/* Animated circles background */}
+      {/* Gelişmiş animasyonlu arka plan efektleri */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -left-20 -top-20 w-64 h-64 rounded-full bg-primary/5 blur-3xl animate-blob"></div>
-        <div className="absolute right-0 top-1/3 w-80 h-80 rounded-full bg-accent/5 blur-3xl animate-blob animation-delay-2000"></div>
-        <div className="absolute left-1/3 bottom-0 w-72 h-72 rounded-full bg-secondary/5 blur-3xl animate-blob animation-delay-4000"></div>
+        <div className="absolute -left-40 -top-40 w-96 h-96 rounded-full bg-primary/5 blur-3xl animate-blob"></div>
+        <div className="absolute right-10 top-1/3 w-[30rem] h-[30rem] rounded-full bg-blue-300/5 blur-3xl animate-blob animation-delay-2000"></div>
+        <div className="absolute left-1/3 bottom-10 w-[28rem] h-[28rem] rounded-full bg-primary/5 blur-3xl animate-blob animation-delay-4000"></div>
       </div>
+      
+      {/* Dekoratif elementler */}
+      <div className="absolute top-24 left-8 w-16 h-16 border-2 border-primary/10 rounded-lg rotate-12 opacity-40"></div>
+      <div className="absolute bottom-24 right-8 w-24 h-24 border-2 border-primary/10 rounded-full opacity-30"></div>
       
       <div className="container mx-auto px-4 relative z-20">
         <div 
-          className={`flex flex-col items-center mb-16 transition-all duration-1000 ${
+          className={`flex flex-col items-center mb-20 transition-all duration-1000 ${
             isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <Badge variant="outline" className="mb-3 px-4 py-1 text-sm font-medium rounded-full border-primary/30 bg-primary/5">
+          <Badge variant="outline" className="mb-4 px-5 py-1.5 text-sm font-medium rounded-full border-primary/30 bg-primary/5 shadow-sm">
             {t("services.badge")}
           </Badge>
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+          <h2 className="text-5xl md:text-6xl font-bold text-center mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80 leading-tight">
             {t("common.services")}
           </h2>
-          <p className="text-center text-muted-foreground max-w-2xl mx-auto text-lg">
+          <p className="text-center text-foreground/70 max-w-2xl mx-auto text-lg font-light leading-relaxed">
             {t("services.subtitle")}
           </p>
+          
+          <div className="flex justify-center gap-2 mt-6">
+            <div className="w-3 h-3 rounded-full bg-primary/30"></div>
+            <div className="w-3 h-3 rounded-full bg-primary/50"></div>
+            <div className="w-3 h-3 rounded-full bg-primary/70"></div>
+          </div>
         </div>
 
         {isLoading ? (
@@ -277,7 +317,7 @@ export default function ServiceCards() {
         )}
         
         <div 
-          className={`mt-16 text-center transition-all duration-1000 ${
+          className={`mt-20 text-center transition-all duration-1000 ${
             isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
           style={{ transitionDelay: '600ms' }}
@@ -286,12 +326,19 @@ export default function ServiceCards() {
             <Button 
               variant="outline" 
               size="lg" 
-              className="group bg-gradient-to-r hover:bg-gradient-to-r from-background to-background hover:from-primary/5 hover:to-primary/10 border-primary/20"
+              className="group px-10 py-7 rounded-xl text-lg font-medium bg-white hover:bg-white shadow-md hover:shadow-xl transition-all duration-500 border-primary/20 hover:border-primary/40 flex items-center gap-3"
             >
               <span>{t("services.viewAll")}</span>
-              <ArrowRight className="ml-2 h-4 w-4 transform transition-transform group-hover:translate-x-1" />
+              <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center transform transition-transform group-hover:scale-110">
+                <ArrowRight className="h-5 w-5 text-primary transform transition-transform group-hover:translate-x-0.5" />
+              </div>
             </Button>
           </Link>
+          
+          {/* Modern dekoratif unsurlar */}
+          <div className="mx-auto max-w-md mt-12 flex justify-center">
+            <div className="h-px w-full bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
+          </div>
         </div>
       </div>
     </section>

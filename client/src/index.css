@@ -42,6 +42,18 @@
       transform: translate(-20px, -15px) scale(0.9);
     }
   }
+  
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
 
   /* 3D card flip effect */
   .perspective-1000 {
@@ -72,6 +84,11 @@
   /* Background blob animation */
   .animate-blob {
     animation: blob 8s infinite ease-in-out;
+  }
+  
+  /* Float animation */
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
   }
 
   /* Utilities for text overflow */
