@@ -545,7 +545,11 @@ export default function ServicePage() {
           {/* Additional Content */}
           <div className="relative z-10">
             {/* Treatment Timeline */}
-            {service.slug === 'hair-transplantation' && (
+            {(service.slug === 'hair-transplantation' || 
+              service.slug === 'eyebrow-transplantation' || 
+              service.slug === 'beard-transplantation' || 
+              service.slug === 'prp-treatment' || 
+              service.slug === 'hair-mesotherapy') && (
               <div className="mb-24">
                 <h2 className="text-3xl font-bold text-center mb-6">{t("services.procedureTimeline")}</h2>
                 <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-12">
@@ -556,55 +560,145 @@ export default function ServicePage() {
                   steps={[
                     {
                       id: 1,
-                      title: t("services.timeline.step1Title"),
-                      description: t("services.timeline.step1Description"),
-                      duration: "30-60 min",
+                      title: service.slug === 'prp-treatment' ? 'Kan Alma İşlemi / Blood Collection' : 
+                             service.slug === 'hair-mesotherapy' ? 'Saç Analizi / Hair Analysis' :
+                             t("services.timeline.step1Title"),
+                      description: service.slug === 'prp-treatment' ? 'Küçük bir miktar kan alınır ve özel tüplerde hazırlanır / A small amount of blood is drawn and prepared in special tubes' :
+                                  service.slug === 'hair-mesotherapy' ? 'Saç ve kafa derisi değerlendirmesi yapılır / Hair and scalp evaluation is performed' :
+                                  service.slug === 'eyebrow-transplantation' ? 'Kaş şekli ve tasarımı kişiye özel olarak planlanır / Eyebrow shape and design is planned individually' :
+                                  service.slug === 'beard-transplantation' ? 'Sakal yoğunluğu ve tasarımı planlanır / Beard density and design is planned' :
+                                  t("services.timeline.step1Description"),
+                      duration: service.slug === 'prp-treatment' ? "15-20 min" : 
+                               service.slug === 'hair-mesotherapy' ? "20-30 min" : "30-60 min",
                       highlights: [
+                        service.slug === 'prp-treatment' ? 'Ağrısız işlem / Painless procedure' : 
+                        service.slug === 'hair-mesotherapy' ? 'Detaylı saç analizi / Detailed hair analysis' :
+                        service.slug === 'eyebrow-transplantation' ? 'Yüz şekline uygun tasarım / Design suitable for face shape' :
+                        service.slug === 'beard-transplantation' ? 'Yüz hatlarına uygun planlama / Planning suitable for facial features' :
                         t("services.timeline.step1Highlight1"),
+                        
+                        service.slug === 'prp-treatment' ? 'Hızlı işlem / Quick procedure' : 
+                        service.slug === 'hair-mesotherapy' ? 'Kişiye özel formül belirleme / Determining custom formula' :
+                        service.slug === 'eyebrow-transplantation' ? 'Doğal görünüm için açı planlaması / Angle planning for natural look' :
+                        service.slug === 'beard-transplantation' ? 'Doğal sakal hattı belirleme / Determining natural beard line' :
                         t("services.timeline.step1Highlight2")
                       ],
                       icon: "Scissors"
                     },
                     {
                       id: 2,
-                      title: t("services.timeline.step2Title"),
-                      description: t("services.timeline.step2Description"),
-                      duration: "1-3 hours",
+                      title: service.slug === 'prp-treatment' ? 'Santrifüj İşlemi / Centrifugation' : 
+                             service.slug === 'hair-mesotherapy' ? 'Mezoterapi Karışımı / Mesotherapy Mixture' :
+                             service.slug === 'eyebrow-transplantation' ? 'Donör Bölge Hazırlığı / Donor Area Preparation' :
+                             service.slug === 'beard-transplantation' ? 'Donör Bölge Hazırlığı / Donor Area Preparation' :
+                             t("services.timeline.step2Title"),
+                      description: service.slug === 'prp-treatment' ? 'Alınan kan trombositleri ayırmak için santrifüj edilir / Blood is centrifuged to separate platelets' :
+                                  service.slug === 'hair-mesotherapy' ? 'Vitaminden zengin mezoterapi karışımı hazırlanır / Vitamin-rich mesotherapy mixture is prepared' :
+                                  service.slug === 'eyebrow-transplantation' ? 'Ense bölgesinden alınacak greftler belirlenir / Grafts to be taken from the nape area are determined' :
+                                  service.slug === 'beard-transplantation' ? 'Sakal için uygun greftler belirlenir / Suitable grafts for beard are determined' :
+                                  t("services.timeline.step2Description"),
+                      duration: service.slug === 'prp-treatment' ? "5-10 min" : 
+                               service.slug === 'hair-mesotherapy' ? "10-15 min" : "1-3 hours",
                       highlights: [
+                        service.slug === 'prp-treatment' ? 'Trombositlerin ayrılması / Separation of platelets' : 
+                        service.slug === 'hair-mesotherapy' ? 'Vitamin ve peptit karışımı / Vitamin and peptide mixture' :
+                        service.slug === 'eyebrow-transplantation' ? 'Sağlıklı ve kaliteli greftler / Healthy and quality grafts' :
+                        service.slug === 'beard-transplantation' ? 'Doğal büyüme açılarına uygun greftler / Grafts suitable for natural growth angles' :
                         t("services.timeline.step2Highlight1"),
+                        
+                        service.slug === 'prp-treatment' ? 'Yüksek konsantrasyonlu plazma / High concentration plasma' : 
+                        service.slug === 'hair-mesotherapy' ? 'Kişiye özel formülasyon / Personalized formulation' :
+                        service.slug === 'eyebrow-transplantation' ? 'Minimum travma ile toplama / Collection with minimal trauma' :
+                        service.slug === 'beard-transplantation' ? 'Ağrısız toplama işlemi / Painless collection procedure' :
                         t("services.timeline.step2Highlight2")
                       ],
                       icon: "Zap"
                     },
                     {
                       id: 3,
-                      title: t("services.timeline.step3Title"),
-                      description: t("services.timeline.step3Description"),
-                      duration: "2-4 hours",
+                      title: service.slug === 'prp-treatment' ? 'Uygulama / Application' : 
+                             service.slug === 'hair-mesotherapy' ? 'Mezoterapi Uygulaması / Mesotherapy Application' :
+                             service.slug === 'eyebrow-transplantation' ? 'Kaş Çizimi ve Kanalların Açılması / Eyebrow Drawing and Channel Opening' :
+                             service.slug === 'beard-transplantation' ? 'Sakal Çizimi ve Kanalların Açılması / Beard Drawing and Channel Opening' :
+                             t("services.timeline.step3Title"),
+                      description: service.slug === 'prp-treatment' ? 'Hazırlanan trombositten zengin plazma saç derisine enjekte edilir / Platelet-rich plasma is injected into the scalp' :
+                                  service.slug === 'hair-mesotherapy' ? 'Vitamin kokteyli saç derisine ince iğnelerle uygulanır / Vitamin cocktail is applied to the scalp with fine needles' :
+                                  service.slug === 'eyebrow-transplantation' ? 'Kaş şekli çizilir ve greftlerin yerleştirileceği kanallar açılır / Eyebrow shape is drawn and channels are opened for grafts' :
+                                  service.slug === 'beard-transplantation' ? 'Sakal hattı çizilerek greftlerin yerleştirileceği kanallar açılır / Beard line is drawn and channels are opened for grafts' :
+                                  t("services.timeline.step3Description"),
+                      duration: service.slug === 'prp-treatment' ? "15-20 min" : 
+                               service.slug === 'hair-mesotherapy' ? "20-30 min" : 
+                               service.slug === 'eyebrow-transplantation' ? "1-1.5 hours" : "2-4 hours",
                       highlights: [
+                        service.slug === 'prp-treatment' ? 'Mikroiğnelerle uygulama / Application with microneedles' : 
+                        service.slug === 'hair-mesotherapy' ? 'DHT blokerleri içeren karışım / Mixture containing DHT blockers' :
+                        service.slug === 'eyebrow-transplantation' ? 'Doğal büyüme açılarına uygun kanallar / Channels suitable for natural growth angles' :
+                        service.slug === 'beard-transplantation' ? 'Yüz hatlarına uygun sakal hattı / Beard line suitable for facial features' :
                         t("services.timeline.step3Highlight1"),
+                        
+                        service.slug === 'prp-treatment' ? 'Büyüme faktörlerinin direkt etkisi / Direct effect of growth factors' : 
+                        service.slug === 'hair-mesotherapy' ? 'Ağrısız ve konforlu işlem / Painless and comfortable procedure' :
+                        service.slug === 'eyebrow-transplantation' ? 'Uzman tarafından yapılan tasarım / Design done by an expert' :
+                        service.slug === 'beard-transplantation' ? 'Sık ve dolgun görünüm için planlama / Planning for a dense and full appearance' :
                         t("services.timeline.step3Highlight2")
                       ],
                       icon: "Check"
                     },
                     {
                       id: 4,
-                      title: t("services.timeline.step4Title"),
-                      description: t("services.timeline.step4Description"),
-                      duration: "1-2 weeks",
+                      title: service.slug === 'prp-treatment' ? 'İyileşme Süreci / Healing Process' : 
+                             service.slug === 'hair-mesotherapy' ? 'İyileşme / Recovery' :
+                             service.slug === 'eyebrow-transplantation' ? 'Greft Yerleştirme / Graft Placement' :
+                             service.slug === 'beard-transplantation' ? 'Greft Yerleştirme / Graft Placement' :
+                             t("services.timeline.step4Title"),
+                      description: service.slug === 'prp-treatment' ? 'Kızarıklık ve hafif şişlik ilk günlerde görülebilir / Redness and mild swelling may be seen in the first days' :
+                                  service.slug === 'hair-mesotherapy' ? 'İşlem sonrası hafif yanma ve kızarıklık olabilir / Mild burning and redness may occur after the procedure' :
+                                  service.slug === 'eyebrow-transplantation' ? 'Greftler açılan kanallara özenle yerleştirilir / Grafts are carefully placed into opened channels' :
+                                  service.slug === 'beard-transplantation' ? 'Toplanan greftler açılan kanallara yerleştirilir / Collected grafts are placed into opened channels' :
+                                  t("services.timeline.step4Description"),
+                      duration: service.slug === 'prp-treatment' ? "2-3 days" : 
+                               service.slug === 'hair-mesotherapy' ? "1-2 days" : 
+                               service.slug === 'eyebrow-transplantation' ? "1-2 hours" : "1-2 weeks",
                       highlights: [
+                        service.slug === 'prp-treatment' ? 'Hızlı iyileşme / Quick recovery' : 
+                        service.slug === 'hair-mesotherapy' ? 'İşlem günü duş alınabilir / Shower can be taken on the day of the procedure' :
+                        service.slug === 'eyebrow-transplantation' ? 'Doğal büyüme yönünde yerleşim / Placement in natural growth direction' :
+                        service.slug === 'beard-transplantation' ? 'Doğal görünüm için açıları uygun yerleşim / Placement with proper angles for natural look' :
                         t("services.timeline.step4Highlight1"),
+                        
+                        service.slug === 'prp-treatment' ? 'Herhangi bir özel bakım gerektirmez / No special care required' : 
+                        service.slug === 'hair-mesotherapy' ? 'Günlük aktivitelere hemen dönüş / Immediate return to daily activities' :
+                        service.slug === 'eyebrow-transplantation' ? 'Milimetrik hassasiyetle yerleştirme / Placement with millimetric precision' :
+                        service.slug === 'beard-transplantation' ? 'Uzman teknisyenler tarafından uygulama / Application by expert technicians' :
                         t("services.timeline.step4Highlight2")
                       ],
                       icon: "Heart"
                     },
                     {
                       id: 5,
-                      title: t("services.timeline.step5Title"),
-                      description: t("services.timeline.step5Description"),
-                      duration: "3-6 months",
+                      title: service.slug === 'prp-treatment' ? 'Sonuçlar / Results' : 
+                             service.slug === 'hair-mesotherapy' ? 'Sonuçlar ve Takip / Results and Follow-up' :
+                             service.slug === 'eyebrow-transplantation' ? 'Sonuçlar ve Bakım / Results and Care' :
+                             service.slug === 'beard-transplantation' ? 'İyileşme ve Sonuçlar / Recovery and Results' :
+                             t("services.timeline.step5Title"),
+                      description: service.slug === 'prp-treatment' ? 'Büyüme ve kalınlaşma 3-4 hafta sonra görülmeye başlar / Growth and thickening begins to be seen after 3-4 weeks' :
+                                  service.slug === 'hair-mesotherapy' ? 'Bir aylık tedavi sonrası belirgin farklar gözlenir / Significant differences are observed after one month of treatment' :
+                                  service.slug === 'eyebrow-transplantation' ? 'Kaşlar doğal yönde ve kalıcı olarak büyür / Eyebrows grow in a natural direction and permanently' :
+                                  service.slug === 'beard-transplantation' ? 'Sakal greftleri kalıcı olarak büyümeye devam eder / Beard grafts continue to grow permanently' :
+                                  t("services.timeline.step5Description"),
+                      duration: service.slug === 'prp-treatment' ? "1-3 months" : 
+                               service.slug === 'hair-mesotherapy' ? "1-2 months" : "3-6 months",
                       highlights: [
+                        service.slug === 'prp-treatment' ? 'Saç dökülmesinde azalma / Reduction in hair loss' : 
+                        service.slug === 'hair-mesotherapy' ? 'Saç kalitesinde iyileşme / Improvement in hair quality' :
+                        service.slug === 'eyebrow-transplantation' ? 'Kalıcı doğal sonuçlar / Permanent natural results' :
+                        service.slug === 'beard-transplantation' ? 'Kalıcı ve doğal sakal görünümü / Permanent and natural beard appearance' :
                         t("services.timeline.step5Highlight1"),
+                        
+                        service.slug === 'prp-treatment' ? 'Tedavi tekrarı ile kalıcı sonuçlar / Permanent results with treatment repetition' : 
+                        service.slug === 'hair-mesotherapy' ? 'Düzenli seanslarla kalıcı etki / Permanent effect with regular sessions' :
+                        service.slug === 'eyebrow-transplantation' ? 'Kişiye özel kaş tasarımı / Personalized eyebrow design' :
+                        service.slug === 'beard-transplantation' ? 'Keskin ve belirgin yüz hatları / Sharp and pronounced facial features' :
                         t("services.timeline.step5Highlight2")
                       ],
                       icon: "Sparkles"
@@ -615,7 +709,11 @@ export default function ServicePage() {
             )}
             
             {/* FAQs related to this service */}
-            {service.slug === 'hair-transplantation' ? (
+            {(service.slug === 'hair-transplantation' || 
+              service.slug === 'eyebrow-transplantation' || 
+              service.slug === 'beard-transplantation' || 
+              service.slug === 'prp-treatment' || 
+              service.slug === 'hair-mesotherapy') ? (
               <div className="mb-24">
                 <h2 className="text-3xl font-bold text-center mb-6">{t("services.faqsTitle")}</h2>
                 <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-12">
@@ -690,7 +788,9 @@ export default function ServicePage() {
             <ReviewsSection serviceId={service.id} />
             
             {/* Before/After Gallery */}
-            {service.slug === 'hair-transplantation' && (
+            {(service.slug === 'hair-transplantation' || 
+              service.slug === 'eyebrow-transplantation' || 
+              service.slug === 'beard-transplantation') && (
               <div className="mb-24">
                 <div className="text-center mb-12">
                   <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
