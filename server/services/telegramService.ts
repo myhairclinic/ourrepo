@@ -6,49 +6,46 @@ import { log } from '../vite';
 const token = process.env.TELEGRAM_BOT_TOKEN;
 let bot: TelegramBot | null = null;
 
-// Admin chat ID - will be set when admin subscribes
-let adminChatId: string | null = null;
+// Admin chat ID(s) - for sending notifications
+// Harcoded for now, but you should replace with your actual Telegram chat ID after testing
+const ADMIN_CHAT_IDS = ['1234567890']; // Replace with your actual Telegram chat ID
 
-// Initialize the bot if token is available
-if (token) {
-  try {
-    bot = new TelegramBot(token, { polling: true });
-    log('Telegram bot initialized successfully', 'telegram');
-    
+// Initialize the bot with webhook for production or polling for development
+try {
+  if (token) {
+    // For local development and testing, use polling
+    const botOptions = {
+      polling: true
+    };
+
+    bot = new TelegramBot(token, botOptions);
+    console.log('Telegram bot initialized successfully');
+
     // Handle /start command
     bot.onText(/\/start/, (msg) => {
       const chatId = msg.chat.id;
-      bot?.sendMessage(chatId, 'Merhaba! MyHair Klinik Randevu Yönetim Sistemi\'ne hoş geldiniz. Randevu bildirimleri için /subscribe komutunu kullanabilirsiniz.');
+      console.log(`Chat ID for new session: ${chatId}`);
+      bot?.sendMessage(chatId, `Merhaba! MyHair Klinik Randevu Yönetim Sistemi'ne hoş geldiniz. Chat ID'niz: ${chatId}`);
     });
 
-    // Handle /subscribe command for admin to receive notifications
-    bot.onText(/\/subscribe/, (msg) => {
-      const chatId = msg.chat.id.toString();
-      adminChatId = chatId;
-      log(`Admin subscribed to notifications with chat ID: ${adminChatId}`, 'telegram');
-      bot?.sendMessage(chatId, 'Artık randevu bildirimlerini alacaksınız. Bildirimleri durdurmak için /unsubscribe yazabilirsiniz.');
+    // Handle /test command to check if bot is working
+    bot.onText(/\/test/, (msg) => {
+      const chatId = msg.chat.id;
+      bot?.sendMessage(chatId, 'Bot çalışıyor! Bu bir test mesajıdır.');
+      console.log(`Test message sent to chat ID: ${chatId}`);
     });
 
-    // Handle /unsubscribe command
-    bot.onText(/\/unsubscribe/, (msg) => {
-      const chatId = msg.chat.id.toString();
-      if (chatId === adminChatId) {
-        adminChatId = null;
-        bot?.sendMessage(chatId, 'Randevu bildirimleri durduruldu. Tekrar başlatmak için /subscribe yazabilirsiniz.');
-        log('Admin unsubscribed from notifications', 'telegram');
-      } else {
-        bot?.sendMessage(chatId, 'Randevu bildirimleri zaten aktif değil.');
-      }
-    });
-
+    // Bot error handling
     bot.on('polling_error', (error) => {
-      log(`Telegram polling error: ${error.message}`, 'telegram');
+      console.error(`Telegram polling error: ${error.message}`);
     });
-  } catch (error) {
-    log(`Error initializing Telegram bot: ${error}`, 'telegram');
+
+    console.log('Telegram bot is ready to receive commands');
+  } else {
+    console.warn('Telegram bot token not found, notification service disabled');
   }
-} else {
-  log('Telegram bot token not found, notification service disabled', 'telegram');
+} catch (error) {
+  console.error(`Error initializing Telegram bot: ${error}`);
 }
 
 // Format the appointment status in Turkish
@@ -71,8 +68,11 @@ const getStatusText = (status: string): string => {
  * Send notification about new appointment to admin
  */
 export const notifyNewAppointment = (appointment: Appointment): void => {
-  if (!bot || !adminChatId) return;
-
+  if (!bot) {
+    console.warn('Telegram bot is not initialized, cannot send notification');
+    return;
+  }
+  
   try {
     const message = `
 🆕 *YENİ RANDEVU BİLDİRİMİ*
@@ -87,10 +87,20 @@ export const notifyNewAppointment = (appointment: Appointment): void => {
 /admin komutunu kullanarak yönetici panelinden randevuyu yönetebilirsiniz.
 `;
 
-    bot.sendMessage(adminChatId, message, { parse_mode: 'Markdown' });
-    log(`New appointment notification sent for appointment ID: ${appointment.id}`, 'telegram');
+    // Send to all admin chat IDs
+    for (const chatId of ADMIN_CHAT_IDS) {
+      bot.sendMessage(chatId, message, { parse_mode: 'Markdown' })
+        .then(() => {
+          console.log(`New appointment notification sent to admin ${chatId} for appointment ID: ${appointment.id}`);
+        })
+        .catch((error) => {
+          console.error(`Failed to send notification to admin ${chatId}: ${error.message}`);
+        });
+    }
+    
+    console.log(`Attempted to send new appointment notification for ID: ${appointment.id}`);
   } catch (error) {
-    log(`Error sending new appointment notification: ${error}`, 'telegram');
+    console.error(`Error sending new appointment notification: ${error}`);
   }
 };
 
@@ -98,8 +108,11 @@ export const notifyNewAppointment = (appointment: Appointment): void => {
  * Send notification about appointment status update to admin
  */
 export const notifyAppointmentUpdate = (appointment: Appointment): void => {
-  if (!bot || !adminChatId) return;
-
+  if (!bot) {
+    console.warn('Telegram bot is not initialized, cannot send notification');
+    return;
+  }
+  
   try {
     const message = `
 🔄 *RANDEVU GÜNCELLENDİ*
@@ -114,10 +127,20 @@ export const notifyAppointmentUpdate = (appointment: Appointment): void => {
 /admin komutunu kullanarak yönetici panelinden randevuyu yönetebilirsiniz.
 `;
 
-    bot.sendMessage(adminChatId, message, { parse_mode: 'Markdown' });
-    log(`Appointment update notification sent for appointment ID: ${appointment.id}`, 'telegram');
+    // Send to all admin chat IDs
+    for (const chatId of ADMIN_CHAT_IDS) {
+      bot.sendMessage(chatId, message, { parse_mode: 'Markdown' })
+        .then(() => {
+          console.log(`Appointment update notification sent to admin ${chatId} for appointment ID: ${appointment.id}`);
+        })
+        .catch((error) => {
+          console.error(`Failed to send update notification to admin ${chatId}: ${error.message}`);
+        });
+    }
+    
+    console.log(`Attempted to send appointment update notification for ID: ${appointment.id}`);
   } catch (error) {
-    log(`Error sending appointment update notification: ${error}`, 'telegram');
+    console.error(`Error sending appointment update notification: ${error}`);
   }
 };
 
@@ -133,13 +156,15 @@ if (bot) {
  * Send notification to customer about appointment status change
  */
 export const notifyCustomerAppointmentUpdate = async (appointment: Appointment): Promise<void> => {
-  if (!bot) return;
+  if (!bot) {
+    console.warn('Telegram bot is not initialized, cannot send customer notification');
+    return;
+  }
 
   try {
-    // Check if we have a chat record for this customer
-    // In a real implementation, you would store customer chat IDs in a database
-    // For demonstration, we'll just log that we would send a message
-    log(`Customer notification would be sent for appointment ID: ${appointment.id} with status: ${appointment.status}`, 'telegram');
+    // Note: In a real implementation, you would store customer chat IDs in a database
+    // and retrieve them here to send actual messages to customers
+    console.log(`Customer notification would be sent for appointment ID: ${appointment.id} with status: ${appointment.status}`);
     
     // Example message that would be sent to customer
     const message = `
@@ -156,11 +181,15 @@ Randevunuzla ilgili detaylar için web sitemizi ziyaret edebilirsiniz.
 `;
 
     // In a real implementation, you would send this message to the customer's chat ID
-    // bot.sendMessage(customerChatId, message, { parse_mode: 'Markdown' });
+    // Example:
+    // const customerChatId = await getCustomerChatId(appointment.phone);
+    // if (customerChatId) {
+    //   await bot.sendMessage(customerChatId, message, { parse_mode: 'Markdown' });
+    // }
     
-    log(`Customer notification template prepared for appointment ID: ${appointment.id}`, 'telegram');
+    console.log(`Customer notification template prepared for appointment ID: ${appointment.id}`);
   } catch (error) {
-    log(`Error preparing customer notification: ${error}`, 'telegram');
+    console.error(`Error preparing customer notification: ${error}`);
   }
 };
 
