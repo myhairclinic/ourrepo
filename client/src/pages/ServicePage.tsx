@@ -187,6 +187,8 @@ export default function ServicePage() {
   const detailedContent = getLocalizedContent(service, 'detailedContent');
   const procedureSteps = getLocalizedContent(service, 'procedureSteps');
   const candidateInfo = getLocalizedContent(service, 'candidateInfo');
+  const postCare = getLocalizedContent(service, 'postCare');
+  const faqs = getLocalizedContent(service, 'faqs');
 
   // Common translations
   const procedureStepsHeading = t("services.procedureSteps");
@@ -384,16 +386,19 @@ export default function ServicePage() {
           </div>
 
           {/* Detailed content with tabs */}
-          {(detailedContent || procedureSteps || candidateInfo) && (
+          {(detailedContent || procedureSteps || candidateInfo || postCare) && (
             <div className="relative z-10 mb-20">
               <Tabs defaultValue="details" className="w-full">
-                <TabsList className="w-full max-w-md mx-auto mb-8 grid grid-cols-3">
+                <TabsList className="w-full max-w-lg mx-auto mb-8 grid grid-cols-4">
                   <TabsTrigger value="details">{detailsHeading}</TabsTrigger>
                   {procedureSteps && (
                     <TabsTrigger value="procedure">{procedureStepsHeading}</TabsTrigger>
                   )}
                   {candidateInfo && (
                     <TabsTrigger value="candidates">{candidateInfoHeading}</TabsTrigger>
+                  )}
+                  {postCare && (
+                    <TabsTrigger value="postcare">{postCareHeading}</TabsTrigger>
                   )}
                 </TabsList>
                 
@@ -415,6 +420,14 @@ export default function ServicePage() {
                   <TabsContent value="candidates" className="mt-6">
                     <div className="prose prose-lg max-w-none mx-auto">
                       {renderMarkdownLikeContent(candidateInfo)}
+                    </div>
+                  </TabsContent>
+                )}
+                
+                {postCare && (
+                  <TabsContent value="postcare" className="mt-6">
+                    <div className="prose prose-lg max-w-none mx-auto">
+                      {renderMarkdownLikeContent(postCare)}
                     </div>
                   </TabsContent>
                 )}

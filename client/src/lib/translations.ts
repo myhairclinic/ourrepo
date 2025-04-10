@@ -361,6 +361,13 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Georgian]: "პოპულარული"
   },
   
+  "services.postCare": {
+    [Language.Turkish]: "Bakım Süreci",
+    [Language.English]: "Aftercare Process",
+    [Language.Russian]: "Процесс последующего ухода",
+    [Language.Georgian]: "მოვლის პროცესი"
+  },
+  
   // HomePage çevirileri 
   "home.title": {
     [Language.Turkish]: "MyHair Clinic | Saç Ekimi ve Estetik Merkezi",
