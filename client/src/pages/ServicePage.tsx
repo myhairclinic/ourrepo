@@ -4,7 +4,19 @@ import { useRoute } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { Service } from "@shared/schema";
 import { Helmet } from "react-helmet";
-import { Loader2 } from "lucide-react";
+import { 
+  Loader2, 
+  Clock, 
+  Calendar, 
+  MapPin, 
+  Check, 
+  BadgeCheck, 
+  ThumbsUp, 
+  User, 
+  Award,
+  Sparkles,
+  Star
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { getTranslation, useTranslation } from "@/lib/translations";
@@ -14,6 +26,21 @@ import { ReviewsSection } from "@/components/services/ReviewsSection";
 import FaqsSection from "@/components/services/FaqsSection";
 import SocialShareButtons from "@/components/shared/SocialShareButtons";
 import SocialFollowButtons from "@/components/shared/SocialFollowButtons";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { 
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle 
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+
+// Import service images
+import hairTransplantImage from "@/assets/images/hair-transplant.png";
+import consultationImage from "@/assets/images/consultation.png";
 
 export default function ServicePage() {
   const { language, currentLanguage, addPrefix } = useLanguage();
