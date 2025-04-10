@@ -1,0 +1,231 @@
+Çok dilli (TR / EN / RU / KA),
+
+SEO odaklı,
+
+Klinik, hasta ve ziyaretçi deneyimini üst düzeyde sunan,
+
+Sana yönetim paneliyle birlikte tam kontrol sağlayan,
+
+Modern, güvenilir ve kullanıcı dostu bir MyHair Clinic web sitesi.
+
+Aşağıda, yazılımcılara verebileceğin detaylı bir proje dokümanı (spec doc) hazırladım. Tasarım, içerik yapısı, teknik detaylar, panel ihtiyaçları ve SEO stratejileri dahil her şeyi kapsıyor.
+
+📄 MYHAIR CLINIC – Web Projesi Teknik ve Fonksiyonel Doküman
+
+1. GENEL BİLGİLER
+Proje Adı: MyHair Clinic Web Sitesi
+Lokasyon: Tiflis, Gürcistan
+Amaç:
+
+Kliniğin çok dilli tanıtımını yapmak
+
+Saç/Kaş/Sakal Ekimi ve PRP dahil tüm hizmetleri sunmak
+
+Yurtdışından gelecek hastalar için paket bilgileri sağlamak
+
+Gürcistan içinden gelenler için randevu sistemi sağlamak
+
+Ürün ve süreç bilgilerini yönetilebilir şekilde sunmak
+
+SEO açısından yerel ve uluslararası sıralamalarda üst sıralarda yer almak
+
+Tüm içeriğin yönetici paneliyle kolayca güncellenebilir olması
+
+2. DİLLER
+Türkçe (varsayılan)
+
+İngilizce
+
+Rusça
+
+Gürcüce
+Her içerik dört dilde sunulacaktır. Dil geçişi için üst menüde dil seçici yer alacaktır. Tüm içerikler URL'lerde ayrı path’lerde yer alır:
+
+/tr/, /en/, /ru/, /ka/
+
+3. ANA SAYFA (Homepage)
+Bölümler:
+
+Hero Slider (Video/Görsel – Tanıtım metinleri ve butonlar)
+
+Kısa Hizmet Kartları (Saç Ekimi, Kaş Ekimi, PRP vs.)
+
+Neden MyHair Clinic?
+
+Öncesi/Sonrası Görseller (Slider)
+
+Hasta Yorumları (Video + Metin)
+
+Klip ve Tanıtım Videoları (Youtube Embed veya kendi player)
+
+Hızlı Randevu Butonu
+
+Blog Yazılarından Öne Çıkanlar
+
+4. HİZMETLER (Services)
+Her hizmetin detay sayfası olacak.
+
+Hizmet Başlıkları:
+Saç Ekimi (FUE, DHI, Sapphire vs.)
+
+Kaş Ekimi
+
+Sakal/Bıyık Ekimi
+
+PRP Tedavisi
+
+Saç Mezoterapisi
+
+Saç Analizi & Ücretsiz Danışmanlık
+
+Her hizmet sayfasında:
+
+Tanıtım Metni (her dilde)
+
+Uygulama Süreci
+
+Sık Sorulan Sorular
+
+Öncesi/sonrası fotoğraflar
+
+Video varsa eklenir
+
+5. GALERİ
+Öncesi / Sonrası Galeri: Hizmete göre filtreleme
+
+Klinik Galerisi: Klinik ortamı, ekip, operasyonlar
+
+Video Galerisi: Youtube veya mp4 embed
+
+6. PAKETLER (Sadece Yurtdışı Hastalar İçin)
+Not: Fiyat bilgisi olmayacak.
+
+Uçak Bileti Organizasyonu (isteğe bağlı)
+
+Otel Konaklama Seçenekleri
+
+VIP Transfer (Havalimanı-klinik-otel)
+
+Tercümanlık
+
+Klinik Süreci
+
+Ameliyat Sonrası Takip
+
+Kişiye özel planlama
+
+7. ÜRÜNLER
+Saç bakım ürünleri, şampuanlar, serumlar
+
+Ürün detay sayfası:
+
+Ürün adı, açıklama, kullanım
+
+İçerik bilgileri
+
+Görseller
+
+(Fiyat gösterilmeyecek)
+
+Satış yok, bilgilendirme amaçlı
+
+8. RANDEVU SİSTEMİ
+Gürcistan içinde yaşayan kullanıcılar için
+
+Kişisel bilgiler + hizmet seçimi + tarih
+
+Yönetici paneline düşer + e-posta bildirimi
+
+Google Calendar entegrasyonu (opsiyonel)
+
+KVKK / GDPR onay kutucuğu
+
+9. S.S.S – Sıkça Sorulan Sorular
+Her hizmet için ayrı SSS alanı
+
+Süreç
+
+Ağrı/acı durumu
+
+İyileşme süreci
+
+Ekstra bakım
+
+Seyahat bilgileri
+
+10. BLOG / BİLGİ MERKEZİ
+Amaç: SEO organik trafik
+
+Haftalık içerik girilebilir
+
+Kategori: Saç Ekimi, Yurtdışı Hastalar, Klinik Bilgisi
+
+Yönetici panelinden yazı, görsel, etiket, dil seçimi yapılabilir
+
+SEO başlık ve açıklama girilebilir
+
+11. HAKKIMIZDA
+Klinik tanıtımı
+
+Doktor/ekip tanıtımı
+
+Belgeler/sertifikalar
+
+Basında çıkanlar
+
+12. İLETİŞİM SAYFASI
+Harita (Google Maps)
+
+WhatsApp Butonu
+
+Form (isim, e-posta, mesaj)
+
+Telefon, e-posta, sosyal medya
+
+Canlı destek entegrasyonu (Tawk.to, Livechat vb.)
+
+13. YÖNETİCİ PANELİ ÖZELLİKLERİ
+Tamamen panelden yönetilebilir:
+
+Dil bazlı içerik yönetimi
+
+Hizmet ekle/sil/güncelle
+
+Galeri & video yükleme
+
+Blog yönetimi
+
+SSS yönetimi
+
+Ürün ekleme
+
+Randevu takip sistemi
+
+Paket bilgisi yönetimi
+
+SEO alanları (meta title, description, URL yapısı)
+
+Kullanıcı yetkilendirme (admin/editor)
+
+14. TEKNİK İSTEKLER
+Modern framework: Next.js, Nuxt, veya SEO destekli altyapı
+
+Headless CMS: Strapi, Sanity, veya özel panel
+
+Hızlı ve güvenli altyapı (Cloudflare, Vercel gibi hostingler)
+
+Responsive tasarım (mobil + tablet uyumlu)
+
+SEO uyumlu kodlama: SSR veya SSG
+
+Çoklu dil desteği (i18n)
+
+Performans: Lighthouse skoru 90+
+
+15. EKSTRA
+Google Analytics + Search Console entegrasyonu
+
+Sitemap.xml + robots.txt otomatik oluşturulmalı
+
+Schema.org destekli veri işaretleme (Klinik, Ürün, Makale)
+
