@@ -29,7 +29,7 @@ async function comparePasswords(supplied: string, stored: string) {
 }
 
 export function setupAuth(app: Express) {
-  const sessionSecret = process.env.SESSION_SECRET || "myhairclinic-secret-key";
+  const sessionSecret = process.env.SESSION_SECRET || "myhairclinic-secret-key-prod-12345";
   
   const sessionSettings: session.SessionOptions = {
     secret: sessionSecret,
