@@ -64,7 +64,7 @@ function ServiceCard({
               : service.slug === 'eyebrow-transplantation' 
                   ? '/images/services/eyebrow-transplant.jpg' 
                   : service.slug === 'beard-transplantation'
-                      ? consultationImage
+                      ? '/images/services/beard-transplant.jpg'
                       : service.slug === 'prp-treatment'
                           ? hairTransplantImage
                           : service.slug === 'hair-mesotherapy'

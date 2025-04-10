@@ -304,8 +304,8 @@ export default function ServicePage() {
             <div className="overflow-hidden rounded-2xl shadow-xl group relative">
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
               <img 
-                src={service.slug === 'hair-transplantation' ? hairTransplantImage : 
-                    (service.slug === 'beard-transplantation' ? consultationImage : 
+                src={service.slug === 'hair-transplantation' ? '/images/services/hair-transplant.jpg' : 
+                    (service.slug === 'beard-transplantation' ? '/images/services/beard-transplant.jpg' : 
                     (service.slug === 'prp-treatment' ? hairTransplantImage :
                     (service.slug === 'eyebrow-transplantation' ? '/images/services/eyebrow-transplant.jpg' :
                     (service.slug === 'hair-mesotherapy' ? consultationImage : service.imageUrl))))}
