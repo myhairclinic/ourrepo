@@ -23,6 +23,7 @@ import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import AppointmentPage from "./pages/AppointmentPage";
 import AppointmentTracker from "./pages/AppointmentTracker";
+import SocialMediaPage from "./pages/SocialMediaPage";
 import NotFound from "./pages/not-found";
 
 // Admin Pages
