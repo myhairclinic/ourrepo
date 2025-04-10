@@ -7,6 +7,7 @@ type LanguageContextType = {
   language: Language;
   setLanguage: (lang: Language) => void;
   changeLanguage: (lang: Language) => void;
+  addPrefix: (path: string) => string; // URL'e dil önekini ekleyen fonksiyon
 };
 
 // Context oluşturma
@@ -52,8 +53,19 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     setLanguage(newLang);
   };
   
+  // URL'e dil önekini ekleyen fonksiyon
+  const addPrefix = (path: string): string => {
+    // Eğer path zaten dil öneki içeriyorsa veya '/' ile başlamıyorsa değiştirme
+    if (path.startsWith(`/${language}`) || !path.startsWith('/')) {
+      return path;
+    }
+    
+    // '/' ile başlayan bir path için dil öneki ekle
+    return `/${language}${path}`;
+  };
+
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, changeLanguage }}>
+    <LanguageContext.Provider value={{ language, setLanguage, changeLanguage, addPrefix }}>
       {children}
     </LanguageContext.Provider>
   );
