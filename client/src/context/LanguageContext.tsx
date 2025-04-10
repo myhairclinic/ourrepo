@@ -3,11 +3,12 @@ import { useLocation } from "wouter";
 import { Language, DEFAULT_LANGUAGE, getLanguageFromPath } from "@/lib/languages";
 
 // LanguageContext için tip tanımlaması
-type LanguageContextType = {
+export type LanguageContextType = {
   language: Language;
   setLanguage: (lang: Language) => void;
   changeLanguage: (lang: Language) => void;
   addPrefix: (path: string) => string; // URL'e dil önekini ekleyen fonksiyon
+  currentLanguage: string; // Şu anki dil kodu (URL'de kullanmak için)
 };
 
 // Context oluşturma
@@ -65,7 +66,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, changeLanguage, addPrefix }}>
+    <LanguageContext.Provider value={{ 
+      language, 
+      setLanguage, 
+      changeLanguage, 
+      addPrefix,
+      currentLanguage: language // Şu anki dil kodunu da sağla
+    }}>
       {children}
     </LanguageContext.Provider>
   );

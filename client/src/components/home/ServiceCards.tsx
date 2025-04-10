@@ -5,8 +5,7 @@ import { Service } from "@shared/schema";
 import { Loader2 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { TITLE_SUFFIX } from "@/lib/constants";
-import { getTranslation } from "@/lib/translations";
+import { translations } from "@/lib/translations";
 
 export default function ServiceCards() {
   const { language, currentLanguage } = useLanguage();
@@ -15,9 +14,9 @@ export default function ServiceCards() {
     queryKey: ["/api/services"],
   });
 
-  const title = getTranslation("our_services", language);
-  const subtitle = getTranslation("service_subtitle", language);
-  const learnMoreButton = getTranslation("learn_more", language);
+  const title = translations[language].our_services || "Our Services";
+  const subtitle = translations[language].service_subtitle || "Services we provide";
+  const learnMoreButton = translations[language].learn_more || "Learn More";
 
   // Helper function to get the title based on the current language
   const getLocalizedTitle = (service: Service) => {
@@ -65,7 +64,7 @@ export default function ServiceCards() {
           </div>
         ) : error ? (
           <div className="text-center text-red-500 py-10">
-            {getTranslation("error_loading_services", language)}
+            {translations[language].error_loading_services || "An error occurred while loading services. Please try again later."}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
