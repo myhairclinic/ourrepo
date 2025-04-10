@@ -44,32 +44,48 @@ export function BeforeAfterGallery({
   });
   const [selectedCategory, setSelectedCategory] = useState("All");
 
+  // Get localized description based on language
+  const getLocalizedDescription = (item: GalleryItem) => {
+    switch (language) {
+      case Language.Turkish:
+        return item.descriptionTR;
+      case Language.English:
+        return item.descriptionEN;
+      case Language.Russian:
+        return item.descriptionRU;
+      case Language.Georgian:
+        return item.descriptionKA;
+      default:
+        return item.descriptionEN;
+    }
+  };
+
   // Handle image navigation
   const goToPrevious = () => {
     const isFirstImage = currentIndex === 0;
-    const newIndex = isFirstImage ? images.length - 1 : currentIndex - 1;
+    const newIndex = isFirstImage ? items.length - 1 : currentIndex - 1;
     setCurrentIndex(newIndex);
   };
 
   const goToNext = () => {
-    const isLastImage = currentIndex === images.length - 1;
+    const isLastImage = currentIndex === items.length - 1;
     const newIndex = isLastImage ? 0 : currentIndex + 1;
     setCurrentIndex(newIndex);
   };
 
   // Load more images
-  const loadMoreImages = () => {
-    setVisibleImages(images.slice(0, visibleImages.length + 6));
+  const loadMoreItems = () => {
+    setVisibleItems(items.slice(0, visibleItems.length + 6));
   };
 
   // Filter images by category
-  const filterImagesByCategory = (category: string) => {
+  const filterItemsByCategory = (category: string) => {
     setSelectedCategory(category);
     if (category === "All") {
-      setVisibleImages(images.slice(0, 6));
+      setVisibleItems(items.slice(0, 6));
     } else {
-      const filteredImages = images.filter(img => img.category === category);
-      setVisibleImages(filteredImages.slice(0, 6));
+      const filteredItems = items.filter(item => item.category === category);
+      setVisibleItems(filteredItems.slice(0, 6));
     }
   };
 
@@ -82,25 +98,27 @@ export function BeforeAfterGallery({
     <div className="mb-12">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8">
         <h2 className="text-2xl font-bold mb-4 sm:mb-0">
-          {serviceTitle ? 
-            t("Before & After Results: {service}", { service: serviceTitle }) :
+          {title ? 
+            `${t("Before & After Results")}: ${title}` :
             t("Before & After Gallery")
           }
         </h2>
         
-        <div className="flex flex-wrap gap-2">
-          {categories.map(category => (
-            <Button
-              key={category}
-              variant={selectedCategory === category ? "default" : "outline"}
-              size="sm"
-              onClick={() => filterImagesByCategory(category)}
-              className="text-sm"
-            >
-              {category}
-            </Button>
-          ))}
-        </div>
+        {categories.length > 1 && (
+          <div className="flex flex-wrap gap-2">
+            {categories.map(category => (
+              <Button
+                key={category}
+                variant={selectedCategory === category ? "default" : "outline"}
+                size="sm"
+                onClick={() => filterItemsByCategory(category)}
+                className="text-sm"
+              >
+                {category}
+              </Button>
+            ))}
+          </div>
+        )}
       </div>
       
       {/* View toggle */}
@@ -129,9 +147,9 @@ export function BeforeAfterGallery({
       {viewMode === "grid" && (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {visibleImages.map((image, index) => (
+            {visibleItems.map((item, index) => (
               <motion.div
-                key={image.id}
+                key={item.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -140,11 +158,11 @@ export function BeforeAfterGallery({
                 <div className="relative w-full h-64 cursor-pointer">
                   <div 
                     className="absolute top-0 left-0 w-1/2 h-full overflow-hidden"
-                    onClick={() => setSelectedImage(image)}
+                    onClick={() => setSelectedItem(item)}
                   >
                     <img 
-                      src={image.beforeImage} 
-                      alt={`Before ${image.title}`}
+                      src={item.beforeImageUrl} 
+                      alt={`Before - ${getLocalizedDescription(item)}`}
                       className="absolute h-full w-[200%] max-w-none object-cover"
                     />
                     <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-colors">
@@ -155,11 +173,11 @@ export function BeforeAfterGallery({
                   </div>
                   <div 
                     className="absolute top-0 right-0 w-1/2 h-full overflow-hidden"
-                    onClick={() => setSelectedImage(image)}
+                    onClick={() => setSelectedItem(item)}
                   >
                     <img 
-                      src={image.afterImage} 
-                      alt={`After ${image.title}`}
+                      src={item.afterImageUrl} 
+                      alt={`After - ${getLocalizedDescription(item)}`}
                       className="absolute h-full w-[200%] max-w-none object-cover right-0"
                     />
                     <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-colors">
@@ -172,25 +190,26 @@ export function BeforeAfterGallery({
                 </div>
                 
                 <div className="p-4">
-                  <h3 className="font-medium text-lg">{image.title}</h3>
                   <p className="text-sm text-muted-foreground line-clamp-2">
-                    {image.description}
+                    {getLocalizedDescription(item)}
                   </p>
-                  <div className="mt-2">
-                    <span className="inline-block bg-muted px-2 py-1 text-xs rounded-full">
-                      {image.category}
-                    </span>
-                  </div>
+                  {item.category && (
+                    <div className="mt-2">
+                      <span className="inline-block bg-muted px-2 py-1 text-xs rounded-full">
+                        {item.category}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             ))}
           </div>
           
-          {visibleImages.length < (selectedCategory === "All" ? images.length : images.filter(img => img.category === selectedCategory).length) && (
+          {visibleItems.length < (selectedCategory === "All" ? items.length : items.filter(item => item.category === selectedCategory).length) && (
             <div className="flex justify-center mt-8">
               <Button 
                 variant="outline" 
-                onClick={loadMoreImages}
+                onClick={loadMoreItems}
               >
                 {t("Load More")}
               </Button>
@@ -200,7 +219,7 @@ export function BeforeAfterGallery({
       )}
       
       {/* Slider View */}
-      {viewMode === "slider" && images.length > 0 && (
+      {viewMode === "slider" && items.length > 0 && (
         <div className="bg-card rounded-xl overflow-hidden border shadow-md">
           <div className="relative w-full h-[500px]">
             {/* Image slider */}
@@ -208,8 +227,8 @@ export function BeforeAfterGallery({
               <div className="relative h-full">
                 {/* Before image - full width, will be clipped by the container */}
                 <img 
-                  src={images[currentIndex].beforeImage}
-                  alt={`Before ${images[currentIndex].title}`}
+                  src={items[currentIndex].beforeImageUrl}
+                  alt={`Before - ${getLocalizedDescription(items[currentIndex])}`}
                   className="absolute top-0 left-0 h-full w-full object-cover"
                 />
                 
@@ -219,8 +238,8 @@ export function BeforeAfterGallery({
                   style={{ width: `${sliderPosition}%` }}
                 >
                   <img 
-                    src={images[currentIndex].afterImage}
-                    alt={`After ${images[currentIndex].title}`}
+                    src={items[currentIndex].afterImageUrl}
+                    alt={`After - ${getLocalizedDescription(items[currentIndex])}`}
                     className="absolute top-0 left-0 h-full w-full object-cover"
                   />
                 </div>
@@ -281,30 +300,31 @@ export function BeforeAfterGallery({
               variant="outline"
               size="icon"
               className="absolute right-4 bottom-4 bg-white/70 hover:bg-white z-10 rounded-full h-10 w-10"
-              onClick={() => setSelectedImage(images[currentIndex])}
+              onClick={() => setSelectedItem(items[currentIndex])}
             >
               <ZoomIn className="h-5 w-5" />
             </Button>
           </div>
           
           <div className="p-6">
-            <h3 className="font-semibold text-xl mb-2">{images[currentIndex].title}</h3>
-            <p className="text-muted-foreground">{images[currentIndex].description}</p>
+            <p className="text-muted-foreground">
+              {getLocalizedDescription(items[currentIndex])}
+            </p>
           </div>
           
           {/* Thumbnails */}
           <div className="p-4 border-t">
             <div className="flex overflow-x-auto gap-3 pb-1 px-1">
-              {images.map((image, index) => (
+              {items.map((item, index) => (
                 <div 
-                  key={image.id}
+                  key={item.id}
                   className={`flex-shrink-0 w-24 h-24 rounded-md cursor-pointer overflow-hidden border-2 transition-all duration-200
                     ${currentIndex === index ? 'border-primary' : 'border-transparent'}`}
                   onClick={() => setCurrentIndex(index)}
                 >
                   <img
-                    src={image.afterImage}
-                    alt={image.title}
+                    src={item.afterImageUrl}
+                    alt={getLocalizedDescription(item)}
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -316,15 +336,15 @@ export function BeforeAfterGallery({
       
       {/* Lightbox */}
       <AnimatePresence>
-        {selectedImage && (
-          <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
+        {selectedItem && (
+          <Dialog open={!!selectedItem} onOpenChange={() => setSelectedItem(null)}>
             <DialogContent className="max-w-4xl p-0">
               <div className="relative w-full h-[80vh] max-h-[80vh]">
                 <div className="relative h-full overflow-hidden">
                   {/* Before image - full width, will be clipped by the container */}
                   <img 
-                    src={selectedImage.beforeImage}
-                    alt={`Before ${selectedImage.title}`}
+                    src={selectedItem.beforeImageUrl}
+                    alt={`Before - ${getLocalizedDescription(selectedItem)}`}
                     className="absolute top-0 left-0 h-full w-full object-contain"
                   />
                   
@@ -334,8 +354,8 @@ export function BeforeAfterGallery({
                     style={{ width: `${sliderPosition}%` }}
                   >
                     <img 
-                      src={selectedImage.afterImage}
-                      alt={`After ${selectedImage.title}`}
+                      src={selectedItem.afterImageUrl}
+                      alt={`After - ${getLocalizedDescription(selectedItem)}`}
                       className="absolute top-0 left-0 h-full w-full object-contain"
                     />
                   </div>

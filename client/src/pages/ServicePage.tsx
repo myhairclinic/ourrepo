@@ -607,38 +607,44 @@ export default function ServicePage() {
                   {t("services.beforeAfterDescription")}
                 </p>
                 
-                <BeforeAfterGallery items={[
-                  {
-                    id: 1,
-                    type: "image",
-                    beforeImageUrl: "https://images.unsplash.com/photo-1474176857210-7287d38d27c6?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-                    afterImageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-                    descriptionTR: "Saç ekiminden 6 ay sonra belirgin değişim",
-                    descriptionEN: "Significant change 6 months after hair transplantation",
-                    descriptionRU: "Значительное изменение через 6 месяцев после трансплантации волос",
-                    descriptionKA: "მნიშვნელოვანი ცვლილება თმის გადანერგვიდან 6 თვის შემდეგ"
-                  },
-                  {
-                    id: 2,
-                    type: "image",
-                    beforeImageUrl: "https://images.unsplash.com/photo-1503443207922-dff7d543fd0e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-                    afterImageUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-                    descriptionTR: "Tepe kısmında yapılan saç ekimi sonuçları",
-                    descriptionEN: "Hair transplantation results on the crown area",
-                    descriptionRU: "Результаты пересадки волос в области макушки",
-                    descriptionKA: "თმის გადანერგვის შედეგები თხემის არეში"
-                  },
-                  {
-                    id: 3,
-                    type: "image",
-                    beforeImageUrl: "https://images.unsplash.com/photo-1583864697784-a0efc8379f70?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-                    afterImageUrl: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-                    descriptionTR: "Alın çizgisi ve saç ekimi - 1 yıl sonrası",
-                    descriptionEN: "Hairline and transplantation - 1 year after",
-                    descriptionRU: "Линия роста волос и трансплантация - 1 год спустя",
-                    descriptionKA: "თმის ხაზი და გადანერგვა - 1 წლის შემდეგ"
-                  }
-                ]} />
+                <BeforeAfterGallery 
+                  items={[
+                    {
+                      id: 1,
+                      type: "image",
+                      beforeImageUrl: "https://images.unsplash.com/photo-1474176857210-7287d38d27c6?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+                      afterImageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+                      descriptionTR: "Saç ekiminden 6 ay sonra belirgin değişim",
+                      descriptionEN: "Significant change 6 months after hair transplantation",
+                      descriptionRU: "Значительное изменение через 6 месяцев после трансплантации волос",
+                      descriptionKA: "მნიშვნელოვანი ცვლილება თმის გადანერგვიდან 6 თვის შემდეგ",
+                      category: "FUE"
+                    },
+                    {
+                      id: 2,
+                      type: "image",
+                      beforeImageUrl: "https://images.unsplash.com/photo-1503443207922-dff7d543fd0e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+                      afterImageUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+                      descriptionTR: "Tepe kısmında yapılan saç ekimi sonuçları",
+                      descriptionEN: "Hair transplantation results on the crown area",
+                      descriptionRU: "Результаты пересадки волос в области макушки",
+                      descriptionKA: "თმის გადანერგვის შედეგები თხემის არეში",
+                      category: "DHI"
+                    },
+                    {
+                      id: 3,
+                      type: "image",
+                      beforeImageUrl: "https://images.unsplash.com/photo-1583864697784-a0efc8379f70?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+                      afterImageUrl: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+                      descriptionTR: "Alın çizgisi ve saç ekimi - 1 yıl sonrası",
+                      descriptionEN: "Hairline and transplantation - 1 year after",
+                      descriptionRU: "Линия роста волос и трансплантация - 1 год спустя",
+                      descriptionKA: "თმის ხაზი და გადანერგვა - 1 წლის შემდეგ",
+                      category: "FUE"
+                    }
+                  ]} 
+                  title={getLocalizedTitle(service)}
+                />
               </div>
             )}
           </div>
