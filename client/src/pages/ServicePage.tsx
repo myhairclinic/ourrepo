@@ -144,6 +144,22 @@ export default function ServicePage() {
           case Language.Georgian: return service.candidateInfoKA || '';
           default: return service.candidateInfoEN || '';
         }
+      case 'postCare':
+        switch (language) {
+          case Language.Turkish: return service.postCareTR || '';
+          case Language.English: return service.postCareEN || '';
+          case Language.Russian: return service.postCareRU || '';
+          case Language.Georgian: return service.postCareKA || '';
+          default: return service.postCareEN || '';
+        }
+      case 'faqs':
+        switch (language) {
+          case Language.Turkish: return service.faqsTR || '';
+          case Language.English: return service.faqsEN || '';
+          case Language.Russian: return service.faqsRU || '';
+          case Language.Georgian: return service.faqsKA || '';
+          default: return service.faqsEN || '';
+        }
       case 'metaTitle':
         switch (language) {
           case Language.Turkish: return service.metaTitleTR || getLocalizedTitle(service);
@@ -177,6 +193,7 @@ export default function ServicePage() {
   const candidateInfoHeading = t("services.candidateInfo");
   const detailsHeading = t("services.details");
   const overviewHeading = t("services.overview");
+  const postCareHeading = t("services.postCare");
   const serviceFeatures = t("services.keyFeatures");
   const getDurationText = (duration: string) => `${duration} ${t("common.duration")}`;
   const getPriceText = (price: number | null) => (price ? `${price} €` : t("common.contactUs"));
