@@ -10,7 +10,10 @@ import {
   testimonials, Testimonial, InsertTestimonial,
   userReviews, UserReview, InsertUserReview,
   messages, Message, InsertMessage,
-  clinicInfo, ClinicInfo, UpdateClinicInfo
+  clinicInfo, ClinicInfo, UpdateClinicInfo,
+  chatSessions, ChatSession, InsertChatSession,
+  chatMessages, ChatMessage, InsertChatMessage,
+  chatOperators, ChatOperator, InsertChatOperator
 } from "@shared/schema";
 import session from "express-session";
 import createMemoryStore from "memorystore";
@@ -110,6 +113,29 @@ export interface IStorage {
   // Clinic Info operations
   getClinicInfo(): Promise<ClinicInfo | undefined>;
   updateClinicInfo(info: UpdateClinicInfo): Promise<ClinicInfo | undefined>;
+
+  // Chat Session operations
+  getChatSessions(): Promise<ChatSession[]>;
+  getChatSessionById(id: number): Promise<ChatSession | undefined>;
+  getChatSessionByVisitorId(visitorId: string): Promise<ChatSession | undefined>;
+  createChatSession(session: InsertChatSession): Promise<ChatSession>;
+  updateChatSession(id: number, sessionData: Partial<ChatSession>): Promise<ChatSession | undefined>;
+  deleteChatSession(id: number): Promise<boolean>;
+
+  // Chat Message operations
+  getChatMessagesBySessionId(sessionId: number): Promise<ChatMessage[]>;
+  getChatMessageById(id: number): Promise<ChatMessage | undefined>;
+  createChatMessage(message: InsertChatMessage): Promise<ChatMessage>;
+  markChatMessageAsRead(id: number): Promise<ChatMessage | undefined>;
+  deleteChatMessage(id: number): Promise<boolean>;
+
+  // Chat Operator operations
+  getChatOperators(): Promise<ChatOperator[]>;
+  getChatOperatorByUserId(userId: number): Promise<ChatOperator | undefined>;
+  getAvailableChatOperators(): Promise<ChatOperator[]>;
+  createChatOperator(operator: InsertChatOperator): Promise<ChatOperator>;
+  updateChatOperatorAvailability(userId: number, isAvailable: boolean): Promise<ChatOperator | undefined>;
+  deleteChatOperator(userId: number): Promise<boolean>;
 
   // Session store
   sessionStore: any;

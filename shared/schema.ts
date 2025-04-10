@@ -336,3 +336,66 @@ export type UpdateClinicInfo = z.infer<typeof updateClinicInfoSchema>;
 
 export type UserReview = typeof userReviews.$inferSelect;
 export type InsertUserReview = z.infer<typeof insertUserReviewSchema>;
+
+// Chat sessions
+export const chatSessions = pgTable("chat_sessions", {
+  id: serial("id").primaryKey(),
+  visitorId: text("visitor_id").notNull(),
+  visitorName: text("visitor_name"),
+  visitorEmail: text("visitor_email"),
+  status: text("status").notNull().default("active"), // active, closed
+  lastMessageAt: timestamp("last_message_at").notNull().defaultNow(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  isArchived: boolean("is_archived").notNull().default(false),
+  hasUnreadMessages: boolean("has_unread_messages").notNull().default(false),
+  metadata: jsonb("metadata"),
+});
+
+export const insertChatSessionSchema = createInsertSchema(chatSessions).omit({
+  id: true,
+  lastMessageAt: true,
+  createdAt: true,
+  isArchived: true,
+  status: true,
+});
+
+// Chat messages
+export const chatMessages = pgTable("chat_messages", {
+  id: serial("id").primaryKey(),
+  sessionId: integer("session_id").notNull(),
+  content: text("content").notNull(),
+  senderType: text("sender_type").notNull(), // visitor, operator, system
+  senderId: text("sender_id").notNull(),
+  timestamp: timestamp("timestamp").notNull().defaultNow(),
+  isRead: boolean("is_read").notNull().default(false),
+  attachmentUrl: text("attachment_url"),
+});
+
+export const insertChatMessageSchema = createInsertSchema(chatMessages).omit({
+  id: true,
+  timestamp: true,
+  isRead: true,
+});
+
+// Chat operators (admin users who can respond to chats)
+export const chatOperators = pgTable("chat_operators", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().unique(),
+  isAvailable: boolean("is_available").notNull().default(true),
+  lastActiveAt: timestamp("last_active_at").notNull().defaultNow(),
+});
+
+export const insertChatOperatorSchema = createInsertSchema(chatOperators).omit({
+  id: true,
+  lastActiveAt: true,
+});
+
+// Types for chat
+export type ChatSession = typeof chatSessions.$inferSelect;
+export type InsertChatSession = z.infer<typeof insertChatSessionSchema>;
+
+export type ChatMessage = typeof chatMessages.$inferSelect;
+export type InsertChatMessage = z.infer<typeof insertChatMessageSchema>;
+
+export type ChatOperator = typeof chatOperators.$inferSelect;
+export type InsertChatOperator = z.infer<typeof insertChatOperatorSchema>;
