@@ -454,9 +454,248 @@ export default function ServicePage() {
                   </TabsList>
                   
                   <TabsContent value="details" className="mt-8 animate-in fade-in-50 duration-500">
-                    <div className="prose prose-lg prose-headings:text-primary prose-h3:font-semibold prose-h2:border-b prose-h2:pb-2 prose-h2:border-gray-200 max-w-none mx-auto">
-                      {renderMarkdownLikeContent(detailedContent)}
-                    </div>
+                    {detailedContent ? (
+                      <div className="prose prose-lg prose-headings:text-primary prose-h3:font-semibold prose-h2:border-b prose-h2:pb-2 prose-h2:border-gray-200 max-w-none mx-auto">
+                        {renderMarkdownLikeContent(detailedContent)}
+                      </div>
+                    ) : (
+                      <div className="max-w-3xl mx-auto prose prose-lg">
+                        {service.slug === 'hair-transplantation' && (
+                          <>
+                            <h2 className="text-2xl font-bold mb-4">Saç Ekimi Detayları / Hair Transplantation Details</h2>
+                            <p>
+                              Saç ekimi, kalıcı saç kaybı yaşayan kişilere kendi saç foliküllerinin nakledilmesiyle gerçekleştirilen 
+                              etkili ve kalıcı bir çözüm sunar. FUE (Follicular Unit Extraction) ve DHI (Direct Hair Implantation) 
+                              tekniklerini kullanarak, doğal görünümlü ve kalıcı sonuçlar elde ediyoruz. / 
+                              Hair transplantation offers an effective and permanent solution for people experiencing permanent hair 
+                              loss by transplanting their own hair follicles. Using FUE (Follicular Unit Extraction) and DHI (Direct 
+                              Hair Implantation) techniques, we achieve natural-looking and permanent results.
+                            </p>
+                            <p>
+                              Kliniklerimizde kullanılan en son teknoloji ekipmanlar ve deneyimli ekibimizle, her hastamıza özel 
+                              olarak tasarlanmış saç çizgisi ve doğal görünümlü sonuçlar sunuyoruz. Saç ekimi seansında, donör 
+                              bölgeden alınan sağlıklı saç folikülleri, saç dökülmesi yaşanan alıcı bölgeye yerleştirilir. / 
+                              With the latest technology equipment used in our clinics and our experienced team, we offer a specially 
+                              designed hairline and natural-looking results for each of our patients. In a hair transplantation session, 
+                              healthy hair follicles taken from the donor area are placed in the recipient area experiencing hair loss.
+                            </p>
+                          </>
+                        )}
+
+                        {service.slug === 'eyebrow-transplantation' && (
+                          <>
+                            <h2 className="text-2xl font-bold mb-4">Kaş Ekimi Detayları / Eyebrow Transplantation Details</h2>
+                            <p>
+                              Kaş ekimi, seyrek veya şekilsiz kaşları olan kişilere kalıcı bir çözüm sunan özel bir saç nakli 
+                              prosedürüdür. Bu işlem, donör bölgeden (genellikle ense kısmı) alınan sağlıklı saç foliküllerinin 
+                              kaş bölgesine nakledilmesiyle gerçekleştirilir. / 
+                              Eyebrow transplantation is a special hair transplant procedure that offers a permanent solution for 
+                              people with sparse or shapeless eyebrows. This procedure is performed by transplanting healthy hair 
+                              follicles taken from the donor area (usually the nape area) to the eyebrow area.
+                            </p>
+                            <p>
+                              Kliniklerimizde, her hastanın yüz yapısına uygun, doğal ve zarif görünümlü kaşlar tasarlanır. 
+                              Profesyonel ekibimiz, doğal kaş büyüme açılarına uygun şekilde greftleri yerleştirerek estetik ve 
+                              doğal sonuçlar elde eder. / 
+                              In our clinics, natural and elegant-looking eyebrows suitable for each patient's facial structure are 
+                              designed. Our professional team achieves aesthetic and natural results by placing the grafts in 
+                              accordance with natural eyebrow growth angles.
+                            </p>
+                          </>
+                        )}
+
+                        {service.slug === 'beard-transplantation' && (
+                          <>
+                            <h2 className="text-2xl font-bold mb-4">Sakal Ekimi Detayları / Beard Transplantation Details</h2>
+                            <p>
+                              Sakal ekimi, seyrek veya düzensiz sakal büyümesi yaşayan erkekler için kalıcı bir çözüm sunan 
+                              özelleştirilmiş bir saç nakli prosedürüdür. Bu işlem, donör bölgeden alınan sağlıklı saç foliküllerinin 
+                              sakal bölgesindeki boş alanlara nakledilmesini içerir. / 
+                              Beard transplantation is a customized hair transplant procedure that offers a permanent solution for 
+                              men experiencing sparse or irregular beard growth. This procedure involves transplanting healthy hair 
+                              follicles from the donor area to empty areas in the beard region.
+                            </p>
+                            <p>
+                              Kliniklerimizde, her hastanın yüz yapısına ve şekline uygun doğal görünümlü sakal tasarımları yapılır. 
+                              Uzman ekibimiz, sakal kıllarının doğal çıkış açılarına uygun şekilde greftleri yerleştirir ve 
+                              böylece doğal ve dolgun bir görünüm elde edilir. / 
+                              In our clinics, natural-looking beard designs suitable for each patient's facial structure and shape 
+                              are created. Our expert team places the grafts in accordance with the natural exit angles of beard 
+                              hairs, thus achieving a natural and full appearance.
+                            </p>
+                          </>
+                        )}
+
+                        {service.slug === 'prp-treatment' && (
+                          <>
+                            <h2 className="text-2xl font-bold mb-4">PRP Tedavisi Detayları / PRP Treatment Details</h2>
+                            <p>
+                              PRP (Platelet Rich Plasma) tedavisi, kişinin kendi kanından elde edilen trombositten zengin 
+                              plazmanın saç derisine enjekte edildiği non-invazif bir işlemdir. Bu tedavi, saç dökülmesini 
+                              azaltmak ve saç büyümesini uyarmak için kullanılır. / 
+                              PRP (Platelet Rich Plasma) treatment is a non-invasive procedure in which platelet-rich plasma 
+                              obtained from the person's own blood is injected into the scalp. This treatment is used to 
+                              reduce hair loss and stimulate hair growth.
+                            </p>
+                            <p>
+                              Trombositler, içerdikleri büyüme faktörleri sayesinde saç foliküllerinin beslenmesini artırır, 
+                              doku yenilenmesini hızlandırır ve yeni hücre oluşumunu destekler. PRP tedavisi, tek başına 
+                              uygulanabildiği gibi saç ekimi sonrası iyileşme sürecini hızlandırmak için de kullanılabilir. / 
+                              Platelets increase the nutrition of hair follicles, accelerate tissue regeneration, and support 
+                              the formation of new cells thanks to the growth factors they contain. PRP treatment can be applied 
+                              alone or it can be used to accelerate the healing process after hair transplantation.
+                            </p>
+                          </>
+                        )}
+
+                        {service.slug === 'hair-mesotherapy' && (
+                          <>
+                            <h2 className="text-2xl font-bold mb-4">Saç Mezoterapisi Detayları / Hair Mesotherapy Details</h2>
+                            <p>
+                              Saç mezoterapisi, vitamin, mineral, amino asit ve antioksidanlardan oluşan özel bir karışımın 
+                              saç derisine doğrudan enjekte edildiği yenileyici bir tedavidir. Bu işlem, saç köklerini 
+                              besleyerek güçlendirir ve saç dökülmesini azaltmayı amaçlar. / 
+                              Hair mesotherapy is a rejuvenating treatment in which a special mixture of vitamins, minerals, 
+                              amino acids, and antioxidants is directly injected into the scalp. This procedure aims to 
+                              strengthen the hair roots by nourishing them and reduce hair loss.
+                            </p>
+                            <p>
+                              Mezoterapide kullanılan kokteyller, DHT (Dihidrotestosteron) blokerleri ve saç büyümesini 
+                              destekleyen bileşenler içerir. Bu tedavi, saç dökülmesinin erken evrelerinde etkili olup, 
+                              saçların daha gür ve sağlıklı görünmesini sağlar. Düzenli seanslarla kalıcı sonuçlar elde edilir. / 
+                              Cocktails used in mesotherapy contain DHT (Dihydrotestosterone) blockers and components that 
+                              support hair growth. This treatment is effective in the early stages of hair loss and makes 
+                              the hair look fuller and healthier. Permanent results are obtained with regular sessions.
+                            </p>
+                          </>
+                        )}
+
+                        {/* Hair Transplant Techniques Section for Hair Transplant Service */}
+                        {service.slug === 'hair-transplantation' && (
+                          <div className="mt-8 grid md:grid-cols-2 gap-6">
+                            <div className="bg-primary/5 rounded-xl p-6 border border-primary/10 relative overflow-hidden group">
+                              <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 -z-10 rounded-bl-full group-hover:scale-110 transition-transform"></div>
+                              <h3 className="text-xl font-semibold mb-2 text-primary">
+                                {t("services.fueTechnique")}
+                              </h3>
+                              <p className="text-muted-foreground">
+                                {t("services.fueDescription")}
+                              </p>
+                            </div>
+                            
+                            <div className="bg-primary/5 rounded-xl p-6 border border-primary/10 relative overflow-hidden group">
+                              <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 -z-10 rounded-bl-full group-hover:scale-110 transition-transform"></div>
+                              <h3 className="text-xl font-semibold mb-2 text-primary">
+                                {t("services.dhiTechnique")}
+                              </h3>
+                              <p className="text-muted-foreground">
+                                {t("services.dhiDescription")}
+                              </p>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Eyebrow Transplantation Techniques Section */}
+                        {service.slug === 'eyebrow-transplantation' && (
+                          <div className="mt-8 grid md:grid-cols-2 gap-6">
+                            <div className="bg-primary/5 rounded-xl p-6 border border-primary/10 relative overflow-hidden group">
+                              <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 -z-10 rounded-bl-full group-hover:scale-110 transition-transform"></div>
+                              <h3 className="text-xl font-semibold mb-2 text-primary">
+                                Mikro FUE Tekniği / Micro FUE Technique
+                              </h3>
+                              <p className="text-muted-foreground">
+                                Kaş ekiminde özel mikro FUE tekniği kullanılarak tek tek greftler toplanır ve yerleştirilir. Bu teknik minimum iz bırakarak maksimum doğal sonuç sağlar. / In eyebrow transplantation, individual grafts are collected and placed using a special micro FUE technique. This technique provides maximum natural results with minimal scarring.
+                              </p>
+                            </div>
+                            
+                            <div className="bg-primary/5 rounded-xl p-6 border border-primary/10 relative overflow-hidden group">
+                              <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 -z-10 rounded-bl-full group-hover:scale-110 transition-transform"></div>
+                              <h3 className="text-xl font-semibold mb-2 text-primary">
+                                Özel Tasarım / Custom Design
+                              </h3>
+                              <p className="text-muted-foreground">
+                                Her kaş ekimi öncesinde, uzman estetisyen yüz hatlarınıza en uygun kaş tasarımını çizer ve onayınızı alır. Böylece tamamen kişiye özel sonuçlar elde edilir. / Before each eyebrow transplantation, an expert aesthetician draws the most suitable eyebrow design for your facial features and gets your approval. This ensures completely personalized results.
+                              </p>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Beard Transplantation Techniques Section */}
+                        {service.slug === 'beard-transplantation' && (
+                          <div className="mt-8 grid md:grid-cols-2 gap-6">
+                            <div className="bg-primary/5 rounded-xl p-6 border border-primary/10 relative overflow-hidden group">
+                              <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 -z-10 rounded-bl-full group-hover:scale-110 transition-transform"></div>
+                              <h3 className="text-xl font-semibold mb-2 text-primary">
+                                Hassas FUE Tekniği / Precise FUE Technique
+                              </h3>
+                              <p className="text-muted-foreground">
+                                Sakal ekiminde özel hassasiyet gerektiren FUE tekniği kullanılarak greftler toplanır ve yüz hatlarına en uygun açılarda yerleştirilir. / In beard transplantation, grafts are collected using a FUE technique that requires special precision and placed at the most suitable angles for facial features.
+                              </p>
+                            </div>
+                            
+                            <div className="bg-primary/5 rounded-xl p-6 border border-primary/10 relative overflow-hidden group">
+                              <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 -z-10 rounded-bl-full group-hover:scale-110 transition-transform"></div>
+                              <h3 className="text-xl font-semibold mb-2 text-primary">
+                                Doğal Görünüm / Natural Look
+                              </h3>
+                              <p className="text-muted-foreground">
+                                Sakal ekimi, yüz hatlarınıza uygun, simetrik ve doğal görünümlü bir sakal elde etmenizi sağlar. Uzmanlarımız, kişiye özel sakal tasarımı ile istediğiniz görünümü elde etmenize yardımcı olur. / Beard transplantation allows you to achieve a beard that suits your facial features, symmetrical and natural-looking. Our experts help you achieve the look you want with personalized beard design.
+                              </p>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* PRP Treatment Techniques Section */}
+                        {service.slug === 'prp-treatment' && (
+                          <div className="mt-8 grid md:grid-cols-2 gap-6">
+                            <div className="bg-primary/5 rounded-xl p-6 border border-primary/10 relative overflow-hidden group">
+                              <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 -z-10 rounded-bl-full group-hover:scale-110 transition-transform"></div>
+                              <h3 className="text-xl font-semibold mb-2 text-primary">
+                                Trombositten Zengin Plazma / Platelet-Rich Plasma
+                              </h3>
+                              <p className="text-muted-foreground">
+                                PRP tedavisi, hastanın kendi kanından elde edilen trombositten zengin plazmayı kullanarak saç köklerini besler ve uyarır. Bu doğal yöntem, saç dökülmesini azaltır ve saç büyümesini teşvik eder. / PRP treatment nourishes and stimulates hair follicles using platelet-rich plasma obtained from the patient's own blood. This natural method reduces hair loss and promotes hair growth.
+                              </p>
+                            </div>
+                            
+                            <div className="bg-primary/5 rounded-xl p-6 border border-primary/10 relative overflow-hidden group">
+                              <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 -z-10 rounded-bl-full group-hover:scale-110 transition-transform"></div>
+                              <h3 className="text-xl font-semibold mb-2 text-primary">
+                                Büyüme Faktörleri / Growth Factors
+                              </h3>
+                              <p className="text-muted-foreground">
+                                PRP içinde bulunan büyüme faktörleri, saç köklerinin beslenmesini artırır, dokuların iyileşmesini hızlandırır ve yeni hücrelerin oluşumunu destekler. Bu sayede saç kalitesi ve miktarı zaman içinde iyileşir. / Growth factors in PRP increase the nutrition of hair follicles, accelerate tissue healing, and support the formation of new cells. This improves hair quality and quantity over time.
+                              </p>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Hair Mesotherapy Techniques Section */}
+                        {service.slug === 'hair-mesotherapy' && (
+                          <div className="mt-8 grid md:grid-cols-2 gap-6">
+                            <div className="bg-primary/5 rounded-xl p-6 border border-primary/10 relative overflow-hidden group">
+                              <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 -z-10 rounded-bl-full group-hover:scale-110 transition-transform"></div>
+                              <h3 className="text-xl font-semibold mb-2 text-primary">
+                                Vitamin Kokteylli / Vitamin Cocktail
+                              </h3>
+                              <p className="text-muted-foreground">
+                                Saç mezoterapisi, vitamin, mineral, amino asit ve antioksidanlardan oluşan özel bir kokteylin saç derisine enjekte edilmesiyle uygulanır. Bu kokteyller, saç foliküllerinin ihtiyaç duyduğu besinleri doğrudan sağlar. / Hair mesotherapy is applied by injecting a special cocktail of vitamins, minerals, amino acids, and antioxidants into the scalp. These cocktails directly provide the nutrients that hair follicles need.
+                              </p>
+                            </div>
+                            
+                            <div className="bg-primary/5 rounded-xl p-6 border border-primary/10 relative overflow-hidden group">
+                              <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 -z-10 rounded-bl-full group-hover:scale-110 transition-transform"></div>
+                              <h3 className="text-xl font-semibold mb-2 text-primary">
+                                Mikro İğneler / Micro Needles
+                              </h3>
+                              <p className="text-muted-foreground">
+                                Saç mezoterapisinde kullanılan mikro iğneler, vitamin kokteylinin saç kökleri seviyesine kadar etkili bir şekilde ulaşmasını sağlar. Bu işlem minimal rahatsızlıkla gerçekleştirilir ve hızlı bir iyileşme süreci sunar. / Micro needles used in hair mesotherapy ensure that the vitamin cocktail effectively reaches to the level of hair roots. This procedure is performed with minimal discomfort and offers a quick recovery process.
+                              </p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </TabsContent>
                   
                   {procedureSteps && (
