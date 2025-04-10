@@ -79,12 +79,12 @@ export default function BlogManager() {
   const [activeTab, setActiveTab] = useState("content");
   
   // Get all blog posts
-  const { data: blogPosts = [], isLoading } = useQuery({
+  const { data: blogPosts = [], isLoading } = useQuery<BlogPost[]>({
     queryKey: [API_ROUTES.BLOG],
   });
   
   // Filter blog posts based on search term
-  const filteredPosts = blogPosts.filter((post: BlogPost) => {
+  const filteredPosts = blogPosts.filter((post) => {
     const searchLower = searchTerm.toLowerCase();
     return (
       post.titleTR.toLowerCase().includes(searchLower) ||
@@ -288,13 +288,13 @@ export default function BlogManager() {
   }
   
   // Format date for display
-  function formatDate(dateString: string) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('tr-TR', { 
+  function formatDate(date: Date | string) {
+    const dateObj = date instanceof Date ? date : new Date(date);
+    return dateObj.toLocaleDateString('tr-TR', { 
       year: 'numeric', 
       month: 'long', 
       day: 'numeric'
-    }) + ' ' + date.toLocaleTimeString('tr-TR', {
+    }) + ' ' + dateObj.toLocaleTimeString('tr-TR', {
       hour: '2-digit',
       minute: '2-digit'
     });
