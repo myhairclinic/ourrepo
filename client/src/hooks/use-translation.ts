@@ -5,26 +5,42 @@ import { Language } from "@shared/types";
 export function useTranslation() {
   const { language } = useLanguage();
   
-  // Create a translation function bound to the current language
-  const t = (key: string | { TR: string; EN: string; RU: string; KA: string; }) => {
-    if (typeof key === "string") {
-      return getTranslation(key, language);
-    } else {
-      // Map the object to the current language
-      switch (language) {
-        case Language.Turkish:
-          return key.TR;
-        case Language.English:
-          return key.EN;
-        case Language.Russian:
-          return key.RU;
-        case Language.Georgian:
-          return key.KA;
-        default:
-          return key.TR;
-      }
-    }
+  // Translation function that uses the improved getTranslation function
+  // which can handle both string keys and direct language objects
+  const t = (key: string | Record<Language, string>, replacements?: Record<string, string | number>) => {
+    return getTranslation(key, language, replacements);
   };
   
-  return { t, language };
+  // Format currency value for the current language
+  const formatCurrency = (value: number) => {
+    const formatter = new Intl.NumberFormat(
+      language === Language.Turkish ? 'tr-TR' : 
+      language === Language.English ? 'en-US' : 
+      language === Language.Russian ? 'ru-RU' : 'ka-GE', 
+      {
+        style: 'currency',
+        currency: 'USD'
+      }
+    );
+    
+    return formatter.format(value);
+  };
+  
+  // Format date for the current language
+  const formatDate = (date: Date | string) => {
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
+    
+    return dateObj.toLocaleDateString(
+      language === Language.Turkish ? 'tr-TR' : 
+      language === Language.English ? 'en-US' : 
+      language === Language.Russian ? 'ru-RU' : 'ka-GE'
+    );
+  };
+  
+  return { 
+    t, 
+    language,
+    formatCurrency,
+    formatDate
+  };
 }

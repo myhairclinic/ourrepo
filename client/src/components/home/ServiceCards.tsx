@@ -78,7 +78,7 @@ function ServiceCard({
         {/* Profesyonel rozet */}
         <div className="absolute top-4 right-4 z-20">
           <Badge className={`border-0 shadow-lg ${isHovered ? 'bg-primary text-white' : 'bg-white/90 text-primary'} transition-all duration-300 py-1.5 px-3 font-medium`}>
-            {t("services.popular")}
+            {t("services.popular.label")}
           </Badge>
         </div>
         
