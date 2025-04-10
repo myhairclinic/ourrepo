@@ -440,6 +440,84 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Запишитесь на бесплатную консультацию",
     [Language.Georgian]: "დანიშნეთ უფასო კონსულტაცია"
   },
+  "reviews.title": {
+    [Language.Turkish]: "Hasta Yorumları ve Değerlendirmeleri",
+    [Language.English]: "Patient Reviews and Testimonials",
+    [Language.Russian]: "Отзывы и рекомендации пациентов",
+    [Language.Georgian]: "პაციენტების მიმოხილვები და რეკომენდაციები"
+  },
+  "reviews.subtitle": {
+    [Language.Turkish]: "Gerçek hastalarımızın tecrübeleri ve başarı hikayeleri",
+    [Language.English]: "Real experiences and success stories from our patients",
+    [Language.Russian]: "Реальные истории успеха и опыт наших пациентов",
+    [Language.Georgian]: "რეალური გამოცდილება და წარმატების ისტორიები ჩვენი პაციენტებისგან"
+  },
+  "reviews.verifiedCustomer": {
+    [Language.Turkish]: "Doğrulanmış Hasta",
+    [Language.English]: "Verified Patient",
+    [Language.Russian]: "Проверенный пациент",
+    [Language.Georgian]: "დადასტურებული პაციენტი"
+  },
+  "reviews.satisfactionGuarantee": {
+    [Language.Turkish]: "%100 Memnuniyet Garantisi",
+    [Language.English]: "100% Satisfaction Guarantee",
+    [Language.Russian]: "100% гарантия удовлетворения",
+    [Language.Georgian]: "100% კმაყოფილების გარანტია"
+  },
+  "reviews.overview": {
+    [Language.Turkish]: "Değerlendirme Özeti",
+    [Language.English]: "Ratings Overview",
+    [Language.Russian]: "Обзор рейтингов",
+    [Language.Georgian]: "შეფასებების მიმოხილვა"
+  },
+  "reviews.byCategory": {
+    [Language.Turkish]: "Kategoriye Göre Değerlendirmeler",
+    [Language.English]: "Ratings by Category",
+    [Language.Russian]: "Рейтинги по категориям",
+    [Language.Georgian]: "შეფასებები კატეგორიის მიხედვით"
+  },
+  "reviews.experienceRating": {
+    [Language.Turkish]: "Genel Deneyim",
+    [Language.English]: "Overall Experience",
+    [Language.Russian]: "Общий опыт",
+    [Language.Georgian]: "საერთო გამოცდილება"
+  },
+  "reviews.staffRating": {
+    [Language.Turkish]: "Personel Kalitesi",
+    [Language.English]: "Staff Quality",
+    [Language.Russian]: "Качество персонала",
+    [Language.Georgian]: "პერსონალის ხარისხი"
+  },
+  "reviews.facilityRating": {
+    [Language.Turkish]: "Tesis Kalitesi",
+    [Language.English]: "Facility Quality",
+    [Language.Russian]: "Качество учреждения",
+    [Language.Georgian]: "დაწესებულების ხარისხი"
+  },
+  "reviews.resultRating": {
+    [Language.Turkish]: "Sonuçlar",
+    [Language.English]: "Results",
+    [Language.Russian]: "Результаты",
+    [Language.Georgian]: "შედეგები"
+  },
+  "reviews.valueRating": {
+    [Language.Turkish]: "Fiyat/Fayda",
+    [Language.English]: "Value for Money",
+    [Language.Russian]: "Соотношение цены и качества",
+    [Language.Georgian]: "ფასი/ხარისხის შეფარდება"
+  },
+  "reviews.recentlyAdded": {
+    [Language.Turkish]: "Yeni Eklenen Yorumlar",
+    [Language.English]: "Recently Added Reviews",
+    [Language.Russian]: "Недавно добавленные отзывы",
+    [Language.Georgian]: "ახლახან დამატებული მიმოხილვები"
+  },
+  "reviews.basedOn": {
+    [Language.Turkish]: "Toplam",
+    [Language.English]: "Based on",
+    [Language.Russian]: "На основе",
+    [Language.Georgian]: "დაფუძნებული"
+  },
   "services.beforeAfterDescription": {
     [Language.Turkish]: "Gerçek hastalarımızın saç ekimi öncesi ve sonrası dönüşümlerini görün",
     [Language.English]: "See the before and after transformations of our real patients",
