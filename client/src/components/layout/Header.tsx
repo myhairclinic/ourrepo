@@ -38,6 +38,9 @@ export default function Header() {
             <Link href={`/${language}/blog`} className="text-neutral-700 hover:text-primary">
               Blog
             </Link>
+            <Link href={`/${language}/social-media`} className="text-neutral-700 hover:text-primary">
+              Sosyal Medya
+            </Link>
             <Link href={`/${language}/about`} className="text-neutral-700 hover:text-primary">
               Hakkımızda
             </Link>
@@ -108,6 +111,9 @@ export default function Header() {
               </Link>
               <Link href={`/${language}/blog`} className="text-neutral-700 py-2 border-b">
                 Blog
+              </Link>
+              <Link href={`/${language}/social-media`} className="text-neutral-700 py-2 border-b">
+                Sosyal Medya
               </Link>
               <Link href={`/${language}/about`} className="text-neutral-700 py-2 border-b">
                 Hakkımızda
