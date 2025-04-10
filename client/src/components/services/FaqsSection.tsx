@@ -18,7 +18,7 @@ interface FaqsSectionProps {
 }
 
 export default function FaqsSection({ serviceId }: FaqsSectionProps) {
-  const { language, getTranslation } = useLanguage();
+  const { language } = useLanguage();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
 
   // Fetch FAQs related to the specific service (if serviceId is provided) or general FAQs (if no serviceId)
@@ -55,20 +55,20 @@ export default function FaqsSection({ serviceId }: FaqsSectionProps) {
   // Get the question and answer in the current language
   const getQuestion = (faq: any) => {
     switch (language) {
-      case 'TR': return faq.questionTR;
-      case 'EN': return faq.questionEN;
-      case 'RU': return faq.questionRU;
-      case 'KA': return faq.questionKA;
+      case Language.Turkish: return faq.questionTR;
+      case Language.English: return faq.questionEN;
+      case Language.Russian: return faq.questionRU;
+      case Language.Georgian: return faq.questionKA;
       default: return faq.questionEN;
     }
   };
 
   const getAnswer = (faq: any) => {
     switch (language) {
-      case 'TR': return faq.answerTR;
-      case 'EN': return faq.answerEN;
-      case 'RU': return faq.answerRU;
-      case 'KA': return faq.answerKA;
+      case Language.Turkish: return faq.answerTR;
+      case Language.English: return faq.answerEN;
+      case Language.Russian: return faq.answerRU;
+      case Language.Georgian: return faq.answerKA;
       default: return faq.answerEN;
     }
   };
@@ -98,7 +98,10 @@ export default function FaqsSection({ serviceId }: FaqsSectionProps) {
   return (
     <section className="py-12 px-4 bg-muted/30">
       <div className="container mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-10">{getTranslation(sectionTitle)}</h2>
+        <h2 className="text-3xl font-bold text-center mb-10">{language === Language.Turkish ? sectionTitle.TR : 
+          language === Language.English ? sectionTitle.EN : 
+          language === Language.Russian ? sectionTitle.RU : 
+          sectionTitle.KA}</h2>
         
         <div className="max-w-3xl mx-auto">
           <Accordion type="multiple" value={expandedItems} className="space-y-4">
