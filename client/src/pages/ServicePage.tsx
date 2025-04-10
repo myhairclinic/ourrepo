@@ -10,6 +10,7 @@ import { Link } from "wouter";
 import { getTranslation, useTranslation } from "@/lib/translations";
 import { META } from "@/lib/constants";
 import { Language } from "@shared/types";
+import { ReviewsSection } from "@/components/services/ReviewsSection";
 
 export default function ServicePage() {
   const { language, currentLanguage, addPrefix } = useLanguage();
@@ -131,11 +132,13 @@ export default function ServicePage() {
             </div>
           </div>
 
-          {/* Additional Content - Future expansion */}
+          {/* Additional Content */}
           <div className="mt-20">
+            {/* Customer Reviews Section */}
+            <ReviewsSection serviceId={service.id} />
+            
             {/* FAQs related to this service would go here */}
             {/* Before/After gallery for this service would go here */}
-            {/* Testimonials related to this service would go here */}
           </div>
         </div>
       </main>
