@@ -1,91 +1,82 @@
-import { createContext, useState, ReactNode, useEffect } from "react";
-import { useLocation } from "wouter";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { User } from "@shared/schema";
-import { apiRequest, queryClient } from "@/lib/queryClient";
-import { ADMIN_PATHS } from "@/lib/constants";
+import { createContext, ReactNode, useState, useEffect } from "react";
+import { apiRequest } from "@/lib/queryClient";
 
-interface AdminContextType {
-  isAuthenticated: boolean;
-  user: User | null;
+// Admin kullanıcı tipi
+type AdminUser = {
+  id: number;
+  username: string;
+  role: string;
+};
+
+// Admin context için tip
+type AdminContextType = {
+  user: AdminUser | null;
   isLoading: boolean;
-  login: (username: string, password: string) => Promise<User>;
+  login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  error: Error | null;
-}
+};
 
+// Admin context oluşturma
 export const AdminContext = createContext<AdminContextType | null>(null);
 
+// Admin Provider bileşeni
 export function AdminProvider({ children }: { children: ReactNode }) {
-  const [, setLocation] = useLocation();
-  const [error, setError] = useState<Error | null>(null);
-  
-  const { 
-    data: user = null,
-    isLoading,
-    error: fetchError,
-  } = useQuery<User | null>({
-    queryKey: ["/api/user"],
-    retry: false,
-  });
-  
+  const [user, setUser] = useState<AdminUser | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    if (fetchError) {
-      setError(fetchError as Error);
-    }
-  }, [fetchError]);
-  
-  const loginMutation = useMutation({
-    mutationFn: async (credentials: { username: string; password: string }) => {
-      const response = await apiRequest("POST", "/api/login", credentials);
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText || "Login failed");
+    // Admin kullanıcı bilgilerini kontrol et
+    const checkUser = async () => {
+      try {
+        const response = await apiRequest("GET", "/api/admin/user");
+        if (response.ok) {
+          const userData = await response.json();
+          setUser(userData);
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+        setUser(null);
+      } finally {
+        setIsLoading(false);
       }
-      return await response.json();
-    },
-    onSuccess: (data: User) => {
-      queryClient.setQueryData(["/api/user"], data);
-      setError(null);
-      setLocation(ADMIN_PATHS.DASHBOARD);
-    },
-    onError: (error: Error) => {
-      setError(error);
-    },
-  });
-  
-  const logoutMutation = useMutation({
-    mutationFn: async () => {
-      await apiRequest("POST", "/api/logout");
-    },
-    onSuccess: () => {
-      queryClient.setQueryData(["/api/user"], null);
-      setLocation(ADMIN_PATHS.LOGIN);
-    },
-    onError: (error: Error) => {
-      setError(error);
-    },
-  });
-  
+    };
+
+    checkUser();
+  }, []);
+
+  // Giriş fonksiyonu
   const login = async (username: string, password: string) => {
-    return loginMutation.mutateAsync({ username, password });
+    setIsLoading(true);
+    
+    try {
+      const response = await apiRequest("POST", "/api/admin/login", { username, password });
+      
+      if (!response.ok) {
+        throw new Error("Giriş yapılamadı");
+      }
+      
+      const userData = await response.json();
+      setUser(userData);
+    } finally {
+      setIsLoading(false);
+    }
   };
-  
+
+  // Çıkış fonksiyonu
   const logout = async () => {
-    await logoutMutation.mutateAsync();
+    setIsLoading(true);
+    
+    try {
+      await apiRequest("POST", "/api/admin/logout");
+      setUser(null);
+    } finally {
+      setIsLoading(false);
+    }
   };
-  
+
   return (
-    <AdminContext.Provider
-      value={{
-        isAuthenticated: !!user,
-        user,
-        isLoading,
-        login,
-        logout,
-        error,
-      }}
-    >
+    <AdminContext.Provider value={{ user, isLoading, login, logout }}>
       {children}
     </AdminContext.Provider>
   );

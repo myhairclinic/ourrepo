@@ -1,106 +1,88 @@
 import { useState } from "react";
-import { useLocation } from "wouter";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
-import { useToast } from "@/hooks/use-toast";
 import { useAdmin } from "@/hooks/use-admin";
-
-// Login form schema
-const loginFormSchema = z.object({
-  username: z.string().min(1, "Username is required"),
-  password: z.string().min(1, "Password is required"),
-});
-
-type LoginFormData = z.infer<typeof loginFormSchema>;
+import { useLocation } from "wouter";
 
 export default function AdminLoginPage() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const { login } = useAdmin();
   const [, setLocation] = useLocation();
-  const { toast } = useToast();
-  const { user, isLoading } = useAdmin();
   
-  // Redirect if already logged in
-  if (!isLoading && user) {
-    setLocation("/admin/dashboard");
-    return null;
-  }
-  
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
-    resolver: zodResolver(loginFormSchema),
-    defaultValues: {
-      username: "",
-      password: "",
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!username || !password) {
+      setError("Lütfen kullanıcı adı ve şifre giriniz");
+      return;
     }
-  });
-  
-  const loginMutation = useMutation({
-    mutationFn: async (data: LoginFormData) => {
-      const res = await apiRequest("POST", "/api/login", data);
-      return await res.json();
-    },
-    onSuccess: () => {
-      toast({
-        title: "Login successful",
-        description: "You have been logged in successfully",
-        variant: "default",
-      });
+    
+    setIsLoading(true);
+    setError("");
+    
+    try {
+      await login(username, password);
       setLocation("/admin/dashboard");
-    },
-    onError: (error) => {
-      toast({
-        title: "Login failed",
-        description: error.message || "Invalid username or password",
-        variant: "destructive",
-      });
+    } catch (err) {
+      setError("Kullanıcı adı veya şifre hatalı");
+    } finally {
+      setIsLoading(false);
     }
-  });
-  
-  const onSubmit = (data: LoginFormData) => {
-    loginMutation.mutate(data);
   };
   
   return (
     <div className="min-h-screen flex items-center justify-center bg-neutral-100">
-      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-center mb-6">Admin Login</h1>
+      <div className="max-w-md w-full p-8 bg-white rounded-lg shadow-md">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-primary">MyHair Clinic</h1>
+          <p className="text-neutral-600 mt-2">Admin Panel</p>
+        </div>
         
-        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <label className="block text-sm font-medium text-neutral-600 mb-1" htmlFor="username">
-              Username
+        <form onSubmit={handleSubmit}>
+          {error && (
+            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">
+              {error}
+            </div>
+          )}
+          
+          <div className="mb-4">
+            <label htmlFor="username" className="block text-neutral-700 mb-2">
+              Kullanıcı Adı
             </label>
-            <input 
-              type="text" 
-              id="username" 
-              className={`w-full rounded-md border ${errors.username ? 'border-red-500' : 'border-neutral-300'} px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary`}
-              placeholder="Enter your username"
-              {...register("username")}
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full p-3 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              placeholder="Kullanıcı adınız"
+              disabled={isLoading}
             />
-            {errors.username && <p className="text-red-500 text-xs mt-1">{errors.username.message}</p>}
           </div>
           
-          <div>
-            <label className="block text-sm font-medium text-neutral-600 mb-1" htmlFor="password">
-              Password
+          <div className="mb-6">
+            <label htmlFor="password" className="block text-neutral-700 mb-2">
+              Şifre
             </label>
-            <input 
-              type="password" 
-              id="password" 
-              className={`w-full rounded-md border ${errors.password ? 'border-red-500' : 'border-neutral-300'} px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary`}
-              placeholder="Enter your password"
-              {...register("password")}
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-3 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              placeholder="Şifreniz"
+              disabled={isLoading}
             />
-            {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
           </div>
           
-          <button 
-            type="submit" 
-            className="w-full bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-md transition duration-200"
-            disabled={loginMutation.isPending}
+          <button
+            type="submit"
+            className="w-full py-3 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            disabled={isLoading}
           >
-            {loginMutation.isPending ? "Logging in..." : "Login"}
+            {isLoading ? "Giriş Yapılıyor..." : "Giriş Yap"}
           </button>
         </form>
       </div>

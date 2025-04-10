@@ -4,14 +4,14 @@ import { useAdmin } from "@/hooks/use-admin";
 import { ADMIN_PATHS } from "@/lib/constants";
 
 export default function AdminDashboard() {
-  const { user, isAuthenticated } = useAdmin();
+  const { user } = useAdmin();
   const [, setLocation] = useLocation();
   
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!user) {
       setLocation(ADMIN_PATHS.LOGIN);
     }
-  }, [isAuthenticated, setLocation]);
+  }, [user, setLocation]);
   
   if (!user) {
     return null;

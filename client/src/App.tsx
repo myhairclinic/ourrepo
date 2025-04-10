@@ -2,7 +2,7 @@ import { Switch, Route, useLocation } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
-import { useLanguage } from "@/hooks/use-language";
+// import { useLanguage } from "@/hooks/use-language";
 import { useEffect } from "react";
 
 // Layout components
@@ -56,8 +56,6 @@ function ProtectedAdminRoute({ component: Component }: { component: React.Compon
 }
 
 function Router() {
-  const { language } = useLanguage();
-  
   return (
     <Switch>
       {/* Admin routes */}
@@ -106,13 +104,13 @@ function App() {
   const isAdminRoute = pathname.startsWith("/admin");
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <>
       {!isAdminRoute && <Header />}
       <Router />
       {!isAdminRoute && <Footer />}
       {!isAdminRoute && <WhatsAppButton />}
       <Toaster />
-    </QueryClientProvider>
+    </>
   );
 }
 
