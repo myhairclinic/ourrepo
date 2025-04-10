@@ -319,9 +319,15 @@ export class MemStorage implements IStorage {
     const existingService = this.services.get(id);
     if (!existingService) return undefined;
 
+    // Ensure we maintain the duration property if it's not provided in the update
+    const serviceWithDuration = {
+      ...service,
+      duration: service.duration || existingService.duration
+    };
+
     const updatedService: Service = {
       ...existingService,
-      ...service,
+      ...serviceWithDuration,
       updatedAt: new Date()
     };
     this.services.set(id, updatedService);
