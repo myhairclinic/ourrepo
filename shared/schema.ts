@@ -234,6 +234,25 @@ export const insertTestimonialSchema = createInsertSchema(testimonials).omit({
   createdAt: true,
 });
 
+// User Reviews
+export const userReviews = pgTable("user_reviews", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  serviceId: integer("service_id"),
+  rating: integer("rating").notNull().default(5),
+  comment: text("comment").notNull(),
+  isApproved: boolean("is_approved").notNull().default(false),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  language: text("language").notNull().default("tr"), // tr, en, ru, ka
+});
+
+export const insertUserReviewSchema = createInsertSchema(userReviews).omit({
+  id: true,
+  isApproved: true,
+  createdAt: true,
+});
+
 // Messages/Contact form submissions
 export const messages = pgTable("messages", {
   id: serial("id").primaryKey(),
@@ -314,3 +333,6 @@ export type InsertMessage = z.infer<typeof insertMessageSchema>;
 
 export type ClinicInfo = typeof clinicInfo.$inferSelect;
 export type UpdateClinicInfo = z.infer<typeof updateClinicInfoSchema>;
+
+export type UserReview = typeof userReviews.$inferSelect;
+export type InsertUserReview = z.infer<typeof insertUserReviewSchema>;

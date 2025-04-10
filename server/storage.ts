@@ -8,6 +8,7 @@ import {
   packages, Package, InsertPackage,
   appointments, Appointment, InsertAppointment,
   testimonials, Testimonial, InsertTestimonial,
+  userReviews, UserReview, InsertUserReview,
   messages, Message, InsertMessage,
   clinicInfo, ClinicInfo, UpdateClinicInfo
 } from "@shared/schema";
@@ -90,6 +91,15 @@ export interface IStorage {
   updateTestimonial(id: number, testimonial: Partial<InsertTestimonial>): Promise<Testimonial | undefined>;
   deleteTestimonial(id: number): Promise<boolean>;
 
+  // User Review operations
+  getUserReviews(): Promise<UserReview[]>;
+  getUserReviewById(id: number): Promise<UserReview | undefined>;
+  getUserReviewsByServiceId(serviceId: number): Promise<UserReview[]>;
+  getApprovedUserReviews(): Promise<UserReview[]>;
+  createUserReview(review: InsertUserReview): Promise<UserReview>;
+  updateUserReviewApproval(id: number, isApproved: boolean): Promise<UserReview | undefined>;
+  deleteUserReview(id: number): Promise<boolean>;
+
   // Message operations
   getMessages(): Promise<Message[]>;
   getMessageById(id: number): Promise<Message | undefined>;
@@ -115,6 +125,7 @@ export class MemStorage implements IStorage {
   private packages: Map<number, Package>;
   private appointments: Map<number, Appointment>;
   private testimonials: Map<number, Testimonial>;
+  private userReviews: Map<number, UserReview>;
   private messages: Map<number, Message>;
   private clinicInfo: ClinicInfo | undefined;
   
@@ -127,6 +138,7 @@ export class MemStorage implements IStorage {
   private currentPackageId: number;
   private currentAppointmentId: number;
   private currentTestimonialId: number;
+  private currentUserReviewId: number;
   private currentMessageId: number;
   
   sessionStore: any;
@@ -141,6 +153,7 @@ export class MemStorage implements IStorage {
     this.packages = new Map();
     this.appointments = new Map();
     this.testimonials = new Map();
+    this.userReviews = new Map();
     this.messages = new Map();
 
     this.currentUserId = 1;
@@ -152,6 +165,7 @@ export class MemStorage implements IStorage {
     this.currentPackageId = 1;
     this.currentAppointmentId = 1;
     this.currentTestimonialId = 1;
+    this.currentUserReviewId = 1;
     this.currentMessageId = 1;
 
     this.sessionStore = new MemoryStore({
@@ -556,6 +570,55 @@ export class MemStorage implements IStorage {
 
   async deleteTestimonial(id: number): Promise<boolean> {
     return this.testimonials.delete(id);
+  }
+  
+  // User Review operations
+  async getUserReviews(): Promise<UserReview[]> {
+    return Array.from(this.userReviews.values()).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  }
+
+  async getUserReviewById(id: number): Promise<UserReview | undefined> {
+    return this.userReviews.get(id);
+  }
+
+  async getUserReviewsByServiceId(serviceId: number): Promise<UserReview[]> {
+    return Array.from(this.userReviews.values())
+      .filter(review => review.serviceId === serviceId)
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  }
+
+  async getApprovedUserReviews(): Promise<UserReview[]> {
+    return Array.from(this.userReviews.values())
+      .filter(review => review.isApproved)
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  }
+
+  async createUserReview(review: InsertUserReview): Promise<UserReview> {
+    const id = this.currentUserReviewId++;
+    const newReview: UserReview = {
+      ...review,
+      id,
+      isApproved: false,
+      createdAt: new Date()
+    };
+    this.userReviews.set(id, newReview);
+    return newReview;
+  }
+
+  async updateUserReviewApproval(id: number, isApproved: boolean): Promise<UserReview | undefined> {
+    const existingReview = this.userReviews.get(id);
+    if (!existingReview) return undefined;
+
+    const updatedReview: UserReview = {
+      ...existingReview,
+      isApproved
+    };
+    this.userReviews.set(id, updatedReview);
+    return updatedReview;
+  }
+
+  async deleteUserReview(id: number): Promise<boolean> {
+    return this.userReviews.delete(id);
   }
 
   // Message operations
