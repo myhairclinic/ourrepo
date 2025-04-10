@@ -7,8 +7,10 @@ import { z } from "zod";
 export const getServices = async (req: Request, res: Response) => {
   try {
     const services = await storage.getServices();
+    console.log("Services fetched:", services);
     res.json(services);
   } catch (error) {
+    console.error("Error fetching services:", error);
     res.status(500).json({ message: "Failed to fetch services" });
   }
 };
