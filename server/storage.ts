@@ -77,6 +77,9 @@ export interface IStorage {
   // Package operations
   getPackages(): Promise<Package[]>;
   getPackageById(id: number): Promise<Package | undefined>;
+  getPackageBySlug(slug: string): Promise<Package | undefined>;
+  getPackagesByCountry(countryCode: string): Promise<Package[]>;
+  getFeaturedPackages(): Promise<Package[]>;
   createPackage(pkg: InsertPackage): Promise<Package>;
   updatePackage(id: number, pkg: Partial<InsertPackage>): Promise<Package | undefined>;
   deletePackage(id: number): Promise<boolean>;
@@ -524,20 +527,22 @@ export class MemStorage implements IStorage {
   async getPackageById(id: number): Promise<Package | undefined> {
     return this.packages.get(id);
   }
-
+  
   async getPackageBySlug(slug: string): Promise<Package | undefined> {
-    return Array.from(this.packages.values()).find(p => p.slug === slug);
+    return Array.from(this.packages.values()).find(
+      (pkg) => pkg.slug === slug,
+    );
   }
-
+  
   async getPackagesByCountry(countryCode: string): Promise<Package[]> {
     return Array.from(this.packages.values())
-      .filter(p => p.countryOrigin === countryCode)
+      .filter(pkg => pkg.countryOrigin === countryCode)
       .sort((a, b) => a.order - b.order);
   }
-
+  
   async getFeaturedPackages(): Promise<Package[]> {
     return Array.from(this.packages.values())
-      .filter(p => p.isActive && p.isFeatured)
+      .filter(pkg => pkg.isActive && pkg.isFeatured)
       .sort((a, b) => a.order - b.order);
   }
 
@@ -1277,6 +1282,24 @@ export class DatabaseStorage implements IStorage {
   async getPackageById(id: number): Promise<Package | undefined> {
     const [pkg] = await db.select().from(packages).where(eq(packages.id, id));
     return pkg;
+  }
+  
+  async getPackageBySlug(slug: string): Promise<Package | undefined> {
+    const [pkg] = await db.select().from(packages).where(eq(packages.slug, slug));
+    return pkg;
+  }
+  
+  async getPackagesByCountry(countryCode: string): Promise<Package[]> {
+    return await db.select().from(packages)
+      .where(eq(packages.countryOrigin, countryCode))
+      .orderBy(packages.order);
+  }
+  
+  async getFeaturedPackages(): Promise<Package[]> {
+    return await db.select().from(packages)
+      .where(eq(packages.isFeatured, true))
+      .where(eq(packages.isActive, true))
+      .orderBy(packages.order);
   }
 
   async createPackage(pkg: InsertPackage): Promise<Package> {

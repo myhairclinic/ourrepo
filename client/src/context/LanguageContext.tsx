@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState, useEffect } from "react";
+import { createContext, ReactNode, useState, useEffect, useContext } from "react";
 import { Language } from "@shared/types";
 import { useLocation } from "wouter";
 
@@ -30,6 +30,15 @@ export const LanguageContext = createContext<LanguageContextType>({
 interface LanguageProviderProps {
   children: ReactNode;
 }
+
+// Custom hook to use the language context
+export const useLanguage = () => {
+  const context = useContext(LanguageContext);
+  if (!context) {
+    throw new Error("useLanguage must be used within a LanguageProvider");
+  }
+  return context;
+};
 
 export const LanguageProvider = ({ children }: LanguageProviderProps) => {
   // Get pathname for detecting language from URL

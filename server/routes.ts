@@ -17,7 +17,7 @@ import {
   updateService,
   deleteService
 } from "./controllers/contentController";
-import { seedServices } from "./controllers/seedController";
+import { seedServices, seedPackages } from "./controllers/seedController";
 import {
   getBlogPosts,
   getBlogPostBySlug,
@@ -414,6 +414,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Seed data routes (public during development)
   app.post("/api/seed/services", seedServices);
+  app.post("/api/seed/packages", seedPackages);
 
   const httpServer = createServer(app);
 
