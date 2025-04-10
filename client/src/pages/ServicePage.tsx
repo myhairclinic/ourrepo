@@ -11,6 +11,7 @@ import { getTranslation, useTranslation } from "@/lib/translations";
 import { META } from "@/lib/constants";
 import { Language } from "@shared/types";
 import { ReviewsSection } from "@/components/services/ReviewsSection";
+import FaqsSection from "@/components/services/FaqsSection";
 
 export default function ServicePage() {
   const { language, currentLanguage, addPrefix } = useLanguage();
@@ -134,10 +135,12 @@ export default function ServicePage() {
 
           {/* Additional Content */}
           <div className="mt-20">
+            {/* FAQs related to this service */}
+            <FaqsSection serviceId={service.id} />
+
             {/* Customer Reviews Section */}
             <ReviewsSection serviceId={service.id} />
             
-            {/* FAQs related to this service would go here */}
             {/* Before/After gallery for this service would go here */}
           </div>
         </div>

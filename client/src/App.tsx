@@ -35,6 +35,7 @@ import GalleryManager from "@/pages/admin/GalleryManager";
 import AppointmentsManager from "@/pages/admin/AppointmentsManager";
 import PackagesManager from "@/pages/admin/PackagesManager";
 import ReviewsManager from "@/pages/admin/ReviewsManager";
+import FaqsManager from "@/pages/admin/FaqsManager";
 
 // Admin route protection
 import { useAdmin } from "./hooks/use-admin";
@@ -113,6 +114,9 @@ function Router() {
       </Route>
       <Route path="/admin/reviews">
         <ProtectedAdminRoute component={ReviewsManager} />
+      </Route>
+      <Route path="/admin/faqs">
+        <ProtectedAdminRoute component={FaqsManager} />
       </Route>
       
       {/* Public routes with language prefix */}
