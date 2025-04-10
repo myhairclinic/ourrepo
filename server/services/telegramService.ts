@@ -7,10 +7,9 @@ const token = process.env.TELEGRAM_BOT_TOKEN;
 let bot: TelegramBot | null = null;
 
 // Admin chat ID(s) - for sending notifications
-// Add your chat ID here after using /start with @myhairclinic_bot in Telegram
 // Bot kullanıcı adı: @myhairclinic_bot
-// Örnek: const ADMIN_CHAT_IDS = ['1234567890']; (kendi ID'nizi buraya ekleyin)
-const ADMIN_CHAT_IDS = ['5962127896']; // Geçici ID - Kendi ID'nizi buraya ekleyin
+// Mesaj aldığınız chat ID eklendi
+const ADMIN_CHAT_IDS = ['5631870985']; // Gerçek admin chat ID
 
 // Initialize the bot with webhook for production or polling for development
 try {
