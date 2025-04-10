@@ -25,8 +25,8 @@ const FeatureIcon = ({ index }: { index: number }) => {
   }
 };
 
-// Modern flip card component
-function FlipCard({ 
+// Basitleştirilmiş hizmet kartı bileşeni
+function ServiceCard({ 
   service, 
   getTitle, 
   getDescription, 
@@ -41,127 +41,59 @@ function FlipCard({
   addPrefix: (path: string) => string;
   t: (key: string) => string;
 }) {
-  const [isFlipped, setIsFlipped] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  // Auto flip back when mouse leaves
-  const handleMouseLeave = () => {
-    if (isFlipped) {
-      setIsFlipped(false);
-    }
-  };
-
   return (
-    <div 
-      className="h-full perspective-1000 w-full cursor-pointer"
-      onMouseLeave={handleMouseLeave}
-      ref={cardRef}
-    >
-      <div 
-        className={`relative w-full h-full transition-transform duration-700 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`}
-      >
-        {/* Front of card */}
-        <div 
-          className="absolute w-full h-full backface-hidden transition-all duration-300 rounded-xl overflow-hidden group"
-          onClick={() => setIsFlipped(true)}
-        >
-          <Card className="group h-full overflow-hidden border border-border/30 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col bg-background">
-            <div className="h-52 overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-70 group-hover:opacity-50 transition-opacity duration-300 z-10"></div>
-              <img 
-                src={service.imageUrl} 
-                alt={getTitle(service)} 
-                className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute top-4 right-4 z-20">
-                <Badge className="bg-gradient-to-r from-primary to-primary/80 text-white border-none shadow-md">
-                  {t("services.popular")}
-                </Badge>
-              </div>
-              <div className="absolute bottom-0 left-0 right-0 p-4 z-20">
-                <div className="flex items-center gap-2 text-xs font-medium text-background/90">
-                  <Clock className="h-3 w-3" />
-                  <span>60-90 {t("common.duration")}</span>
-                </div>
-              </div>
-            </div>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-xl font-bold group-hover:text-primary transition-colors flex items-center justify-between">
-                <span>{getTitle(service)}</span>
-                <TrendingUp className="h-5 w-5 text-primary opacity-70" />
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex-grow pb-2">
-              <CardDescription className="text-muted-foreground mb-2 line-clamp-2">
-                {getDescription(service)}
-              </CardDescription>
-              
-              <div className="flex flex-wrap gap-2 mt-3">
-                {features.slice(0, 2).map((feature, index) => (
-                  <Badge key={index} variant="outline" className="bg-background/50 text-xs font-normal py-1">
-                    <FeatureIcon index={index} />
-                    <span className="ml-1">{feature}</span>
-                  </Badge>
-                ))}
-              </div>
-            </CardContent>
-            <CardFooter className="pt-0 pb-4">
-              <Button variant="ghost" size="sm" className="w-full group border-primary/20 border hover:bg-primary/5">
-                <span className="text-sm">{t("services.flipToSeeMore")}</span>
-                <ArrowRight className="ml-2 h-4 w-4 transform transition-transform group-hover:translate-x-1" />
-              </Button>
-            </CardFooter>
-          </Card>
-        </div>
-
-        {/* Back of card */}
-        <div 
-          className="absolute w-full h-full backface-hidden rotate-y-180 transition-all duration-300"
-          onClick={() => setIsFlipped(false)}
-        >
-          <Card className="h-full overflow-hidden border border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col bg-gradient-to-b from-background to-primary/5">
-            <CardHeader className="pb-0">
-              <div className="flex justify-between items-center mb-1">
-                <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
-                  {t("services.detailedInfo")}
-                </Badge>
-                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
-                  <ArrowRight className="h-4 w-4 rotate-45" />
-                </Button>
-              </div>
-              <CardTitle className="text-xl font-bold text-primary">
-                {getTitle(service)}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex-grow pt-2">
-              <CardDescription className="text-muted-foreground mb-4">
-                {getDescription(service)}
-              </CardDescription>
-              
-              <div className="space-y-3 mt-4">
-                <h4 className="text-sm font-medium">{t("services.keyFeatures")}</h4>
-                <div className="grid grid-cols-1 gap-2">
-                  {features.map((feature, index) => (
-                    <div key={index} className="flex items-center gap-2 bg-background/50 p-2 rounded-md shadow-sm">
-                      <FeatureIcon index={index} />
-                      <span className="text-sm">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter className="pt-2">
-              <Link href={addPrefix(`/services/${service.slug}`)} className="w-full">
-                <Button variant="default" className="w-full group bg-gradient-to-r from-primary to-primary/80">
-                  <span>{t("common.learnMore")}</span>
-                  <ArrowRight className="ml-2 h-4 w-4 transform transition-transform group-hover:translate-x-1" />
-                </Button>
-              </Link>
-            </CardFooter>
-          </Card>
+    <Card className="h-full overflow-hidden border border-border/30 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col bg-background group">
+      <div className="h-52 overflow-hidden relative">
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-70 group-hover:opacity-50 transition-opacity duration-300 z-10"></div>
+        <img 
+          src={service.imageUrl || '/images/placeholder.jpg'} 
+          alt={getTitle(service)} 
+          className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.onerror = null;
+            console.log('Resim yüklenirken hata:', service.imageUrl);
+            target.src = 'https://via.placeholder.com/400x250/cccccc/666666?text=MyHair+Clinic';
+          }}
+        />
+        <div className="absolute top-4 right-4 z-20">
+          <Badge className="bg-gradient-to-r from-primary to-primary/80 text-white border-none shadow-md">
+            {t("services.popular")}
+          </Badge>
         </div>
       </div>
-    </div>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-xl font-bold group-hover:text-primary transition-colors flex items-center justify-between">
+          <span>{getTitle(service)}</span>
+          <TrendingUp className="h-5 w-5 text-primary opacity-70" />
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="flex-grow pb-2">
+        <CardDescription className="text-muted-foreground mb-4 line-clamp-2">
+          {getDescription(service)}
+        </CardDescription>
+        
+        <div className="space-y-2 mt-4">
+          <h4 className="text-sm font-medium">{t("services.keyFeatures")}</h4>
+          <div className="flex flex-wrap gap-2">
+            {features.slice(0, 3).map((feature, index) => (
+              <Badge key={index} variant="outline" className="bg-background/50 text-xs font-normal py-1">
+                <FeatureIcon index={index} />
+                <span className="ml-1">{feature}</span>
+              </Badge>
+            ))}
+          </div>
+        </div>
+      </CardContent>
+      <CardFooter className="pt-2">
+        <Link href={addPrefix(`/services/${service.slug}`)} className="w-full">
+          <Button variant="default" className="w-full group bg-gradient-to-r from-primary to-primary/80">
+            <span>{t("common.learnMore")}</span>
+            <ArrowRight className="ml-2 h-4 w-4 transform transition-transform group-hover:translate-x-1" />
+          </Button>
+        </Link>
+      </CardFooter>
+    </Card>
   );
 }
 
@@ -319,14 +251,16 @@ export default function ServiceCards() {
                     }`}
                     style={{ transitionDelay: `${index * 150}ms` }}
                   >
-                    <FlipCard
-                      service={service}
-                      getTitle={getLocalizedTitle}
-                      getDescription={getLocalizedDescription}
-                      features={getServiceFeatures(service.id)}
-                      addPrefix={addPrefix}
-                      t={t}
-                    />
+                    <div className="h-full">
+                      <ServiceCard
+                        service={service}
+                        getTitle={getLocalizedTitle}
+                        getDescription={getLocalizedDescription}
+                        features={getServiceFeatures(service.id)}
+                        addPrefix={addPrefix}
+                        t={t}
+                      />
+                    </div>
                   </div>
                 ))
               ) : (
