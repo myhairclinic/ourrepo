@@ -664,8 +664,28 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getServiceBySlug(slug: string): Promise<Service | undefined> {
-    const [service] = await db.select().from(services).where(eq(services.slug, slug));
-    return service;
+    try {
+      const [service] = await db.select({
+        id: services.id,
+        slug: services.slug,
+        titleTR: services.titleTR,
+        titleEN: services.titleEN,
+        titleRU: services.titleRU,
+        titleKA: services.titleKA,
+        descriptionTR: services.descriptionTR,
+        descriptionEN: services.descriptionEN,
+        descriptionRU: services.descriptionRU,
+        descriptionKA: services.descriptionKA,
+        imageUrl: services.imageUrl,
+        isActive: services.isActive,
+        createdAt: services.createdAt,
+        updatedAt: services.updatedAt
+      }).from(services).where(eq(services.slug, slug));
+      return service;
+    } catch (error) {
+      console.error("Error in getServiceBySlug:", error);
+      return undefined;
+    }
   }
 
   async createService(service: InsertService): Promise<Service> {
