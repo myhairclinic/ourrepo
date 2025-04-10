@@ -1,30 +1,24 @@
 import { useLanguage } from "./use-language";
-import translations from "@/lib/translations";
+import { translations } from "@/lib/translations";
 
 export function useTranslation() {
   const { language } = useLanguage();
   
-  // Translate a key based on current language
+  // Çeviri fonksiyonu
   const t = (key: string): string => {
-    const keys = key.split('.');
-    let current: any = translations;
-    
-    // Navigate through nested translation object
-    for (const k of keys) {
-      if (current[k] === undefined) {
-        console.warn(`Translation key not found: ${key}`);
-        return key;
-      }
-      current = current[k];
+    // Mevcut dilde çevirisi var mı?
+    if (translations[language] && translations[language][key]) {
+      return translations[language][key];
     }
     
-    // Return translation for current language or fall back to English
-    if (typeof current === 'object') {
-      return current[language] || current.en || key;
+    // Yoksa İngilizce'ye bak
+    if (translations["en"] && translations["en"][key]) {
+      return translations["en"][key];
     }
     
-    return current || key;
+    // Çeviri bulunamadıysa key'i döndür
+    return key;
   };
   
-  return { t, language };
+  return { t };
 }

@@ -1,9 +1,8 @@
 import { Switch, Route, useLocation } from "wouter";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "@/lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
-// import { useLanguage } from "@/hooks/use-language";
+import { useLanguage } from "@/hooks/use-language";
 import { useEffect } from "react";
+import { LanguageProvider } from "./context/LanguageContext";
 
 // Layout components
 import Header from "./components/layout/Header";
@@ -99,7 +98,7 @@ function Router() {
   );
 }
 
-function App() {
+function AppContent() {
   const [pathname] = useLocation();
   const isAdminRoute = pathname.startsWith("/admin");
 
@@ -111,6 +110,14 @@ function App() {
       {!isAdminRoute && <WhatsAppButton />}
       <Toaster />
     </>
+  );
+}
+
+function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }
 

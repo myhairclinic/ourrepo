@@ -1,17 +1,23 @@
-// URL paths for public pages
+// Web sitesinde kullanılan tüm sabit değerler burada tanımlanır
+
+// Public routes
 export const PUBLIC_PATHS = {
   HOME: "/",
   SERVICES: "/services",
+  SERVICE_DETAIL: "/services/:slug",
   GALLERY: "/gallery",
   PACKAGES: "/packages",
   PRODUCTS: "/products",
   BLOG: "/blog",
+  BLOG_POST: "/blog/:slug",
   ABOUT: "/about",
   CONTACT: "/contact",
   APPOINTMENT: "/appointment",
+  PRIVACY: "/privacy",
+  TERMS: "/terms",
 };
 
-// URL paths for admin pages
+// Admin routes
 export const ADMIN_PATHS = {
   LOGIN: "/admin/login",
   DASHBOARD: "/admin/dashboard",
@@ -23,44 +29,45 @@ export const ADMIN_PATHS = {
   PACKAGES: "/admin/packages",
   MESSAGES: "/admin/messages",
   SETTINGS: "/admin/settings",
+  TESTIMONIALS: "/admin/testimonials",
 };
 
-// Contact information
-export const CONTACT = {
-  EMAIL: "info@myhair.clinic",
-  PHONE: "+995 599 123456",
-  WHATSAPP: "+995 599 123456",
-  ADDRESS: "Tbilisi, Georgia",
-};
-
-// Social media
-export const SOCIAL = {
-  FACEBOOK: "https://facebook.com/myhair.clinic",
-  INSTAGRAM: "https://instagram.com/myhair.clinic",
-  YOUTUBE: "https://youtube.com/c/myhair.clinic",
-  TIKTOK: "https://tiktok.com/@myhair.clinic",
-};
-
-// Gallery types
+// Galeri türleri
 export const GALLERY_TYPES = {
   BEFORE_AFTER: "before-after",
   CLINIC: "clinic",
-  VIDEO: "video"
+  VIDEO: "video",
 };
 
-// Meta data
+// İletişim bilgileri
+export const CONTACT = {
+  ADDRESS: "123 Tbilisi Avenue, Tbilisi, Georgia",
+  PHONE: "+995 555 123 456",
+  EMAIL: "info@myhair-clinic.com",
+  WHATSAPP: "+995 555 123 456",
+  WORKING_HOURS: "Monday - Saturday: 09:00 - 18:00",
+};
+
+// Sosyal medya bağlantıları
+export const SOCIAL = {
+  FACEBOOK: "https://facebook.com/myhair-clinic",
+  INSTAGRAM: "https://instagram.com/myhair-clinic",
+  YOUTUBE: "https://youtube.com/myhair-clinic",
+  TIKTOK: "https://tiktok.com/@myhair-clinic",
+};
+
+// SEO meta bilgileri
 export const META = {
-  SITE_NAME: "MyHair Clinic",
-  DESCRIPTION: {
-    tr: "Tiflis'in lider saç ekimi ve estetik merkezi. FUE ve DHI teknikleri ile en iyi sonuçlar.",
-    en: "Leading hair transplant and aesthetic center in Tbilisi. Best results with FUE and DHI techniques.",
-    ru: "Ведущий центр трансплантации волос и эстетики в Тбилиси. Лучшие результаты с методами FUE и DHI.",
-    ka: "წამყვანი თმის გადანერგვისა და ესთეტიკის ცენტრი თბილისში. საუკეთესო შედეგები FUE და DHI ტექნიკით."
+  TITLE: {
+    tr: "MyHair Clinic | Saç Ekimi ve Estetik Merkezi",
+    en: "MyHair Clinic | Hair Transplant and Aesthetic Center",
+    ru: "MyHair Clinic | Центр трансплантации волос и эстетики",
+    ka: "MyHair Clinic | თმის გადანერგვის და ესთეტიკის ცენტრი",
   },
-  KEYWORDS: {
-    tr: "saç ekimi, fue, dhi, saç transplantasyon, tiflis, gürcistan, saç dökülmesi, saç tedavisi",
-    en: "hair transplant, fue, dhi, hair transplantation, tbilisi, georgia, hair loss, hair treatment",
-    ru: "трансплантация волос, фуэ, дхи, пересадка волос, тбилиси, грузия, выпадение волос, лечение волос",
-    ka: "თმის გადანერგვა, fue, dhi, თმის ტრანსპლანტაცია, თბილისი, საქართველო, თმის ცვენა, თმის მკურნალობა"
-  }
+  DESCRIPTION: {
+    tr: "Tiflis'in lider saç ekimi ve estetik merkezi. FUE ve DHI tekniklerini kullanarak en iyi sonuçları elde ediyoruz. Doğal görünüm garantisi.",
+    en: "Leading hair transplant and aesthetic center in Tbilisi. We use FUE and DHI techniques to achieve the best results. Natural appearance guaranteed.",
+    ru: "Ведущий центр трансплантации волос и эстетики в Тбилиси. Мы используем методы FUE и DHI для достижения наилучших результатов. Гарантия естественного вида.",
+    ka: "წამყვანი თმის გადანერგვისა და ესთეტიკის ცენტრი თბილისში. ჩვენ ვიყენებთ FUE და DHI ტექნიკას საუკეთესო შედეგების მისაღწევად. ბუნებრივი გარეგნობის გარანტია.",
+  },
 };

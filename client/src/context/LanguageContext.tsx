@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useState, useEffect } from "react";
-import { useLocation, useRoute } from "wouter";
+import { useLocation } from "wouter";
 import { Language, DEFAULT_LANGUAGE, getLanguageFromPath } from "@/lib/languages";
 
 // LanguageContext için tip tanımlaması
@@ -15,8 +15,6 @@ export const LanguageContext = createContext<LanguageContextType | null>(null);
 // Context Provider bileşeni
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [location, navigate] = useLocation();
-  const [matchLangPath] = useRoute("/:lang/*");
-  const [matchRootPath] = useRoute("/");
   
   // Şu anki dil durumu
   const [language, setLanguage] = useState<Language>(() => {
@@ -26,29 +24,27 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   
   // URL değiştiğinde dil durumunu güncelle
   useEffect(() => {
-    if (matchLangPath && typeof matchLangPath === 'object' && 'params' in matchLangPath) {
-      const urlLang = matchLangPath.params.lang as Language;
-      
-      // URL'deki dil kodu geçerliyse, state'i güncelle
-      if (Object.values(Language).includes(urlLang)) {
-        setLanguage(urlLang);
-      }
-    } else if (matchRootPath) {
+    const detectedLanguage = getLanguageFromPath(location);
+    if (detectedLanguage) {
+      setLanguage(detectedLanguage);
+    } else if (location === "/") {
       // Ana sayfada dil belirtilmemiş, varsayılan dili kullan
       setLanguage(DEFAULT_LANGUAGE);
     }
-  }, [location, matchLangPath, matchRootPath]);
+  }, [location]);
   
   // Dil değiştirme fonksiyonu - URL'i günceller
   const changeLanguage = (newLang: Language) => {
     if (newLang === language) return;
     
-    if (matchLangPath && typeof matchLangPath === 'object' && 'params' in matchLangPath) {
-      // Mevcut URL'deki dil kodunu değiştir
-      const restOfPath = location.substring(3); // "/{lang}/" sonrası
-      navigate(`/${newLang}${restOfPath}`);
+    // Eğer mevcut bir dil kodu varsa, onu değiştir
+    const currentLangCode = getLanguageFromPath(location);
+    if (currentLangCode) {
+      // "/{lang}/rest" -> "/{newLang}/rest"
+      const path = location.replace(`/${currentLangCode}`, `/${newLang}`);
+      navigate(path);
     } else {
-      // Ana sayfada veya tanımlanmamış bir URL'de, dil ile ana sayfaya yönlendir
+      // Dil kodu yoksa, yeni dil ile ana sayfaya yönlendir
       navigate(`/${newLang}`);
     }
     

@@ -1,108 +1,118 @@
-const translations = {
-  meta: {
-    homeTitle: {
-      tr: "MyHair Clinic | Saç Ekimi ve Estetik Merkezi",
-      en: "MyHair Clinic | Hair Transplant and Aesthetic Center",
-      ru: "MyHair Clinic | Центр трансплантации волос и эстетики",
-      ka: "MyHair Clinic | თმის გადანერგვის და ესთეტიკის ცენტრი"
-    },
-    homeDescription: {
-      tr: "Tiflis'in önde gelen saç ekimi ve estetik merkezi. FUE, DHI, sakal ve kaş ekimi hizmetleri sunuyoruz.",
-      en: "Leading hair transplant and aesthetic center in Tbilisi. We provide FUE, DHI, beard and eyebrow transplantation services.",
-      ru: "Ведущий центр трансплантации волос и эстетики в Тбилиси. Мы предоставляем услуги по пересадке волос FUE, DHI, бороды и бровей.",
-      ka: "წამყვანი თმის გადანერგვის და ესთეტიკის ცენტრი თბილისში. ჩვენ გთავაზობთ FUE, DHI, წვერის და წარბების გადანერგვის სერვისებს."
-    }
-  },
-  nav: {
-    home: {
-      tr: "Ana Sayfa",
-      en: "Home",
-      ru: "Главная",
-      ka: "მთავარი"
-    },
-    services: {
-      tr: "Hizmetler",
-      en: "Services",
-      ru: "Услуги",
-      ka: "სერვისები"
-    },
-    gallery: {
-      tr: "Galeri",
-      en: "Gallery",
-      ru: "Галерея",
-      ka: "გალერეა"
-    },
-    packages: {
-      tr: "Paketler",
-      en: "Packages",
-      ru: "Пакеты",
-      ka: "პაკეტები"
-    },
-    products: {
-      tr: "Ürünler",
-      en: "Products",
-      ru: "Продукты",
-      ka: "პროდუქტები"
-    },
-    blog: {
-      tr: "Blog",
-      en: "Blog",
-      ru: "Блог",
-      ka: "ბლოგი"
-    },
-    about: {
-      tr: "Hakkımızda",
-      en: "About Us",
-      ru: "О нас",
-      ka: "ჩვენ შესახებ"
-    },
-    contact: {
-      tr: "İletişim",
-      en: "Contact",
-      ru: "Контакты",
-      ka: "კონტაქტი"
-    },
-    appointment: {
-      tr: "Randevu Al",
-      en: "Appointment",
-      ru: "Запись",
-      ka: "დაჯავშნა"
-    }
-  },
-  common: {
-    readMore: {
-      tr: "Daha Fazla",
-      en: "Read More",
-      ru: "Подробнее",
-      ka: "მეტის ნახვა"
-    },
-    bookNow: {
-      tr: "Şimdi Randevu Al",
-      en: "Book Now",
-      ru: "Записаться",
-      ka: "დაჯავშნე ახლა"
-    },
-    callUs: {
-      tr: "Bizi Arayın",
-      en: "Call Us",
-      ru: "Позвоните",
-      ka: "დაგვიკავშირდით"
-    }
-  },
-  footer: {
-    rights: {
-      tr: "Tüm Hakları Saklıdır",
-      en: "All Rights Reserved",
-      ru: "Все права защищены",
-      ka: "ყველა უფლება დაცულია"
-    },
-    address: {
-      tr: "Adres: Tbilisi, Georgia",
-      en: "Address: Tbilisi, Georgia",
-      ru: "Адрес: Тбилиси, Грузия",
-      ka: "მისამართი: თბილისი, საქართველო"
-    }
-  }
+import { Language } from "@shared/types";
+
+type TranslationKey = string;
+
+// Çeviri nesnesinde her dil kodu için karşılık gelen çeviriler tanımlanır
+type TranslationsDict = {
+  [key in Language]: {
+    [key: TranslationKey]: string;
+  };
 };
 
-export default translations;
+// Uygulamadaki tüm çeviriler
+export const translations: TranslationsDict = {
+  [Language.Turkish]: {
+    // Genel metin
+    app_name: "MyHair Clinic",
+    slogan: "Tiflis'te Profesyonel Saç Ekimi",
+    
+    // Navigasyon
+    nav_home: "Ana Sayfa",
+    nav_services: "Hizmetlerimiz",
+    nav_packages: "Paketler",
+    nav_gallery: "Galeri",
+    nav_blog: "Blog",
+    nav_about: "Hakkımızda",
+    nav_contact: "İletişim",
+    nav_appointment: "Randevu Al",
+    
+    // Ana sayfa
+    home_hero_title: "Güçlü ve Doğal Saçlara Kavuşun",
+    home_hero_subtitle: "Tiflis'in lider saç ekimi ve estetik merkezine hoş geldiniz",
+    home_hero_cta: "Ücretsiz Danışmanlık",
+    
+    // Hizmetler
+    services_title: "Hizmetlerimiz",
+    services_subtitle: "Uzman kadromuz ve son teknoloji ile sunduğumuz hizmetlerimiz",
+    
+    // Diğer metinler...
+  },
+  [Language.English]: {
+    // General
+    app_name: "MyHair Clinic",
+    slogan: "Professional Hair Transplant in Tbilisi",
+    
+    // Navigation
+    nav_home: "Home",
+    nav_services: "Services",
+    nav_packages: "Packages",
+    nav_gallery: "Gallery",
+    nav_blog: "Blog",
+    nav_about: "About",
+    nav_contact: "Contact",
+    nav_appointment: "Book Appointment",
+    
+    // Home page
+    home_hero_title: "Get Strong and Natural Hair",
+    home_hero_subtitle: "Welcome to the leading hair transplant and aesthetic center in Tbilisi",
+    home_hero_cta: "Free Consultation",
+    
+    // Services
+    services_title: "Our Services",
+    services_subtitle: "Services we provide with our expert team and latest technology",
+    
+    // Other translations...
+  },
+  [Language.Russian]: {
+    // Общие
+    app_name: "MyHair Clinic",
+    slogan: "Профессиональная трансплантация волос в Тбилиси",
+    
+    // Навигация
+    nav_home: "Главная",
+    nav_services: "Услуги",
+    nav_packages: "Пакеты",
+    nav_gallery: "Галерея",
+    nav_blog: "Блог",
+    nav_about: "О нас",
+    nav_contact: "Контакты",
+    nav_appointment: "Записаться",
+    
+    // Главная страница
+    home_hero_title: "Получите крепкие и натуральные волосы",
+    home_hero_subtitle: "Добро пожаловать в ведущий центр трансплантации волос и эстетики в Тбилиси",
+    home_hero_cta: "Бесплатная консультация",
+    
+    // Услуги
+    services_title: "Наши услуги",
+    services_subtitle: "Услуги, которые мы предоставляем с нашей командой экспертов и новейшими технологиями",
+    
+    // Другие переводы...
+  },
+  [Language.Georgian]: {
+    // ზოგადი
+    app_name: "MyHair Clinic",
+    slogan: "პროფესიონალური თმის გადანერგვა თბილისში",
+    
+    // ნავიგაცია
+    nav_home: "მთავარი",
+    nav_services: "სერვისები",
+    nav_packages: "პაკეტები",
+    nav_gallery: "გალერეა",
+    nav_blog: "ბლოგი",
+    nav_about: "ჩვენს შესახებ",
+    nav_contact: "კონტაქტი",
+    nav_appointment: "ჩაწერა",
+    
+    // მთავარი გვერდი
+    home_hero_title: "მიიღეთ ძლიერი და ბუნებრივი თმა",
+    home_hero_subtitle: "მოგესალმებით თბილისის წამყვან თმის გადანერგვისა და ესთეტიკის ცენტრში",
+    home_hero_cta: "უფასო კონსულტაცია",
+    
+    // სერვისები
+    services_title: "ჩვენი სერვისები",
+    services_subtitle: "მომსახურება, რომელსაც ვაწვდით ჩვენი ექსპერტებისა და უახლესი ტექნოლოგიებით",
+    
+    // სხვა თარგმანები...
+  }
+};

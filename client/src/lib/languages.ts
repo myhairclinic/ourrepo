@@ -1,9 +1,6 @@
-export enum Language {
-  Turkish = "tr",
-  English = "en",
-  Russian = "ru",
-  Georgian = "ka"
-}
+import { Language } from "@shared/types";
+
+export { Language };
 
 // Varsayılan dil
 export const DEFAULT_LANGUAGE = Language.Turkish;
@@ -16,29 +13,20 @@ export const ALL_LANGUAGES = [
   { code: Language.Georgian, name: "ქართული", flag: "🇬🇪" },
 ];
 
-// Dil URL'sini kontrol eden fonksiyon
-export function getLanguageFromPath(path: string): Language {
-  const match = path.match(/^\/([a-z]{2})(\/|$)/);
+// URL'den dil kodunu almak için yardımcı fonksiyon
+export function getLanguageFromPath(path: string): Language | null {
+  if (!path) return null;
   
-  if (match) {
-    const lang = match[1];
-    // Desteklenen diller arasında mı kontrol et
-    if (Object.values(Language).includes(lang as Language)) {
-      return lang as Language;
-    }
+  // İlk bölümü al, örn: "/tr/about" -> "tr"
+  const match = path.match(/^\/([a-z]{2})(\/|$)/);
+  if (!match) return null;
+  
+  const langCode = match[1];
+  
+  // Geçerli bir dil kodu mu kontrol et
+  if (Object.values(Language).includes(langCode as Language)) {
+    return langCode as Language;
   }
   
-  return DEFAULT_LANGUAGE;
-}
-
-// Dil adını döndüren fonksiyon
-export function getLanguageName(lang: Language): string {
-  const foundLang = ALL_LANGUAGES.find((l) => l.code === lang);
-  return foundLang ? foundLang.name : "Unknown";
-}
-
-// Dil flagini döndüren fonksiyon
-export function getLanguageFlag(lang: Language): string {
-  const foundLang = ALL_LANGUAGES.find((l) => l.code === lang);
-  return foundLang ? foundLang.flag : "🏳️";
+  return null;
 }
