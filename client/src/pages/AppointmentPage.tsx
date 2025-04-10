@@ -11,25 +11,59 @@ import { useToast } from "@/hooks/use-toast";
 import { META } from "@/lib/constants";
 import SectionTitle from "@/components/shared/SectionTitle";
 
-// Appointment form schema
-const appointmentFormSchema = z.object({
-  name: z.string().min(2, "Name is required"),
-  email: z.string().email("Valid email is required"),
-  phone: z.string().min(5, "Phone number is required"),
-  serviceId: z.coerce.number().positive("Please select a service"),
-  message: z.string().optional(),
-  preferredDate: z.string().optional(),
-  consent: z.boolean().refine((val) => val === true, {
-    message: "You must agree to the data processing",
-  }),
-});
+// Appointment form schema - will be updated with translations
+const createAppointmentFormSchema = (language: string) => {
+  // Get validation messages based on language
+  const validationMessages = {
+    nameRequired: language === 'tr' ? "İsim gereklidir" : 
+                   language === 'ru' ? "Имя обязательно" : 
+                   language === 'ka' ? "სახელი აუცილებელია" : 
+                   "Name is required",
+                   
+    emailRequired: language === 'tr' ? "Geçerli bir e-posta adresi gereklidir" : 
+                   language === 'ru' ? "Требуется действительный адрес электронной почты" : 
+                   language === 'ka' ? "საჭიროა სწორი ელ-ფოსტის მისამართი" : 
+                   "Valid email is required",
+                   
+    phoneRequired: language === 'tr' ? "Telefon numarası gereklidir" : 
+                   language === 'ru' ? "Требуется номер телефона" : 
+                   language === 'ka' ? "ტელეფონის ნომერი აუცილებელია" : 
+                   "Phone number is required",
+                   
+    serviceRequired: language === 'tr' ? "Lütfen bir hizmet seçin" : 
+                     language === 'ru' ? "Пожалуйста, выберите услугу" : 
+                     language === 'ka' ? "გთხოვთ აირჩიოთ სერვისი" : 
+                     "Please select a service",
+                     
+    consentRequired: language === 'tr' ? "Veri işlemeyi kabul etmelisiniz" : 
+                     language === 'ru' ? "Вы должны согласиться на обработку данных" : 
+                     language === 'ka' ? "უნდა დაეთანხმოთ მონაცემთა დამუშავებას" : 
+                     "You must agree to the data processing",
+  };
+  
+  return z.object({
+    name: z.string().min(2, validationMessages.nameRequired),
+    email: z.string().email(validationMessages.emailRequired),
+    phone: z.string().min(5, validationMessages.phoneRequired),
+    serviceId: z.coerce.number().positive(validationMessages.serviceRequired),
+    message: z.string().optional(),
+    preferredDate: z.string().optional(),
+    consent: z.boolean().refine((val) => val === true, {
+      message: validationMessages.consentRequired,
+    }),
+  });
+};
 
-type AppointmentFormData = z.infer<typeof appointmentFormSchema>;
+// Create a dynamic form schema based on the current language
+type AppointmentFormData = z.infer<ReturnType<typeof createAppointmentFormSchema>>;
 
 export default function AppointmentPage() {
   const { t } = useTranslation();
   const { language, addPrefix } = useLanguage();
   const { toast } = useToast();
+  
+  // Create a schema for the current language
+  const appointmentFormSchema = createAppointmentFormSchema(language);
   
   // Fetch services for the dropdown
   const { data: services } = useQuery({
