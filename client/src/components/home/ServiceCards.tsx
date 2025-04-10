@@ -55,13 +55,16 @@ function ServiceCard({
         
         {/* Resim */}
         <img 
-          src={service.slug === 'hair-transplantation' ? '/images/services/hair-transplant-procedure.png' : service.imageUrl || '/images/placeholder.jpg'} 
+          src={service.slug === 'hair-transplantation' 
+            ? (window.location.hostname.includes('replit') ? 'https://cdn.jsdelivr.net/gh/replit-images/myhairclinic-images@main/hair-transplant-procedure.png' : '/images/services/hair-transplant-procedure.png')
+            : service.imageUrl || '/images/placeholder.jpg'
+          } 
           alt={getTitle(service)}
           className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
             target.onerror = null;
-            console.log('Resim yüklenirken hata:', service.imageUrl);
+            console.log('Resim yüklenirken hata:', service.slug, service.imageUrl);
             target.src = 'https://via.placeholder.com/400x250/cccccc/666666?text=MyHair+Clinic';
           }}
         />
