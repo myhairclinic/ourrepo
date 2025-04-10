@@ -75,16 +75,17 @@ export default function AdminDashboard() {
 
 function DashboardCard({ title, description, icon, link }: { title: string, description: string, icon: string, link: string }) {
   return (
-    <Link href={link}>
-      <a className="block bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-200">
-        <div className="flex items-center mb-4">
-          <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mr-4">
-            <i className={`fas ${icon} text-xl`}></i>
-          </div>
-          <h2 className="text-xl font-semibold">{title}</h2>
+    <div 
+      onClick={() => window.location.href = link}
+      className="block bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition duration-200 cursor-pointer"
+    >
+      <div className="flex items-center mb-4">
+        <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mr-4">
+          <i className={`fas ${icon} text-xl`}></i>
         </div>
-        <p className="text-neutral-600">{description}</p>
-      </a>
-    </Link>
+        <h2 className="text-xl font-semibold">{title}</h2>
+      </div>
+      <p className="text-neutral-600">{description}</p>
+    </div>
   );
 }
