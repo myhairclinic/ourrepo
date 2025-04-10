@@ -315,7 +315,7 @@ export default function ServicePage() {
               <img 
                 src={service.slug === 'hair-transplantation' ? '/images/services/hair-transplant.jpg' : 
                     (service.slug === 'beard-transplantation' ? '/images/services/beard-transplant.jpg' : 
-                    (service.slug === 'prp-treatment' ? hairTransplantImage :
+                    (service.slug === 'prp-treatment' ? '/images/services/prp-treatment.jpg' :
                     (service.slug === 'eyebrow-transplantation' ? '/images/services/eyebrow-transplant.jpg' :
                     (service.slug === 'hair-mesotherapy' ? consultationImage : service.imageUrl))))}
                 alt={getLocalizedTitle(service)} 

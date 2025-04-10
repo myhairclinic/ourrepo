@@ -60,13 +60,13 @@ function ServiceCard({
         {/* Resim */}
         <img 
           src={service.slug === 'hair-transplantation' 
-              ? hairTransplantImage
+              ? '/images/services/hair-transplant.jpg'
               : service.slug === 'eyebrow-transplantation' 
                   ? '/images/services/eyebrow-transplant.jpg' 
                   : service.slug === 'beard-transplantation'
                       ? '/images/services/beard-transplant.jpg'
                       : service.slug === 'prp-treatment'
-                          ? hairTransplantImage
+                          ? '/images/services/prp-treatment.jpg'
                           : service.slug === 'hair-mesotherapy'
                               ? consultationImage
                               : service.imageUrl || '/images/placeholder.jpg'
