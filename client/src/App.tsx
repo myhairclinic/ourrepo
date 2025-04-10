@@ -34,6 +34,7 @@ import BlogManager from "@/pages/admin/BlogManager";
 import GalleryManager from "@/pages/admin/GalleryManager";
 import AppointmentsManager from "@/pages/admin/AppointmentsManager";
 import PackagesManager from "@/pages/admin/PackagesManager";
+import ReviewsManager from "@/pages/admin/ReviewsManager";
 
 // Admin route protection
 import { useAdmin } from "./hooks/use-admin";

@@ -12,7 +12,8 @@ import {
   MessageSquare, 
   Package, 
   ShoppingBag,
-  FileEdit
+  FileEdit,
+  Star
 } from "lucide-react";
 
 interface AdminLayoutProps {
@@ -59,6 +60,11 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
       name: "Appointments",
       href: ADMIN_PATHS.APPOINTMENTS,
       icon: <CalendarDays className="h-5 w-5" />,
+    },
+    {
+      name: "Reviews",
+      href: ADMIN_PATHS.REVIEWS,
+      icon: <Star className="h-5 w-5" />,
     },
     {
       name: "Messages",

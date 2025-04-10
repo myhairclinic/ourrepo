@@ -59,6 +59,7 @@ export const API_ROUTES = {
   GALLERY: "/api/gallery",
   APPOINTMENTS: "/api/appointments",
   MESSAGES: "/api/messages",
+  REVIEWS: "/api/reviews",
   ADMIN: {
     LOGIN: "/api/admin/login",
     LOGOUT: "/api/admin/logout",
