@@ -1,173 +1,208 @@
-import React from "react";
-import { Helmet } from "react-helmet";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { useParams, Link } from "wouter";
+import { Helmet } from "react-helmet";
 import { useLanguage } from "@/hooks/use-language";
 import { useTranslation } from "@/lib/translations";
 import { META } from "@/lib/constants";
-import { Product } from "@shared/schema";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle, ArrowLeft, Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Language } from "@shared/types";
+import { Product } from "@shared/schema";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
 
-const ProductPage: React.FC = () => {
-  const { productSlug } = useParams<{ productSlug: string }>();
+// Ürün detay sayfası
+export default function ProductPage() {
+  const { productSlug, lang } = useParams();
   const { language, addPrefix } = useLanguage();
   const { t } = useTranslation(language);
-
-  // Fetch product data
+  
+  // Dil değişikliğinde URL'yi güncelle
+  useEffect(() => {
+    document.documentElement.lang = language.toLowerCase();
+  }, [language]);
+  
+  // Ürün verilerini getir
   const { data: product, isLoading, error } = useQuery<Product>({
-    queryKey: ["/api/products", productSlug],
-    queryFn: async () => {
-      const response = await fetch(`/api/products/${productSlug}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch product");
-      }
-      return response.json();
-    },
+    queryKey: [`/api/products/${productSlug}`],
+    enabled: !!productSlug,
   });
+  
+  // Sayfa başlığını oluştur
+  const pageTitle = product 
+    ? `${product[`name${language}`]} ${META.TITLE_SUFFIX}` 
+    : `${t("products.title")} ${META.TITLE_SUFFIX}`;
 
-  const getLocalizedValue = (field: string) => {
-    if (!product) return "";
-    return product[`${field}${language.toUpperCase()}` as keyof Product] as string;
-  };
-
+  if (error) {
+    return (
+      <div className="container mx-auto py-10 px-4">
+        <Helmet>
+          <title>{pageTitle}</title>
+          <meta name="description" content={t("products.description")} />
+        </Helmet>
+        
+        <Alert variant="destructive" className="mb-6">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>{t("error.somethingWentWrong")}</AlertTitle>
+          <AlertDescription>{t("errors.loading_product")}</AlertDescription>
+        </Alert>
+        
+        <Button variant="outline" asChild>
+          <Link href={addPrefix("/products")}>
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            {t("products.backToProducts")}
+          </Link>
+        </Button>
+      </div>
+    );
+  }
+  
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  if (error || !product) {
-    return (
-      <div className="container mx-auto px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold text-neutral-700 mb-4">{t("error.somethingWentWrong")}</h1>
-        <p className="mb-8 text-neutral-600">{t("errors.loading_product")}</p>
-        <Link href={addPrefix("/products")} className="inline-flex items-center text-primary hover:text-primary/90 font-medium">
-          {t("products.backToProducts")}
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-        </Link>
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <Helmet>
-        <title>{getLocalizedValue("name") + META.TITLE_SUFFIX}</title>
-        <meta name="description" content={getLocalizedValue("description")} />
-        <link rel="canonical" href={window.location.origin + addPrefix(`/products/${productSlug}`)} />
-        <link rel="alternate" hrefLang="tr" href={window.location.origin + `/tr/products/${productSlug}`} />
-        <link rel="alternate" hrefLang="en" href={window.location.origin + `/en/products/${productSlug}`} />
-        <link rel="alternate" hrefLang="ru" href={window.location.origin + `/ru/products/${productSlug}`} />
-        <link rel="alternate" hrefLang="ka" href={window.location.origin + `/ka/products/${productSlug}`} />
-      </Helmet>
-
-      <main className="py-16">
-        <div className="container mx-auto px-4">
-          {/* Breadcrumbs */}
-          <div className="mb-8">
-            <nav className="flex" aria-label="Breadcrumb">
-              <ol className="inline-flex items-center space-x-1 md:space-x-3">
-                <li className="inline-flex items-center">
-                  <Link href={addPrefix("/")} className="text-gray-500 hover:text-primary">
-                    {t("common.home")}
-                  </Link>
-                </li>
-                <li>
-                  <div className="flex items-center">
-                    <svg className="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"></path>
-                    </svg>
-                    <Link href={addPrefix("/products")} className="ml-1 text-gray-500 hover:text-primary md:ml-2">
-                      {t("common.products")}
-                    </Link>
-                  </div>
-                </li>
-                <li aria-current="page">
-                  <div className="flex items-center">
-                    <svg className="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                      <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd"></path>
-                    </svg>
-                    <span className="ml-1 text-gray-500 md:ml-2 font-medium">{getLocalizedValue("name")}</span>
-                  </div>
-                </li>
-              </ol>
-            </nav>
-          </div>
-
-          {/* Product Details */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-            {/* Product Image */}
-            <div className="relative">
-              <img
-                src={product.imageUrl}
-                alt={getLocalizedValue("name")}
-                className="w-full h-auto rounded-lg shadow-md object-cover"
-              />
-            </div>
-
-            {/* Product Information */}
-            <div>
-              <h1 className="text-3xl font-bold text-neutral-800 mb-4">
-                {getLocalizedValue("name")}
-              </h1>
-              <div className="prose prose-lg max-w-none mb-6">
-                <p>{getLocalizedValue("description")}</p>
-              </div>
-
-              {/* Usage Instructions */}
-              <div className="mb-6">
-                <h2 className="text-xl font-semibold text-neutral-800 mb-3">{t("products.usage")}</h2>
-                <div className="prose prose-lg max-w-none">
-                  <p>{getLocalizedValue("usage")}</p>
-                </div>
-              </div>
-
-              {/* Ingredients */}
-              <div className="mb-8">
-                <h2 className="text-xl font-semibold text-neutral-800 mb-3">{t("products.ingredients")}</h2>
-                <div className="prose prose-lg max-w-none">
-                  <p>{getLocalizedValue("ingredients")}</p>
-                </div>
-              </div>
-
-              {/* Contact Info */}
-              <div className="bg-primary/5 rounded-lg p-6">
-                <h3 className="text-lg font-semibold mb-2">{t("products.inquireProduct")}</h3>
-                <p className="mb-4">{t("products.inquireText")}</p>
-                <div className="flex flex-wrap gap-4">
-                  <WhatsAppButton text={t("common.contactViaWhatsApp")} />
-                  <Link
-                    href={addPrefix("/appointment")}
-                    className="inline-flex items-center bg-primary text-white font-medium px-6 py-3 rounded-md hover:bg-primary/90 transition duration-200"
-                  >
-                    {t("services.bookAppointment")}
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Back to Products button */}
-          <div className="mt-8 text-center">
-            <Link
-              href={addPrefix("/products")}
-              className="inline-flex items-center text-primary hover:text-primary/90 font-medium"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
+      <div className="container mx-auto py-10 px-4">
+        <Helmet>
+          <title>{pageTitle}</title>
+        </Helmet>
+        
+        <div className="flex mb-6">
+          <Button variant="outline" asChild className="mr-4">
+            <Link href={addPrefix("/products")}>
+              <ArrowLeft className="w-4 h-4 mr-2" />
               {t("products.backToProducts")}
             </Link>
+          </Button>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <Skeleton className="w-full h-80 rounded-lg" />
+          </div>
+          <div>
+            <Skeleton className="w-3/4 h-10 mb-4" />
+            <Skeleton className="w-1/4 h-6 mb-6" />
+            <Skeleton className="w-full h-32 mb-6" />
+            <div className="flex flex-wrap gap-4 mb-6">
+              <Skeleton className="w-32 h-10" />
+              <Skeleton className="w-32 h-10" />
+            </div>
           </div>
         </div>
-      </main>
-    </>
+      </div>
+    );
+  }
+  
+  if (!product) {
+    return (
+      <div className="container mx-auto py-10 px-4">
+        <Helmet>
+          <title>{pageTitle}</title>
+          <meta name="description" content={t("products.description")} />
+        </Helmet>
+        
+        <Alert className="mb-6">
+          <AlertTitle>{t("error.somethingWentWrong")}</AlertTitle>
+          <AlertDescription>{t("products.noProducts")}</AlertDescription>
+        </Alert>
+        
+        <Button variant="outline" asChild>
+          <Link href={addPrefix("/products")}>
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            {t("products.backToProducts")}
+          </Link>
+        </Button>
+      </div>
+    );
+  }
+  
+  return (
+    <div className="container mx-auto py-10 px-4">
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={product[`description${language}`]} />
+      </Helmet>
+      
+      <div className="flex mb-6">
+        <Button variant="outline" asChild className="mr-4">
+          <Link href={addPrefix("/products")}>
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            {t("products.backToProducts")}
+          </Link>
+        </Button>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Ürün Resmi */}
+        <div>
+          <img 
+            src={product.imageUrl} 
+            alt={product[`name${language}`]} 
+            className="w-full h-auto rounded-lg shadow-md object-cover"
+          />
+        </div>
+        
+        {/* Ürün Bilgileri */}
+        <div>
+          <h1 className="text-3xl font-bold mb-2">{product[`name${language}`]}</h1>
+          <p className="text-lg font-semibold text-primary mb-6">
+            {product.price && `$${product.price.toFixed(2)}`}
+          </p>
+          
+          <p className="text-gray-700 mb-6">{product[`description${language}`]}</p>
+          
+          <Tabs defaultValue="ingredients" className="mb-8">
+            <TabsList>
+              <TabsTrigger value="ingredients">{t("products.ingredients")}</TabsTrigger>
+              <TabsTrigger value="usage">{t("products.usage")}</TabsTrigger>
+            </TabsList>
+            <TabsContent value="ingredients" className="mt-4">
+              <div className="text-gray-700">{product[`ingredients${language}`]}</div>
+            </TabsContent>
+            <TabsContent value="usage" className="mt-4">
+              <div className="text-gray-700">{product[`usage${language}`]}</div>
+            </TabsContent>
+          </Tabs>
+          
+          <div className="flex flex-wrap gap-4 mb-8">
+            <Button asChild>
+              <a href="#inquiry-section">
+                {t("common.moreInfo")}
+              </a>
+            </Button>
+            <WhatsAppButton text={t("common.buyNow")} fixed={false} />
+          </div>
+          
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center text-green-600">
+              <Check className="w-5 h-5 mr-2" />
+              <span>{t("products.infoPoint1")}</span>
+            </div>
+            <div className="flex items-center text-green-600">
+              <Check className="w-5 h-5 mr-2" />
+              <span>{t("products.infoPoint2")}</span>
+            </div>
+            <div className="flex items-center text-green-600">
+              <Check className="w-5 h-5 mr-2" />
+              <span>{t("products.infoPoint3")}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Bilgi Alma Bölümü */}
+      <div id="inquiry-section" className="mt-16 p-8 bg-gray-50 rounded-lg">
+        <h2 className="text-2xl font-bold mb-4">{t("products.inquireProduct")}</h2>
+        <p className="text-gray-700 mb-6">{t("products.inquireText")}</p>
+        
+        <div className="flex flex-wrap gap-4">
+          <WhatsAppButton text={t("common.contactViaWhatsApp")} fixed={false} />
+          <Button variant="outline">
+            {t("common.askViaSms")}
+          </Button>
+        </div>
+      </div>
+    </div>
   );
-};
-
-export default ProductPage;
+}

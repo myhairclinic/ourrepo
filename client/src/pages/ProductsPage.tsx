@@ -47,15 +47,15 @@ export default function ProductsPage() {
                 <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden">
                   <img 
                     src={product.imageUrl} 
-                    alt={product[`name${language.toUpperCase()}`]} 
+                    alt={product[`name${language}`]} 
                     className="w-full h-64 object-cover"
                   />
                   <div className="p-6">
                     <h3 className="font-heading text-xl font-semibold mb-3">
-                      {product[`name${language.toUpperCase()}`]}
+                      {product[`name${language}`]}
                     </h3>
                     <p className="text-neutral-600 mb-4">
-                      {product[`description${language.toUpperCase()}`]}
+                      {product[`description${language}`]}
                     </p>
                     <Link href={addPrefix(`/products/${product.slug}`)} className="inline-flex items-center text-primary font-medium">
                       {t('common.moreInfo')}

@@ -61,6 +61,18 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Связаться через WhatsApp",
     [Language.Georgian]: "დაგვიკავშირდით WhatsApp-ით"
   },
+  "common.askViaSms": {
+    [Language.Turkish]: "SMS ile Sor",
+    [Language.English]: "Ask via SMS",
+    [Language.Russian]: "Спросить через SMS",
+    [Language.Georgian]: "კითხვა SMS-ით"
+  },
+  "common.buyNow": {
+    [Language.Turkish]: "Satın Al",
+    [Language.English]: "Buy Now",
+    [Language.Russian]: "Купить сейчас",
+    [Language.Georgian]: "ყიდვა ახლავე"
+  },
   "common.appointment": {
     [Language.Turkish]: "Randevu",
     [Language.English]: "Appointment",
