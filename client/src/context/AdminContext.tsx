@@ -28,7 +28,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     // Admin kullanıcı bilgilerini kontrol et
     const checkUser = async () => {
       try {
-        const response = await apiRequest("GET", "/api/admin/user");
+        const response = await apiRequest("GET", "/api/user");
         if (response.ok) {
           const userData = await response.json();
           setUser(userData);
@@ -50,7 +50,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     setIsLoading(true);
     
     try {
-      const response = await apiRequest("POST", "/api/admin/login", { username, password });
+      const response = await apiRequest("POST", "/api/login", { username, password });
       
       if (!response.ok) {
         throw new Error("Giriş yapılamadı");
@@ -68,7 +68,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     setIsLoading(true);
     
     try {
-      await apiRequest("POST", "/api/admin/logout");
+      await apiRequest("POST", "/api/logout");
       setUser(null);
     } finally {
       setIsLoading(false);
