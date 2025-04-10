@@ -10,6 +10,10 @@ import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/hooks/use-language";
 import { useState, useEffect, useRef } from "react";
 
+// Import service images
+import hairTransplantImage from "@/assets/images/hair-transplant.png";
+import consultationImage from "@/assets/images/consultation.png";
+
 const FeatureIcon = ({ index }: { index: number }) => {
   switch (index % 4) {
     case 0:
@@ -56,8 +60,10 @@ function ServiceCard({
         {/* Resim */}
         <img 
           src={service.slug === 'hair-transplantation' 
-            ? (window.location.hostname.includes('replit') ? 'https://cdn.jsdelivr.net/gh/replit-images/myhairclinic-images@main/hair-transplant-procedure.png' : '/images/services/hair-transplant-procedure.png')
-            : service.imageUrl || '/images/placeholder.jpg'
+              ? hairTransplantImage
+              : service.slug === 'eyebrow-transplantation' 
+                  ? consultationImage 
+                  : service.imageUrl || '/images/placeholder.jpg'
           } 
           alt={getTitle(service)}
           className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
