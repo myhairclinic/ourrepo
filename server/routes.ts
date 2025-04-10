@@ -29,6 +29,7 @@ import {
   updateAppointmentStatus,
   deleteAppointment
 } from "./controllers/appointmentController";
+import { trackAppointment } from "./controllers/appointmentTrackerController";
 import {
   getClinicInfo,
   updateClinicInfo,
@@ -85,6 +86,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Appointment routes
   app.post("/api/appointments", createAppointment);
   app.get("/api/appointments", getAppointments);
+  app.get("/api/appointments/track", trackAppointment);
   app.put("/api/appointments/:id", updateAppointmentStatus);
   app.delete("/api/appointments/:id", deleteAppointment);
 

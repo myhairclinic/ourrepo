@@ -20,6 +20,7 @@ import BlogPostPage from "./pages/BlogPostPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import AppointmentPage from "./pages/AppointmentPage";
+import AppointmentTracker from "./pages/AppointmentTracker";
 import NotFound from "./pages/not-found";
 
 // Admin Pages
@@ -89,6 +90,7 @@ function Router() {
       <Route path="/:lang/about" component={AboutPage} />
       <Route path="/:lang/contact" component={ContactPage} />
       <Route path="/:lang/appointment" component={AppointmentPage} />
+      <Route path="/:lang/appointment-tracker" component={AppointmentTracker} />
       
       {/* Redirect to language prefix */}
       <Route path="/">
