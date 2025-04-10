@@ -63,9 +63,15 @@ function ServiceCard({
               ? hairTransplantImage
               : service.slug === 'eyebrow-transplantation' 
                   ? consultationImage 
-                  : service.imageUrl || '/images/placeholder.jpg'
+                  : service.slug === 'beard-transplantation'
+                      ? consultationImage
+                      : service.slug === 'prp-treatment'
+                          ? hairTransplantImage
+                          : service.slug === 'hair-mesotherapy'
+                              ? consultationImage
+                              : service.imageUrl || '/images/placeholder.jpg'
           } 
-          alt={getTitle(service)}
+          alt={`${getTitle(service)} - MyHair Clinic, En iyi ${getTitle(service)} hizmeti Tiflis'te`}
           className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
           onError={(e) => {
             const target = e.target as HTMLImageElement;

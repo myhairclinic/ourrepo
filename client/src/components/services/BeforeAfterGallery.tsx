@@ -236,7 +236,7 @@ export function BeforeAfterGallery({
                 {/* Before image - full width, will be clipped by the container */}
                 <img 
                   src={items[currentIndex].beforeImageUrl}
-                  alt={`Before - ${getLocalizedDescription(items[currentIndex])}`}
+                  alt={`Before treatment - ${getLocalizedDescription(items[currentIndex])} | MyHair Clinic Hair Transplant Results`}
                   className="absolute top-0 left-0 h-full w-full object-cover"
                   onError={(e) => {
                     console.log("Slider resim yükleme hatası düzeltiliyor:", items[currentIndex].id);
@@ -251,7 +251,7 @@ export function BeforeAfterGallery({
                 >
                   <img 
                     src={items[currentIndex].afterImageUrl}
-                    alt={`After - ${getLocalizedDescription(items[currentIndex])}`}
+                    alt={`After treatment - ${getLocalizedDescription(items[currentIndex])} | MyHair Clinic Hair Transplant Success Story`}
                     className="absolute top-0 left-0 h-full w-full object-cover"
                     onError={(e) => {
                       console.log("Slider after resim yükleme hatası düzeltiliyor:", items[currentIndex].id);
