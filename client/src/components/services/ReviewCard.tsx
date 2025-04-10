@@ -100,32 +100,7 @@ export function ReviewCard({ review, featured = false }: ReviewCardProps) {
         </Badge>
       )}
       
-      {/* Verified badge */}
-      {isVerified && (
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Badge 
-                variant="outline" 
-                className="absolute left-4 top-4 bg-green-50 text-green-600 border-green-200 flex items-center gap-1"
-              >
-                <CheckCircle size={12} className="fill-green-100" />
-                {t("reviews.verifiedCustomer")}
-              </Badge>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>
-                {t({
-                  TR: "Bu kullanıcı gerçekten kliniğimizde tedavi görmüştür",
-                  EN: "This user has actually received treatment at our clinic",
-                  RU: "Этот пользователь действительно получил лечение в нашей клинике",
-                  KA: "ეს მომხმარებელი ნამდვილად იმკურნალა ჩვენს კლინიკაში"
-                })}
-              </p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      )}
+      {/* Verified badge moved to user info section */}
       
       {/* User info and rating */}
       <div className="flex gap-4">
@@ -140,28 +115,57 @@ export function ReviewCard({ review, featured = false }: ReviewCardProps) {
         </Avatar>
         
         <div>
-          <h4 className="font-semibold text-lg flex items-center gap-2">
-            {review.name}
-            {featured && (
+          <div className="flex items-center">
+            <h4 className="font-semibold text-lg flex items-center gap-2">
+              {review.name}
+              {featured && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Award size={16} className="text-amber-500" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>
+                        {t({
+                          TR: "En yüksek puanlı yorumlardan biri",
+                          EN: "One of our highest rated reviews",
+                          RU: "Один из наших отзывов с самым высоким рейтингом",
+                          KA: "ჩვენი ერთ-ერთი ყველაზე მაღალი შეფასების მქონე მიმოხილვა"
+                        })}
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
+            </h4>
+            
+            {/* Verified badge moved here */}
+            {isVerified && (
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Award size={16} className="text-amber-500" />
+                    <Badge 
+                      variant="outline" 
+                      className="ml-2 bg-green-50 text-green-600 border-green-200 flex items-center gap-1"
+                    >
+                      <CheckCircle size={12} className="fill-green-100" />
+                      {t("reviews.verifiedCustomer")}
+                    </Badge>
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>
                       {t({
-                        TR: "En yüksek puanlı yorumlardan biri",
-                        EN: "One of our highest rated reviews",
-                        RU: "Один из наших отзывов с самым высоким рейтингом",
-                        KA: "ჩვენი ერთ-ერთი ყველაზე მაღალი შეფასების მქონე მიმოხილვა"
+                        TR: "Bu kullanıcı gerçekten kliniğimizde tedavi görmüştür",
+                        EN: "This user has actually received treatment at our clinic",
+                        RU: "Этот пользователь действительно получил лечение в нашей клинике",
+                        KA: "ეს მომხმარებელი ნამდვილად იმკურნალა ჩვენს კლინიკაში"
                       })}
                     </p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             )}
-          </h4>
+          </div>
           <div className="flex flex-wrap items-center gap-2 mt-1">
             <div className="flex items-center">
               <StarRatingDisplay rating={review.rating} showValue />
