@@ -292,9 +292,16 @@ export default function ServicePage() {
             {/* Service Image */}
             <div className="overflow-hidden rounded-xl shadow-xl">
               <img 
-                src={service.slug === 'hair-transplantation' ? hairTransplantImage : service.imageUrl}
+                src={service.slug === 'hair-transplantation' ? hairTransplantImage : 
+                    (service.slug === 'beard-transplantation' ? consultationImage : 
+                    (service.slug === 'prp-treatment' ? hairTransplantImage : 
+                    (service.slug === 'hair-mesotherapy' ? consultationImage : service.imageUrl)))}
                 alt={getLocalizedTitle(service)} 
                 className="w-full h-auto object-cover"
+                onError={(e) => {
+                  console.log("Resim yükleme hatası düzeltiliyor:", service.slug);
+                  e.currentTarget.src = hairTransplantImage;
+                }}
               />
             </div>
 

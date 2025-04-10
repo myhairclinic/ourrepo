@@ -164,6 +164,10 @@ export function BeforeAfterGallery({
                       src={item.beforeImageUrl} 
                       alt={`Before - ${getLocalizedDescription(item)}`}
                       className="absolute h-full w-[200%] max-w-none object-cover"
+                      onError={(e) => {
+                        console.log("Resim yükleme hatası düzeltiliyor:", item.id);
+                        e.currentTarget.src = "https://images.unsplash.com/photo-1474176857210-7287d38d27c6?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3";
+                      }}
                     />
                     <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-colors">
                       <div className="absolute bottom-4 left-4 bg-black/70 text-white text-xs px-2 py-1 rounded">
@@ -179,6 +183,10 @@ export function BeforeAfterGallery({
                       src={item.afterImageUrl} 
                       alt={`After - ${getLocalizedDescription(item)}`}
                       className="absolute h-full w-[200%] max-w-none object-cover right-0"
+                      onError={(e) => {
+                        console.log("Resim yükleme hatası düzeltiliyor:", item.id);
+                        e.currentTarget.src = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3";
+                      }}
                     />
                     <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-colors">
                       <div className="absolute bottom-4 right-4 bg-primary/90 text-white text-xs px-2 py-1 rounded">
@@ -230,6 +238,10 @@ export function BeforeAfterGallery({
                   src={items[currentIndex].beforeImageUrl}
                   alt={`Before - ${getLocalizedDescription(items[currentIndex])}`}
                   className="absolute top-0 left-0 h-full w-full object-cover"
+                  onError={(e) => {
+                    console.log("Slider resim yükleme hatası düzeltiliyor:", items[currentIndex].id);
+                    e.currentTarget.src = "https://images.unsplash.com/photo-1474176857210-7287d38d27c6?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3";
+                  }}
                 />
                 
                 {/* After image - shown based on slider position */}
@@ -241,6 +253,10 @@ export function BeforeAfterGallery({
                     src={items[currentIndex].afterImageUrl}
                     alt={`After - ${getLocalizedDescription(items[currentIndex])}`}
                     className="absolute top-0 left-0 h-full w-full object-cover"
+                    onError={(e) => {
+                      console.log("Slider after resim yükleme hatası düzeltiliyor:", items[currentIndex].id);
+                      e.currentTarget.src = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3";
+                    }}
                   />
                 </div>
                 
@@ -326,6 +342,10 @@ export function BeforeAfterGallery({
                     src={item.afterImageUrl}
                     alt={getLocalizedDescription(item)}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      console.log("Thumbnail resim yükleme hatası düzeltiliyor:", item.id);
+                      e.currentTarget.src = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3";
+                    }}
                   />
                 </div>
               ))}
