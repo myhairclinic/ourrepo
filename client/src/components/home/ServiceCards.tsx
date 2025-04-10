@@ -55,7 +55,7 @@ function ServiceCard({
         
         {/* Resim */}
         <img 
-          src={service.imageUrl || '/images/placeholder.jpg'} 
+          src={service.slug === 'hair-transplantation' ? '/images/services/hair-transplant-procedure.png' : service.imageUrl || '/images/placeholder.jpg'} 
           alt={getTitle(service)}
           className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
           onError={(e) => {
