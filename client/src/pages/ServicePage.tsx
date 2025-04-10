@@ -49,6 +49,15 @@ import { Separator } from "@/components/ui/separator";
 import hairTransplantImage from "@/assets/images/hair-transplant.png";
 import consultationImage from "@/assets/images/consultation.png";
 
+// Service-specific icons - these will be used in the tabs and other sections
+const serviceIcons = {
+  'hair-transplantation': <Scissors className="h-5 w-5" />,
+  'eyebrow-transplantation': <Sparkles className="h-5 w-5" />,
+  'beard-transplantation': <BadgeCheck className="h-5 w-5" />,
+  'prp-treatment': <Zap className="h-5 w-5" />,
+  'hair-mesotherapy': <ThumbsUp className="h-5 w-5" />,
+};
+
 export default function ServicePage() {
   const { language, currentLanguage, addPrefix } = useLanguage();
   const { t } = useTranslation(language);
@@ -414,7 +423,7 @@ export default function ServicePage() {
                   <TabsList className="w-full max-w-lg mx-auto mb-10 grid grid-cols-4 bg-gray-100/60">
                     <TabsTrigger value="details" className="data-[state=active]:bg-white data-[state=active]:shadow-md transition-all">
                       <div className="flex flex-col items-center space-y-1 py-1">
-                        <BadgeCheck className="h-5 w-5" />
+                        {service.slug && serviceIcons[service.slug as keyof typeof serviceIcons] || <BadgeCheck className="h-5 w-5" />}
                         <span>{detailsHeading}</span>
                       </div>
                     </TabsTrigger>
