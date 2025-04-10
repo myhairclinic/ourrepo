@@ -1,25 +1,33 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Package, insertPackageSchema } from "@shared/schema";
-import { queryClient, apiRequest } from "@/lib/queryClient";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { Package, InsertPackage } from "@shared/schema";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Trash2, Pencil, Plus, ImagePlus, Save, X } from "lucide-react";
+import { Loader2, Plus, Edit, Trash2, FileImage } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-
 import AdminLayout from "@/components/admin/AdminLayout";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Switch } from "@/components/ui/switch";
+import { useTranslation } from "@/hooks/use-translation";
 
-const formSchema = insertPackageSchema.extend({
+// Form validation schema
+const formSchema = z.object({
+  titleTR: z.string().min(1, "Bu alan zorunludur"),
+  titleEN: z.string().min(1, "Bu alan zorunludur"),
+  titleRU: z.string().min(1, "Bu alan zorunludur"),
+  titleKA: z.string().min(1, "Bu alan zorunludur"),
+  descriptionTR: z.string().min(1, "Bu alan zorunludur"),
+  descriptionEN: z.string().min(1, "Bu alan zorunludur"),
+  descriptionRU: z.string().min(1, "Bu alan zorunludur"),
+  descriptionKA: z.string().min(1, "Bu alan zorunludur"),
+  contentTR: z.string().min(1, "Bu alan zorunludur"),
+  contentEN: z.string().min(1, "Bu alan zorunludur"),
+  contentRU: z.string().min(1, "Bu alan zorunludur"),
+  contentKA: z.string().min(1, "Bu alan zorunludur"),
+  price: z.coerce.number().min(0, "Fiyat negatif olamaz"),
+  order: z.coerce.number().int().min(0),
+  isActive: z.boolean().default(true),
+  imageUrl: z.string().min(1, "Bu alan zorunludur"),
   imageFile: z.instanceof(FileList).optional(),
 });
 
@@ -27,14 +35,16 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function PackagesManager() {
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [editingPackage, setEditingPackage] = useState<Package | null>(null);
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  
-  const { data: packages, isLoading } = useQuery<Package[]>({
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const { data: packages, isLoading: isLoadingPackages } = useQuery<Package[]>({
     queryKey: ["/api/packages"],
+    staleTime: 60 * 1000, // 1 minute
   });
 
+  // Form control
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,103 +60,128 @@ export default function PackagesManager() {
       contentEN: "",
       contentRU: "",
       contentKA: "",
-      imageUrl: "",
       price: 0,
       order: 0,
       isActive: true,
+      imageUrl: "",
     },
   });
 
-  const createPackageMutation = useMutation({
+  // Create mutation
+  const createMutation = useMutation({
     mutationFn: async (values: FormValues) => {
-      const formData = new FormData();
+      let imageUrl = values.imageUrl;
       
-      // Add all text fields to formData
-      Object.entries(values).forEach(([key, value]) => {
-        if (key !== "imageFile" && value !== undefined) {
-          formData.append(key, String(value));
-        }
-      });
-      
-      // Add image file if present
       if (values.imageFile && values.imageFile.length > 0) {
-        formData.append("image", values.imageFile[0]);
+        const formData = new FormData();
+        formData.append("file", values.imageFile[0]);
+        
+        const uploadRes = await apiRequest("POST", "/api/upload", formData);
+        if (!uploadRes.ok) throw new Error("Resim yüklenemedi");
+        
+        const { url } = await uploadRes.json();
+        imageUrl = url;
       }
       
-      const response = await apiRequest("POST", "/api/packages", formData, true);
-      return response.json();
+      const packageData: InsertPackage = {
+        ...values,
+        imageUrl,
+        price: values.price
+      };
+      
+      delete (packageData as any).imageFile;
+      
+      const res = await apiRequest("POST", "/api/packages", packageData);
+      if (!res.ok) throw new Error("Paket eklenemedi");
+      
+      return await res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/packages"] });
-      toast({
-        title: "Paket oluşturuldu",
-        description: "Paket başarıyla oluşturuldu.",
-      });
       form.reset();
-      setIsAddDialogOpen(false);
+      setPreviewUrl(null);
+      toast({
+        title: "Başarılı",
+        description: "Paket başarıyla eklendi",
+      });
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toast({
         title: "Hata",
-        description: `Paket oluşturulurken bir hata oluştu: ${error.message}`,
+        description: error.message,
         variant: "destructive",
       });
     },
   });
 
-  const updatePackageMutation = useMutation({
-    mutationFn: async (values: FormValues & { id: number }) => {
-      const { id, ...data } = values;
-      const formData = new FormData();
+  // Update mutation
+  const updateMutation = useMutation({
+    mutationFn: async (values: FormValues) => {
+      if (!editingPackage) return;
       
-      // Add all text fields to formData
-      Object.entries(data).forEach(([key, value]) => {
-        if (key !== "imageFile" && value !== undefined) {
-          formData.append(key, String(value));
-        }
-      });
+      let imageUrl = values.imageUrl;
       
-      // Add image file if present
       if (values.imageFile && values.imageFile.length > 0) {
-        formData.append("image", values.imageFile[0]);
+        const formData = new FormData();
+        formData.append("file", values.imageFile[0]);
+        
+        const uploadRes = await apiRequest("POST", "/api/upload", formData);
+        if (!uploadRes.ok) throw new Error("Resim yüklenemedi");
+        
+        const { url } = await uploadRes.json();
+        imageUrl = url;
       }
       
-      const response = await apiRequest("PATCH", `/api/packages/${id}`, formData, true);
-      return response.json();
+      const packageData: Partial<InsertPackage> = {
+        ...values,
+        imageUrl,
+        price: values.price
+      };
+      
+      delete (packageData as any).imageFile;
+      
+      const res = await apiRequest("PUT", `/api/packages/${editingPackage.id}`, packageData);
+      if (!res.ok) throw new Error("Paket güncellenemedi");
+      
+      return await res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/packages"] });
-      toast({
-        title: "Paket güncellendi",
-        description: "Paket başarıyla güncellendi.",
-      });
+      form.reset();
       setEditingPackage(null);
-      setIsEditDialogOpen(false);
+      setPreviewUrl(null);
+      toast({
+        title: "Başarılı",
+        description: "Paket başarıyla güncellendi",
+      });
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toast({
         title: "Hata",
-        description: `Paket güncellenirken bir hata oluştu: ${error.message}`,
+        description: error.message,
         variant: "destructive",
       });
     },
   });
 
-  const deletePackageMutation = useMutation({
+  // Delete mutation
+  const deleteMutation = useMutation({
     mutationFn: async (id: number) => {
-      await apiRequest("DELETE", `/api/packages/${id}`);
+      const res = await apiRequest("DELETE", `/api/packages/${id}`);
+      if (!res.ok) throw new Error("Paket silinemedi");
+      return id;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/packages"] });
       toast({
-        title: "Paket silindi",
-        description: "Paket başarıyla silindi.",
+        title: "Başarılı",
+        description: "Paket başarıyla silindi",
       });
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toast({
         title: "Hata",
-        description: `Paket silinirken bir hata oluştu: ${error.message}`,
+        description: error.message,
         variant: "destructive",
       });
     },
@@ -154,449 +189,438 @@ export default function PackagesManager() {
 
   const onSubmit = (values: FormValues) => {
     if (editingPackage) {
-      updatePackageMutation.mutate({ ...values, id: editingPackage.id });
+      updateMutation.mutate(values);
     } else {
-      createPackageMutation.mutate(values);
+      createMutation.mutate(values);
     }
   };
 
   const handleEdit = (pkg: Package) => {
     setEditingPackage(pkg);
+    setPreviewUrl(pkg.imageUrl);
     form.reset({
-      titleTR: pkg.titleTR,
-      titleEN: pkg.titleEN,
-      titleRU: pkg.titleRU,
-      titleKA: pkg.titleKA,
-      descriptionTR: pkg.descriptionTR,
-      descriptionEN: pkg.descriptionEN,
-      descriptionRU: pkg.descriptionRU,
-      descriptionKA: pkg.descriptionKA,
-      contentTR: pkg.contentTR,
-      contentEN: pkg.contentEN,
-      contentRU: pkg.contentRU,
-      contentKA: pkg.contentKA,
-      imageUrl: pkg.imageUrl,
-      price: pkg.price,
-      order: pkg.order,
-      isActive: pkg.isActive,
+      ...pkg,
+      price: pkg.price || 0,
     });
-    setIsEditDialogOpen(true);
   };
 
   const handleDelete = (id: number) => {
     if (window.confirm("Bu paketi silmek istediğinize emin misiniz?")) {
-      deletePackageMutation.mutate(id);
+      deleteMutation.mutate(id);
     }
   };
 
-  const handleAdd = () => {
+  const handleCancel = () => {
     setEditingPackage(null);
-    form.reset({
-      titleTR: "",
-      titleEN: "",
-      titleRU: "",
-      titleKA: "",
-      descriptionTR: "",
-      descriptionEN: "",
-      descriptionRU: "",
-      descriptionKA: "",
-      contentTR: "",
-      contentEN: "",
-      contentRU: "",
-      contentKA: "",
-      imageUrl: "",
-      price: 0,
-      order: 0,
-      isActive: true,
-    });
-    setIsAddDialogOpen(true);
+    setPreviewUrl(null);
+    form.reset();
   };
 
-  const PackageForm = () => (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <Tabs defaultValue="tr">
-          <TabsList className="mb-4">
-            <TabsTrigger value="tr">Türkçe</TabsTrigger>
-            <TabsTrigger value="en">English</TabsTrigger>
-            <TabsTrigger value="ru">Русский</TabsTrigger>
-            <TabsTrigger value="ka">ქართული</TabsTrigger>
-            <TabsTrigger value="common">Ortak Alanlar</TabsTrigger>
-          </TabsList>
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+    }
+  };
 
-          {/* Türkçe İçerik */}
-          <TabsContent value="tr" className="space-y-4">
-            <FormField
-              control={form.control}
-              name="titleTR"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Başlık (TR)</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Paket başlığı..." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="descriptionTR"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Açıklama (TR)</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="Kısa açıklama..." rows={3} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="contentTR"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>İçerik (TR)</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="HTML içerik..." rows={10} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </TabsContent>
-
-          {/* İngilizce İçerik */}
-          <TabsContent value="en" className="space-y-4">
-            <FormField
-              control={form.control}
-              name="titleEN"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Title (EN)</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Package title..." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="descriptionEN"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description (EN)</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="Short description..." rows={3} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="contentEN"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Content (EN)</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="HTML content..." rows={10} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </TabsContent>
-
-          {/* Rusça İçerik */}
-          <TabsContent value="ru" className="space-y-4">
-            <FormField
-              control={form.control}
-              name="titleRU"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Заголовок (RU)</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Заголовок пакета..." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="descriptionRU"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Описание (RU)</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="Краткое описание..." rows={3} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="contentRU"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Содержание (RU)</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="HTML содержание..." rows={10} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </TabsContent>
-
-          {/* Gürcüce İçerik */}
-          <TabsContent value="ka" className="space-y-4">
-            <FormField
-              control={form.control}
-              name="titleKA"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>სათაური (KA)</FormLabel>
-                  <FormControl>
-                    <Input placeholder="პაკეტის სათაური..." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="descriptionKA"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>აღწერა (KA)</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="მოკლე აღწერა..." rows={3} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="contentKA"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>შინაარსი (KA)</FormLabel>
-                  <FormControl>
-                    <Textarea placeholder="HTML შინაარსი..." rows={10} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </TabsContent>
-
-          {/* Ortak Alanlar */}
-          <TabsContent value="common" className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="price"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Fiyat (EUR)</FormLabel>
-                    <FormControl>
-                      <Input type="number" {...field} onChange={e => field.onChange(parseInt(e.target.value))} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="order"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Sıralama</FormLabel>
-                    <FormControl>
-                      <Input type="number" {...field} onChange={e => field.onChange(parseInt(e.target.value))} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            
-            <FormField
-              control={form.control}
-              name="imageUrl"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Resim URL</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="imageFile"
-              render={({ field: { value, onChange, ...fieldProps } }) => (
-                <FormItem>
-                  <FormLabel>Yeni Resim Yükle</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => onChange(e.target.files)}
-                      {...fieldProps}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="isActive"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
-                  <div className="space-y-0.5">
-                    <FormLabel className="text-base">Aktif</FormLabel>
-                  </div>
-                  <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </TabsContent>
-        </Tabs>
-
-        <div className="flex justify-end space-x-2">
-          <Button 
-            type="button" 
-            variant="outline" 
-            onClick={() => {
-              setIsAddDialogOpen(false);
-              setIsEditDialogOpen(false);
-            }}
-          >
-            <X className="mr-2 h-4 w-4" /> İptal
-          </Button>
-          <Button type="submit" disabled={createPackageMutation.isPending || updatePackageMutation.isPending}>
-            <Save className="mr-2 h-4 w-4" />
-            {createPackageMutation.isPending || updatePackageMutation.isPending ? "Kaydediliyor..." : "Kaydet"}
-          </Button>
-        </div>
-      </form>
-    </Form>
-  );
+  const isSubmitting = createMutation.isPending || updateMutation.isPending;
 
   return (
     <AdminLayout title="Paket Yönetimi">
-      <div className="mb-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Paketler</h1>
-        <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={handleAdd}>
-              <Plus className="mr-2 h-4 w-4" /> Yeni Paket Ekle
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-3xl max-h-[90vh] overflow-auto">
-            <DialogHeader>
-              <DialogTitle>Yeni Paket Ekle</DialogTitle>
-            </DialogHeader>
-            <ScrollArea className="h-full max-h-[70vh] pr-4">
-              <PackageForm />
-            </ScrollArea>
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      {isLoading ? (
-        <div className="flex justify-center items-center h-64">
-          <p>Paketler yükleniyor...</p>
-        </div>
-      ) : packages && packages.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {packages.map((pkg) => (
-            <Card key={pkg.id} className="overflow-hidden">
-              <div 
-                className="h-40 bg-cover bg-center"
-                style={{ backgroundImage: `url(${pkg.imageUrl})` }}
-              />
-              <CardHeader>
-                <CardTitle className="flex justify-between items-center">
-                  <span className="truncate">{pkg.titleTR}</span>
-                  <span className="text-base font-normal bg-primary/10 text-primary px-2 py-1 rounded">
-                    €{pkg.price}
-                  </span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-500 line-clamp-2">{pkg.descriptionTR}</p>
-                <div className="mt-2 flex items-center text-xs">
-                  <span className={`px-2 py-1 rounded ${pkg.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                    {pkg.isActive ? 'Aktif' : 'Pasif'}
-                  </span>
-                  <span className="ml-2 text-gray-500">
-                    Sıra: {pkg.order}
-                  </span>
+      <div className="grid md:grid-cols-12 gap-6">
+        {/* Form Section */}
+        <div className="md:col-span-5 lg:col-span-4 bg-white p-4 rounded-lg shadow">
+          <h2 className="text-lg font-medium mb-4">
+            {editingPackage ? "Paketi Düzenle" : "Yeni Paket Ekle"}
+          </h2>
+          
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            {/* Turkish Fields */}
+            <div className="space-y-2">
+              <h3 className="font-medium text-sm text-gray-500">Türkçe Bilgiler</h3>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Başlık (TR)</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...form.register("titleTR")}
+                />
+                {form.formState.errors.titleTR && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {form.formState.errors.titleTR.message}
+                  </p>
+                )}
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Açıklama (TR)</label>
+                <textarea
+                  className="w-full p-2 border rounded"
+                  rows={2}
+                  {...form.register("descriptionTR")}
+                />
+                {form.formState.errors.descriptionTR && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {form.formState.errors.descriptionTR.message}
+                  </p>
+                )}
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">İçerik (TR)</label>
+                <textarea
+                  className="w-full p-2 border rounded"
+                  rows={4}
+                  {...form.register("contentTR")}
+                />
+                {form.formState.errors.contentTR && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {form.formState.errors.contentTR.message}
+                  </p>
+                )}
+              </div>
+            </div>
+            
+            {/* English Fields */}
+            <div className="space-y-2">
+              <h3 className="font-medium text-sm text-gray-500">İngilizce Bilgiler</h3>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Başlık (EN)</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...form.register("titleEN")}
+                />
+                {form.formState.errors.titleEN && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {form.formState.errors.titleEN.message}
+                  </p>
+                )}
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Açıklama (EN)</label>
+                <textarea
+                  className="w-full p-2 border rounded"
+                  rows={2}
+                  {...form.register("descriptionEN")}
+                />
+                {form.formState.errors.descriptionEN && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {form.formState.errors.descriptionEN.message}
+                  </p>
+                )}
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">İçerik (EN)</label>
+                <textarea
+                  className="w-full p-2 border rounded"
+                  rows={4}
+                  {...form.register("contentEN")}
+                />
+                {form.formState.errors.contentEN && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {form.formState.errors.contentEN.message}
+                  </p>
+                )}
+              </div>
+            </div>
+            
+            {/* Russian Fields */}
+            <div className="space-y-2">
+              <h3 className="font-medium text-sm text-gray-500">Rusça Bilgiler</h3>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Başlık (RU)</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...form.register("titleRU")}
+                />
+                {form.formState.errors.titleRU && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {form.formState.errors.titleRU.message}
+                  </p>
+                )}
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Açıklama (RU)</label>
+                <textarea
+                  className="w-full p-2 border rounded"
+                  rows={2}
+                  {...form.register("descriptionRU")}
+                />
+                {form.formState.errors.descriptionRU && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {form.formState.errors.descriptionRU.message}
+                  </p>
+                )}
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">İçerik (RU)</label>
+                <textarea
+                  className="w-full p-2 border rounded"
+                  rows={4}
+                  {...form.register("contentRU")}
+                />
+                {form.formState.errors.contentRU && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {form.formState.errors.contentRU.message}
+                  </p>
+                )}
+              </div>
+            </div>
+            
+            {/* Georgian Fields */}
+            <div className="space-y-2">
+              <h3 className="font-medium text-sm text-gray-500">Gürcüce Bilgiler</h3>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Başlık (KA)</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...form.register("titleKA")}
+                />
+                {form.formState.errors.titleKA && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {form.formState.errors.titleKA.message}
+                  </p>
+                )}
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Açıklama (KA)</label>
+                <textarea
+                  className="w-full p-2 border rounded"
+                  rows={2}
+                  {...form.register("descriptionKA")}
+                />
+                {form.formState.errors.descriptionKA && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {form.formState.errors.descriptionKA.message}
+                  </p>
+                )}
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">İçerik (KA)</label>
+                <textarea
+                  className="w-full p-2 border rounded"
+                  rows={4}
+                  {...form.register("contentKA")}
+                />
+                {form.formState.errors.contentKA && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {form.formState.errors.contentKA.message}
+                  </p>
+                )}
+              </div>
+            </div>
+            
+            {/* Other Fields */}
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Fiyat (€)</label>
+                <input
+                  type="number"
+                  className="w-full p-2 border rounded"
+                  min="0"
+                  {...form.register("price")}
+                />
+                {form.formState.errors.price && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {form.formState.errors.price.message}
+                  </p>
+                )}
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Sıralama</label>
+                <input
+                  type="number"
+                  className="w-full p-2 border rounded"
+                  min="0"
+                  {...form.register("order")}
+                />
+                {form.formState.errors.order && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {form.formState.errors.order.message}
+                  </p>
+                )}
+              </div>
+              
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="isActive"
+                  className="mr-2"
+                  {...form.register("isActive")}
+                />
+                <label htmlFor="isActive" className="text-sm font-medium">
+                  Aktif
+                </label>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Resim URL</label>
+                <input
+                  type="text"
+                  className="w-full p-2 border rounded"
+                  {...form.register("imageUrl")}
+                />
+                {form.formState.errors.imageUrl && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {form.formState.errors.imageUrl.message}
+                  </p>
+                )}
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1">Veya Resim Yükle</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="w-full p-2 border rounded"
+                  onChange={handleFileChange}
+                />
+              </div>
+              
+              {previewUrl && (
+                <div className="mt-2">
+                  <p className="text-sm font-medium mb-1">Önizleme</p>
+                  <img
+                    src={previewUrl}
+                    alt="Önizleme"
+                    className="w-full h-32 object-cover rounded"
+                  />
                 </div>
-              </CardContent>
-              <CardFooter className="flex justify-end space-x-2">
-                <Dialog open={isEditDialogOpen && editingPackage?.id === pkg.id} onOpenChange={setIsEditDialogOpen}>
-                  <DialogTrigger asChild>
-                    <Button variant="outline" size="sm" onClick={() => handleEdit(pkg)}>
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-3xl max-h-[90vh] overflow-auto">
-                    <DialogHeader>
-                      <DialogTitle>Paketi Düzenle</DialogTitle>
-                    </DialogHeader>
-                    <ScrollArea className="h-full max-h-[70vh] pr-4">
-                      <PackageForm />
-                    </ScrollArea>
-                  </DialogContent>
-                </Dialog>
-                <Button 
-                  variant="destructive" 
-                  size="sm"
-                  onClick={() => handleDelete(pkg.id)}
-                  disabled={deletePackageMutation.isPending}
+              )}
+            </div>
+            
+            <div className="flex items-center space-x-2 pt-4">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/80 flex items-center"
+              >
+                {isSubmitting && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
+                {editingPackage ? "Güncelle" : "Ekle"}
+              </button>
+              
+              {editingPackage && (
+                <button
+                  type="button"
+                  onClick={handleCancel}
+                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300"
                 >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+                  İptal
+                </button>
+              )}
+            </div>
+          </form>
         </div>
-      ) : (
-        <div className="bg-gray-50 rounded-lg p-8 text-center">
-          <p className="text-gray-500">Henüz hiç paket eklenmemiş.</p>
-          <Button className="mt-4" onClick={handleAdd}>
-            <Plus className="mr-2 h-4 w-4" /> İlk Paketi Ekle
-          </Button>
+        
+        {/* Packages List */}
+        <div className="md:col-span-7 lg:col-span-8 bg-white p-4 rounded-lg shadow">
+          <h2 className="text-lg font-medium mb-4">Paketler</h2>
+          
+          {isLoadingPackages ? (
+            <div className="flex justify-center items-center py-8">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          ) : !packages || packages.length === 0 ? (
+            <div className="text-center py-8 text-gray-500">
+              Henüz hiç paket bulunmuyor.
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Resim
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Başlık
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Fiyat
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Sıra
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Durum
+                    </th>
+                    <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      İşlemler
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {packages.map((pkg) => (
+                    <tr key={pkg.id}>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {pkg.imageUrl ? (
+                          <img
+                            src={pkg.imageUrl}
+                            alt={pkg.titleTR}
+                            className="w-10 h-10 object-cover rounded"
+                          />
+                        ) : (
+                          <div className="w-10 h-10 bg-gray-200 rounded flex items-center justify-center">
+                            <FileImage className="w-6 h-6 text-gray-400" />
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900">{pkg.titleTR}</div>
+                        <div className="text-xs text-gray-500">{pkg.titleEN}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">€{pkg.price || 0}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm text-gray-900">{pkg.order}</div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          pkg.isActive
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
+                        }`}>
+                          {pkg.isActive ? "Aktif" : "Pasif"}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button
+                          onClick={() => handleEdit(pkg)}
+                          className="text-indigo-600 hover:text-indigo-900 mr-3"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(pkg.id)}
+                          className="text-red-600 hover:text-red-900"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </AdminLayout>
   );
 }

@@ -52,7 +52,9 @@ export const translations: TranslationsDict = {
       meta_description: "MyHair Clinic'in uluslararası hastaları için transfer, konaklama ve tedavi içeren özel paketleri",
       all_packages: "Tüm Paketler",
       no_packages: "Şu anda mevcut paket bulunmamaktadır",
-      book_now: "Hemen Randevu Al"
+      book_now: "Hemen Randevu Al",
+      empty: "Şu anda herhangi bir paket mevcut değil.",
+      callToAction: "En iyi saç ekimi deneyimi için hemen randevu alın"
     },
     
     // Ana sayfa
@@ -145,7 +147,9 @@ export const translations: TranslationsDict = {
       meta_description: "Special packages for international patients at MyHair Clinic including transfers, accommodation, and treatment",
       all_packages: "All Packages",
       no_packages: "No packages available at the moment",
-      book_now: "Book an Appointment Now"
+      book_now: "Book an Appointment Now",
+      empty: "No packages available at the moment.",
+      callToAction: "Book an appointment now for the best hair transplant experience"
     },
     
     // Home page
@@ -331,7 +335,9 @@ export const translations: TranslationsDict = {
       meta_description: "სპეციალური პაკეტები უცხოელი პაციენტებისთვის MyHair Clinic-ში, ტრანსფერების, საცხოვრებლისა და მკურნალობის ჩათვლით",
       all_packages: "ყველა პაკეტი",
       no_packages: "ამჟამად პაკეტები არ არის ხელმისაწვდომი",
-      book_now: "ახლავე ჩაეწერე"
+      book_now: "ახლავე ჩაეწერე",
+      empty: "ამჟამად პაკეტები არ არის ხელმისაწვდომი.",
+      callToAction: "ჩაეწერეთ კონსულტაციაზე საუკეთესო თმის გადანერგვის გამოცდილებისთვის"
     },
     
     // მთავარი გვერდი
