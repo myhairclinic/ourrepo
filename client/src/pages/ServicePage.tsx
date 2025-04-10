@@ -30,6 +30,7 @@ import FaqsSection from "@/components/services/FaqsSection";
 import { EnhancedFAQs } from "@/components/services/EnhancedFAQs";
 import { BeforeAfterGallery } from "@/components/services/BeforeAfterGallery";
 import { TreatmentTimeline } from "@/components/services/TreatmentTimeline";
+import { ResultsStats } from "@/components/services/ResultsStats";
 import SocialShareButtons from "@/components/shared/SocialShareButtons";
 import SocialFollowButtons from "@/components/shared/SocialFollowButtons";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -673,6 +674,10 @@ export default function ServicePage() {
             )}
 
             {/* Customer Reviews Section */}
+            {/* Success Statistics */}
+            <ResultsStats language={language} />
+            
+            {/* Reviews */}
             <ReviewsSection serviceId={service.id} />
             
             {/* Before/After Gallery */}
