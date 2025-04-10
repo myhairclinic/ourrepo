@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { storage } from "../storage";
 import { insertAppointmentSchema } from "@shared/schema";
 import { z } from "zod";
+import telegramService from "../services/telegramService";
 
 // Create a new appointment
 export const createAppointment = async (req: Request, res: Response) => {
@@ -11,6 +12,9 @@ export const createAppointment = async (req: Request, res: Response) => {
     
     // Create appointment in storage
     const appointment = await storage.createAppointment(validData);
+    
+    // Send notification to Telegram
+    telegramService.notifyNewAppointment(appointment);
     
     res.status(201).json(appointment);
   } catch (error) {
@@ -56,6 +60,9 @@ export const updateAppointmentStatus = async (req: Request, res: Response) => {
     if (!appointment) {
       return res.status(404).json({ message: "Appointment not found" });
     }
+    
+    // Send notification to Telegram about status update
+    telegramService.notifyAppointmentUpdate(appointment);
     
     res.json(appointment);
   } catch (error) {
