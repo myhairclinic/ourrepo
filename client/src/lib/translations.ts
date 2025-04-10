@@ -55,6 +55,12 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Контакты",
     [Language.Georgian]: "კონტაქტი"
   },
+  "common.contactViaWhatsApp": {
+    [Language.Turkish]: "WhatsApp ile İletişime Geç",
+    [Language.English]: "Contact via WhatsApp",
+    [Language.Russian]: "Связаться через WhatsApp",
+    [Language.Georgian]: "დაგვიკავშირდით WhatsApp-ით"
+  },
   "common.appointment": {
     [Language.Turkish]: "Randevu",
     [Language.English]: "Appointment",
