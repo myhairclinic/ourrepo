@@ -50,10 +50,19 @@ export default function AppointmentPage() {
   
   const appointmentMutation = useMutation({
     mutationFn: async (data: Omit<AppointmentFormData, 'consent'>) => {
-      const res = await apiRequest("POST", "/api/appointments", data);
-      return await res.json();
+      try {
+        console.log("Sending appointment data:", data);
+        const res = await apiRequest("POST", "/api/appointments", data);
+        const result = await res.json();
+        console.log("Appointment response:", result);
+        return result;
+      } catch (err) {
+        console.error("Appointment submission error:", err);
+        throw err;
+      }
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log("Appointment created successfully:", data);
       toast({
         title: t('appointment.success'),
         description: t('appointment.successMessage'),
@@ -62,6 +71,7 @@ export default function AppointmentPage() {
       reset();
     },
     onError: (error) => {
+      console.error("Appointment mutation error:", error);
       toast({
         title: t('appointment.error'),
         description: error.message || t('appointment.errorMessage'),
