@@ -167,8 +167,13 @@ export default function AftercareGuidesPage() {
           </div>
         ) : activeGuides.length === 0 ? (
           <Alert>
-            <AlertTitle>Bilgi</AlertTitle>
-            <AlertDescription>{noGuidesText}</AlertDescription>
+            <AlertTitle>{t({
+              TR: "Bilgi",
+              EN: "Information",
+              RU: "Информация",
+              KA: "ინფორმაცია"
+            })}</AlertTitle>
+            <AlertDescription>{t(noGuidesText)}</AlertDescription>
           </Alert>
         ) : (
           <div className="space-y-10">
@@ -206,7 +211,7 @@ export default function AftercareGuidesPage() {
                               </Button>
                             )}
                             <Button variant="outline" onClick={() => setActiveGuideId(guide.id)}>
-                              {viewGuideText}
+                              {t(viewGuideText)}
                             </Button>
                           </div>
                         </div>
@@ -306,7 +311,7 @@ export default function AftercareGuidesPage() {
                     {getPdfUrl(activeGuide) && (
                       <Button onClick={() => handleDownloadPdf(activeGuide)}>
                         <Download className="mr-2 h-4 w-4" />
-                        {downloadPdfText}
+                        {t(downloadPdfText)}
                       </Button>
                     )}
                   </div>
