@@ -196,6 +196,110 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Georgian]: "სრული შედეგები გამოჩნდება {months} თვის განმავლობაში"
   },
   
+  // Products Page
+  "products.title": {
+    [Language.Turkish]: "Saç Bakım Ürünlerimiz",
+    [Language.English]: "Our Hair Care Products",
+    [Language.Russian]: "Наши продукты для ухода за волосами",
+    [Language.Georgian]: "ჩვენი თმის მოვლის პროდუქტები"
+  },
+  "products.description": {
+    [Language.Turkish]: "Saç ekimi sonrası en iyi sonuçları elde etmek için özel olarak formüle edilmiş ürünler",
+    [Language.English]: "Specially formulated products to achieve the best results after hair transplantation",
+    [Language.Russian]: "Специально разработанные продукты для достижения наилучших результатов после трансплантации волос",
+    [Language.Georgian]: "სპეციალურად ფორმულირებული პროდუქტები თმის გადანერგვის შემდეგ საუკეთესო შედეგების მისაღწევად"
+  },
+  "products.infoTitle": {
+    [Language.Turkish]: "Saç Bakımı Hakkında Bilmeniz Gerekenler",
+    [Language.English]: "What You Need to Know About Hair Care",
+    [Language.Russian]: "Что вам нужно знать об уходе за волосами",
+    [Language.Georgian]: "რა უნდა იცოდეთ თმის მოვლის შესახებ"
+  },
+  "products.infoText1": {
+    [Language.Turkish]: "Saç ekimi sonrası bakım, işlemin başarısı için kritik öneme sahiptir. Doğru ürünleri kullanmak, yeni saç köklerinizin sağlıklı bir şekilde büyümesini destekler.",
+    [Language.English]: "Post-transplant hair care is critical to the success of the procedure. Using the right products supports the healthy growth of your new hair follicles.",
+    [Language.Russian]: "Уход за волосами после трансплантации имеет решающее значение для успеха процедуры. Использование правильных продуктов способствует здоровому росту ваших новых волосяных фолликулов.",
+    [Language.Georgian]: "თმის გადანერგვის შემდგომი მოვლა მნიშვნელოვანია პროცედურის წარმატებისათვის. სწორი პროდუქტების გამოყენება ხელს უწყობს თქვენი ახალი თმის ფოლიკულების ჯანსაღ ზრდას."
+  },
+  "products.infoText2": {
+    [Language.Turkish]: "MyHair Clinic olarak, saç ekimi uzmanlarımız tarafından özel olarak seçilen ve onaylanan ürünleri sunuyoruz. Bu ürünler, saç ekimi sonrası iyileşme sürecini hızlandırmak ve en iyi sonuçları elde etmek için özel olarak formüle edilmiştir.",
+    [Language.English]: "At MyHair Clinic, we offer products specially selected and approved by our hair transplant specialists. These products are specially formulated to accelerate the healing process after hair transplantation and achieve the best results.",
+    [Language.Russian]: "В клинике MyHair мы предлагаем продукты, специально отобранные и одобренные нашими специалистами по трансплантации волос. Эти продукты специально разработаны для ускорения процесса заживления после трансплантации волос и достижения наилучших результатов.",
+    [Language.Georgian]: "MyHair კლინიკაში ჩვენ გთავაზობთ პროდუქტებს, რომლებიც სპეციალურად შერჩეულია და დამტკიცებულია ჩვენი თმის გადანერგვის სპეციალისტების მიერ. ეს პროდუქტები სპეციალურად არის შექმნილი თმის გადანერგვის შემდეგ გამოჯანმრთელების პროცესის დასაჩქარებლად და საუკეთესო შედეგების მისაღწევად."
+  },
+  "products.infoPoint1": {
+    [Language.Turkish]: "Tüm ürünlerimiz dermatolojik olarak test edilmiş ve onaylanmıştır",
+    [Language.English]: "All our products are dermatologically tested and approved",
+    [Language.Russian]: "Все наши продукты дерматологически протестированы и одобрены",
+    [Language.Georgian]: "ჩვენი ყველა პროდუქტი დერმატოლოგიურად ტესტირებული და დამტკიცებულია"
+  },
+  "products.infoPoint2": {
+    [Language.Turkish]: "Saç ekimi sonrası kullanım için özel olarak formüle edilmiştir",
+    [Language.English]: "Specially formulated for use after hair transplantation",
+    [Language.Russian]: "Специально разработан для использования после трансплантации волос",
+    [Language.Georgian]: "სპეციალურად ფორმულირებულია თმის გადანერგვის შემდეგ გამოსაყენებლად"
+  },
+  "products.infoPoint3": {
+    [Language.Turkish]: "Paraben, silikon ve zararlı kimyasallar içermez",
+    [Language.English]: "Does not contain parabens, silicones, and harmful chemicals",
+    [Language.Russian]: "Не содержит парабенов, силиконов и вредных химических веществ",
+    [Language.Georgian]: "არ შეიცავს პარაბენებს, სილიკონებს და მავნე ქიმიურ ნივთიერებებს"
+  },
+  "products.noProducts": {
+    [Language.Turkish]: "Şu anda mevcut ürün bulunmamaktadır.",
+    [Language.English]: "There are no products available at the moment.",
+    [Language.Russian]: "В настоящее время нет доступных продуктов.",
+    [Language.Georgian]: "ამჟამად პროდუქტები არ არის ხელმისაწვდომი."
+  },
+  "products.usage": {
+    [Language.Turkish]: "Kullanım Talimatları",
+    [Language.English]: "Usage Instructions",
+    [Language.Russian]: "Инструкции по использованию",
+    [Language.Georgian]: "გამოყენების ინსტრუქციები"
+  },
+  "products.ingredients": {
+    [Language.Turkish]: "İçindekiler",
+    [Language.English]: "Ingredients",
+    [Language.Russian]: "Ингредиенты",
+    [Language.Georgian]: "ინგრედიენტები"
+  },
+  "products.inquireProduct": {
+    [Language.Turkish]: "Ürün Hakkında Bilgi Alın",
+    [Language.English]: "Get Information About This Product",
+    [Language.Russian]: "Получите информацию об этом продукте",
+    [Language.Georgian]: "მიიღეთ ინფორმაცია ამ პროდუქტის შესახებ"
+  },
+  "products.inquireText": {
+    [Language.Turkish]: "Bu ürün hakkında daha fazla bilgi edinmek veya sipariş vermek için bizimle iletişime geçin.",
+    [Language.English]: "Contact us to learn more about this product or to place an order.",
+    [Language.Russian]: "Свяжитесь с нами, чтобы узнать больше об этом продукте или разместить заказ.",
+    [Language.Georgian]: "დაგვიკავშირდით ამ პროდუქტის შესახებ მეტი ინფორმაციის მისაღებად ან შეკვეთის განსათავსებლად."
+  },
+  "products.backToProducts": {
+    [Language.Turkish]: "Ürünlere Geri Dön",
+    [Language.English]: "Back to Products",
+    [Language.Russian]: "Вернуться к продуктам",
+    [Language.Georgian]: "პროდუქტებზე დაბრუნება"
+  },
+  "errors.loading_product": {
+    [Language.Turkish]: "Ürün yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+    [Language.English]: "An error occurred while loading the product. Please try again later.",
+    [Language.Russian]: "Произошла ошибка при загрузке продукта. Пожалуйста, повторите попытку позже.",
+    [Language.Georgian]: "პროდუქტის ჩატვირთვისას მოხდა შეცდომა. გთხოვთ სცადოთ მოგვიანებით."
+  },
+  "common.moreInfo": {
+    [Language.Turkish]: "Daha Fazla Bilgi",
+    [Language.English]: "More Information",
+    [Language.Russian]: "Больше Информации",
+    [Language.Georgian]: "მეტი ინფორმაცია"
+  },
+  "common.contactUs": {
+    [Language.Turkish]: "Bizimle İletişime Geçin",
+    [Language.English]: "Contact Us",
+    [Language.Russian]: "Свяжитесь с нами",
+    [Language.Georgian]: "დაგვიკავშირდით"
+  },
+  
   // Error messages
   "errors.loading_services": {
     [Language.Turkish]: "Hizmetler yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",

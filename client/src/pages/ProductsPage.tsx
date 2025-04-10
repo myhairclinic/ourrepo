@@ -1,17 +1,19 @@
 import { Helmet } from "react-helmet";
-import { useTranslation } from "@/hooks/use-translation";
+import { useTranslation } from "@/lib/translations";
 import { useLanguage } from "@/hooks/use-language";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import { META } from "@/lib/constants";
 import SectionTitle from "@/components/shared/SectionTitle";
+import { Language } from "@shared/types";
+import { Product } from "@shared/schema";
 
 export default function ProductsPage() {
-  const { t } = useTranslation();
   const { language, addPrefix } = useLanguage();
+  const { t } = useTranslation(language);
   
   // Fetch products
-  const { data: products, isLoading } = useQuery({
+  const { data: products = [], isLoading } = useQuery<Product[]>({
     queryKey: ["/api/products"],
   });
   
@@ -55,11 +57,11 @@ export default function ProductsPage() {
                     <p className="text-neutral-600 mb-4">
                       {product[`description${language.toUpperCase()}`]}
                     </p>
-                    <Link href={addPrefix(`/products/${product.slug}`)}>
-                      <a className="inline-flex items-center text-primary font-medium">
-                        {t('common.moreInfo')}
-                        <i className="fas fa-arrow-right ml-2 text-sm"></i>
-                      </a>
+                    <Link href={addPrefix(`/products/${product.slug}`)} className="inline-flex items-center text-primary font-medium">
+                      {t('common.moreInfo')}
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
                     </Link>
                   </div>
                 </div>
@@ -90,11 +92,14 @@ export default function ProductsPage() {
                 </ul>
               </div>
               <div className="mt-6 text-center">
-                <Link href={addPrefix('/contact')}>
-                  <a className="inline-flex items-center bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-md transition duration-200">
-                    {t('common.contactUs')}
-                    <i className="fas fa-arrow-right ml-2"></i>
-                  </a>
+                <Link 
+                  href={addPrefix('/contact')}
+                  className="inline-flex items-center bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-md transition duration-200"
+                >
+                  {t('common.contactUs')}
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
                 </Link>
               </div>
             </div>
