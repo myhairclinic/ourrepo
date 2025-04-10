@@ -725,6 +725,50 @@ export class MemStorage implements IStorage {
 
     return this.clinicInfo;
   }
+  
+  // Aftercare Guide operations
+  async getAftercareGuides(): Promise<AftercareGuide[]> {
+    return Array.from(this.aftercareGuides.values()).sort((a, b) => a.order - b.order);
+  }
+
+  async getAftercareGuideById(id: number): Promise<AftercareGuide | undefined> {
+    return this.aftercareGuides.get(id);
+  }
+
+  async getAftercareGuidesByServiceId(serviceId: number): Promise<AftercareGuide[]> {
+    return Array.from(this.aftercareGuides.values())
+      .filter(guide => guide.serviceId === serviceId)
+      .sort((a, b) => a.order - b.order);
+  }
+
+  async createAftercareGuide(guide: InsertAftercareGuide): Promise<AftercareGuide> {
+    const id = this.currentAftercareGuideId++;
+    const newGuide: AftercareGuide = {
+      ...guide,
+      id,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.aftercareGuides.set(id, newGuide);
+    return newGuide;
+  }
+
+  async updateAftercareGuide(id: number, guide: Partial<InsertAftercareGuide>): Promise<AftercareGuide | undefined> {
+    const existingGuide = this.aftercareGuides.get(id);
+    if (!existingGuide) return undefined;
+
+    const updatedGuide: AftercareGuide = {
+      ...existingGuide,
+      ...guide,
+      updatedAt: new Date()
+    };
+    this.aftercareGuides.set(id, updatedGuide);
+    return updatedGuide;
+  }
+
+  async deleteAftercareGuide(id: number): Promise<boolean> {
+    return this.aftercareGuides.delete(id);
+  }
 
   // Chat Session operations
   async getChatSessions(): Promise<ChatSession[]> {
@@ -1507,6 +1551,47 @@ export class DatabaseStorage implements IStorage {
 
   async deleteChatOperator(userId: number): Promise<boolean> {
     await db.delete(chatOperators).where(eq(chatOperators.userId, userId));
+    return true;
+  }
+
+  // Aftercare Guide operations
+  async getAftercareGuides(): Promise<AftercareGuide[]> {
+    return await db.select().from(aftercareGuides).orderBy(aftercareGuides.order);
+  }
+
+  async getAftercareGuideById(id: number): Promise<AftercareGuide | undefined> {
+    const [guide] = await db.select().from(aftercareGuides).where(eq(aftercareGuides.id, id));
+    return guide;
+  }
+
+  async getAftercareGuidesByServiceId(serviceId: number): Promise<AftercareGuide[]> {
+    return await db.select().from(aftercareGuides)
+      .where(eq(aftercareGuides.serviceId, serviceId))
+      .orderBy(aftercareGuides.order);
+  }
+
+  async createAftercareGuide(guide: InsertAftercareGuide): Promise<AftercareGuide> {
+    const [newGuide] = await db.insert(aftercareGuides).values({
+      ...guide,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }).returning();
+    return newGuide;
+  }
+
+  async updateAftercareGuide(id: number, guide: Partial<InsertAftercareGuide>): Promise<AftercareGuide | undefined> {
+    const [updatedGuide] = await db.update(aftercareGuides)
+      .set({
+        ...guide,
+        updatedAt: new Date()
+      })
+      .where(eq(aftercareGuides.id, id))
+      .returning();
+    return updatedGuide;
+  }
+
+  async deleteAftercareGuide(id: number): Promise<boolean> {
+    await db.delete(aftercareGuides).where(eq(aftercareGuides.id, id));
     return true;
   }
 }
