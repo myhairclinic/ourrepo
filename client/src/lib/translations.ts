@@ -29,6 +29,12 @@ export const translations: TranslationsDict = {
     slogan: "Tiflis'te Profesyonel Saç Ekimi",
     learn_more: "Detaylı Bilgi",
     
+    // Hatalar
+    error: {
+      generic: "Bir hata oluştu",
+      try_again: "Lütfen daha sonra tekrar deneyin"
+    },
+    
     // Navigasyon
     nav_home: "Ana Sayfa",
     nav_services: "Hizmetlerimiz",
@@ -38,6 +44,16 @@ export const translations: TranslationsDict = {
     nav_about: "Hakkımızda",
     nav_contact: "İletişim",
     nav_appointment: "Randevu Al",
+    
+    // Paketler sayfası
+    packages: {
+      title: "Uluslararası Paketlerimiz",
+      subtitle: "Yurtdışından gelen hastalarımız için özel olarak hazırlanmış, konaklama ve transfer dahil paketlerimiz",
+      meta_description: "MyHair Clinic'in uluslararası hastaları için transfer, konaklama ve tedavi içeren özel paketleri",
+      all_packages: "Tüm Paketler",
+      no_packages: "Şu anda mevcut paket bulunmamaktadır",
+      book_now: "Hemen Randevu Al"
+    },
     
     // Ana sayfa
     home_hero_title: "Güçlü ve Doğal Saçlara Kavuşun",
@@ -106,6 +122,12 @@ export const translations: TranslationsDict = {
     slogan: "Professional Hair Transplant in Tbilisi",
     learn_more: "Learn More",
     
+    // Errors
+    error: {
+      generic: "An error occurred",
+      try_again: "Please try again later"
+    },
+    
     // Navigation
     nav_home: "Home",
     nav_services: "Services",
@@ -115,6 +137,16 @@ export const translations: TranslationsDict = {
     nav_about: "About",
     nav_contact: "Contact",
     nav_appointment: "Book Appointment",
+    
+    // Packages page
+    packages: {
+      title: "International Packages",
+      subtitle: "Our specially prepared packages for international patients, including accommodation and transfers",
+      meta_description: "Special packages for international patients at MyHair Clinic including transfers, accommodation, and treatment",
+      all_packages: "All Packages",
+      no_packages: "No packages available at the moment",
+      book_now: "Book an Appointment Now"
+    },
     
     // Home page
     home_hero_title: "Get Strong and Natural Hair",
@@ -183,6 +215,12 @@ export const translations: TranslationsDict = {
     slogan: "Профессиональная трансплантация волос в Тбилиси",
     learn_more: "Подробнее",
     
+    // Ошибки
+    error: {
+      generic: "Произошла ошибка",
+      try_again: "Пожалуйста, попробуйте позже"
+    },
+    
     // Навигация
     nav_home: "Главная",
     nav_services: "Услуги",
@@ -192,6 +230,16 @@ export const translations: TranslationsDict = {
     nav_about: "О нас",
     nav_contact: "Контакты",
     nav_appointment: "Записаться",
+    
+    // Страница пакетов
+    packages: {
+      title: "Международные пакеты",
+      subtitle: "Наши специально подготовленные пакеты для иностранных пациентов, включая проживание и трансферы",
+      meta_description: "Специальные пакеты для иностранных пациентов в MyHair Clinic, включающие трансферы, проживание и лечение",
+      all_packages: "Все пакеты",
+      no_packages: "На данный момент пакеты не доступны",
+      book_now: "Записаться на прием сейчас"
+    },
     
     // Главная страница
     home_hero_title: "Получите крепкие и натуральные волосы",
@@ -260,6 +308,12 @@ export const translations: TranslationsDict = {
     slogan: "პროფესიონალური თმის გადანერგვა თბილისში",
     learn_more: "მეტის ნახვა",
     
+    // შეცდომები
+    error: {
+      generic: "დაფიქსირდა შეცდომა",
+      try_again: "გთხოვთ, სცადოთ მოგვიანებით"
+    },
+    
     // ნავიგაცია
     nav_home: "მთავარი",
     nav_services: "სერვისები",
@@ -269,6 +323,16 @@ export const translations: TranslationsDict = {
     nav_about: "ჩვენს შესახებ",
     nav_contact: "კონტაქტი",
     nav_appointment: "ჩაწერა",
+    
+    // პაკეტების გვერდი
+    packages: {
+      title: "საერთაშორისო პაკეტები",
+      subtitle: "ჩვენი სპეციალურად მომზადებული პაკეტები უცხოელი პაციენტებისთვის, საცხოვრებლისა და ტრანსფერის ჩათვლით",
+      meta_description: "სპეციალური პაკეტები უცხოელი პაციენტებისთვის MyHair Clinic-ში, ტრანსფერების, საცხოვრებლისა და მკურნალობის ჩათვლით",
+      all_packages: "ყველა პაკეტი",
+      no_packages: "ამჟამად პაკეტები არ არის ხელმისაწვდომი",
+      book_now: "ახლავე ჩაეწერე"
+    },
     
     // მთავარი გვერდი
     home_hero_title: "მიიღეთ ძლიერი და ბუნებრივი თმა",
