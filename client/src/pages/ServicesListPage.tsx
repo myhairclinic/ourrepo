@@ -182,7 +182,15 @@ export default function ServicesListPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {services?.map((service, index) => (
+              {[...(services || [])]
+                .sort((a, b) => {
+                  // Saç ekimi her zaman ilk sırada olsun
+                  if (a.slug === 'hair-transplantation') return -1;
+                  if (b.slug === 'hair-transplantation') return 1;
+                  // Diğer servisler için mevcut sırayı koru
+                  return 0;
+                })
+                .map((service, index) => (
                 <div
                   key={service.id}
                   className={`transition-all duration-1000 transform ${
@@ -195,7 +203,11 @@ export default function ServicesListPage() {
                   <Card className="overflow-hidden flex flex-col h-full hover:shadow-xl transition-all duration-300 border-primary/10 group">
                     <div className="h-64 overflow-hidden relative">
                       <img 
-                        src={service.slug === 'eyebrow-transplantation' ? '/images/services/eyebrow-transplant.jpg' : service.imageUrl} 
+                        src={service.slug === 'eyebrow-transplantation' 
+                          ? '/images/services/eyebrow-transplant.jpg' 
+                          : service.slug === 'hair-transplantation'
+                            ? '/images/services/hair-transplant.jpg'
+                            : service.imageUrl} 
                         alt={getLocalizedTitle(service)} 
                         className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105"
                         onError={(e) => {
