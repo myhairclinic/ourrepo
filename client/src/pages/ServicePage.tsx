@@ -306,8 +306,9 @@ export default function ServicePage() {
               <img 
                 src={service.slug === 'hair-transplantation' ? hairTransplantImage : 
                     (service.slug === 'beard-transplantation' ? consultationImage : 
-                    (service.slug === 'prp-treatment' ? hairTransplantImage : 
-                    (service.slug === 'hair-mesotherapy' ? consultationImage : service.imageUrl)))}
+                    (service.slug === 'prp-treatment' ? hairTransplantImage :
+                    (service.slug === 'eyebrow-transplantation' ? '/images/services/eyebrow-transplant.jpg' :
+                    (service.slug === 'hair-mesotherapy' ? consultationImage : service.imageUrl))))}
                 alt={getLocalizedTitle(service)} 
                 className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
                 onError={(e) => {
