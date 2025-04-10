@@ -173,6 +173,48 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Все услуги",
     [Language.Georgian]: "ყველა სერვისი"
   },
+  "services.features.consultation": {
+    [Language.Turkish]: "Ücretsiz konsültasyon",
+    [Language.English]: "Free consultation",
+    [Language.Russian]: "Бесплатная консультация",
+    [Language.Georgian]: "უფასო კონსულტაცია"
+  },
+  "services.features.aftercare": {
+    [Language.Turkish]: "İşlem sonrası bakım desteği",
+    [Language.English]: "Post-procedure aftercare",
+    [Language.Russian]: "Послепроцедурный уход",
+    [Language.Georgian]: "პროცედურის შემდგომი მოვლა"
+  },
+  "services.features.support": {
+    [Language.Turkish]: "7/24 WhatsApp desteği",
+    [Language.English]: "24/7 WhatsApp support",
+    [Language.Russian]: "Поддержка WhatsApp 24/7",
+    [Language.Georgian]: "24/7 WhatsApp მხარდაჭერა"
+  },
+  "services.features.satisfaction": {
+    [Language.Turkish]: "Memnuniyet garantisi",
+    [Language.English]: "Satisfaction guarantee",
+    [Language.Russian]: "Гарантия удовлетворенности",
+    [Language.Georgian]: "კმაყოფილების გარანტია"
+  },
+  "services.badge": {
+    [Language.Turkish]: "UZMAN TEDAVİLERİ",
+    [Language.English]: "EXPERT TREATMENTS",
+    [Language.Russian]: "ЭКСПЕРТНОЕ ЛЕЧЕНИЕ",
+    [Language.Georgian]: "ექსპერტული მკურნალობა"
+  },
+  "services.popular": {
+    [Language.Turkish]: "POPÜLER",
+    [Language.English]: "POPULAR",
+    [Language.Russian]: "ПОПУЛЯРНЫЙ",
+    [Language.Georgian]: "პოპულარული"
+  },
+  "services.viewAll": {
+    [Language.Turkish]: "Tüm Hizmetleri Gör",
+    [Language.English]: "View All Services",
+    [Language.Russian]: "Посмотреть все услуги",
+    [Language.Georgian]: "ნახეთ ყველა სერვისი"
+  },
   
   // HomePage çevirileri 
   "home.title": {
