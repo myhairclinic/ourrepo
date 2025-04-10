@@ -111,6 +111,9 @@ function Router() {
       <Route path="/admin/packages">
         <ProtectedAdminRoute component={PackagesManager} />
       </Route>
+      <Route path="/admin/reviews">
+        <ProtectedAdminRoute component={ReviewsManager} />
+      </Route>
       
       {/* Public routes with language prefix */}
       <Route path="/:lang" component={HomePage} />
