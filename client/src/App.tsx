@@ -12,6 +12,7 @@ import WhatsAppButton from "./components/layout/WhatsAppButton";
 // Pages
 import HomePage from "./pages/HomePage";
 import ServicePage from "./pages/ServicePage";
+import ServicesListPage from "./pages/ServicesListPage";
 import GalleryPage from "./pages/GalleryPage";
 import PackagesPage from "./pages/PackagesPage";
 import ProductsPage from "./pages/ProductsPage";
@@ -81,6 +82,7 @@ function Router() {
       
       {/* Public routes with language prefix */}
       <Route path="/:lang" component={HomePage} />
+      <Route path="/:lang/services" component={ServicesListPage} />
       <Route path="/:lang/services/:slug" component={ServicePage} />
       <Route path="/:lang/gallery" component={GalleryPage} />
       <Route path="/:lang/packages" component={PackagesPage} />
