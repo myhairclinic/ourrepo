@@ -227,6 +227,55 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Ключевые Особенности",
     [Language.Georgian]: "ძირითადი მახასიათებლები"
   },
+  "services.details": {
+    [Language.Turkish]: "Detaylar",
+    [Language.English]: "Details",
+    [Language.Russian]: "Детали",
+    [Language.Georgian]: "დეტალები"
+  },
+  "services.procedureSteps": {
+    [Language.Turkish]: "Prosedür Adımları",
+    [Language.English]: "Procedure Steps",
+    [Language.Russian]: "Шаги Процедуры",
+    [Language.Georgian]: "პროცედურის ეტაპები"
+  },
+  "services.candidateInfo": {
+    [Language.Turkish]: "İdeal Adaylar",
+    [Language.English]: "Ideal Candidates",
+    [Language.Russian]: "Идеальные Кандидаты",
+    [Language.Georgian]: "იდეალური კანდიდატები"
+  },
+  "services.overview": {
+    [Language.Turkish]: "Genel Bakış",
+    [Language.English]: "Overview",
+    [Language.Russian]: "Обзор",
+    [Language.Georgian]: "მიმოხილვა"
+  },
+  "services.readyToStart": {
+    [Language.Turkish]: "Başlamaya Hazır mısınız?",
+    [Language.English]: "Ready to Start?",
+    [Language.Russian]: "Готовы Начать?",
+    [Language.Georgian]: "მზად ხართ დასაწყებად?"
+  },
+  "services.appointmentCTA": {
+    [Language.Turkish]: "Profesyonel ekibimizle kişiselleştirilmiş bir danışma randevusu alın.",
+    [Language.English]: "Schedule a personalized consultation with our professional team.",
+    [Language.Russian]: "Запишитесь на персонализированную консультацию с нашей профессиональной командой.",
+    [Language.Georgian]: "დანიშნეთ პერსონალიზებული კონსულტაცია ჩვენს პროფესიონალურ გუნდთან."
+  },
+  "services.beforeAfter": {
+    [Language.Turkish]: "Öncesi ve Sonrası",
+    [Language.English]: "Before & After",
+    [Language.Russian]: "До и После",
+    [Language.Georgian]: "მანამდე და შემდეგ"
+  },
+  "services.comingSoon": {
+    [Language.Turkish]: "Yakında",
+    [Language.English]: "Coming Soon",
+    [Language.Russian]: "Скоро",
+    [Language.Georgian]: "მალე"
+  },
+
   "services.flipToSeeMore": {
     [Language.Turkish]: "Daha Fazlası İçin Tıklayın",
     [Language.English]: "Click for More Details",
@@ -304,6 +353,12 @@ export const translations: Record<string, LanguageMap> = {
     [Language.English]: "Scalp health",
     [Language.Russian]: "Здоровье кожи головы",
     [Language.Georgian]: "თავის კანის ჯანმრთელობა"
+  },
+  "services.popular": {
+    [Language.Turkish]: "Popüler",
+    [Language.English]: "Popular",
+    [Language.Russian]: "Популярный",
+    [Language.Georgian]: "პოპულარული"
   },
   
   // HomePage çevirileri 
