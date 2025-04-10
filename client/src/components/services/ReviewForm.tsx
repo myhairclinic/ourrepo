@@ -5,6 +5,7 @@ import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/hooks/use-language";
+import { useTranslation } from "@/lib/translations";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -44,7 +45,8 @@ interface ReviewFormProps {
 
 export function ReviewForm({ serviceId }: ReviewFormProps) {
   const { toast } = useToast();
-  const { language, t } = useLanguage();
+  const { language } = useLanguage();
+  const { t } = useTranslation(language);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const form = useForm<ReviewFormData>({

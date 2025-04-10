@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLanguage } from "@/hooks/use-language";
+import { useTranslation } from "@/lib/translations";
 import { ReviewForm } from "./ReviewForm";
 import { ReviewsList } from "./ReviewsList";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,8 @@ interface ReviewsSectionProps {
 }
 
 export function ReviewsSection({ serviceId }: ReviewsSectionProps) {
-  const { t } = useLanguage();
+  const { language } = useLanguage();
+  const { t } = useTranslation(language);
   const [activeTab, setActiveTab] = useState("read");
 
   return (

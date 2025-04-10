@@ -12,7 +12,8 @@ interface ReviewsListProps {
 }
 
 export function ReviewsList({ serviceId, limit }: ReviewsListProps) {
-  const { t } = useLanguage();
+  const { language } = useLanguage();
+  const { t } = useTranslation(language);
   
   const { data: reviews, isLoading } = useQuery({
     queryKey: serviceId 
