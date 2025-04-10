@@ -7,7 +7,7 @@ import { Language } from '@shared/types';
 interface SocialFollowButtonsProps {
   className?: string;
   showText?: boolean;
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'lg' | 'default' | 'icon';
   variant?: 'default' | 'outline' | 'ghost' | 'link';
   orientation?: 'horizontal' | 'vertical';
   platforms?: ('facebook' | 'instagram' | 'youtube' | 'telegram' | 'tiktok')[];

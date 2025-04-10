@@ -12,6 +12,8 @@ import { META } from "@/lib/constants";
 import { Language } from "@shared/types";
 import { ReviewsSection } from "@/components/services/ReviewsSection";
 import FaqsSection from "@/components/services/FaqsSection";
+import SocialShareButtons from "@/components/shared/SocialShareButtons";
+import SocialFollowButtons from "@/components/shared/SocialFollowButtons";
 
 export default function ServicePage() {
   const { language, currentLanguage, addPrefix } = useLanguage();
@@ -124,12 +126,38 @@ export default function ServicePage() {
               <div className="prose prose-lg max-w-none mb-8">
                 <p>{getLocalizedDescription(service)}</p>
               </div>
-              <Link href={addPrefix(`/appointment?service=${service.id}`)}>
-                <Button size="lg" className="mr-4">{appointmentButton}</Button>
-              </Link>
-              <Link href={addPrefix('/services')}>
-                <Button variant="outline" size="lg">{backToServices}</Button>
-              </Link>
+              <div className="flex flex-wrap gap-4 mb-6">
+                <Link href={addPrefix(`/appointment?service=${service.id}`)}>
+                  <Button size="lg" className="mr-4">{appointmentButton}</Button>
+                </Link>
+                <Link href={addPrefix('/services')}>
+                  <Button variant="outline" size="lg">{backToServices}</Button>
+                </Link>
+              </div>
+              
+              {/* Social Media Share & Follow */}
+              <div className="border-t border-b py-4 my-6">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-2">{t("common.share")}:</p>
+                    <SocialShareButtons 
+                      title={getLocalizedTitle(service)}
+                      description={getLocalizedDescription(service)}
+                      hashtags={["MyHairClinic", "HairTransplant", "Tbilisi"]}
+                      showCopyLink={true}
+                      size="md"
+                    />
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-2">{t("common.follow_us")}:</p>
+                    <SocialFollowButtons 
+                      showText={false} 
+                      size="default"
+                      variant="outline"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 

@@ -35,7 +35,8 @@ export const PUBLIC_PATHS = {
   GALLERY: "/gallery",
   CONTACT: "/contact",
   APPOINTMENT: "/appointment",
-  APPOINTMENT_TRACKER: "/appointment-tracker"
+  APPOINTMENT_TRACKER: "/appointment-tracker",
+  SOCIAL_MEDIA: "/social-media"
 };
 
 export const ADMIN_PATHS = {

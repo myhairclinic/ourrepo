@@ -6,6 +6,8 @@ import { useLanguage } from "@/hooks/use-language";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import { META } from "@/lib/constants";
+import SocialShareButtons from "@/components/shared/SocialShareButtons";
+import SocialFollowButtons from "@/components/shared/SocialFollowButtons";
 
 export default function BlogPostPage() {
   const { slug } = useParams();
