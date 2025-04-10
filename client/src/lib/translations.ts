@@ -367,6 +367,323 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Процесс последующего ухода",
     [Language.Georgian]: "მოვლის პროცესი"
   },
+  // Timeline translations
+  "services.timeline.step1Title": {
+    [Language.Turkish]: "Ücretsiz Konsültasyon",
+    [Language.English]: "Free Consultation",
+    [Language.Russian]: "Бесплатная Консультация",
+    [Language.Georgian]: "უფასო კონსულტაცია"
+  },
+  "services.timeline.step1Description": {
+    [Language.Turkish]: "Saç ekimi uzmanımızla kişisel ihtiyaçlarınızı ve beklentilerinizi değerlendiren bir konsültasyon yapın.",
+    [Language.English]: "Have a consultation with our hair transplant specialist to assess your personal needs and expectations.",
+    [Language.Russian]: "Пройдите консультацию с нашим специалистом по трансплантации волос, чтобы оценить ваши личные потребности и ожидания.",
+    [Language.Georgian]: "გაიარეთ კონსულტაცია ჩვენს თმის გადანერგვის სპეციალისტთან თქვენი პირადი საჭიროებებისა და მოლოდინების შესაფასებლად."
+  },
+  "services.timeline.step1Highlight1": {
+    [Language.Turkish]: "Saç analizi",
+    [Language.English]: "Hair analysis",
+    [Language.Russian]: "Анализ волос",
+    [Language.Georgian]: "თმის ანალიზი"
+  },
+  "services.timeline.step1Highlight2": {
+    [Language.Turkish]: "Kişisel plan",
+    [Language.English]: "Personalized plan",
+    [Language.Russian]: "Персонализированный план",
+    [Language.Georgian]: "პერსონალიზებული გეგმა"
+  },
+  "services.timeline.step2Title": {
+    [Language.Turkish]: "İşlem Öncesi Hazırlık",
+    [Language.English]: "Pre-Procedure Preparation",
+    [Language.Russian]: "Подготовка перед процедурой",
+    [Language.Georgian]: "პროცედურამდე მომზადება"
+  },
+  "services.timeline.step2Description": {
+    [Language.Turkish]: "İşlem günü için tüm gerekli hazırlıklar ve takip edilmesi gereken adımlar hakkında bilgilendirme.",
+    [Language.English]: "Information about all necessary preparations and steps to follow for the procedure day.",
+    [Language.Russian]: "Информация обо всех необходимых приготовлениях и шагах, которые нужно выполнить в день процедуры.",
+    [Language.Georgian]: "ინფორმაცია პროცედურის დღისთვის ყველა საჭირო მომზადებისა და გასავლელი ნაბიჯების შესახებ."
+  },
+  "services.timeline.step2Highlight1": {
+    [Language.Turkish]: "Beslenme tavsiyeleri",
+    [Language.English]: "Nutrition advice",
+    [Language.Russian]: "Советы по питанию",
+    [Language.Georgian]: "კვების რჩევები"
+  },
+  "services.timeline.step2Highlight2": {
+    [Language.Turkish]: "İlaç kısıtlamaları",
+    [Language.English]: "Medication restrictions",
+    [Language.Russian]: "Ограничения на лекарства",
+    [Language.Georgian]: "მედიკამენტების შეზღუდვები"
+  },
+  "services.timeline.step3Title": {
+    [Language.Turkish]: "Saç Ekimi İşlemi",
+    [Language.English]: "Hair Transplant Procedure",
+    [Language.Russian]: "Процедура трансплантации волос",
+    [Language.Georgian]: "თმის გადანერგვის პროცედურა"
+  },
+  "services.timeline.step3Description": {
+    [Language.Turkish]: "Modern FUE veya DHI teknikleri kullanılarak saç foliküllerinin nakli işlemi gerçekleştirilir.",
+    [Language.English]: "Hair follicle transplantation is performed using modern FUE or DHI techniques.",
+    [Language.Russian]: "Трансплантация волосяных фолликулов выполняется с использованием современных методов FUE или DHI.",
+    [Language.Georgian]: "თმის ფოლიკულების გადანერგვა ხორციელდება თანამედროვე FUE ან DHI ტექნიკის გამოყენებით."
+  },
+  "services.timeline.step3Highlight1": {
+    [Language.Turkish]: "Ağrısız uygulama",
+    [Language.English]: "Painless application",
+    [Language.Russian]: "Безболезненное применение",
+    [Language.Georgian]: "უმტკივნეულო პროცედურა"
+  },
+  "services.timeline.step3Highlight2": {
+    [Language.Turkish]: "Doğal saç çizgisi",
+    [Language.English]: "Natural hairline",
+    [Language.Russian]: "Естественная линия волос",
+    [Language.Georgian]: "ბუნებრივი თმის ხაზი"
+  },
+  "services.timeline.step4Title": {
+    [Language.Turkish]: "İşlem Sonrası Bakım",
+    [Language.English]: "Post-Procedure Care",
+    [Language.Russian]: "Уход после процедуры",
+    [Language.Georgian]: "პროცედურის შემდგომი მოვლა"
+  },
+  "services.timeline.step4Description": {
+    [Language.Turkish]: "İlk günlerde dikkat edilmesi gereken önemli bakım adımları ve iyileşme sürecinin yönetimi.",
+    [Language.English]: "Important care steps to follow in the first days and management of the healing process.",
+    [Language.Russian]: "Важные этапы ухода, которым нужно следовать в первые дни, и управление процессом заживления.",
+    [Language.Georgian]: "პირველ დღეებში გასავლელი მნიშვნელოვანი მოვლის ეტაპები და განკურნების პროცესის მართვა."
+  },
+  "services.timeline.step4Highlight1": {
+    [Language.Turkish]: "Yıkama talimatları",
+    [Language.English]: "Washing instructions",
+    [Language.Russian]: "Инструкции по мытью",
+    [Language.Georgian]: "დაბანის ინსტრუქციები"
+  },
+  "services.timeline.step4Highlight2": {
+    [Language.Turkish]: "Uyku pozisyonu",
+    [Language.English]: "Sleep position",
+    [Language.Russian]: "Положение для сна",
+    [Language.Georgian]: "ძილის პოზიცია"
+  },
+  "services.timeline.step5Title": {
+    [Language.Turkish]: "Uzun Vadeli Sonuçlar",
+    [Language.English]: "Long-Term Results",
+    [Language.Russian]: "Долгосрочные результаты",
+    [Language.Georgian]: "გრძელვადიანი შედეგები"
+  },
+  "services.timeline.step5Description": {
+    [Language.Turkish]: "İlk aylardan sonra göreceğiniz sonuçlar ve yeni saçlarınızın tam olarak büyüme süreci.",
+    [Language.English]: "Results you will see after the first months and the complete growth process of your new hair.",
+    [Language.Russian]: "Результаты, которые вы увидите после первых месяцев, и полный процесс роста ваших новых волос.",
+    [Language.Georgian]: "შედეგები, რომლებსაც პირველი თვეების შემდეგ დაინახავთ და თქვენი ახალი თმის სრული ზრდის პროცესი."
+  },
+  "services.timeline.step5Highlight1": {
+    [Language.Turkish]: "Kalıcı sonuçlar",
+    [Language.English]: "Permanent results",
+    [Language.Russian]: "Постоянные результаты",
+    [Language.Georgian]: "მუდმივი შედეგები"
+  },
+  "services.timeline.step5Highlight2": {
+    [Language.Turkish]: "Doğal görünüm",
+    [Language.English]: "Natural appearance",
+    [Language.Russian]: "Естественный вид",
+    [Language.Georgian]: "ბუნებრივი გარეგნობა"
+  },
+  
+  // FAQ translations
+  "services.faqsTitle": {
+    [Language.Turkish]: "Sıkça Sorulan Sorular",
+    [Language.English]: "Frequently Asked Questions",
+    [Language.Russian]: "Часто Задаваемые Вопросы",
+    [Language.Georgian]: "ხშირად დასმული კითხვები"
+  },
+  "services.faqsDescription": {
+    [Language.Turkish]: "Saç ekimi hakkında merak edilen soruları ve profesyonel cevaplarımızı inceleyin.",
+    [Language.English]: "Explore the most common questions about hair transplantation and our professional answers.",
+    [Language.Russian]: "Изучите наиболее распространенные вопросы о трансплантации волос и наши профессиональные ответы.",
+    [Language.Georgian]: "გაეცანით ყველაზე გავრცელებულ კითხვებს თმის გადანერგვის შესახებ და ჩვენს პროფესიონალურ პასუხებს."
+  },
+  "services.faqs.question1": {
+    [Language.Turkish]: "Saç ekimi işlemi ağrılı mıdır?",
+    [Language.English]: "Is the hair transplant procedure painful?",
+    [Language.Russian]: "Является ли процедура трансплантации волос болезненной?",
+    [Language.Georgian]: "არის თუ არა თმის გადანერგვის პროცედურა მტკივნეული?"
+  },
+  "services.faqs.answer1": {
+    [Language.Turkish]: "Hayır, işlem lokal anestezi altında yapılır ve çoğu hasta işlem sırasında minimal rahatsızlık hisseder.",
+    [Language.English]: "No, the procedure is performed under local anesthesia and most patients experience minimal discomfort during the procedure.",
+    [Language.Russian]: "Нет, процедура выполняется под местной анестезией, и большинство пациентов испытывают минимальный дискомфорт во время процедуры.",
+    [Language.Georgian]: "არა, პროცედურა ტარდება ადგილობრივი ანესთეზიის ქვეშ და პაციენტების უმეტესობა პროცედურის დროს მინიმალურ დისკომფორტს განიცდის."
+  },
+  "services.faqs.question2": {
+    [Language.Turkish]: "Saç ekimi sonuçları kalıcı mıdır?",
+    [Language.English]: "Are hair transplant results permanent?",
+    [Language.Russian]: "Являются ли результаты трансплантации волос постоянными?",
+    [Language.Georgian]: "არის თუ არა თმის გადანერგვის შედეგები მუდმივი?"
+  },
+  "services.faqs.answer2": {
+    [Language.Turkish]: "Evet, nakledilen saç folikülleri genellikle dökülmeye karşı dirençlidir ve ömür boyu kalıcıdır.",
+    [Language.English]: "Yes, transplanted hair follicles are generally resistant to hair loss and are permanent for life.",
+    [Language.Russian]: "Да, пересаженные волосяные фолликулы обычно устойчивы к выпадению волос и являются постоянными на всю жизнь.",
+    [Language.Georgian]: "დიახ, გადანერგილი თმის ფოლიკულები ზოგადად რეზისტენტულია თმის ცვენის მიმართ და მუდმივია მთელი სიცოცხლის განმავლობაში."
+  },
+  "services.faqs.question3": {
+    [Language.Turkish]: "Saç ekimi sonrası ne zaman normal aktivitelere dönebilirim?",
+    [Language.English]: "When can I return to normal activities after a hair transplant?",
+    [Language.Russian]: "Когда я смогу вернуться к нормальной деятельности после трансплантации волос?",
+    [Language.Georgian]: "როდის შემიძლია დავუბრუნდე ნორმალურ აქტივობებს თმის გადანერგვის შემდეგ?"
+  },
+  "services.faqs.answer3": {
+    [Language.Turkish]: "Çoğu hasta 1-3 gün içinde hafif aktivitelere başlayabilir, ancak yoğun fiziksel aktivitelerden 2 hafta kaçınılmalıdır.",
+    [Language.English]: "Most patients can resume light activities within 1-3 days, but intense physical activities should be avoided for 2 weeks.",
+    [Language.Russian]: "Большинство пациентов могут возобновить легкую активность в течение 1-3 дней, но интенсивной физической активности следует избегать в течение 2 недель.",
+    [Language.Georgian]: "პაციენტების უმეტესობას შეუძლია მსუბუქი აქტივობების განახლება 1-3 დღის განმავლობაში, მაგრამ ინტენსიური ფიზიკური აქტივობებისგან თავი უნდა შეიკავოთ 2 კვირის განმავლობაში."
+  },
+  "services.faqs.question4": {
+    [Language.Turkish]: "Saç ekimi sonrası yeni saçlarım ne zaman büyümeye başlayacak?",
+    [Language.English]: "When will my new hair start growing after a hair transplant?",
+    [Language.Russian]: "Когда мои новые волосы начнут расти после трансплантации волос?",
+    [Language.Georgian]: "როდის დაიწყებს ჩემი ახალი თმა ზრდას თმის გადანერგვის შემდეგ?"
+  },
+  "services.faqs.answer4": {
+    [Language.Turkish]: "Genellikle nakledilen saçlar 2-3 hafta içinde dökülür ve yeni saç büyümesi 3-4 ay içinde başlar. Tam sonuçlar 9-12 ay içinde görülür.",
+    [Language.English]: "Usually, transplanted hair sheds within 2-3 weeks, and new hair growth begins within 3-4 months. Full results are visible within 9-12 months.",
+    [Language.Russian]: "Обычно пересаженные волосы выпадают в течение 2-3 недель, а новый рост волос начинается в течение 3-4 месяцев. Полные результаты видны в течение 9-12 месяцев.",
+    [Language.Georgian]: "ჩვეულებრივ, გადანერგილი თმა ცვივა 2-3 კვირის განმავლობაში და ახალი თმის ზრდა იწყება 3-4 თვის განმავლობაში. სრული შედეგები ჩანს 9-12 თვის განმავლობაში."
+  },
+  "services.faqs.question5": {
+    [Language.Turkish]: "FUE ve DHI teknikleri arasındaki fark nedir?",
+    [Language.English]: "What is the difference between FUE and DHI techniques?",
+    [Language.Russian]: "В чем разница между методами FUE и DHI?",
+    [Language.Georgian]: "რა განსხვავებაა FUE და DHI ტექნიკებს შორის?"
+  },
+  "services.faqs.answer5": {
+    [Language.Turkish]: "FUE tekniğinde greftler çıkarıldıktan sonra açılan kanallara yerleştirilir, DHI tekniğinde ise özel bir kalem ile doğrudan kafa derisine implante edilir. DHI daha az travmatiktir ve daha yoğun ekim sağlar.",
+    [Language.English]: "In the FUE technique, grafts are placed into channels that are opened after extraction, while in the DHI technique, they are implanted directly into the scalp with a special pen. DHI is less traumatic and provides denser implantation.",
+    [Language.Russian]: "При технике FUE графты помещаются в каналы, которые открываются после извлечения, а при технике DHI они имплантируются непосредственно в кожу головы с помощью специальной ручки. DHI менее травматичен и обеспечивает более плотную имплантацию.",
+    [Language.Georgian]: "FUE ტექნიკაში ტრანსპლანტები თავსდება არხებში, რომლებიც იხსნება ექსტრაქციის შემდეგ, ხოლო DHI ტექნიკაში ისინი პირდაპირ ინერგება თავის კანში სპეციალური კალმით. DHI ნაკლებად ტრავმულია და უზრუნველყოფს უფრო მკვრივ იმპლანტაციას."
+  },
+  "services.faqs.question6": {
+    [Language.Turkish]: "Saç ekimi için ideal aday kimdir?",
+    [Language.English]: "Who is an ideal candidate for hair transplantation?",
+    [Language.Russian]: "Кто является идеальным кандидатом для трансплантации волос?",
+    [Language.Georgian]: "ვინ არის იდეალური კანდიდატი თმის გადანერგვისთვის?"
+  },
+  "services.faqs.answer6": {
+    [Language.Turkish]: "Sağlıklı, 25 yaş üzeri, saç kaybı stabil olan ve donör bölgesinde yeterli saç yoğunluğuna sahip kişiler ideal adaylardır.",
+    [Language.English]: "Healthy individuals over 25 years of age with stable hair loss and sufficient hair density in the donor area are ideal candidates.",
+    [Language.Russian]: "Здоровые люди старше 25 лет со стабильной потерей волос и достаточной плотностью волос в донорской области являются идеальными кандидатами.",
+    [Language.Georgian]: "ჯანმრთელი პირები 25 წელზე მეტი ასაკის სტაბილური თმის ცვენით და საკმარისი თმის სიმკვრივით დონორის ზონაში არიან იდეალური კანდიდატები."
+  },
+  "services.faqs.question7": {
+    [Language.Turkish]: "Saç ekimi sonrası nasıl bir bakım gereklidir?",
+    [Language.English]: "What kind of aftercare is required after a hair transplant?",
+    [Language.Russian]: "Какой уход необходим после трансплантации волос?",
+    [Language.Georgian]: "რა სახის შემდგომი მოვლაა საჭირო თმის გადანერგვის შემდეგ?"
+  },
+  "services.faqs.answer7": {
+    [Language.Turkish]: "İlk günlerde özel şampuanlarla nazik yıkama, güneşten ve terlemeyi artıran aktivitelerden kaçınma, önerilen ilaçları kullanma ve takip randevularına uyma.",
+    [Language.English]: "Gentle washing with special shampoos in the first days, avoiding sun exposure and activities that increase sweating, using recommended medications, and adhering to follow-up appointments.",
+    [Language.Russian]: "Бережное мытье специальными шампунями в первые дни, избегание воздействия солнца и действий, усиливающих потоотделение, использование рекомендованных лекарств и соблюдение контрольных приемов.",
+    [Language.Georgian]: "ნაზი დაბანა სპეციალური შამპუნებით პირველ დღეებში, მზის ზემოქმედებისა და აქტივობების თავიდან აცილება, რომლებიც ზრდის ოფლიანობას, რეკომენდებული მედიკამენტების გამოყენება და შემდგომი ვიზიტების დაცვა."
+  },
+  "services.faqs.question8": {
+    [Language.Turkish]: "Saç ekimi işlemi ne kadar sürer?",
+    [Language.English]: "How long does the hair transplant procedure take?",
+    [Language.Russian]: "Сколько времени занимает процедура трансплантации волос?",
+    [Language.Georgian]: "რამდენ ხანს გრძელდება თმის გადანერგვის პროცედურა?"
+  },
+  "services.faqs.answer8": {
+    [Language.Turkish]: "Ekilecek greft sayısına bağlı olarak 4-8 saat arasında değişebilir. Ortalama bir işlem genellikle 6 saat sürer.",
+    [Language.English]: "It can vary between 4-8 hours depending on the number of grafts to be transplanted. An average procedure usually takes 6 hours.",
+    [Language.Russian]: "Это может варьироваться от 4 до 8 часов в зависимости от количества пересаживаемых графтов. Средняя процедура обычно занимает 6 часов.",
+    [Language.Georgian]: "ეს შეიძლება მერყეობდეს 4-8 საათს შორის გადასანერგი გრაფტების რაოდენობის მიხედვით. საშუალო პროცედურა ჩვეულებრივ გრძელდება 6 საათი."
+  },
+  
+  // Before After Gallery
+  "services.beforeAfterDescription": {
+    [Language.Turkish]: "Gerçek hastalarımızın tedavi öncesi ve sonrası fotoğraflarını inceleyin",
+    [Language.English]: "View before and after photos of our real patients",
+    [Language.Russian]: "Просмотрите фотографии до и после лечения наших реальных пациентов",
+    [Language.Georgian]: "იხილეთ ჩვენი ნამდვილი პაციენტების ფოტოები მკურნალობამდე და შემდეგ"
+  },
+  "Start": {
+    [Language.Turkish]: "Başlangıç",
+    [Language.English]: "Start",
+    [Language.Russian]: "Начало",
+    [Language.Georgian]: "დაწყება"
+  },
+  "Complete": {
+    [Language.Turkish]: "Tamamlandı",
+    [Language.English]: "Complete",
+    [Language.Russian]: "Завершено",
+    [Language.Georgian]: "დასრულებული"
+  },
+  "Search FAQs...": {
+    [Language.Turkish]: "SSS Ara...",
+    [Language.English]: "Search FAQs...",
+    [Language.Russian]: "Поиск по ЧЗВ...",
+    [Language.Georgian]: "ხშირად დასმული კითხვების ძიება..."
+  },
+  "All": {
+    [Language.Turkish]: "Tümü",
+    [Language.English]: "All",
+    [Language.Russian]: "Все",
+    [Language.Georgian]: "ყველა"
+  },
+  "Loading reviews...": {
+    [Language.Turkish]: "Yorumlar yükleniyor...",
+    [Language.English]: "Loading reviews...",
+    [Language.Russian]: "Загрузка отзывов...",
+    [Language.Georgian]: "მიმოხილვების ჩატვირთვა..."
+  },
+  "Before & After Results": {
+    [Language.Turkish]: "Öncesi ve Sonrası Sonuçlar",
+    [Language.English]: "Before & After Results",
+    [Language.Russian]: "Результаты до и после",
+    [Language.Georgian]: "შედეგები მანამდე და შემდეგ"
+  },
+  "Grid View": {
+    [Language.Turkish]: "Izgara Görünümü",
+    [Language.English]: "Grid View",
+    [Language.Russian]: "Вид сеткой",
+    [Language.Georgian]: "ბადის ხედი"
+  },
+  "Slider View": {
+    [Language.Turkish]: "Sürgü Görünümü",
+    [Language.English]: "Slider View",
+    [Language.Russian]: "Вид слайдера",
+    [Language.Georgian]: "სლაიდერის ხედი"
+  },
+  "Before": {
+    [Language.Turkish]: "Öncesi",
+    [Language.English]: "Before",
+    [Language.Russian]: "До",
+    [Language.Georgian]: "მანამდე"
+  },
+  "After": {
+    [Language.Turkish]: "Sonrası",
+    [Language.English]: "After",
+    [Language.Russian]: "После",
+    [Language.Georgian]: "შემდეგ"
+  },
+  "Be the First to Review": {
+    [Language.Turkish]: "İlk Yorum Yapan Siz Olun",
+    [Language.English]: "Be the First to Review",
+    [Language.Russian]: "Будьте первым, кто оставит отзыв",
+    [Language.Georgian]: "იყავით პირველი ვინც შეაფასებს"
+  },
+  "No reviews yet. Share your experience and help others make their decision.": {
+    [Language.Turkish]: "Henüz yorum yok. Deneyiminizi paylaşın ve diğerlerine karar vermede yardımcı olun.",
+    [Language.English]: "No reviews yet. Share your experience and help others make their decision.",
+    [Language.Russian]: "Отзывов пока нет. Поделитесь своим опытом и помогите другим принять решение.",
+    [Language.Georgian]: "ჯერ არ არის შეფასებები. გაუზიარეთ თქვენი გამოცდილება და დაეხმარეთ სხვებს გადაწყვეტილების მიღებაში."
+  },
+  "Write a Review": {
+    [Language.Turkish]: "Yorum Yazın",
+    [Language.English]: "Write a Review",
+    [Language.Russian]: "Написать отзыв",
+    [Language.Georgian]: "დაწერეთ შეფასება"
+  },
   
   // HomePage çevirileri 
   "home.title": {
