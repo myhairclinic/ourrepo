@@ -367,6 +367,18 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Процесс последующего ухода",
     [Language.Georgian]: "მოვლის პროცესი"
   },
+  "services.procedureTimeline": {
+    [Language.Turkish]: "İşlem Zaman Çizelgesi",
+    [Language.English]: "Procedure Timeline",
+    [Language.Russian]: "График Процедуры",
+    [Language.Georgian]: "პროცედურის დროის გრაფიკი"
+  },
+  "services.timelineDescription": {
+    [Language.Turkish]: "Saç ekimi sürecinin aşamaları ve her adımda ne bekleyeceğiniz.",
+    [Language.English]: "The stages of the hair transplant process and what to expect at each step.",
+    [Language.Russian]: "Этапы процесса трансплантации волос и чего ожидать на каждом шаге.",
+    [Language.Georgian]: "თმის გადანერგვის პროცესის ეტაპები და რას უნდა ელოდოთ თითოეულ ნაბიჯზე."
+  },
   // Timeline translations
   "services.timeline.step1Title": {
     [Language.Turkish]: "Ücretsiz Konsültasyon",
