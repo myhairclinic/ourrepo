@@ -195,7 +195,7 @@ export default function ServicesListPage() {
                   <Card className="overflow-hidden flex flex-col h-full hover:shadow-xl transition-all duration-300 border-primary/10 group">
                     <div className="h-64 overflow-hidden relative">
                       <img 
-                        src={service.imageUrl} 
+                        src={service.slug === 'eyebrow-transplantation' ? '/images/services/eyebrow-transplant.jpg' : service.imageUrl} 
                         alt={getLocalizedTitle(service)} 
                         className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105"
                         onError={(e) => {
