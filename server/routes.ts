@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth } from "./auth";
+import { insertUserReviewSchema } from "@shared/schema";
 import { 
   getServices, 
   getServiceBySlug,
@@ -117,6 +118,84 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/testimonials", createTestimonial);
   app.put("/api/testimonials/:id", updateTestimonial);
   app.delete("/api/testimonials/:id", deleteTestimonial);
+  
+  // User Review routes
+  app.get("/api/reviews", async (req, res) => {
+    try {
+      const reviews = await storage.getUserReviews();
+      res.json(reviews);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+      res.status(500).json({ error: "Failed to fetch reviews" });
+    }
+  });
+  
+  app.get("/api/reviews/approved", async (req, res) => {
+    try {
+      const reviews = await storage.getApprovedUserReviews();
+      res.json(reviews);
+    } catch (error) {
+      console.error("Error fetching approved reviews:", error);
+      res.status(500).json({ error: "Failed to fetch approved reviews" });
+    }
+  });
+  
+  app.get("/api/services/:serviceId/reviews", async (req, res) => {
+    try {
+      const serviceId = parseInt(req.params.serviceId);
+      if (isNaN(serviceId)) {
+        return res.status(400).json({ error: "Invalid service ID" });
+      }
+      const reviews = await storage.getUserReviewsByServiceId(serviceId);
+      res.json(reviews);
+    } catch (error) {
+      console.error("Error fetching service reviews:", error);
+      res.status(500).json({ error: "Failed to fetch service reviews" });
+    }
+  });
+  
+  app.post("/api/reviews", async (req, res) => {
+    try {
+      const reviewData = insertUserReviewSchema.parse(req.body);
+      const newReview = await storage.createUserReview(reviewData);
+      res.status(201).json(newReview);
+    } catch (error) {
+      console.error("Error creating review:", error);
+      res.status(400).json({ error: "Invalid review data" });
+    }
+  });
+  
+  app.put("/api/reviews/:id/approve", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid review ID" });
+      }
+      const isApproved = req.body.isApproved === true;
+      const updatedReview = await storage.updateUserReviewApproval(id, isApproved);
+      if (!updatedReview) {
+        return res.status(404).json({ error: "Review not found" });
+      }
+      res.json(updatedReview);
+    } catch (error) {
+      console.error("Error updating review approval:", error);
+      res.status(500).json({ error: "Failed to update review approval" });
+    }
+  });
+  
+  app.delete("/api/reviews/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid review ID" });
+      }
+      await storage.deleteUserReview(id);
+      res.status(204).end();
+    } catch (error) {
+      console.error("Error deleting review:", error);
+      res.status(500).json({ error: "Failed to delete review" });
+    }
+  });
 
   // Contact/Message routes
   app.post("/api/contact", createMessage);

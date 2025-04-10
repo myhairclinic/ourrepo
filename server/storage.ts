@@ -1065,7 +1065,7 @@ export class DatabaseStorage implements IStorage {
     }).returning();
     return newTestimonial;
   }
-
+  
   async updateTestimonial(id: number, testimonial: Partial<InsertTestimonial>): Promise<Testimonial | undefined> {
     const [updatedTestimonial] = await db.update(testimonials)
       .set({
@@ -1075,15 +1075,61 @@ export class DatabaseStorage implements IStorage {
       .returning();
     return updatedTestimonial;
   }
-
+  
   async deleteTestimonial(id: number): Promise<boolean> {
     await db.delete(testimonials).where(eq(testimonials.id, id));
     return true;
   }
 
+  // User Review operations
+  async getUserReviews(): Promise<UserReview[]> {
+    return await db.select().from(userReviews).orderBy(desc(userReviews.createdAt));
+  }
+
+  async getUserReviewById(id: number): Promise<UserReview | undefined> {
+    const [review] = await db.select().from(userReviews).where(eq(userReviews.id, id));
+    return review;
+  }
+
+  async getUserReviewsByServiceId(serviceId: number): Promise<UserReview[]> {
+    return await db.select().from(userReviews)
+      .where(eq(userReviews.serviceId, serviceId))
+      .orderBy(desc(userReviews.createdAt));
+  }
+
+  async getApprovedUserReviews(): Promise<UserReview[]> {
+    return await db.select().from(userReviews)
+      .where(eq(userReviews.isApproved, true))
+      .orderBy(desc(userReviews.createdAt));
+  }
+
+  async createUserReview(review: InsertUserReview): Promise<UserReview> {
+    const [newReview] = await db.insert(userReviews).values({
+      ...review,
+      isApproved: false,
+      createdAt: new Date()
+    }).returning();
+    return newReview;
+  }
+
+  async updateUserReviewApproval(id: number, isApproved: boolean): Promise<UserReview | undefined> {
+    const [updatedReview] = await db.update(userReviews)
+      .set({
+        isApproved
+      })
+      .where(eq(userReviews.id, id))
+      .returning();
+    return updatedReview;
+  }
+
+  async deleteUserReview(id: number): Promise<boolean> {
+    await db.delete(userReviews).where(eq(userReviews.id, id));
+    return true;
+  }
+
   // Message operations
   async getMessages(): Promise<Message[]> {
-    return await db.select().from(messages).orderBy(desc(messages.id));
+    return await db.select().from(messages).orderBy(desc(messages.createdAt));
   }
 
   async getMessageById(id: number): Promise<Message | undefined> {
