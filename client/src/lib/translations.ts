@@ -6,6 +6,19 @@ type LanguageMap = Record<Language, string>;
 // Our translations object with simple key structure
 // Translations object (exported for direct usage in components)
 export const translations: Record<string, LanguageMap> = {
+  // Eksik çeviriler
+  "services.exclusive": {
+    [Language.Turkish]: "Özel Hizmet",
+    [Language.English]: "Exclusive Service",
+    [Language.Russian]: "Эксклюзивное обслуживание",
+    [Language.Georgian]: "ექსკლუზიური მომსახურება"
+  },
+  "services.satisfaction": {
+    [Language.Turkish]: "100% Memnuniyet Garantisi",
+    [Language.English]: "100% Satisfaction Guarantee",
+    [Language.Russian]: "100% гарантия удовлетворения",
+    [Language.Georgian]: "100% კმაყოფილების გარანტია"
+  },
   // Common
   "common.home": {
     [Language.Turkish]: "Ana Sayfa",
@@ -378,6 +391,30 @@ export const translations: Record<string, LanguageMap> = {
     [Language.English]: "The stages of the hair transplant process and what to expect at each step.",
     [Language.Russian]: "Этапы процесса трансплантации волос и чего ожидать на каждом шаге.",
     [Language.Georgian]: "თმის გადანერგვის პროცესის ეტაპები და რას უნდა ელოდოთ თითოეულ ნაბიჯზე."
+  },
+  "services.results": {
+    [Language.Turkish]: "GERÇEK SONUÇLAR",
+    [Language.English]: "REAL RESULTS",
+    [Language.Russian]: "РЕАЛЬНЫЕ РЕЗУЛЬТАТЫ",
+    [Language.Georgian]: "ნამდვილი შედეგები"
+  },
+  "services.beforeAfterDescription": {
+    [Language.Turkish]: "Gerçek hastalarımızın saç ekimi öncesi ve sonrası dönüşümlerini görün",
+    [Language.English]: "See the before and after transformations of our real patients",
+    [Language.Russian]: "Посмотрите на трансформации до и после у наших реальных пациентов",
+    [Language.Georgian]: "იხილეთ ჩვენი ნამდვილი პაციენტების ტრანსფორმაცია"
+  },
+  "services.beforeAfterDisclaimer": {
+    [Language.Turkish]: "Sonuçlar kişiden kişiye değişebilir. Kendi saç ekimi sonuçlarınız hakkında daha fazla bilgi için ücretsiz konsültasyon randevusu alın.",
+    [Language.English]: "Results may vary from person to person. Schedule a free consultation appointment for more information about your own hair transplant results.",
+    [Language.Russian]: "Результаты могут отличаться в зависимости от человека. Запишитесь на бесплатную консультацию для получения дополнительной информации о результатах вашей трансплантации волос.",
+    [Language.Georgian]: "შედეგები შეიძლება განსხვავდებოდეს პიროვნებიდან პიროვნებამდე. დანიშნეთ უფასო კონსულტაცია თქვენი თმის გადანერგვის შედეგების შესახებ მეტი ინფორმაციისთვის."
+  },
+  "services.viewMoreResults": {
+    [Language.Turkish]: "Daha Fazla Sonuç Gör",
+    [Language.English]: "View More Results",
+    [Language.Russian]: "Посмотреть Больше Результатов",
+    [Language.Georgian]: "იხილეთ მეტი შედეგი"
   },
   // Timeline translations
   "services.timeline.step1Title": {

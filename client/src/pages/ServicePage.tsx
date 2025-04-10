@@ -678,49 +678,80 @@ export default function ServicePage() {
             {/* Before/After Gallery */}
             {service.slug === 'hair-transplantation' && (
               <div className="mb-24">
-                <h2 className="text-3xl font-bold text-center mb-6">{t("services.beforeAfter")}</h2>
-                <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-12">
-                  {t("services.beforeAfterDescription")}
-                </p>
+                <div className="text-center mb-12">
+                  <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
+                    {t("services.results")}
+                  </Badge>
+                  <h2 className="text-3xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
+                    {t("services.beforeAfter")}
+                  </h2>
+                  <p className="text-muted-foreground max-w-2xl mx-auto">
+                    {t("services.beforeAfterDescription")}
+                  </p>
+                </div>
                 
-                <BeforeAfterGallery 
-                  items={[
-                    {
-                      id: 1,
-                      type: "image",
-                      beforeImageUrl: "https://images.unsplash.com/photo-1474176857210-7287d38d27c6?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-                      afterImageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-                      descriptionTR: "Saç ekiminden 6 ay sonra belirgin değişim",
-                      descriptionEN: "Significant change 6 months after hair transplantation",
-                      descriptionRU: "Значительное изменение через 6 месяцев после трансплантации волос",
-                      descriptionKA: "მნიშვნელოვანი ცვლილება თმის გადანერგვიდან 6 თვის შემდეგ",
-                      category: "FUE"
-                    },
-                    {
-                      id: 2,
-                      type: "image",
-                      beforeImageUrl: "https://images.unsplash.com/photo-1503443207922-dff7d543fd0e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-                      afterImageUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-                      descriptionTR: "Tepe kısmında yapılan saç ekimi sonuçları",
-                      descriptionEN: "Hair transplantation results on the crown area",
-                      descriptionRU: "Результаты пересадки волос в области макушки",
-                      descriptionKA: "თმის გადანერგვის შედეგები თხემის არეში",
-                      category: "DHI"
-                    },
-                    {
-                      id: 3,
-                      type: "image",
-                      beforeImageUrl: "https://images.unsplash.com/photo-1583864697784-a0efc8379f70?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-                      afterImageUrl: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
-                      descriptionTR: "Alın çizgisi ve saç ekimi - 1 yıl sonrası",
-                      descriptionEN: "Hairline and transplantation - 1 year after",
-                      descriptionRU: "Линия роста волос и трансплантация - 1 год спустя",
-                      descriptionKA: "თმის ხაზი და გადანერგვა - 1 წლის შემდეგ",
-                      category: "FUE"
-                    }
-                  ]} 
-                  title={getLocalizedTitle(service)}
-                />
+                <div className="relative">
+                  {/* Decorative elements */}
+                  <div className="absolute -top-10 -left-10 w-40 h-40 bg-primary/5 rounded-full blur-xl -z-10"></div>
+                  <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-primary/5 rounded-full blur-xl -z-10"></div>
+                  
+                  <div className="bg-white rounded-xl shadow-lg p-8 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 -z-10 rounded-bl-full"></div>
+                    
+                    <BeforeAfterGallery 
+                      items={[
+                        {
+                          id: 1,
+                          type: "image",
+                          beforeImageUrl: "https://images.unsplash.com/photo-1474176857210-7287d38d27c6?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+                          afterImageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+                          descriptionTR: "Saç ekiminden 6 ay sonra belirgin değişim",
+                          descriptionEN: "Significant change 6 months after hair transplantation",
+                          descriptionRU: "Значительное изменение через 6 месяцев после трансплантации волос",
+                          descriptionKA: "მნიშვნელოვანი ცვლილება თმის გადანერგვიდან 6 თვის შემდეგ",
+                          category: "FUE"
+                        },
+                        {
+                          id: 2,
+                          type: "image",
+                          beforeImageUrl: "https://images.unsplash.com/photo-1503443207922-dff7d543fd0e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+                          afterImageUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+                          descriptionTR: "Tepe kısmında yapılan saç ekimi sonuçları",
+                          descriptionEN: "Hair transplantation results on the crown area",
+                          descriptionRU: "Результаты пересадки волос в области макушки",
+                          descriptionKA: "თმის გადანერგვის შედეგები თხემის არეში",
+                          category: "DHI"
+                        },
+                        {
+                          id: 3,
+                          type: "image",
+                          beforeImageUrl: "https://images.unsplash.com/photo-1583864697784-a0efc8379f70?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+                          afterImageUrl: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+                          descriptionTR: "Alın çizgisi ve saç ekimi - 1 yıl sonrası",
+                          descriptionEN: "Hairline and transplantation - 1 year after",
+                          descriptionRU: "Линия роста волос и трансплантация - 1 год спустя",
+                          descriptionKA: "თმის ხაზი და გადანერგვა - 1 წლის შემდეგ",
+                          category: "FUE"
+                        }
+                      ]} 
+                      title={getLocalizedTitle(service)}
+                    />
+                    
+                    <div className="mt-8 text-center">
+                      <p className="text-sm text-muted-foreground mb-4">
+                        {t("services.beforeAfterDisclaimer")}
+                      </p>
+                      <Link href={addPrefix("/gallery")}>
+                        <Button variant="outline" size="sm" className="group">
+                          <span className="flex items-center">
+                            {t("services.viewMoreResults")}
+                            <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+                          </span>
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
