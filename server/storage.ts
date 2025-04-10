@@ -14,7 +14,7 @@ import {
 import session from "express-session";
 import createMemoryStore from "memorystore";
 import { db, pool } from "./db";
-import { eq } from "drizzle-orm";
+import { eq, desc, asc } from "drizzle-orm";
 import connectPg from "connect-pg-simple";
 
 const MemoryStore = createMemoryStore(session);
@@ -674,13 +674,13 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteService(id: number): Promise<boolean> {
-    const result = await db.delete(services).where(eq(services.id, id));
-    return result.count > 0;
+    await db.delete(services).where(eq(services.id, id));
+    return true;
   }
 
   // Blog operations
   async getBlogPosts(): Promise<BlogPost[]> {
-    return await db.select().from(blogPosts).orderBy(blogPosts.createdAt, "desc");
+    return await db.select().from(blogPosts).orderBy(desc(blogPosts.id));
   }
 
   async getBlogPostById(id: number): Promise<BlogPost | undefined> {
@@ -945,7 +945,7 @@ export class DatabaseStorage implements IStorage {
 
   // Message operations
   async getMessages(): Promise<Message[]> {
-    return await db.select().from(messages).orderBy(messages.createdAt, "desc");
+    return await db.select().from(messages).orderBy(desc(messages.id));
   }
 
   async getMessageById(id: number): Promise<Message | undefined> {
