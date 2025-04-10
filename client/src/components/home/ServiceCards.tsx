@@ -2,16 +2,193 @@ import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "@/hooks/use-translation";
 import { Link } from "wouter";
 import { Service } from "@shared/schema";
-import { ArrowRight, Check, Loader2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, Loader2, Star, TrendingUp, Clock, Sparkles, Users } from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Language } from "@shared/types";
 import { Badge } from "@/components/ui/badge";
 import { useLanguage } from "@/hooks/use-language";
+import { useState, useEffect, useRef } from "react";
+
+const FeatureIcon = ({ index }: { index: number }) => {
+  switch (index % 4) {
+    case 0:
+      return <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />;
+    case 1:
+      return <Star className="h-4 w-4 text-amber-500 shrink-0" />;
+    case 2:
+      return <Sparkles className="h-4 w-4 text-blue-500 shrink-0" />;
+    case 3:
+      return <Users className="h-4 w-4 text-violet-500 shrink-0" />;
+    default:
+      return <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />;
+  }
+};
+
+// Modern flip card component
+function FlipCard({ 
+  service, 
+  getTitle, 
+  getDescription, 
+  features, 
+  addPrefix, 
+  t 
+}: { 
+  service: Service;
+  getTitle: (service: Service) => string;
+  getDescription: (service: Service) => string;
+  features: string[];
+  addPrefix: (path: string) => string;
+  t: (key: string) => string;
+}) {
+  const [isFlipped, setIsFlipped] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // Auto flip back when mouse leaves
+  const handleMouseLeave = () => {
+    if (isFlipped) {
+      setIsFlipped(false);
+    }
+  };
+
+  return (
+    <div 
+      className="h-full perspective-1000 w-full cursor-pointer"
+      onMouseLeave={handleMouseLeave}
+      ref={cardRef}
+    >
+      <div 
+        className={`relative w-full h-full transition-transform duration-700 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`}
+      >
+        {/* Front of card */}
+        <div 
+          className="absolute w-full h-full backface-hidden transition-all duration-300 rounded-xl overflow-hidden group"
+          onClick={() => setIsFlipped(true)}
+        >
+          <Card className="group h-full overflow-hidden border border-border/30 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col bg-background">
+            <div className="h-52 overflow-hidden relative">
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-70 group-hover:opacity-50 transition-opacity duration-300 z-10"></div>
+              <img 
+                src={service.imageUrl} 
+                alt={getTitle(service)} 
+                className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
+              />
+              <div className="absolute top-4 right-4 z-20">
+                <Badge className="bg-gradient-to-r from-primary to-primary/80 text-white border-none shadow-md">
+                  {t("services.popular")}
+                </Badge>
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 p-4 z-20">
+                <div className="flex items-center gap-2 text-xs font-medium text-background/90">
+                  <Clock className="h-3 w-3" />
+                  <span>60-90 {t("common.duration")}</span>
+                </div>
+              </div>
+            </div>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-xl font-bold group-hover:text-primary transition-colors flex items-center justify-between">
+                <span>{getTitle(service)}</span>
+                <TrendingUp className="h-5 w-5 text-primary opacity-70" />
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex-grow pb-2">
+              <CardDescription className="text-muted-foreground mb-2 line-clamp-2">
+                {getDescription(service)}
+              </CardDescription>
+              
+              <div className="flex flex-wrap gap-2 mt-3">
+                {features.slice(0, 2).map((feature, index) => (
+                  <Badge key={index} variant="outline" className="bg-background/50 text-xs font-normal py-1">
+                    <FeatureIcon index={index} />
+                    <span className="ml-1">{feature}</span>
+                  </Badge>
+                ))}
+              </div>
+            </CardContent>
+            <CardFooter className="pt-0 pb-4">
+              <Button variant="ghost" size="sm" className="w-full group border-primary/20 border hover:bg-primary/5">
+                <span className="text-sm">{t("services.flipToSeeMore")}</span>
+                <ArrowRight className="ml-2 h-4 w-4 transform transition-transform group-hover:translate-x-1" />
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
+
+        {/* Back of card */}
+        <div 
+          className="absolute w-full h-full backface-hidden rotate-y-180 transition-all duration-300"
+          onClick={() => setIsFlipped(false)}
+        >
+          <Card className="h-full overflow-hidden border border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col bg-gradient-to-b from-background to-primary/5">
+            <CardHeader className="pb-0">
+              <div className="flex justify-between items-center mb-1">
+                <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
+                  {t("services.detailedInfo")}
+                </Badge>
+                <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full">
+                  <ArrowRight className="h-4 w-4 rotate-45" />
+                </Button>
+              </div>
+              <CardTitle className="text-xl font-bold text-primary">
+                {getTitle(service)}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex-grow pt-2">
+              <CardDescription className="text-muted-foreground mb-4">
+                {getDescription(service)}
+              </CardDescription>
+              
+              <div className="space-y-3 mt-4">
+                <h4 className="text-sm font-medium">{t("services.keyFeatures")}</h4>
+                <div className="grid grid-cols-1 gap-2">
+                  {features.map((feature, index) => (
+                    <div key={index} className="flex items-center gap-2 bg-background/50 p-2 rounded-md shadow-sm">
+                      <FeatureIcon index={index} />
+                      <span className="text-sm">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter className="pt-2">
+              <Link href={addPrefix(`/services/${service.slug}`)} className="w-full">
+                <Button variant="default" className="w-full group bg-gradient-to-r from-primary to-primary/80">
+                  <span>{t("common.learnMore")}</span>
+                  <ArrowRight className="ml-2 h-4 w-4 transform transition-transform group-hover:translate-x-1" />
+                </Button>
+              </Link>
+            </CardFooter>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function ServiceCards() {
   const { t } = useTranslation();
   const { language, addPrefix } = useLanguage();
+  const [isInView, setIsInView] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Intersection observer to trigger animations when the section comes into view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
   
   const { data: services, isLoading, error } = useQuery<Service[]>({
     queryKey: ["/api/services"],
@@ -49,7 +226,7 @@ export default function ServiceCards() {
     }
   };
 
-  // Create common service features that would be displayed for all services
+  // Create service features
   const commonFeatures = [
     t("services.features.consultation"),
     t("services.features.aftercare"),
@@ -57,15 +234,46 @@ export default function ServiceCards() {
     t("services.features.satisfaction")
   ];
 
+  // Add more custom features for each service
+  const getServiceFeatures = (serviceId: number) => {
+    const customFeatures: Record<number, string[]> = {
+      1: [t("services.features.naturalResults"), t("services.features.permanentSolution")],
+      2: [t("services.features.customDesign"), t("services.features.naturalAppearance")],
+      3: [t("services.features.densityControl"), t("services.features.facialHarmony")],
+      4: [t("services.features.regeneration"), t("services.features.noChemicals")],
+      5: [t("services.features.hairStrength"), t("services.features.scalpeHealth")],
+    };
+
+    return [...(customFeatures[serviceId] || []), ...commonFeatures];
+  };
+
   return (
-    <section className="relative py-20 bg-gradient-to-b from-background to-muted/30">
-      <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-      <div className="container mx-auto px-4 relative">
-        <div className="flex flex-col items-center mb-16">
-          <Badge variant="outline" className="mb-3 px-4 py-1 text-sm font-medium rounded-full">
+    <section 
+      ref={sectionRef}
+      className="relative py-20 overflow-hidden bg-gradient-to-b from-background to-muted/30"
+    >
+      {/* Background patterns */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
+      <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-background to-transparent z-10"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background/80 to-transparent z-10"></div>
+      
+      {/* Animated circles background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -left-20 -top-20 w-64 h-64 rounded-full bg-primary/5 blur-3xl animate-blob"></div>
+        <div className="absolute right-0 top-1/3 w-80 h-80 rounded-full bg-accent/5 blur-3xl animate-blob animation-delay-2000"></div>
+        <div className="absolute left-1/3 bottom-0 w-72 h-72 rounded-full bg-secondary/5 blur-3xl animate-blob animation-delay-4000"></div>
+      </div>
+      
+      <div className="container mx-auto px-4 relative z-20">
+        <div 
+          className={`flex flex-col items-center mb-16 transition-all duration-1000 ${
+            isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+        >
+          <Badge variant="outline" className="mb-3 px-4 py-1 text-sm font-medium rounded-full border-primary/30 bg-primary/5">
             {t("services.badge")}
           </Badge>
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
             {t("common.services")}
           </h2>
           <p className="text-center text-muted-foreground max-w-2xl mx-auto text-lg">
@@ -75,64 +283,57 @@ export default function ServiceCards() {
 
         {isLoading ? (
           <div className="flex justify-center items-center py-20">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <div className="relative">
+              <div className="w-12 h-12 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
+              <Loader2 className="h-8 w-8 animate-spin text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+            </div>
           </div>
         ) : error ? (
-          <div className="text-center text-red-500 py-10">
-            {t("error.somethingWentWrong")}
+          <div className="text-center text-red-500 py-10 bg-red-50 rounded-lg border border-red-100 shadow-sm">
+            <div className="flex flex-col items-center gap-2">
+              <span className="text-lg font-medium">{t("error.somethingWentWrong")}</span>
+              <Button variant="outline" size="sm" className="mt-2" onClick={() => window.location.reload()}>
+                {t("common.tryAgain")}
+              </Button>
+            </div>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services?.map((service) => (
-              <Card key={service.id} className="group overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col h-full bg-background">
-                <div className="h-52 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-primary/10 group-hover:bg-primary/5 transition-colors duration-300 z-10"></div>
-                  <img 
-                    src={service.imageUrl} 
-                    alt={getLocalizedTitle(service)} 
-                    className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute top-3 right-3 z-20">
-                    <Badge variant="secondary" className="bg-background/80 backdrop-blur-sm">
-                      {t("services.popular")}
-                    </Badge>
-                  </div>
-                </div>
-                <CardHeader>
-                  <CardTitle className="text-xl font-bold group-hover:text-primary transition-colors">
-                    {getLocalizedTitle(service)}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="flex-grow">
-                  <CardDescription className="text-muted-foreground mb-6">
-                    {getLocalizedDescription(service)}
-                  </CardDescription>
-                  
-                  <div className="space-y-2 mt-4">
-                    {commonFeatures.map((feature, index) => (
-                      <div key={index} className="flex items-center gap-2">
-                        <Check className="h-4 w-4 text-primary shrink-0" />
-                        <span className="text-sm text-muted-foreground">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-                <CardFooter className="pt-2">
-                  <Link href={addPrefix(`/services/${service.slug}`)}>
-                    <Button variant="default" className="w-full group">
-                      <span>{t("common.learnMore")}</span>
-                      <ArrowRight className="ml-2 h-4 w-4 transform transition-transform group-hover:translate-x-1" />
-                    </Button>
-                  </Link>
-                </CardFooter>
-              </Card>
+            {services?.map((service, index) => (
+              <div
+                key={service.id}
+                className={`transition-all duration-1000 transform ${
+                  isInView
+                    ? 'opacity-100 translate-y-0'
+                    : 'opacity-0 translate-y-20'
+                }`}
+                style={{ transitionDelay: `${index * 150}ms` }}
+              >
+                <FlipCard
+                  service={service}
+                  getTitle={getLocalizedTitle}
+                  getDescription={getLocalizedDescription}
+                  features={getServiceFeatures(service.id)}
+                  addPrefix={addPrefix}
+                  t={t}
+                />
+              </div>
             ))}
           </div>
         )}
         
-        <div className="mt-16 text-center">
+        <div 
+          className={`mt-16 text-center transition-all duration-1000 ${
+            isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
+          style={{ transitionDelay: '600ms' }}
+        >
           <Link href={addPrefix("/services")}>
-            <Button variant="outline" size="lg" className="group">
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="group bg-gradient-to-r hover:bg-gradient-to-r from-background to-background hover:from-primary/5 hover:to-primary/10 border-primary/20"
+            >
               <span>{t("services.viewAll")}</span>
               <ArrowRight className="ml-2 h-4 w-4 transform transition-transform group-hover:translate-x-1" />
             </Button>
