@@ -1,14 +1,23 @@
 import { createContext, ReactNode, useState, useEffect } from "react";
 import { Language } from "@shared/types";
+import { useLocation } from "wouter";
 
+// Genişletilmiş bağlam tipi
 interface LanguageContextType {
   language: Language;
   setLanguage: (language: Language) => void;
+  changeLanguage: (language: Language) => void;
+  currentLanguage: Language;
+  addPrefix: (path: string) => string;
 }
 
+// Varsayılan değerlerle context oluştur
 export const LanguageContext = createContext<LanguageContextType>({
   language: Language.Turkish,
-  setLanguage: () => {}
+  setLanguage: () => {},
+  changeLanguage: () => {},
+  currentLanguage: Language.Turkish,
+  addPrefix: (path) => path
 });
 
 interface LanguageProviderProps {
@@ -16,8 +25,21 @@ interface LanguageProviderProps {
 }
 
 export const LanguageProvider = ({ children }: LanguageProviderProps) => {
+  // Get pathname for detecting language from URL
+  const [location, navigate] = useLocation();
+  
   // Get language from localStorage or use Turkish as default
   const [language, setLanguageState] = useState<Language>(() => {
+    // First check URL for language prefix
+    const pathMatch = location.match(/^\/(tr|en|ru|ka)(\/|$)/);
+    if (pathMatch) {
+      const langFromPath = pathMatch[1].toUpperCase() as Language;
+      if (Object.values(Language).includes(langFromPath)) {
+        return langFromPath;
+      }
+    }
+    
+    // Then check localStorage
     const savedLanguage = localStorage.getItem("language");
     return savedLanguage && Object.values(Language).includes(savedLanguage as Language)
       ? (savedLanguage as Language)
@@ -29,14 +51,69 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
     setLanguageState(newLang);
     localStorage.setItem("language", newLang);
   };
+  
+  // Change language and update URL if needed
+  const changeLanguage = (newLang: Language) => {
+    // Update state and localStorage
+    setLanguage(newLang);
+    
+    // Update URL path to include language prefix
+    const currentPath = location;
+    const pathWithoutLang = currentPath.replace(/^\/(tr|en|ru|ka)(\/|$)/, '/');
+    
+    if (pathWithoutLang === '/') {
+      navigate(`/${newLang.toLowerCase()}`);
+    } else {
+      navigate(`/${newLang.toLowerCase()}${pathWithoutLang}`);
+    }
+  };
+  
+  // URL'lere dil öneki eklemek için yardımcı fonksiyon
+  const addPrefix = (path: string) => {
+    // Eğer yol zaten bir dil öneki içeriyorsa veya admin yoluysa, dokunma
+    if (path.match(/^\/(tr|en|ru|ka)\//) || path.startsWith('/admin')) {
+      return path;
+    }
+    
+    // Yol ana sayfa ise, sadece dil önekini döndür
+    if (path === '/') {
+      return `/${language.toLowerCase()}`;
+    }
+    
+    // Diğer tüm yollar için dil önekini ekle
+    return `/${language.toLowerCase()}${path}`;
+  };
 
   // Set HTML lang attribute
   useEffect(() => {
     document.documentElement.lang = language.toLowerCase();
-  }, [language]);
+    
+    // Update URL if language changed but URL doesn't have language prefix
+    const pathMatch = location.match(/^\/(tr|en|ru|ka)(\/|$)/);
+    if (!pathMatch || (pathMatch[1].toUpperCase() !== language)) {
+      // Don't update URL on admin pages
+      if (!location.startsWith('/admin')) {
+        const pathWithoutLang = location.replace(/^\/(tr|en|ru|ka)(\/|$)/, '/');
+        
+        if (pathWithoutLang === '/' || pathWithoutLang === '') {
+          navigate(`/${language.toLowerCase()}`);
+        } else {
+          navigate(`/${language.toLowerCase()}${pathWithoutLang}`);
+        }
+      }
+    }
+  }, [language, location, navigate]);
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage }}>
+    <LanguageContext.Provider 
+      value={{ 
+        language, 
+        setLanguage, 
+        changeLanguage, 
+        currentLanguage: language,
+        addPrefix 
+      }}
+    >
       {children}
     </LanguageContext.Provider>
   );

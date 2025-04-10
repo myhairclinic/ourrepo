@@ -1,7 +1,11 @@
 import { Language } from "@shared/types";
 
-// Translations object 
-const translations: Record<string, Record<Language, string>> = {
+// A simple, non-nested translation record
+type LanguageMap = Record<Language, string>;
+
+// Our translations object with simple key structure
+// Translations object (exported for direct usage in components)
+export const translations: Record<string, LanguageMap> = {
   // Common
   "common.home": {
     [Language.Turkish]: "Ana Sayfa",
@@ -132,7 +136,33 @@ const translations: Record<string, Record<Language, string>> = {
     [Language.Georgian]: "ამჟამად პაკეტები არ არის ხელმისაწვდომი."
   },
   
+  // Services Page
+  "services.subtitle": {
+    [Language.Turkish]: "Saç ekimi ve estetik hizmetlerimiz",
+    [Language.English]: "Our hair transplantation and aesthetic services",
+    [Language.Russian]: "Наши услуги по трансплантации волос и эстетике",
+    [Language.Georgian]: "ჩვენი თმის გადანერგვისა და ესთეტიკური სერვისები"
+  },
+  "services.bookAppointment": {
+    [Language.Turkish]: "Randevu Al",
+    [Language.English]: "Book Appointment",
+    [Language.Russian]: "Записаться на прием",
+    [Language.Georgian]: "დაჯავშნეთ შეხვედრა"
+  },
+  "services.allServices": {
+    [Language.Turkish]: "Tüm Hizmetler",
+    [Language.English]: "All Services",
+    [Language.Russian]: "Все услуги",
+    [Language.Georgian]: "ყველა სერვისი"
+  },
+  
   // Error messages
+  "errors.loading_services": {
+    [Language.Turkish]: "Hizmetler yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+    [Language.English]: "An error occurred while loading services. Please try again later.",
+    [Language.Russian]: "Произошла ошибка при загрузке услуг. Пожалуйста, повторите попытку позже.",
+    [Language.Georgian]: "სერვისების ჩატვირთვისას მოხდა შეცდომა. გთხოვთ სცადოთ მოგვიანებით."
+  },
   "error.pageNotFound": {
     [Language.Turkish]: "Sayfa Bulunamadı",
     [Language.English]: "Page Not Found",
@@ -157,36 +187,72 @@ const translations: Record<string, Record<Language, string>> = {
  * Gets a translation for a specific key and language
  * @param key The translation key
  * @param language The target language
+ * @param replacements Optional replacements for placeholders
  * @returns The translated string or a fallback
  */
-export function getTranslation(key: string, language: Language): string {
+export function getTranslation(
+  key: string, 
+  language: Language,
+  replacements?: Record<string, string | number>
+): string {
   try {
     // Check if the key exists in our translations
     if (translations[key]) {
-      // Return the translation for the requested language, or fallback to English if missing
-      return translations[key][language] || translations[key][Language.English] || key;
-    }
-    
-    // Handle nested keys (e.g. "common.home.welcome")
-    const parts = key.split('.');
-    if (parts.length > 1) {
-      // Try to find a partial match
-      const prefix = parts.slice(0, -1).join('.');
-      const suffix = parts[parts.length - 1];
+      // Get the translated text
+      let translatedText = translations[key][language] || translations[key][Language.English] || key;
       
-      for (const translationKey in translations) {
-        if (translationKey.startsWith(prefix)) {
-          console.warn(`Using partial match for "${key}": found "${translationKey}"`);
-          return translations[translationKey][language] || translations[translationKey][Language.English] || key;
-        }
+      // Apply replacements if any
+      if (replacements) {
+        Object.entries(replacements).forEach(([placeholder, value]) => {
+          translatedText = translatedText.replace(
+            new RegExp(`{${placeholder}}`, 'g'), 
+            String(value)
+          );
+        });
       }
+      
+      return translatedText;
     }
     
-    // If no translation found, return the key itself
+    // If key doesn't exist, return the key itself
     console.warn(`Translation missing for key: "${key}" in language: "${language}"`);
     return key;
   } catch (error) {
     console.error(`Error getting translation for key: "${key}"`, error);
     return key;
   }
+}
+
+/**
+ * useTranslation hook - React hook for component translations
+ */
+export function useTranslation(language: Language) {
+  return {
+    t: (key: string, replacements?: Record<string, string | number>) => 
+      getTranslation(key, language, replacements),
+    
+    // Format a value to the current language format (e.g. currency)
+    formatCurrency: (value: number) => {
+      const formatter = new Intl.NumberFormat(language === Language.Turkish ? 'tr-TR' : 
+                                            language === Language.English ? 'en-US' : 
+                                            language === Language.Russian ? 'ru-RU' : 'ka-GE', 
+      {
+        style: 'currency',
+        currency: 'USD'
+      });
+      
+      return formatter.format(value);
+    },
+    
+    // Format a date to the current language format
+    formatDate: (date: Date | string) => {
+      const dateObj = typeof date === 'string' ? new Date(date) : date;
+      
+      return dateObj.toLocaleDateString(
+        language === Language.Turkish ? 'tr-TR' : 
+        language === Language.English ? 'en-US' : 
+        language === Language.Russian ? 'ru-RU' : 'ka-GE'
+      );
+    }
+  };
 }

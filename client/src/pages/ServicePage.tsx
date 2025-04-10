@@ -7,11 +7,13 @@ import { Helmet } from "react-helmet";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { translations } from "@/lib/translations";
+import { getTranslation, useTranslation } from "@/lib/translations";
 import { META } from "@/lib/constants";
+import { Language } from "@shared/types";
 
 export default function ServicePage() {
-  const { language, currentLanguage } = useLanguage();
+  const { language, currentLanguage, addPrefix } = useLanguage();
+  const { t } = useTranslation(language);
   const [, params] = useRoute("/:lang/services/:slug");
   const slug = params?.slug;
 
@@ -23,13 +25,13 @@ export default function ServicePage() {
   // Helper function to get the localized title based on current language
   const getLocalizedTitle = (service: Service) => {
     switch (language) {
-      case "tr":
+      case Language.Turkish:
         return service.titleTR;
-      case "en":
+      case Language.English:
         return service.titleEN;
-      case "ru":
+      case Language.Russian:
         return service.titleRU;
-      case "ka":
+      case Language.Georgian:
         return service.titleKA;
       default:
         return service.titleEN;
@@ -39,13 +41,13 @@ export default function ServicePage() {
   // Helper function to get the localized description based on current language
   const getLocalizedDescription = (service: Service) => {
     switch (language) {
-      case "tr":
+      case Language.Turkish:
         return service.descriptionTR;
-      case "en":
+      case Language.English:
         return service.descriptionEN;
-      case "ru":
+      case Language.Russian:
         return service.descriptionRU;
-      case "ka":
+      case Language.Georgian:
         return service.descriptionKA;
       default:
         return service.descriptionEN;
@@ -53,9 +55,9 @@ export default function ServicePage() {
   };
 
   // Translations
-  const appointmentButton = translations[language].bookAppointment || "Book Appointment";
-  const backToServices = translations[language].allServices || "All Services";
-  const errorMessage = translations[language].error_loading_services || "An error occurred while loading service details.";
+  const appointmentButton = t("services.bookAppointment");
+  const backToServices = t("services.allServices");
+  const errorMessage = t("errors.loading_services");
 
   if (isLoading) {
     return (
@@ -93,12 +95,12 @@ export default function ServicePage() {
         <div className="container mx-auto px-4">
           {/* Breadcrumb */}
           <div className="mb-8 text-sm text-muted-foreground">
-            <Link href={`/${currentLanguage}`}>
-              <span className="hover:text-primary cursor-pointer">{translations[language].nav_home || "Home"}</span>
+            <Link href={addPrefix("/")}>
+              <span className="hover:text-primary cursor-pointer">{t("common.home")}</span>
             </Link>
             <span className="mx-2">/</span>
-            <Link href={`/${currentLanguage}/services`}>
-              <span className="hover:text-primary cursor-pointer">{translations[language].nav_services || "Services"}</span>
+            <Link href={addPrefix("/services")}>
+              <span className="hover:text-primary cursor-pointer">{t("common.services")}</span>
             </Link>
             <span className="mx-2">/</span>
             <span className="text-primary">{getLocalizedTitle(service)}</span>
@@ -120,10 +122,10 @@ export default function ServicePage() {
               <div className="prose prose-lg max-w-none mb-8">
                 <p>{getLocalizedDescription(service)}</p>
               </div>
-              <Link href={`/${currentLanguage}/appointment?service=${service.id}`}>
+              <Link href={addPrefix(`/appointment?service=${service.id}`)}>
                 <Button size="lg" className="mr-4">{appointmentButton}</Button>
               </Link>
-              <Link href={`/${currentLanguage}/services`}>
+              <Link href={addPrefix('/services')}>
                 <Button variant="outline" size="lg">{backToServices}</Button>
               </Link>
             </div>
