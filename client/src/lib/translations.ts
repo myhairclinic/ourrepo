@@ -398,6 +398,48 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "РЕАЛЬНЫЕ РЕЗУЛЬТАТЫ",
     [Language.Georgian]: "ნამდვილი შედეგები"
   },
+  "services.resultsStats": {
+    [Language.Turkish]: "BAŞARILI İSTATİSTİKLER",
+    [Language.English]: "SUCCESS STATISTICS",
+    [Language.Russian]: "СТАТИСТИКА УСПЕХА",
+    [Language.Georgian]: "წარმატების სტატისტიკა"
+  },
+  "services.resultsDescription": {
+    [Language.Turkish]: "Yılların deneyimi ve yüksek hasta memnuniyetiyle gurur duyuyoruz",
+    [Language.English]: "We pride ourselves on years of experience and high patient satisfaction",
+    [Language.Russian]: "Мы гордимся многолетним опытом и высокой удовлетворенностью пациентов",
+    [Language.Georgian]: "ჩვენ ვამაყობთ მრავალწლიანი გამოცდილებით და პაციენტების მაღალი კმაყოფილებით"
+  },
+  "services.statHappyPatients": {
+    [Language.Turkish]: "Mutlu Hasta",
+    [Language.English]: "Happy Patients",
+    [Language.Russian]: "Довольных пациентов",
+    [Language.Georgian]: "კმაყოფილი პაციენტები"
+  },
+  "services.statSuccessRate": {
+    [Language.Turkish]: "Başarı Oranı",
+    [Language.English]: "Success Rate",
+    [Language.Russian]: "Показатель успеха",
+    [Language.Georgian]: "წარმატების მაჩვენებელი"
+  },
+  "services.statYearsExperience": {
+    [Language.Turkish]: "Yıllık Deneyim",
+    [Language.English]: "Years Experience",
+    [Language.Russian]: "Лет опыта",
+    [Language.Georgian]: "წლიანი გამოცდილება"
+  },
+  "services.statCountries": {
+    [Language.Turkish]: "Ülkeden Hasta",
+    [Language.English]: "Countries Served",
+    [Language.Russian]: "Обслуживаемых стран",
+    [Language.Georgian]: "მომსახურებული ქვეყნები"
+  },
+  "services.bookingDescription": {
+    [Language.Turkish]: "Ücretsiz konsültasyon için randevu alın",
+    [Language.English]: "Schedule a free consultation",
+    [Language.Russian]: "Запишитесь на бесплатную консультацию",
+    [Language.Georgian]: "დანიშნეთ უფასო კონსულტაცია"
+  },
   "services.beforeAfterDescription": {
     [Language.Turkish]: "Gerçek hastalarımızın saç ekimi öncesi ve sonrası dönüşümlerini görün",
     [Language.English]: "See the before and after transformations of our real patients",
@@ -649,12 +691,6 @@ export const translations: Record<string, LanguageMap> = {
   },
   
   // Before After Gallery
-  "services.beforeAfterDescription": {
-    [Language.Turkish]: "Gerçek hastalarımızın tedavi öncesi ve sonrası fotoğraflarını inceleyin",
-    [Language.English]: "View before and after photos of our real patients",
-    [Language.Russian]: "Просмотрите фотографии до и после лечения наших реальных пациентов",
-    [Language.Georgian]: "იხილეთ ჩვენი ნამდვილი პაციენტების ფოტოები მკურნალობამდე და შემდეგ"
-  },
   "Start": {
     [Language.Turkish]: "Başlangıç",
     [Language.English]: "Start",
