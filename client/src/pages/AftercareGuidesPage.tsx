@@ -111,49 +111,49 @@ export default function AftercareGuidesPage() {
   };
 
   // Translations
-  const pageTitle = t({
+  const pageTitle = {
     TR: "Ameliyat Sonrası Bakım Rehberleri",
     EN: "Post-Procedure Care Guides",
     RU: "Руководства по уходу после процедуры",
     KA: "პროცედურის შემდგომი მოვლის გზამკვლევები",
-  });
+  };
 
-  const pageDescription = t({
+  const pageDescription = {
     TR: "Saç ekimi ve diğer prosedürler sonrası en iyi sonuçlar için bakım rehberlerimizi inceleyin.",
     EN: "Explore our care guides for best results after hair transplantation and other procedures.",
     RU: "Ознакомьтесь с нашими руководствами по уходу для достижения наилучших результатов после трансплантации волос и других процедур.",
     KA: "გაეცანით ჩვენს მოვლის გზამკვლევებს საუკეთესო შედეგებისთვის თმის გადანერგვის და სხვა პროცედურების შემდეგ.",
-  });
+  };
 
-  const noGuidesText = t({
+  const noGuidesText = {
     TR: "Henüz ameliyat sonrası bakım rehberi eklenmemiş.",
     EN: "No post-procedure care guides have been added yet.",
     RU: "Руководства по уходу после процедуры еще не добавлены.",
     KA: "პროცედურის შემდგომი მოვლის გზამკვლევები ჯერ არ არის დამატებული.",
-  });
+  };
 
-  const downloadPdfText = t({
+  const downloadPdfText = {
     TR: "PDF Olarak İndir",
     EN: "Download PDF",
     RU: "Скачать в формате PDF",
     KA: "PDF-ის ჩამოტვირთვა",
-  });
+  };
 
-  const viewGuideText = t({
+  const viewGuideText = {
     TR: "Rehberi Görüntüle",
     EN: "View Guide",
     RU: "Просмотреть руководство",
     KA: "გზამკვლევის ნახვა",
-  });
+  };
 
   return (
     <>
       <Helmet>
-        <title>{pageTitle}</title>
-        <meta name="description" content={pageDescription} />
+        <title>{t(pageTitle)}</title>
+        <meta name="description" content={t(pageDescription)} />
       </Helmet>
 
-      <PageHeader title={pageTitle} description={pageDescription} />
+      <PageHeader title={t(pageTitle)} description={t(pageDescription)} />
 
       <section className="container py-12">
         {isLoading ? (
@@ -202,7 +202,7 @@ export default function AftercareGuidesPage() {
                             {getPdfUrl(guide) && (
                               <Button onClick={() => handleDownloadPdf(guide)}>
                                 <Download className="mr-2 h-4 w-4" />
-                                {downloadPdfText}
+                                {t(downloadPdfText)}
                               </Button>
                             )}
                             <Button variant="outline" onClick={() => setActiveGuideId(guide.id)}>
