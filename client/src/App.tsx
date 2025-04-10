@@ -33,6 +33,7 @@ import AppointmentsManager from "@/pages/admin/AppointmentsManager";
 
 // Admin route protection
 import { useAdmin } from "./hooks/use-admin";
+import { AdminProvider } from "./context/AdminContext";
 
 function ProtectedAdminRoute({ component: Component }: { component: React.ComponentType }) {
   const { user, isLoading } = useAdmin();
@@ -117,9 +118,11 @@ function AppContent() {
 
 function App() {
   return (
-    <LanguageProvider>
-      <AppContent />
-    </LanguageProvider>
+    <AdminProvider>
+      <LanguageProvider>
+        <AppContent />
+      </LanguageProvider>
+    </AdminProvider>
   );
 }
 
