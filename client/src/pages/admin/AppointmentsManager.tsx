@@ -56,12 +56,12 @@ export default function AppointmentsManager() {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   // Fetch appointments
-  const { data: appointments, isLoading } = useQuery({
+  const { data: appointments = [], isLoading } = useQuery<Appointment[]>({
     queryKey: ["/api/appointments"],
   });
 
   // Fetch services
-  const { data: services } = useQuery({
+  const { data: services = [] } = useQuery<Service[]>({
     queryKey: ["/api/services"],
   });
 
@@ -167,7 +167,7 @@ export default function AppointmentsManager() {
         <div className="flex justify-center my-12">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
-      ) : !appointments || appointments.length === 0 ? (
+      ) : !appointments || appointments?.length === 0 ? (
         <div className="text-center py-12 bg-neutral-50 rounded-lg border border-neutral-200">
           <Calendar className="h-12 w-12 mx-auto text-neutral-400 mb-4" />
           <h2 className="text-xl font-semibold text-neutral-700">Henüz randevu bulunmuyor</h2>
@@ -187,7 +187,7 @@ export default function AppointmentsManager() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {appointments.map((appointment: Appointment) => (
+              {appointments?.map((appointment: Appointment) => (
                 <TableRow key={appointment.id}>
                   <TableCell className="font-medium">
                     {format(new Date(appointment.createdAt), "dd/MM/yyyy")}
