@@ -215,6 +215,96 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Посмотреть все услуги",
     [Language.Georgian]: "ნახეთ ყველა სერვისი"
   },
+  "services.detailedInfo": {
+    [Language.Turkish]: "Detaylı Bilgi",
+    [Language.English]: "Detailed Info",
+    [Language.Russian]: "Подробная Информация",
+    [Language.Georgian]: "დეტალური ინფორმაცია"
+  },
+  "services.keyFeatures": {
+    [Language.Turkish]: "Temel Özellikler",
+    [Language.English]: "Key Features",
+    [Language.Russian]: "Ключевые Особенности",
+    [Language.Georgian]: "ძირითადი მახასიათებლები"
+  },
+  "services.flipToSeeMore": {
+    [Language.Turkish]: "Daha Fazlası İçin Tıklayın",
+    [Language.English]: "Click for More Details",
+    [Language.Russian]: "Нажмите для Подробностей",
+    [Language.Georgian]: "დააჭირეთ დეტალებისთვის"
+  },
+  "common.duration": {
+    [Language.Turkish]: "dakika",
+    [Language.English]: "minutes",
+    [Language.Russian]: "минут",
+    [Language.Georgian]: "წუთი"
+  },
+  "common.tryAgain": {
+    [Language.Turkish]: "Tekrar Deneyin",
+    [Language.English]: "Try Again",
+    [Language.Russian]: "Попробуйте снова",
+    [Language.Georgian]: "სცადეთ ხელახლა"
+  },
+  "services.features.naturalResults": {
+    [Language.Turkish]: "Doğal sonuçlar",
+    [Language.English]: "Natural results",
+    [Language.Russian]: "Естественные результаты",
+    [Language.Georgian]: "ბუნებრივი შედეგები"
+  },
+  "services.features.permanentSolution": {
+    [Language.Turkish]: "Kalıcı çözüm",
+    [Language.English]: "Permanent solution",
+    [Language.Russian]: "Постоянное решение",
+    [Language.Georgian]: "მუდმივი გადაწყვეტა"
+  },
+  "services.features.customDesign": {
+    [Language.Turkish]: "Kişiye özel tasarım",
+    [Language.English]: "Custom design",
+    [Language.Russian]: "Индивидуальный дизайн",
+    [Language.Georgian]: "ინდივიდუალური დიზაინი"
+  },
+  "services.features.naturalAppearance": {
+    [Language.Turkish]: "Doğal görünüm",
+    [Language.English]: "Natural appearance",
+    [Language.Russian]: "Естественный вид",
+    [Language.Georgian]: "ბუნებრივი გარეგნობა"
+  },
+  "services.features.densityControl": {
+    [Language.Turkish]: "Yoğunluk kontrolü",
+    [Language.English]: "Density control",
+    [Language.Russian]: "Контроль плотности",
+    [Language.Georgian]: "სიმკვრივის კონტროლი"
+  },
+  "services.features.facialHarmony": {
+    [Language.Turkish]: "Yüz hatlarıyla uyum",
+    [Language.English]: "Facial harmony",
+    [Language.Russian]: "Гармония лица",
+    [Language.Georgian]: "სახის ჰარმონია"
+  },
+  "services.features.regeneration": {
+    [Language.Turkish]: "Saç yenilenmesi",
+    [Language.English]: "Hair regeneration",
+    [Language.Russian]: "Регенерация волос",
+    [Language.Georgian]: "თმის რეგენერაცია"
+  },
+  "services.features.noChemicals": {
+    [Language.Turkish]: "Doğal içerikli",
+    [Language.English]: "No harsh chemicals",
+    [Language.Russian]: "Без агрессивных химикатов",
+    [Language.Georgian]: "უქიმიკატო"
+  },
+  "services.features.hairStrength": {
+    [Language.Turkish]: "Saç güçlendirme",
+    [Language.English]: "Hair strengthening",
+    [Language.Russian]: "Укрепление волос",
+    [Language.Georgian]: "თმის გაძლიერება"
+  },
+  "services.features.scalpeHealth": {
+    [Language.Turkish]: "Saç derisi sağlığı",
+    [Language.English]: "Scalp health",
+    [Language.Russian]: "Здоровье кожи головы",
+    [Language.Georgian]: "თავის კანის ჯანმრთელობა"
+  },
   
   // HomePage çevirileri 
   "home.title": {
