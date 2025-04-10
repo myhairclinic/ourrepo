@@ -296,28 +296,37 @@ export default function ServiceCards() {
             {/* Debug: Eğer services varsa map'le, yoksa sorunu göster */}
             {services ? (
               services.length > 0 ? (
-                services.map((service, index) => (
-                  <div
-                    key={service.id}
-                    className={`transition-all duration-1000 transform ${
-                      isInView
-                        ? 'opacity-100 translate-y-0'
-                        : 'opacity-0 translate-y-20'
-                    }`}
-                    style={{ transitionDelay: `${index * 150}ms` }}
-                  >
-                    <div className="h-full">
-                      <ServiceCard
-                        service={service}
-                        getTitle={getLocalizedTitle}
-                        getDescription={getLocalizedDescription}
-                        features={getServiceFeatures(service.id)}
-                        addPrefix={addPrefix}
-                        t={t}
-                      />
+                // Önce saç ekimini (hair-transplantation) en başa almak için servisleri sıralayıp map'liyoruz
+                [...services]
+                  .sort((a, b) => {
+                    // Saç ekimi her zaman ilk sırada olsun
+                    if (a.slug === 'hair-transplantation') return -1;
+                    if (b.slug === 'hair-transplantation') return 1;
+                    // Diğer servisler için mevcut sırayı koru
+                    return 0;
+                  })
+                  .map((service, index) => (
+                    <div
+                      key={service.id}
+                      className={`transition-all duration-1000 transform ${
+                        isInView
+                          ? 'opacity-100 translate-y-0'
+                          : 'opacity-0 translate-y-20'
+                      }`}
+                      style={{ transitionDelay: `${index * 150}ms` }}
+                    >
+                      <div className="h-full">
+                        <ServiceCard
+                          service={service}
+                          getTitle={getLocalizedTitle}
+                          getDescription={getLocalizedDescription}
+                          features={getServiceFeatures(service.id)}
+                          addPrefix={addPrefix}
+                          t={t}
+                        />
+                      </div>
                     </div>
-                  </div>
-                ))
+                  ))
               ) : (
                 <div className="col-span-3 text-center py-10">
                   <p>Hizmetler bulunamadı. Veri var ama boş: {JSON.stringify(services)}</p>
