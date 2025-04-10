@@ -15,7 +15,10 @@ import {
   User, 
   Award,
   Sparkles,
-  Star
+  Star,
+  Scissors,
+  Zap,
+  Heart
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
@@ -24,6 +27,9 @@ import { META } from "@/lib/constants";
 import { Language } from "@shared/types";
 import { ReviewsSection } from "@/components/services/ReviewsSection";
 import FaqsSection from "@/components/services/FaqsSection";
+import { EnhancedFAQs } from "@/components/services/EnhancedFAQs";
+import { BeforeAfterGallery } from "@/components/services/BeforeAfterGallery";
+import { TreatmentTimeline } from "@/components/services/TreatmentTimeline";
 import SocialShareButtons from "@/components/shared/SocialShareButtons";
 import SocialFollowButtons from "@/components/shared/SocialFollowButtons";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -452,40 +458,189 @@ export default function ServicePage() {
 
           {/* Additional Content */}
           <div className="relative z-10">
+            {/* Treatment Timeline */}
+            {service.slug === 'hair-transplantation' && (
+              <div className="mb-24">
+                <h2 className="text-3xl font-bold text-center mb-6">{t("services.procedureTimeline")}</h2>
+                <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-12">
+                  {t("services.timelineDescription")}
+                </p>
+                
+                <TreatmentTimeline 
+                  steps={[
+                    {
+                      id: 1,
+                      title: t("services.timeline.step1Title"),
+                      description: t("services.timeline.step1Description"),
+                      duration: "30-60 min",
+                      highlights: [
+                        t("services.timeline.step1Highlight1"),
+                        t("services.timeline.step1Highlight2")
+                      ],
+                      icon: "Scissors"
+                    },
+                    {
+                      id: 2,
+                      title: t("services.timeline.step2Title"),
+                      description: t("services.timeline.step2Description"),
+                      duration: "1-3 hours",
+                      highlights: [
+                        t("services.timeline.step2Highlight1"),
+                        t("services.timeline.step2Highlight2")
+                      ],
+                      icon: "Zap"
+                    },
+                    {
+                      id: 3,
+                      title: t("services.timeline.step3Title"),
+                      description: t("services.timeline.step3Description"),
+                      duration: "2-4 hours",
+                      highlights: [
+                        t("services.timeline.step3Highlight1"),
+                        t("services.timeline.step3Highlight2")
+                      ],
+                      icon: "Check"
+                    },
+                    {
+                      id: 4,
+                      title: t("services.timeline.step4Title"),
+                      description: t("services.timeline.step4Description"),
+                      duration: "1-2 weeks",
+                      highlights: [
+                        t("services.timeline.step4Highlight1"),
+                        t("services.timeline.step4Highlight2")
+                      ],
+                      icon: "Heart"
+                    },
+                    {
+                      id: 5,
+                      title: t("services.timeline.step5Title"),
+                      description: t("services.timeline.step5Description"),
+                      duration: "3-6 months",
+                      highlights: [
+                        t("services.timeline.step5Highlight1"),
+                        t("services.timeline.step5Highlight2")
+                      ],
+                      icon: "Sparkles"
+                    }
+                  ]}
+                />
+              </div>
+            )}
+            
             {/* FAQs related to this service */}
-            <FaqsSection serviceId={service.id} />
+            {service.slug === 'hair-transplantation' ? (
+              <div className="mb-24">
+                <h2 className="text-3xl font-bold text-center mb-6">{t("services.faqsTitle")}</h2>
+                <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-12">
+                  {t("services.faqsDescription")}
+                </p>
+                
+                <EnhancedFAQs 
+                  faqs={[
+                    {
+                      id: 1,
+                      question: t("services.faqs.question1"),
+                      answer: t("services.faqs.answer1"),
+                      category: "general"
+                    },
+                    {
+                      id: 2,
+                      question: t("services.faqs.question2"),
+                      answer: t("services.faqs.answer2"),
+                      category: "procedure"
+                    },
+                    {
+                      id: 3,
+                      question: t("services.faqs.question3"),
+                      answer: t("services.faqs.answer3"),
+                      category: "recovery"
+                    },
+                    {
+                      id: 4,
+                      question: t("services.faqs.question4"),
+                      answer: t("services.faqs.answer4"),
+                      category: "general"
+                    },
+                    {
+                      id: 5,
+                      question: t("services.faqs.question5"),
+                      answer: t("services.faqs.answer5"),
+                      category: "procedure"
+                    },
+                    {
+                      id: 6,
+                      question: t("services.faqs.question6"),
+                      answer: t("services.faqs.answer6"),
+                      category: "recovery"
+                    },
+                    {
+                      id: 7,
+                      question: t("services.faqs.question7"),
+                      answer: t("services.faqs.answer7"),
+                      category: "general"
+                    },
+                    {
+                      id: 8,
+                      question: t("services.faqs.question8"),
+                      answer: t("services.faqs.answer8"),
+                      category: "procedure"
+                    }
+                  ]}
+                  categories={true}
+                  title={t("services.faqsTitle")}
+                  subtitle={t("services.faqsDescription")}
+                />
+              </div>
+            ) : (
+              <FaqsSection serviceId={service.id} />
+            )}
 
             {/* Customer Reviews Section */}
             <ReviewsSection serviceId={service.id} />
             
-            {/* Before/After gallery for this service */}
-            <div className="mb-24">
-              <h2 className="text-3xl font-bold text-center mb-12">{t("services.beforeAfter")}</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {/* This is a placeholder - would need to be replaced with actual before/after gallery components */}
-                <Card className="overflow-hidden">
-                  <div className="relative aspect-[4/3]">
-                    <div className="absolute inset-0 bg-muted/70 flex items-center justify-center">
-                      <p className="text-lg font-medium">{t("services.comingSoon")}</p>
-                    </div>
-                  </div>
-                </Card>
-                <Card className="overflow-hidden">
-                  <div className="relative aspect-[4/3]">
-                    <div className="absolute inset-0 bg-muted/70 flex items-center justify-center">
-                      <p className="text-lg font-medium">{t("services.comingSoon")}</p>
-                    </div>
-                  </div>
-                </Card>
-                <Card className="overflow-hidden">
-                  <div className="relative aspect-[4/3]">
-                    <div className="absolute inset-0 bg-muted/70 flex items-center justify-center">
-                      <p className="text-lg font-medium">{t("services.comingSoon")}</p>
-                    </div>
-                  </div>
-                </Card>
+            {/* Before/After Gallery */}
+            {service.slug === 'hair-transplantation' && (
+              <div className="mb-24">
+                <h2 className="text-3xl font-bold text-center mb-6">{t("services.beforeAfter")}</h2>
+                <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-12">
+                  {t("services.beforeAfterDescription")}
+                </p>
+                
+                <BeforeAfterGallery items={[
+                  {
+                    id: 1,
+                    type: "image",
+                    beforeImageUrl: "https://images.unsplash.com/photo-1474176857210-7287d38d27c6?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+                    afterImageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+                    descriptionTR: "Saç ekiminden 6 ay sonra belirgin değişim",
+                    descriptionEN: "Significant change 6 months after hair transplantation",
+                    descriptionRU: "Значительное изменение через 6 месяцев после трансплантации волос",
+                    descriptionKA: "მნიშვნელოვანი ცვლილება თმის გადანერგვიდან 6 თვის შემდეგ"
+                  },
+                  {
+                    id: 2,
+                    type: "image",
+                    beforeImageUrl: "https://images.unsplash.com/photo-1503443207922-dff7d543fd0e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+                    afterImageUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+                    descriptionTR: "Tepe kısmında yapılan saç ekimi sonuçları",
+                    descriptionEN: "Hair transplantation results on the crown area",
+                    descriptionRU: "Результаты пересадки волос в области макушки",
+                    descriptionKA: "თმის გადანერგვის შედეგები თხემის არეში"
+                  },
+                  {
+                    id: 3,
+                    type: "image",
+                    beforeImageUrl: "https://images.unsplash.com/photo-1583864697784-a0efc8379f70?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+                    afterImageUrl: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
+                    descriptionTR: "Alın çizgisi ve saç ekimi - 1 yıl sonrası",
+                    descriptionEN: "Hairline and transplantation - 1 year after",
+                    descriptionRU: "Линия роста волос и трансплантация - 1 год спустя",
+                    descriptionKA: "თმის ხაზი და გადანერგვა - 1 წლის შემდეგ"
+                  }
+                ]} />
               </div>
-            </div>
+            )}
           </div>
         </div>
       </main>

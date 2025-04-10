@@ -1,38 +1,45 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut } from "lucide-react";
+import { ChevronLeft, ChevronRight, ZoomIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useLanguage } from "@/hooks/use-language";
-import { useTranslation } from "@/hooks/use-translation";
+import { useTranslation } from "@/lib/translations";
+import { Language } from "@shared/types";
 
-export interface BeforeAfterImage {
+export interface GalleryItem {
   id: number;
-  title: string;
-  description: string;
-  beforeImage: string;
-  afterImage: string;
-  category: string;
+  type: string;
+  beforeImageUrl: string;
+  afterImageUrl: string;
+  descriptionTR: string;
+  descriptionEN: string;
+  descriptionRU: string;
+  descriptionKA: string;
+  category?: string;
 }
 
-interface BeforeAfterGalleryProps {
-  images: BeforeAfterImage[];
-  serviceTitle?: string;
+export interface BeforeAfterGalleryProps {
+  items: GalleryItem[];
+  title?: string;
 }
 
 export function BeforeAfterGallery({ 
-  images,
-  serviceTitle = ""
+  items,
+  title = ""
 }: BeforeAfterGalleryProps) {
   const { language } = useLanguage();
-  const { t } = useTranslation();
+  const { t } = useTranslation(language);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [visibleImages, setVisibleImages] = useState(images.slice(0, 6));
-  const [selectedImage, setSelectedImage] = useState<BeforeAfterImage | null>(null);
+  const [visibleItems, setVisibleItems] = useState(items.slice(0, 6));
+  const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [viewMode, setViewMode] = useState<"grid" | "slider">("grid");
   const [sliderPosition, setSliderPosition] = useState(50);
   const [categories, setCategories] = useState<string[]>(() => {
-    const allCategories = ["All", ...new Set(images.map(img => img.category))];
+    const uniqueCategories = items
+      .filter(item => item.category)
+      .map(item => item.category as string);
+    const allCategories = ["All", ...Array.from(new Set(uniqueCategories))];
     return allCategories;
   });
   const [selectedCategory, setSelectedCategory] = useState("All");
