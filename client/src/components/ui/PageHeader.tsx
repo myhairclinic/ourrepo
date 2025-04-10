@@ -1,6 +1,6 @@
-import React from "react";
-import { cn } from "@/lib/utils";
-import { Container } from "@/components/ui/container";
+import React from 'react';
+import { cn } from '@/lib/utils';
+import { Container } from '@/components/ui/container';
 
 interface PageHeaderProps {
   title: string;
@@ -19,39 +19,44 @@ const PageHeader: React.FC<PageHeaderProps> = ({
   actions,
   className,
 }) => {
-  const headerStyle = bgImage
-    ? {
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url(${bgImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        color: "white",
-      }
-    : {};
-
   return (
     <div
       className={cn(
-        "py-12 mb-8",
-        bgImage && "text-white",
+        'relative py-12 md:py-20 mb-10 bg-muted/40',
+        bgImage ? 'bg-cover bg-center' : '',
         className
       )}
-      style={headerStyle}
+      style={bgImage ? { backgroundImage: `url(${bgImage})` } : {}}
     >
-      <Container>
+      {bgImage && (
+        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+      )}
+      <Container className="relative z-10">
         <div
           className={cn(
-            "flex flex-col gap-4",
-            centered && "items-center text-center",
-            actions && "items-center md:flex-row md:justify-between"
+            'flex flex-col gap-4',
+            centered && 'text-center items-center'
           )}
         >
-          <div className={cn(centered && "text-center", "max-w-2xl")}>
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">{title}</h1>
-            {description && (
-              <p className="text-lg text-muted-foreground">{description}</p>
-            )}
-          </div>
-          {actions && <div className="flex gap-2 mt-4 md:mt-0">{actions}</div>}
+          <h1 className={cn(
+            'text-3xl md:text-4xl lg:text-5xl font-bold',
+            bgImage ? 'text-white' : 'text-foreground'
+          )}>
+            {title}
+          </h1>
+          {description && (
+            <p className={cn(
+              'text-lg md:text-xl max-w-3xl',
+              bgImage ? 'text-white/90' : 'text-muted-foreground'
+            )}>
+              {description}
+            </p>
+          )}
+          {actions && (
+            <div className="flex flex-wrap gap-4 mt-4">
+              {actions}
+            </div>
+          )}
         </div>
       </Container>
     </div>

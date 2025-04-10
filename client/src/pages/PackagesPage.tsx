@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getQueryFn } from '@/lib/queryClient';
 import { useLanguage } from '@/context/LanguageContext';
 import { Package } from '@shared/schema';
+import { Language } from '@shared/types';
 import { Container } from '@/components/ui/container';
 import PageHeader from '@/components/ui/PageHeader';
 import { Loader2 } from 'lucide-react';
@@ -17,13 +18,13 @@ const PackagesPage: React.FC = () => {
   // Fetch all packages
   const { data: packages, isLoading, error } = useQuery<Package[]>({
     queryKey: ['/api/packages'],
-    queryFn: getQueryFn(),
+    queryFn: getQueryFn({ endpoint: '/api/packages' }),
   });
   
   // Extract unique countries from packages
   useEffect(() => {
     if (packages) {
-      const uniqueCountries = [...new Set(packages.map(pkg => pkg.countryOrigin))];
+      const uniqueCountries = Array.from(new Set(packages.map(pkg => pkg.countryOrigin)));
       setCountries(uniqueCountries);
     }
   }, [packages]);
@@ -46,9 +47,9 @@ const PackagesPage: React.FC = () => {
       <Container>
         <div className="py-12 text-center">
           <h2 className="text-2xl font-bold text-red-500">
-            {language === 'TR' ? 'Bir hata oluştu!' : 
-             language === 'EN' ? 'An error occurred!' : 
-             language === 'RU' ? 'Произошла ошибка!' : 
+            {language === Language.Turkish ? 'Bir hata oluştu!' : 
+             language === Language.English ? 'An error occurred!' : 
+             language === Language.Russian ? 'Произошла ошибка!' : 
              'შეცდომა მოხდა!'}
           </h2>
           <p className="mt-2 text-muted-foreground">
@@ -63,15 +64,15 @@ const PackagesPage: React.FC = () => {
     <>
       <PageHeader 
         title={
-          language === 'TR' ? 'Seyahat Paketleri' : 
-          language === 'EN' ? 'Travel Packages' : 
-          language === 'RU' ? 'Туристические Пакеты' : 
+          language === Language.Turkish ? 'Seyahat Paketleri' : 
+          language === Language.English ? 'Travel Packages' : 
+          language === Language.Russian ? 'Туристические Пакеты' : 
           'სამოგზაურო პაკეტები'
         }
         description={
-          language === 'TR' ? 'Saç ekimi ve tatil bir arada - Gürcistan\'da konforlu seyahat paketleri' : 
-          language === 'EN' ? 'Hair transplantation and vacation in one - Comfortable travel packages in Georgia' : 
-          language === 'RU' ? 'Трансплантация волос и отдых вместе - Комфортные туристические пакеты в Грузии' : 
+          language === Language.Turkish ? 'Saç ekimi ve tatil bir arada - Gürcistan\'da konforlu seyahat paketleri' : 
+          language === Language.English ? 'Hair transplantation and vacation in one - Comfortable travel packages in Georgia' : 
+          language === Language.Russian ? 'Трансплантация волос и отдых вместе - Комфортные туристические пакеты в Грузии' : 
           'თმის გადანერგვა და დასვენება ერთად - კომფორტული სამოგზაურო პაკეტები საქართველოში'
         }
         bgImage="/images/tbilisi-panorama.jpg"
@@ -95,9 +96,9 @@ const PackagesPage: React.FC = () => {
         ) : (
           <div className="py-12 text-center">
             <h3 className="text-xl font-medium text-muted-foreground">
-              {language === 'TR' ? 'Henüz bu kategoride paket bulunmamaktadır.' : 
-               language === 'EN' ? 'There are no packages in this category yet.' : 
-               language === 'RU' ? 'В этой категории пока нет пакетов.' : 
+              {language === Language.Turkish ? 'Henüz bu kategoride paket bulunmamaktadır.' : 
+               language === Language.English ? 'There are no packages in this category yet.' : 
+               language === Language.Russian ? 'В этой категории пока нет пакетов.' : 
                'ამ კატეგორიაში ჯერ არ არის პაკეტები.'}
             </h3>
           </div>
