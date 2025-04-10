@@ -714,8 +714,8 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteBlogPost(id: number): Promise<boolean> {
-    const result = await db.delete(blogPosts).where(eq(blogPosts.id, id));
-    return result.count > 0;
+    await db.delete(blogPosts).where(eq(blogPosts.id, id));
+    return true;
   }
 
   // Gallery operations
@@ -759,8 +759,8 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteGalleryItem(id: number): Promise<boolean> {
-    const result = await db.delete(galleryItems).where(eq(galleryItems.id, id));
-    return result.count > 0;
+    await db.delete(galleryItems).where(eq(galleryItems.id, id));
+    return true;
   }
 
   // FAQ operations
@@ -798,8 +798,8 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteFaq(id: number): Promise<boolean> {
-    const result = await db.delete(faqs).where(eq(faqs.id, id));
-    return result.count > 0;
+    await db.delete(faqs).where(eq(faqs.id, id));
+    return true;
   }
 
   // Product operations
@@ -838,8 +838,8 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteProduct(id: number): Promise<boolean> {
-    const result = await db.delete(products).where(eq(products.id, id));
-    return result.count > 0;
+    await db.delete(products).where(eq(products.id, id));
+    return true;
   }
 
   // Package operations
@@ -873,8 +873,8 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deletePackage(id: number): Promise<boolean> {
-    const result = await db.delete(packages).where(eq(packages.id, id));
-    return result.count > 0;
+    await db.delete(packages).where(eq(packages.id, id));
+    return true;
   }
 
   // Appointment operations
@@ -906,8 +906,8 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteAppointment(id: number): Promise<boolean> {
-    const result = await db.delete(appointments).where(eq(appointments.id, id));
-    return result.count > 0;
+    await db.delete(appointments).where(eq(appointments.id, id));
+    return true;
   }
 
   // Testimonial operations
@@ -939,8 +939,8 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteTestimonial(id: number): Promise<boolean> {
-    const result = await db.delete(testimonials).where(eq(testimonials.id, id));
-    return result.count > 0;
+    await db.delete(testimonials).where(eq(testimonials.id, id));
+    return true;
   }
 
   // Message operations
@@ -972,8 +972,8 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteMessage(id: number): Promise<boolean> {
-    const result = await db.delete(messages).where(eq(messages.id, id));
-    return result.count > 0;
+    await db.delete(messages).where(eq(messages.id, id));
+    return true;
   }
 
   // Clinic Info operations
