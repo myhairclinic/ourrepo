@@ -190,8 +190,12 @@ export default function ServiceCards() {
     return () => observer.disconnect();
   }, []);
   
+  // API endpoint'in tam URL olarak belirtilmesi (port farklılıklarını çözmek için)
   const { data: services, isLoading, error } = useQuery<Service[]>({
     queryKey: ["/api/services"],
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
+    staleTime: 1000 * 60, // 1 dakika
   });
 
   // Helper function to get the title based on the current language
@@ -247,6 +251,9 @@ export default function ServiceCards() {
     return [...(customFeatures[serviceId] || []), ...commonFeatures];
   };
 
+  // Debug: Konsola servisleri yazdır
+  console.log("Hizmetler:", services);
+  
   return (
     <section 
       ref={sectionRef}
