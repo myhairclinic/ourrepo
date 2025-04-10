@@ -24,6 +24,7 @@ import NotFound from "./pages/not-found";
 
 // Admin Pages
 import AdminLoginPage from "@/pages/admin/AdminLoginPage";
+import AdminRegisterPage from "@/pages/admin/AdminRegisterPage";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import ServicesManager from "@/pages/admin/ServicesManager";
 import BlogManager from "@/pages/admin/BlogManager";
@@ -59,6 +60,7 @@ function Router() {
     <Switch>
       {/* Admin routes */}
       <Route path="/admin/login" component={AdminLoginPage} />
+      <Route path="/admin/register" component={AdminRegisterPage} />
       <Route path="/admin/dashboard">
         <ProtectedAdminRoute component={AdminDashboard} />
       </Route>
