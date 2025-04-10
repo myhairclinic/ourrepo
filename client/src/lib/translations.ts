@@ -9,12 +9,18 @@ type TranslationsDict = {
   };
 };
 
+// Belirli bir çeviri anahtarı için dile göre çeviriyi döndüren yardımcı fonksiyon
+export function getTranslation(key: TranslationKey, language: Language): string {
+  return translations[language][key] || key;
+}
+
 // Uygulamadaki tüm çeviriler
 export const translations: TranslationsDict = {
   [Language.Turkish]: {
     // Genel metin
     app_name: "MyHair Clinic",
     slogan: "Tiflis'te Profesyonel Saç Ekimi",
+    learn_more: "Detaylı Bilgi",
     
     // Navigasyon
     nav_home: "Ana Sayfa",
@@ -32,8 +38,9 @@ export const translations: TranslationsDict = {
     home_hero_cta: "Ücretsiz Danışmanlık",
     
     // Hizmetler
-    services_title: "Hizmetlerimiz",
-    services_subtitle: "Uzman kadromuz ve son teknoloji ile sunduğumuz hizmetlerimiz",
+    our_services: "Hizmetlerimiz",
+    service_subtitle: "Uzman kadromuz ve son teknoloji ile sunduğumuz hizmetlerimiz",
+    error_loading_services: "Hizmetler yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
     
     // Diğer metinler...
   },
@@ -41,6 +48,7 @@ export const translations: TranslationsDict = {
     // General
     app_name: "MyHair Clinic",
     slogan: "Professional Hair Transplant in Tbilisi",
+    learn_more: "Learn More",
     
     // Navigation
     nav_home: "Home",
@@ -58,8 +66,9 @@ export const translations: TranslationsDict = {
     home_hero_cta: "Free Consultation",
     
     // Services
-    services_title: "Our Services",
-    services_subtitle: "Services we provide with our expert team and latest technology",
+    our_services: "Our Services",
+    service_subtitle: "Services we provide with our expert team and latest technology",
+    error_loading_services: "An error occurred while loading services. Please try again later.",
     
     // Other translations...
   },
@@ -67,6 +76,7 @@ export const translations: TranslationsDict = {
     // Общие
     app_name: "MyHair Clinic",
     slogan: "Профессиональная трансплантация волос в Тбилиси",
+    learn_more: "Подробнее",
     
     // Навигация
     nav_home: "Главная",
@@ -84,8 +94,9 @@ export const translations: TranslationsDict = {
     home_hero_cta: "Бесплатная консультация",
     
     // Услуги
-    services_title: "Наши услуги",
-    services_subtitle: "Услуги, которые мы предоставляем с нашей командой экспертов и новейшими технологиями",
+    our_services: "Наши услуги",
+    service_subtitle: "Услуги, которые мы предоставляем с нашей командой экспертов и новейшими технологиями",
+    error_loading_services: "Произошла ошибка при загрузке услуг. Пожалуйста, повторите попытку позже.",
     
     // Другие переводы...
   },
@@ -93,6 +104,7 @@ export const translations: TranslationsDict = {
     // ზოგადი
     app_name: "MyHair Clinic",
     slogan: "პროფესიონალური თმის გადანერგვა თბილისში",
+    learn_more: "მეტის ნახვა",
     
     // ნავიგაცია
     nav_home: "მთავარი",
@@ -110,8 +122,9 @@ export const translations: TranslationsDict = {
     home_hero_cta: "უფასო კონსულტაცია",
     
     // სერვისები
-    services_title: "ჩვენი სერვისები",
-    services_subtitle: "მომსახურება, რომელსაც ვაწვდით ჩვენი ექსპერტებისა და უახლესი ტექნოლოგიებით",
+    our_services: "ჩვენი სერვისები",
+    service_subtitle: "მომსახურება, რომელსაც ვაწვდით ჩვენი ექსპერტებისა და უახლესი ტექნოლოგიებით",
+    error_loading_services: "სერვისების ჩატვირთვისას მოხდა შეცდომა. გთხოვთ, სცადოთ მოგვიანებით.",
     
     // სხვა თარგმანები...
   }
