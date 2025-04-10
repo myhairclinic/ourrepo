@@ -306,26 +306,39 @@ export default function ServiceCards() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services?.map((service, index) => (
-              <div
-                key={service.id}
-                className={`transition-all duration-1000 transform ${
-                  isInView
-                    ? 'opacity-100 translate-y-0'
-                    : 'opacity-0 translate-y-20'
-                }`}
-                style={{ transitionDelay: `${index * 150}ms` }}
-              >
-                <FlipCard
-                  service={service}
-                  getTitle={getLocalizedTitle}
-                  getDescription={getLocalizedDescription}
-                  features={getServiceFeatures(service.id)}
-                  addPrefix={addPrefix}
-                  t={t}
-                />
+            {/* Debug: Eğer services varsa map'le, yoksa sorunu göster */}
+            {services ? (
+              services.length > 0 ? (
+                services.map((service, index) => (
+                  <div
+                    key={service.id}
+                    className={`transition-all duration-1000 transform ${
+                      isInView
+                        ? 'opacity-100 translate-y-0'
+                        : 'opacity-0 translate-y-20'
+                    }`}
+                    style={{ transitionDelay: `${index * 150}ms` }}
+                  >
+                    <FlipCard
+                      service={service}
+                      getTitle={getLocalizedTitle}
+                      getDescription={getLocalizedDescription}
+                      features={getServiceFeatures(service.id)}
+                      addPrefix={addPrefix}
+                      t={t}
+                    />
+                  </div>
+                ))
+              ) : (
+                <div className="col-span-3 text-center py-10">
+                  <p>Hizmetler bulunamadı. Veri var ama boş: {JSON.stringify(services)}</p>
+                </div>
+              )
+            ) : (
+              <div className="col-span-3 text-center py-10">
+                <p>Servis verisi yükleniyor veya bulunamadı: {JSON.stringify(services)}</p>
               </div>
-            ))}
+            )}
           </div>
         )}
         
