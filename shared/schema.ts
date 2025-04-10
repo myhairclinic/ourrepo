@@ -337,6 +337,38 @@ export type UpdateClinicInfo = z.infer<typeof updateClinicInfoSchema>;
 export type UserReview = typeof userReviews.$inferSelect;
 export type InsertUserReview = z.infer<typeof insertUserReviewSchema>;
 
+// Aftercare guides
+export const aftercareGuides = pgTable("aftercare_guides", {
+  id: serial("id").primaryKey(),
+  serviceId: integer("service_id").references(() => services.id),
+  titleTR: text("title_tr").notNull(),
+  titleEN: text("title_en").notNull(),
+  titleRU: text("title_ru").notNull(),
+  titleKA: text("title_ka").notNull(),
+  contentTR: text("content_tr").notNull(),
+  contentEN: text("content_en").notNull(),
+  contentRU: text("content_ru").notNull(),
+  contentKA: text("content_ka").notNull(),
+  imageUrl: text("image_url"),
+  pdfUrlTR: text("pdf_url_tr"),
+  pdfUrlEN: text("pdf_url_en"),
+  pdfUrlRU: text("pdf_url_ru"),
+  pdfUrlKA: text("pdf_url_ka"),
+  order: integer("order").notNull().default(0),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const insertAftercareGuideSchema = createInsertSchema(aftercareGuides).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type AftercareGuide = typeof aftercareGuides.$inferSelect;
+export type InsertAftercareGuide = z.infer<typeof insertAftercareGuideSchema>;
+
 // Chat sessions
 export const chatSessions = pgTable("chat_sessions", {
   id: serial("id").primaryKey(),
