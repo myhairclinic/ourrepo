@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/context/LanguageContext";
 import { Package } from "@shared/schema";
+import { Language } from "@shared/types";
 import { Link } from "wouter";
 import { MapPin, Calendar, Users, Briefcase, ArrowRight } from "lucide-react";
 
@@ -29,9 +30,9 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
         />
         {pkg.isFeatured && (
           <Badge className="absolute top-2 right-2 bg-primary text-white">
-            {language === 'TR' ? 'Öne Çıkan' :
-             language === 'EN' ? 'Featured' :
-             language === 'RU' ? 'Рекомендуемый' : 'გამორჩეული'}
+            {language === Language.Turkish ? 'Öne Çıkan' :
+             language === Language.English ? 'Featured' :
+             language === Language.Russian ? 'Рекомендуемый' : 'გამორჩეული'}
           </Badge>
         )}
       </div>
@@ -45,9 +46,9 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
           <Badge variant="outline" className="text-xs flex items-center gap-1">
             <Calendar className="h-3 w-3" />
             {pkg.durationDays} {
-              language === 'TR' ? 'gün' :
-              language === 'EN' ? 'days' :
-              language === 'RU' ? 'дней' : 'დღე'
+              language === Language.Turkish ? 'gün' :
+              language === Language.English ? 'days' :
+              language === Language.Russian ? 'дней' : 'დღე'
             }
           </Badge>
         </div>
@@ -60,18 +61,18 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
           <div className="flex items-center gap-2 text-sm">
             <Users className="h-4 w-4 text-muted-foreground" />
             <span>
-              {language === 'TR' ? 'Konaklama dahil' :
-               language === 'EN' ? 'Accommodation included' :
-               language === 'RU' ? 'Включено проживание' : 'საცხოვრებელი შედის'}
+              {language === Language.Turkish ? 'Konaklama dahil' :
+               language === Language.English ? 'Accommodation included' :
+               language === Language.Russian ? 'Включено проживание' : 'საცხოვრებელი შედის'}
             </span>
           </div>
           
           <div className="flex items-center gap-2 text-sm">
             <Briefcase className="h-4 w-4 text-muted-foreground" />
             <span>
-              {language === 'TR' ? 'Transfer dahil' :
-               language === 'EN' ? 'Transfer included' :
-               language === 'RU' ? 'Включен трансфер' : 'ტრანსფერი შედის'}
+              {language === Language.Turkish ? 'Transfer dahil' :
+               language === Language.English ? 'Transfer included' :
+               language === Language.Russian ? 'Включен трансфер' : 'ტრანსფერი შედის'}
             </span>
           </div>
         </div>
@@ -80,9 +81,9 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
       <CardFooter className="pt-0 mt-auto">
         <Button asChild className="w-full gap-2 mt-4">
           <Link href={addPrefix(`/packages/${pkg.slug}`)}>
-            {language === 'TR' ? 'Detayları Gör' :
-             language === 'EN' ? 'View Details' :
-             language === 'RU' ? 'Посмотреть детали' : 'დეტალების ნახვა'}
+            {language === Language.Turkish ? 'Detayları Gör' :
+             language === Language.English ? 'View Details' :
+             language === Language.Russian ? 'Посмотреть детали' : 'დეტალების ნახვა'}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </Button>

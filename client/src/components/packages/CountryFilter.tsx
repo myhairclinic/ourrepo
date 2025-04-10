@@ -18,8 +18,8 @@ const CountryFilter: React.FC<CountryFilterProps> = ({
 
   // Get country name based on country code and current language
   const getCountryName = (code: string) => {
-    const countryNames: Record<string, Record<string, string>> = {
-      'TR': {
+    const countryNames: Record<Language, Record<string, string>> = {
+      [Language.Turkish]: {
         'TR': 'Türkiye',
         'RU': 'Rusya',
         'UA': 'Ukrayna',
@@ -31,7 +31,7 @@ const CountryFilter: React.FC<CountryFilterProps> = ({
         'IQ': 'Irak',
         'ALL': 'Tüm Ülkeler'
       },
-      'EN': {
+      [Language.English]: {
         'TR': 'Turkey',
         'RU': 'Russia',
         'UA': 'Ukraine',
@@ -43,7 +43,7 @@ const CountryFilter: React.FC<CountryFilterProps> = ({
         'IQ': 'Iraq',
         'ALL': 'All Countries'
       },
-      'RU': {
+      [Language.Russian]: {
         'TR': 'Турция',
         'RU': 'Россия',
         'UA': 'Украина',
@@ -55,7 +55,7 @@ const CountryFilter: React.FC<CountryFilterProps> = ({
         'IQ': 'Ирак',
         'ALL': 'Все страны'
       },
-      'KA': {
+      [Language.Georgian]: {
         'TR': 'თურქეთი',
         'RU': 'რუსეთი',
         'UA': 'უკრაინა',
