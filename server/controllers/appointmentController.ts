@@ -64,6 +64,9 @@ export const updateAppointmentStatus = async (req: Request, res: Response) => {
     // Send notification to Telegram about status update
     telegramService.notifyAppointmentUpdate(appointment);
     
+    // Send notification to customer (when implemented in the future)
+    telegramService.notifyCustomerAppointmentUpdate(appointment);
+    
     res.json(appointment);
   } catch (error) {
     res.status(500).json({ message: "Failed to update appointment status" });

@@ -129,7 +129,43 @@ if (bot) {
   });
 }
 
+/**
+ * Send notification to customer about appointment status change
+ */
+export const notifyCustomerAppointmentUpdate = async (appointment: Appointment): Promise<void> => {
+  if (!bot) return;
+
+  try {
+    // Check if we have a chat record for this customer
+    // In a real implementation, you would store customer chat IDs in a database
+    // For demonstration, we'll just log that we would send a message
+    log(`Customer notification would be sent for appointment ID: ${appointment.id} with status: ${appointment.status}`, 'telegram');
+    
+    // Example message that would be sent to customer
+    const message = `
+🔔 *RANDEVU BİLDİRİMİ*
+
+Sayın ${appointment.name},
+
+Randevunuzun durumu güncellendi:
+🔶 *Yeni Durum:* ${getStatusText(appointment.status)}
+📆 *Tarih:* ${appointment.preferredDate ? new Date(appointment.preferredDate).toLocaleDateString('tr-TR') : 'Belirtilmedi'}
+⏰ *Güncelleme:* ${new Date(appointment.updatedAt).toLocaleString('tr-TR')}
+
+Randevunuzla ilgili detaylar için web sitemizi ziyaret edebilirsiniz.
+`;
+
+    // In a real implementation, you would send this message to the customer's chat ID
+    // bot.sendMessage(customerChatId, message, { parse_mode: 'Markdown' });
+    
+    log(`Customer notification template prepared for appointment ID: ${appointment.id}`, 'telegram');
+  } catch (error) {
+    log(`Error preparing customer notification: ${error}`, 'telegram');
+  }
+};
+
 export default {
   notifyNewAppointment,
-  notifyAppointmentUpdate
+  notifyAppointmentUpdate,
+  notifyCustomerAppointmentUpdate
 };
