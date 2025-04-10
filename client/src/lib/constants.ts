@@ -48,7 +48,8 @@ export const ADMIN_PATHS = {
   GALLERY: "/admin/gallery",
   APPOINTMENTS: "/admin/appointments",
   MESSAGES: "/admin/messages",
-  REVIEWS: "/admin/reviews"
+  REVIEWS: "/admin/reviews",
+  FAQS: "/admin/faqs"
 };
 
 export const API_ROUTES = {
@@ -60,6 +61,7 @@ export const API_ROUTES = {
   APPOINTMENTS: "/api/appointments",
   MESSAGES: "/api/messages",
   REVIEWS: "/api/reviews",
+  FAQS: "/api/faqs",
   ADMIN: {
     LOGIN: "/api/admin/login",
     LOGOUT: "/api/admin/logout",

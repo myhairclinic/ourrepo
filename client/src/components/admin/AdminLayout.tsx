@@ -13,7 +13,8 @@ import {
   Package, 
   ShoppingBag,
   FileEdit,
-  Star
+  Star,
+  HelpCircle
 } from "lucide-react";
 
 interface AdminLayoutProps {
@@ -55,6 +56,11 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
       name: "Gallery",
       href: ADMIN_PATHS.GALLERY,
       icon: <BarChart className="h-5 w-5" />,
+    },
+    {
+      name: "FAQs",
+      href: ADMIN_PATHS.FAQS,
+      icon: <HelpCircle className="h-5 w-5" />,
     },
     {
       name: "Appointments",
