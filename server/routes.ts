@@ -6,7 +6,8 @@ import {
   insertUserReviewSchema, 
   insertChatSessionSchema, 
   insertChatMessageSchema, 
-  insertChatOperatorSchema 
+  insertChatOperatorSchema,
+  insertAftercareGuideSchema
 } from "@shared/schema";
 import { 
   getServices, 
@@ -211,6 +212,91 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Clinic info routes
   app.get("/api/clinic-info", getClinicInfo);
   app.put("/api/clinic-info", updateClinicInfo);
+
+  // Aftercare guides routes
+  app.get("/api/aftercare-guides", async (req, res) => {
+    try {
+      const guides = await storage.getAftercareGuides();
+      res.json(guides);
+    } catch (error) {
+      console.error("Error fetching aftercare guides:", error);
+      res.status(500).json({ error: "Failed to fetch aftercare guides" });
+    }
+  });
+
+  app.get("/api/aftercare-guides/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid guide ID" });
+      }
+      const guide = await storage.getAftercareGuideById(id);
+      if (!guide) {
+        return res.status(404).json({ error: "Aftercare guide not found" });
+      }
+      res.json(guide);
+    } catch (error) {
+      console.error("Error fetching aftercare guide:", error);
+      res.status(500).json({ error: "Failed to fetch aftercare guide" });
+    }
+  });
+
+  app.get("/api/services/:serviceId/aftercare-guides", async (req, res) => {
+    try {
+      const serviceId = parseInt(req.params.serviceId);
+      if (isNaN(serviceId)) {
+        return res.status(400).json({ error: "Invalid service ID" });
+      }
+      const guides = await storage.getAftercareGuidesByServiceId(serviceId);
+      res.json(guides);
+    } catch (error) {
+      console.error("Error fetching service aftercare guides:", error);
+      res.status(500).json({ error: "Failed to fetch service aftercare guides" });
+    }
+  });
+
+  app.post("/api/aftercare-guides", async (req, res) => {
+    try {
+      const guideData = insertAftercareGuideSchema.parse(req.body);
+      const newGuide = await storage.createAftercareGuide(guideData);
+      res.status(201).json(newGuide);
+    } catch (error) {
+      console.error("Error creating aftercare guide:", error);
+      res.status(400).json({ error: "Invalid aftercare guide data" });
+    }
+  });
+
+  app.put("/api/aftercare-guides/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid guide ID" });
+      }
+      const guideData = insertAftercareGuideSchema.partial().parse(req.body);
+      const updatedGuide = await storage.updateAftercareGuide(id, guideData);
+      if (!updatedGuide) {
+        return res.status(404).json({ error: "Aftercare guide not found" });
+      }
+      res.json(updatedGuide);
+    } catch (error) {
+      console.error("Error updating aftercare guide:", error);
+      res.status(400).json({ error: "Invalid aftercare guide data" });
+    }
+  });
+
+  app.delete("/api/aftercare-guides/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid guide ID" });
+      }
+      await storage.deleteAftercareGuide(id);
+      res.status(204).end();
+    } catch (error) {
+      console.error("Error deleting aftercare guide:", error);
+      res.status(500).json({ error: "Failed to delete aftercare guide" });
+    }
+  });
 
   // Seed data routes (public during development)
   app.post("/api/seed/services", seedServices);

@@ -50,7 +50,8 @@ export const ADMIN_PATHS = {
   APPOINTMENTS: "/admin/appointments",
   MESSAGES: "/admin/messages",
   REVIEWS: "/admin/reviews",
-  FAQS: "/admin/faqs"
+  FAQS: "/admin/faqs",
+  AFTERCARE_GUIDES: "/admin/aftercare-guides"
 };
 
 export const API_ROUTES = {
@@ -63,6 +64,7 @@ export const API_ROUTES = {
   MESSAGES: "/api/messages",
   REVIEWS: "/api/reviews",
   FAQS: "/api/faqs",
+  AFTERCARE_GUIDES: "/api/aftercare-guides",
   ADMIN: {
     LOGIN: "/api/admin/login",
     LOGOUT: "/api/admin/logout",
