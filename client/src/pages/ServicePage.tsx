@@ -317,7 +317,7 @@ export default function ServicePage() {
                     (service.slug === 'beard-transplantation' ? '/images/services/beard-transplant.jpg' : 
                     (service.slug === 'prp-treatment' ? '/images/services/prp-treatment.jpg' :
                     (service.slug === 'eyebrow-transplantation' ? '/images/services/eyebrow-transplant.jpg' :
-                    (service.slug === 'hair-mesotherapy' ? consultationImage : service.imageUrl))))}
+                    (service.slug === 'hair-mesotherapy' ? '/images/services/hair-mesotherapy.jpg' : service.imageUrl))))}
                 alt={getLocalizedTitle(service)} 
                 className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
                 onError={(e) => {

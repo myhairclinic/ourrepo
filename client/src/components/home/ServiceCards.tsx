@@ -68,7 +68,7 @@ function ServiceCard({
                       : service.slug === 'prp-treatment'
                           ? '/images/services/prp-treatment.jpg'
                           : service.slug === 'hair-mesotherapy'
-                              ? consultationImage
+                              ? '/images/services/hair-mesotherapy.jpg'
                               : service.imageUrl || '/images/placeholder.jpg'
           } 
           alt={`${getTitle(service)} - MyHair Clinic, En iyi ${getTitle(service)} hizmeti Tiflis'te`}
