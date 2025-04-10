@@ -36,6 +36,7 @@ import BlogManager from "@/pages/admin/BlogManager";
 import GalleryManager from "@/pages/admin/GalleryManager";
 import AppointmentsManager from "@/pages/admin/AppointmentsManager";
 import PackagesManager from "@/pages/admin/PackagesManager";
+import ProductsManager from "@/pages/admin/ProductsManager";
 import ReviewsManager from "@/pages/admin/ReviewsManager";
 import FaqsManager from "@/pages/admin/FaqsManager";
 import AftercareGuidesManager from "@/pages/admin/AftercareGuidesManager";
@@ -114,6 +115,9 @@ function Router() {
       </Route>
       <Route path="/admin/packages">
         <ProtectedAdminRoute component={PackagesManager} />
+      </Route>
+      <Route path="/admin/products">
+        <ProtectedAdminRoute component={ProductsManager} />
       </Route>
       <Route path="/admin/reviews">
         <ProtectedAdminRoute component={ReviewsManager} />
