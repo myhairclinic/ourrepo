@@ -6,7 +6,7 @@ import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { useAdmin } from "@/context/AdminContext";
+import { useAdmin } from "@/hooks/use-admin";
 
 // Login form schema
 const loginFormSchema = z.object({

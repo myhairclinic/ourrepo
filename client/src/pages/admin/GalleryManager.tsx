@@ -68,13 +68,13 @@ export default function GalleryManager() {
                   </div>
                 ) : (
                   <img 
-                    src={item.imageUrl} 
-                    alt={item.title || 'Gallery image'} 
+                    src={item.imageUrl || ''} 
+                    alt={(item.descriptionEN || 'Gallery image')} 
                     className="w-full h-48 object-cover"
                   />
                 )}
                 <div className="p-4">
-                  <h3 className="font-semibold text-lg">{item.title || 'Untitled'}</h3>
+                  <h3 className="font-semibold text-lg">{item.descriptionEN || 'Untitled'}</h3>
                   <p className="text-neutral-500 text-sm mb-4">{item.type}</p>
                   <div className="flex space-x-2">
                     <button 

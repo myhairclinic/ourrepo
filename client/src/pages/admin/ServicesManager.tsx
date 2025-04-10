@@ -39,7 +39,7 @@ export default function ServicesManager() {
               <tbody className="bg-white divide-y divide-neutral-200">
                 {services.map((service) => (
                   <tr key={service.id}>
-                    <td className="px-6 py-4 whitespace-nowrap">{service.title}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{service.titleEN}</td>
                     <td className="px-6 py-4 whitespace-nowrap">{service.slug}</td>
                     <td className="px-6 py-4 whitespace-nowrap">{new Date(service.createdAt).toLocaleDateString()}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">

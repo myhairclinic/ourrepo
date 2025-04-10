@@ -1,8 +1,8 @@
 import { Switch, Route, useLocation } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "./lib/queryClient";
+import { queryClient } from "@/lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
-import { useLanguage } from "./hooks/use-language";
+import { useLanguage } from "@/hooks/use-language";
 import { useEffect } from "react";
 
 // Layout components
@@ -24,15 +24,15 @@ import AppointmentPage from "./pages/AppointmentPage";
 import NotFound from "./pages/not-found";
 
 // Admin Pages
-import AdminLoginPage from "./pages/admin/AdminLoginPage";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import ServicesManager from "./pages/admin/ServicesManager";
-import BlogManager from "./pages/admin/BlogManager";
-import GalleryManager from "./pages/admin/GalleryManager";
-import AppointmentsManager from "./pages/admin/AppointmentsManager";
+import AdminLoginPage from "@/pages/admin/AdminLoginPage";
+import AdminDashboard from "@/pages/admin/AdminDashboard";
+import ServicesManager from "@/pages/admin/ServicesManager";
+import BlogManager from "@/pages/admin/BlogManager";
+import GalleryManager from "@/pages/admin/GalleryManager";
+import AppointmentsManager from "@/pages/admin/AppointmentsManager";
 
 // Admin route protection
-import { useAdmin } from "./context/AdminContext";
+import { useAdmin } from "./hooks/use-admin";
 
 function ProtectedAdminRoute({ component: Component }: { component: React.ComponentType }) {
   const { user, isLoading } = useAdmin();
@@ -102,7 +102,7 @@ function Router() {
 }
 
 function App() {
-  const { pathname } = useLocation()[0];
+  const [pathname] = useLocation();
   const isAdminRoute = pathname.startsWith("/admin");
 
   return (

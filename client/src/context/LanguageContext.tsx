@@ -1,63 +1,64 @@
-import { createContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useState, ReactNode, useEffect } from "react";
+import { useLocation } from "wouter";
 import { Language, DEFAULT_LANGUAGE, getLanguageFromPath } from "@/lib/languages";
 
 interface LanguageContextType {
   language: Language;
-  setLanguage: (lang: Language) => void;
+  setLanguage: (language: Language) => void;
   addPrefix: (path: string) => string;
 }
 
 export const LanguageContext = createContext<LanguageContextType | null>(null);
 
-export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  const [language, setLanguage] = useState<Language>(DEFAULT_LANGUAGE);
+export function LanguageProvider({ children }: { children: ReactNode }) {
+  const [location, setLocation] = useLocation();
+  const [language, setLanguageState] = useState<Language>(() => {
+    // Initialize language from URL path if available
+    return getLanguageFromPath(location);
+  });
   
-  useEffect(() => {
-    // Detect language from URL path on initial load
-    const detectedLanguage = getLanguageFromPath(window.location.pathname);
-    setLanguage(detectedLanguage);
+  // Update URL when language changes
+  const setLanguage = (newLanguage: Language) => {
+    setLanguageState(newLanguage);
     
-    // Listen for path changes to update language
-    const handleLocationChange = () => {
-      const newLanguage = getLanguageFromPath(window.location.pathname);
-      if (newLanguage !== language) {
-        setLanguage(newLanguage);
-      }
-    };
-    
-    window.addEventListener('popstate', handleLocationChange);
-    
-    return () => {
-      window.removeEventListener('popstate', handleLocationChange);
-    };
-  }, []);
+    // Update the URL to include the language prefix
+    if (location.startsWith(`/${language}/`)) {
+      // Replace existing language prefix
+      setLocation(`/${newLanguage}/${location.split('/', 3)[2]}`);
+    } else if (location === `/${language}`) {
+      // Handle root language path
+      setLocation(`/${newLanguage}`);
+    } else {
+      // Add language prefix
+      setLocation(`/${newLanguage}${location === '/' ? '' : location}`);
+    }
+  };
   
   // Add language prefix to paths
   const addPrefix = (path: string): string => {
-    // If path already starts with language, return it
-    if (path.startsWith(`/${language}/`)) {
-      return path;
+    if (path.startsWith('/')) {
+      return `/${language}${path}`;
     }
-    
-    // If path is just language code, return it
-    if (path === `/${language}`) {
-      return path;
-    }
-    
-    // If path is root, just add the language
-    if (path === '/') {
-      return `/${language}`;
-    }
-    
-    // Otherwise, add language prefix
-    // Remove leading slash if present to avoid double slashes
-    const cleanPath = path.startsWith('/') ? path.substring(1) : path;
-    return `/${language}/${cleanPath}`;
+    return `/${language}/${path}`;
   };
   
+  // Update language when URL changes
+  useEffect(() => {
+    const pathLanguage = getLanguageFromPath(location);
+    if (pathLanguage !== language) {
+      setLanguageState(pathLanguage);
+    }
+  }, [location]);
+  
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, addPrefix }}>
+    <LanguageContext.Provider
+      value={{
+        language,
+        setLanguage,
+        addPrefix,
+      }}
+    >
       {children}
     </LanguageContext.Provider>
   );
-};
+}

@@ -74,14 +74,14 @@ export default function AppointmentsManager() {
                   <tr key={appointment.id}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
-                        <div className="font-medium">{appointment.patientName}</div>
-                        <div className="text-sm text-neutral-500">{appointment.patientEmail}</div>
+                        <div className="font-medium">{appointment.name}</div>
+                        <div className="text-sm text-neutral-500">{appointment.email}</div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">{appointment.serviceId}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div>{new Date(appointment.appointmentDate).toLocaleDateString()}</div>
-                      <div className="text-sm text-neutral-500">{appointment.appointmentTime}</div>
+                      <div>{new Date(appointment.createdAt).toLocaleDateString()}</div>
+                      <div className="text-sm text-neutral-500">{appointment.preferredDate || 'Not specified'}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 

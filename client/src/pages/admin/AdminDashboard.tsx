@@ -1,17 +1,17 @@
 import { useEffect } from "react";
 import { useLocation, Link } from "wouter";
-import { useAdmin } from "@/context/AdminContext";
+import { useAdmin } from "@/hooks/use-admin";
 import { ADMIN_PATHS } from "@/lib/constants";
 
 export default function AdminDashboard() {
-  const { user, isAdmin } = useAdmin();
+  const { user, isAuthenticated } = useAdmin();
   const [, setLocation] = useLocation();
   
   useEffect(() => {
-    if (!isAdmin) {
+    if (!isAuthenticated) {
       setLocation(ADMIN_PATHS.LOGIN);
     }
-  }, [isAdmin, setLocation]);
+  }, [isAuthenticated, setLocation]);
   
   if (!user) {
     return null;

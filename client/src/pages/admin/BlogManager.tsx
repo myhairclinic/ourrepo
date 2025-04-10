@@ -39,7 +39,7 @@ export default function BlogManager() {
               <tbody className="bg-white divide-y divide-neutral-200">
                 {posts.map((post) => (
                   <tr key={post.id}>
-                    <td className="px-6 py-4 whitespace-nowrap">{post.title}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{post.titleEN}</td>
                     <td className="px-6 py-4 whitespace-nowrap">{post.category}</td>
                     <td className="px-6 py-4 whitespace-nowrap">{new Date(post.createdAt).toLocaleDateString()}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">

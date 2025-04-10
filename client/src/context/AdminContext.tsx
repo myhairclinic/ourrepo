@@ -1,52 +1,92 @@
-import { createContext, ReactNode, useState, useEffect, useContext } from "react";
-import { useQuery } from "@tanstack/react-query";
-
-interface AdminUser {
-  id: number;
-  username: string;
-  role: string;
-}
+import { createContext, useState, ReactNode, useEffect } from "react";
+import { useLocation } from "wouter";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { User } from "@shared/schema";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { ADMIN_PATHS } from "@/lib/constants";
 
 interface AdminContextType {
-  user: AdminUser | null;
-  isAdmin: boolean;
+  isAuthenticated: boolean;
+  user: User | null;
   isLoading: boolean;
+  login: (username: string, password: string) => Promise<User>;
+  logout: () => Promise<void>;
+  error: Error | null;
 }
 
 export const AdminContext = createContext<AdminContextType | null>(null);
 
-export function useAdmin() {
-  const context = useContext(AdminContext);
-  if (!context) {
-    throw new Error("useAdmin must be used within an AdminProvider");
-  }
-  return context;
-}
-
-export const AdminProvider = ({ children }: { children: ReactNode }) => {
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+export function AdminProvider({ children }: { children: ReactNode }) {
+  const [, setLocation] = useLocation();
+  const [error, setError] = useState<Error | null>(null);
   
-  // Fetch current admin user (if authenticated)
-  const { data, isLoading } = useQuery<AdminUser | null>({
+  const { 
+    data: user = null,
+    isLoading,
+    error: fetchError,
+  } = useQuery<User | null>({
     queryKey: ["/api/user"],
-    // This will be automatically handled by the query client
-    // to return null when unauthorized
+    retry: false,
   });
   
-  const user = data || null;
-  
   useEffect(() => {
-    // Check if user is admin when data changes
-    if (user && user.role === "admin") {
-      setIsAdmin(true);
-    } else {
-      setIsAdmin(false);
+    if (fetchError) {
+      setError(fetchError as Error);
     }
-  }, [user]);
+  }, [fetchError]);
+  
+  const loginMutation = useMutation({
+    mutationFn: async (credentials: { username: string; password: string }) => {
+      const response = await apiRequest("POST", "/api/login", credentials);
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Login failed");
+      }
+      return await response.json();
+    },
+    onSuccess: (data: User) => {
+      queryClient.setQueryData(["/api/user"], data);
+      setError(null);
+      setLocation(ADMIN_PATHS.DASHBOARD);
+    },
+    onError: (error: Error) => {
+      setError(error);
+    },
+  });
+  
+  const logoutMutation = useMutation({
+    mutationFn: async () => {
+      await apiRequest("POST", "/api/logout");
+    },
+    onSuccess: () => {
+      queryClient.setQueryData(["/api/user"], null);
+      setLocation(ADMIN_PATHS.LOGIN);
+    },
+    onError: (error: Error) => {
+      setError(error);
+    },
+  });
+  
+  const login = async (username: string, password: string) => {
+    return loginMutation.mutateAsync({ username, password });
+  };
+  
+  const logout = async () => {
+    await logoutMutation.mutateAsync();
+  };
   
   return (
-    <AdminContext.Provider value={{ user, isAdmin, isLoading }}>
+    <AdminContext.Provider
+      value={{
+        isAuthenticated: !!user,
+        user,
+        isLoading,
+        login,
+        logout,
+        error,
+      }}
+    >
       {children}
     </AdminContext.Provider>
   );
-};
+}
