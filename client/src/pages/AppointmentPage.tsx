@@ -66,7 +66,7 @@ export default function AppointmentPage() {
   const appointmentFormSchema = createAppointmentFormSchema(language);
   
   // Fetch services for the dropdown
-  const { data: services } = useQuery({
+  const { data: services = [] } = useQuery<any[]>({
     queryKey: ["/api/services"],
   });
   

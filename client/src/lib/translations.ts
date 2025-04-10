@@ -6,8 +6,19 @@ type TranslationsDict = {
 };
 
 // Belirli bir çeviri anahtarı için dile göre çeviriyi döndüren yardımcı fonksiyon
-export function getTranslation(key: TranslationKey, language: Language): string {
-  return translations[language][key] || key;
+export function getTranslation(key: string, language: Language): any {
+  const keys = key.split('.');
+  let current = translations[language];
+  
+  // Navigate through nested keys
+  for (let i = 0; i < keys.length; i++) {
+    if (!current || typeof current !== 'object' || !(keys[i] in current)) {
+      return key;
+    }
+    current = current[keys[i]];
+  }
+  
+  return current;
 }
 
 // Uygulamadaki tüm çeviriler
