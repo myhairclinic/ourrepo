@@ -448,8 +448,8 @@ export function ReviewsList({ serviceId, limit }: ReviewsListProps) {
                     layout
                     className={
                       viewMode === "grid"
-                        ? "grid grid-cols-1 md:grid-cols-2 gap-6"
-                        : "space-y-6"
+                        ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
+                        : "space-y-4"
                     }
                   >
                     {(searchTerm ? filteredReviews : otherReviews).map((review: any) => (
@@ -508,8 +508,8 @@ export function ReviewsList({ serviceId, limit }: ReviewsListProps) {
               layout
               className={
                 viewMode === "grid"
-                  ? "grid grid-cols-1 md:grid-cols-2 gap-6"
-                  : "space-y-6"
+                  ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
+                  : "space-y-4"
               }
             >
               {filterByRating(5).map((review: any) => (
@@ -537,8 +537,8 @@ export function ReviewsList({ serviceId, limit }: ReviewsListProps) {
               layout
               className={
                 viewMode === "grid"
-                  ? "grid grid-cols-1 md:grid-cols-2 gap-6"
-                  : "space-y-6"
+                  ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
+                  : "space-y-4"
               }
             >
               {filterByRating(4).map((review: any) => (
@@ -566,8 +566,8 @@ export function ReviewsList({ serviceId, limit }: ReviewsListProps) {
               layout
               className={
                 viewMode === "grid"
-                  ? "grid grid-cols-1 md:grid-cols-2 gap-6"
-                  : "space-y-6"
+                  ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
+                  : "space-y-4"
               }
             >
               {filterByRating(3).map((review: any) => (

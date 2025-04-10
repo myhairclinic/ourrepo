@@ -76,56 +76,51 @@ export function ReviewCard({ review, featured = false }: ReviewCardProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className={`relative overflow-hidden border rounded-xl ${
+      className={`relative overflow-hidden border rounded-lg ${
         featured 
-          ? "bg-gradient-to-br from-primary/5 to-transparent shadow-md p-6" 
-          : "bg-card shadow-sm p-5"
+          ? "bg-gradient-to-br from-primary/5 to-transparent shadow-sm p-4" 
+          : "bg-card shadow-sm p-3"
       }`}
     >
-      {/* Decorative elements for featured reviews */}
+      {/* Decorative elements for featured reviews - simplified */}
       {featured && (
-        <>
-          <div className="absolute top-0 right-0 w-40 h-40 bg-primary/5 rounded-bl-full -z-10"></div>
-          <div className="absolute -bottom-10 -left-10 w-20 h-20 bg-primary/5 rounded-full blur-xl -z-10"></div>
-        </>
+        <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full -z-10"></div>
       )}
 
       {/* Featured badge */}
       {featured && (
         <Badge 
           variant="secondary" 
-          className="absolute right-4 top-4 bg-primary/10 text-primary font-medium"
+          className="absolute right-2 top-2 bg-primary/10 text-primary font-medium text-xs"
         >
           {t("Featured Review")}
         </Badge>
       )}
       
-      {/* Verified badge moved to user info section */}
-      
-      {/* User info and rating */}
-      <div className="flex gap-4">
-        <Avatar className="h-12 w-12 border shadow-sm">
+      {/* User info and rating - more compact */}
+      <div className="flex gap-3">
+        <Avatar className="h-10 w-10 border">
           {review.imageUrl ? (
             <AvatarImage src={review.imageUrl} alt={review.name} />
           ) : (
-            <AvatarFallback className="bg-gradient-to-br from-primary/20 to-primary/10 text-primary font-semibold">
+            <AvatarFallback className="bg-gradient-to-br from-primary/20 to-primary/10 text-primary font-semibold text-xs">
               {initials}
             </AvatarFallback>
           )}
         </Avatar>
         
-        <div>
-          <div className="flex items-center">
-            <h4 className="font-semibold text-lg flex items-center gap-2">
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center flex-wrap">
+            <h4 className="font-semibold text-base flex items-center gap-1 mr-1">
               {review.name}
               {featured && (
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Award size={16} className="text-amber-500" />
+                      <Award size={14} className="text-amber-500" />
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>
+                      <p className="text-xs">
                         {t({
                           TR: "En yüksek puanlı yorumlardan biri",
                           EN: "One of our highest rated reviews",
@@ -146,14 +141,14 @@ export function ReviewCard({ review, featured = false }: ReviewCardProps) {
                   <TooltipTrigger asChild>
                     <Badge 
                       variant="outline" 
-                      className="ml-2 bg-green-50 text-green-600 border-green-200 flex items-center gap-1"
+                      className="ml-auto bg-green-50 text-green-600 border-green-200 flex items-center gap-1 text-xs px-1.5 h-5"
                     >
-                      <CheckCircle size={12} className="fill-green-100" />
-                      {t("reviews.verifiedCustomer")}
+                      <CheckCircle size={10} className="fill-green-100" />
+                      <span className="truncate">{t("reviews.verifiedCustomer")}</span>
                     </Badge>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>
+                    <p className="text-xs">
                       {t({
                         TR: "Bu kullanıcı gerçekten kliniğimizde tedavi görmüştür",
                         EN: "This user has actually received treatment at our clinic",
@@ -166,36 +161,33 @@ export function ReviewCard({ review, featured = false }: ReviewCardProps) {
               </TooltipProvider>
             )}
           </div>
-          <div className="flex flex-wrap items-center gap-2 mt-1">
+          
+          <div className="flex flex-wrap items-center gap-2 mt-0.5">
             <div className="flex items-center">
-              <StarRatingDisplay rating={review.rating} showValue />
+              <StarRatingDisplay rating={review.rating} size={14} showValue />
             </div>
-            <span className="text-sm text-muted-foreground flex items-center gap-1">
-              <Calendar size={12} />
+            <span className="text-xs text-muted-foreground flex items-center gap-1">
+              <Calendar size={10} />
               {formatDate(review.createdAt)}
             </span>
-            <Badge variant="outline" className="text-xs">
-              {review.language.toUpperCase()}
-            </Badge>
+            
+            {review.location && (
+              <span className="text-xs text-muted-foreground flex items-center gap-1">
+                <MapPin size={10} />
+                <span className="truncate max-w-[100px]">{review.location}</span>
+              </span>
+            )}
           </div>
-          
-          {/* Location info */}
-          {review.location && (
-            <div className="mt-1 text-sm text-muted-foreground flex items-center gap-1">
-              <MapPin size={12} />
-              <span>{review.location}</span>
-            </div>
-          )}
         </div>
       </div>
       
-      {/* Review content */}
-      <div className="mt-6 relative bg-muted/20 p-4 rounded-lg border border-muted/30">
-        <div className="absolute -left-1 -top-1 opacity-15">
-          <Quote size={40} className="text-primary" />
+      {/* Review content - more compact */}
+      <div className="mt-3 relative bg-muted/10 p-3 rounded-md border border-muted/20">
+        <div className="absolute -left-1 -top-1 opacity-10">
+          <Quote size={24} className="text-primary" />
         </div>
-        <div className="pl-6 pt-2 relative">
-          <p className="text-foreground/80 leading-relaxed">
+        <div className="pl-4 pt-1 relative">
+          <p className="text-foreground/80 leading-relaxed text-sm">
             {displayComment}
             {isLongComment && !isExpanded && (
               <span className="text-muted-foreground">...</span>
@@ -205,7 +197,7 @@ export function ReviewCard({ review, featured = false }: ReviewCardProps) {
           {isLongComment && (
             <Button 
               variant="link" 
-              className="px-0 mt-1 h-auto text-primary"
+              className="px-0 mt-0.5 h-auto text-primary text-xs"
               onClick={() => setIsExpanded(!isExpanded)}
             >
               {isExpanded ? t("Show Less") : t("Read More")}
@@ -214,55 +206,47 @@ export function ReviewCard({ review, featured = false }: ReviewCardProps) {
         </div>
       </div>
       
-      {/* Action buttons */}
-      <div className="flex justify-between items-center mt-4 pt-3 border-t">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            <Calendar size={14} />
-            <span>{formatDate(review.createdAt, true)}</span>
-          </div>
-          <div className="hidden md:flex items-center gap-1 text-sm text-muted-foreground">
-            <MessageSquare size={14} />
-            <span>{review.comment.length} {t("characters")}</span>
-          </div>
+      {/* Action buttons - simplified */}
+      <div className="flex justify-between items-center mt-2.5 pt-2 border-t text-xs">
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className="text-[0.65rem] h-4 px-1.5">
+            {review.language.toUpperCase()}
+          </Badge>
+          
+          {featured && (
+            <Badge variant="secondary" className="text-[0.65rem] h-4 px-1.5 bg-primary/10 text-primary">
+              {t({
+                TR: "Saç Ekimi",
+                EN: "Hair Transplant",
+                RU: "Трансплантация волос",
+                KA: "თმის გადანერგვა"
+              })}
+            </Badge>
+          )}
         </div>
         
-        <div className="flex gap-2">
+        <div className="flex gap-1">
           <Button 
             variant="ghost" 
             size="sm" 
-            className="flex items-center gap-1"
+            className="flex items-center gap-1 h-7 px-2 text-xs"
             onClick={handleShare}
           >
-            <Share2 size={14} className="text-muted-foreground" />
+            <Share2 size={12} className="text-muted-foreground" />
             <span className="hidden sm:inline">{t("Share")}</span>
           </Button>
           
           <Button 
             variant="ghost" 
             size="sm" 
-            className={`flex items-center gap-1 ${isHelpfulClicked ? 'bg-primary/10' : ''}`}
+            className={`flex items-center gap-1 h-7 px-2 text-xs ${isHelpfulClicked ? 'bg-primary/10' : ''}`}
             onClick={handleHelpfulClick}
           >
-            <ThumbsUp size={14} className={isHelpfulClicked ? "fill-primary text-primary" : ""} />
-            <span>{helpfulCount > 0 ? `${helpfulCount} ${t("Helpful")}` : t("Helpful")}</span>
+            <ThumbsUp size={12} className={isHelpfulClicked ? "fill-primary text-primary" : ""} />
+            <span>{helpfulCount > 0 ? `${helpfulCount}` : ""} {t("Helpful")}</span>
           </Button>
         </div>
       </div>
-      
-      {/* Treatment label for featured reviews */}
-      {featured && (
-        <div className="mt-4 flex">
-          <Badge variant="secondary" className="bg-primary/10 text-primary">
-            {t({
-              TR: "Saç Ekimi",
-              EN: "Hair Transplantation",
-              RU: "Трансплантация волос",
-              KA: "თმის გადანერგვა"
-            })}
-          </Badge>
-        </div>
-      )}
     </motion.div>
   );
 }
