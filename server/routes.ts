@@ -9,6 +9,7 @@ import {
   updateService,
   deleteService
 } from "./controllers/contentController";
+import { seedServices } from "./controllers/seedController";
 import {
   getBlogPosts,
   getBlogPostBySlug,
@@ -126,6 +127,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Clinic info routes
   app.get("/api/clinic-info", getClinicInfo);
   app.put("/api/clinic-info", updateClinicInfo);
+
+  // Seed data routes (public during development)
+  app.post("/api/seed/services", seedServices);
 
   const httpServer = createServer(app);
 
