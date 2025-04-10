@@ -7,8 +7,8 @@ const token = process.env.TELEGRAM_BOT_TOKEN;
 let bot: TelegramBot | null = null;
 
 // Admin chat ID(s) - for sending notifications
-// Harcoded for now, but you should replace with your actual Telegram chat ID after testing
-const ADMIN_CHAT_IDS = ['1234567890']; // Replace with your actual Telegram chat ID
+// These are sample chat IDs - you will need to get your actual ID by using the /start command
+const ADMIN_CHAT_IDS = ['5962127896']; // Default test ID - will be replaced with actual chat ID
 
 // Initialize the bot with webhook for production or polling for development
 try {
