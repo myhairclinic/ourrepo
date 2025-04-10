@@ -16,6 +16,7 @@ import ServicesListPage from "./pages/ServicesListPage";
 import GalleryPage from "./pages/GalleryPage";
 import PackagesPage from "./pages/PackagesPage";
 import ProductsPage from "./pages/ProductsPage";
+import ProductPage from "./pages/ProductPage";
 import BlogPage from "./pages/BlogPage";
 import BlogPostPage from "./pages/BlogPostPage";
 import AboutPage from "./pages/AboutPage";
@@ -117,6 +118,7 @@ function Router() {
       <Route path="/:lang/gallery" component={GalleryPage} />
       <Route path="/:lang/packages" component={PackagesPage} />
       <Route path="/:lang/products" component={ProductsPage} />
+      <Route path="/:lang/products/:productSlug" component={ProductPage} />
       <Route path="/:lang/blog" component={BlogPage} />
       <Route path="/:lang/blog/:slug" component={BlogPostPage} />
       <Route path="/:lang/about" component={AboutPage} />
@@ -148,6 +150,9 @@ function Router() {
       </Route>
       <Route path="/products">
         {() => { setLocation(addPrefix('/products')); return null; }}
+      </Route>
+      <Route path="/products/:productSlug">
+        {({productSlug}) => { setLocation(addPrefix(`/products/${productSlug}`)); return null; }}
       </Route>
       <Route path="/blog">
         {() => { setLocation(addPrefix('/blog')); return null; }}
