@@ -316,29 +316,10 @@ export default function ServiceCards() {
           </div>
         )}
         
-        <div 
-          className={`mt-20 text-center transition-all duration-1000 ${
-            isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
-          style={{ transitionDelay: '600ms' }}
-        >
-          <Link href={addPrefix("/services")}>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="group px-10 py-7 rounded-xl text-lg font-medium bg-white hover:bg-white shadow-md hover:shadow-xl transition-all duration-500 border-primary/20 hover:border-primary/40 flex items-center gap-3"
-            >
-              <span>{t("services.viewAll")}</span>
-              <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center transform transition-transform group-hover:scale-110">
-                <ArrowRight className="h-5 w-5 text-primary transform transition-transform group-hover:translate-x-0.5" />
-              </div>
-            </Button>
-          </Link>
-          
-          {/* Modern dekoratif unsurlar */}
-          <div className="mx-auto max-w-md mt-12 flex justify-center">
-            <div className="h-px w-full bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
-          </div>
+        {/* Modern dekoratif unsurlar (tüm hizmetleri gör butonu kaldırıldı) */}
+        <div className="mx-auto max-w-md mt-20 flex justify-center transition-all duration-1000 opacity-80"
+             style={{ transitionDelay: '600ms' }}>
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
         </div>
       </div>
     </section>
