@@ -95,7 +95,18 @@ function ServiceCard({
           </h3>
           <div className="flex items-center gap-2 text-xs font-medium text-white/90 mt-1.5">
             <Clock className="h-3.5 w-3.5" />
-            <span className="tracking-wide">60-90 {t("common.duration")}</span>
+            <span className="tracking-wide">
+              {service.slug === 'hair-transplantation' 
+                ? '6-8 saat'
+                : service.slug === 'eyebrow-transplantation' 
+                  ? '2-3 saat'
+                  : service.slug === 'beard-transplantation'
+                    ? '3-5 saat'
+                    : service.slug === 'prp-treatment' || service.slug === 'hair-mesotherapy'
+                      ? '30-45 dk'
+                      : '60-90 dk'
+              }
+            </span>
           </div>
         </div>
       </div>

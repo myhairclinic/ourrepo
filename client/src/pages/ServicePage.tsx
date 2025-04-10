@@ -213,7 +213,16 @@ export default function ServicePage() {
   const overviewHeading = t("services.overview");
   const postCareHeading = t("services.postCare");
   const serviceFeatures = t("services.keyFeatures");
-  const getDurationText = (duration: string) => `${duration} ${t("common.duration")}`;
+  const getDurationText = (duration: string) => {
+    // Hizmetlerin süresini doğru formatta göster
+    if (service && service.slug) {
+      if (service.slug === 'hair-transplantation') return '6-8 saat';
+      if (service.slug === 'eyebrow-transplantation') return '2-3 saat';
+      if (service.slug === 'beard-transplantation') return '3-5 saat';
+      if (service.slug === 'prp-treatment' || service.slug === 'hair-mesotherapy') return '30-45 dk';
+    }
+    return `${duration} ${t("common.duration")}`;
+  };
   const getPriceText = (price: number | null) => (price ? `${price} €` : t("common.contactUs"));
 
   // Parse markdown-like content for procedure steps
