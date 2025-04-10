@@ -354,7 +354,7 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Здоровье кожи головы",
     [Language.Georgian]: "თავის კანის ჯანმრთელობა"
   },
-  "services.popular": {
+  "services.popular.label": {
     [Language.Turkish]: "Popüler",
     [Language.English]: "Popular",
     [Language.Russian]: "Популярный",
@@ -552,12 +552,18 @@ export const translations: Record<string, LanguageMap> = {
  * @returns The translated string or a fallback
  */
 export function getTranslation(
-  key: string, 
+  key: string | Record<Language, string>, 
   language: Language,
   replacements?: Record<string, string | number>
 ): string {
   try {
-    // Check if the key exists in our translations
+    // Handle direct language object passing
+    if (typeof key === 'object' && key !== null) {
+      // Key is a Language map object { TR: '...', EN: '...', ... }
+      return key[language] || key[Language.English] || '';
+    }
+    
+    // Standard key-based lookup
     if (translations[key]) {
       // Get the translated text
       let translatedText = translations[key][language] || translations[key][Language.English] || key;
@@ -577,10 +583,10 @@ export function getTranslation(
     
     // If key doesn't exist, return the key itself
     console.warn(`Translation missing for key: "${key}" in language: "${language}"`);
-    return key;
+    return typeof key === 'string' ? key : '';
   } catch (error) {
-    console.error(`Error getting translation for key: "${key}"`, error);
-    return key;
+    console.error(`Error getting translation for key:`, key, error);
+    return typeof key === 'string' ? key : '';
   }
 }
 
@@ -589,7 +595,7 @@ export function getTranslation(
  */
 export function useTranslation(language: Language) {
   return {
-    t: (key: string, replacements?: Record<string, string | number>) => 
+    t: (key: string | Record<Language, string>, replacements?: Record<string, string | number>) => 
       getTranslation(key, language, replacements),
     
     // Format a value to the current language format (e.g. currency)
