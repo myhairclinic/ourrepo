@@ -10,17 +10,16 @@ import { AlertCircle, ArrowLeft, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Language } from "@shared/types";
 import { Product } from "@shared/schema";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
 
 // Ürün detay sayfası
 export default function ProductPage() {
-  const { productSlug, lang } = useParams();
+  const { productSlug } = useParams();
   const { language, addPrefix } = useLanguage();
   const { t } = useTranslation(language);
   
-  // Dil değişikliğinde URL'yi güncelle
+  // Dil değişikliğinde HTML lang özniteliğini güncelle
   useEffect(() => {
     document.documentElement.lang = language.toLowerCase();
   }, [language]);
@@ -31,8 +30,7 @@ export default function ProductPage() {
     enabled: !!productSlug,
   });
   
-  // Sayfa başlığını oluştur
-  // Dil koduna göre alanları oluşturma (Türkçe için TR, İngilizce için EN, vb.)
+  // Dil koduna göre alanları oluştur (TR, EN, RU, KA)
   const langCode = language.toUpperCase();
   const nameKey = `name${langCode}` as keyof Product;
   const descriptionKey = `description${langCode}` as keyof Product;
@@ -41,7 +39,7 @@ export default function ProductPage() {
   
   // Sayfa başlığını oluştur
   const pageTitle = product 
-    ? `${product[nameKey]} ${META.TITLE_SUFFIX}` 
+    ? `${String(product[nameKey])} ${META.TITLE_SUFFIX}` 
     : `${t("products.title")} ${META.TITLE_SUFFIX}`;
 
   if (error) {

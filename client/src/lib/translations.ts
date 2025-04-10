@@ -293,6 +293,12 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Вернуться к продуктам",
     [Language.Georgian]: "პროდუქტებზე დაბრუნება"
   },
+  "products.productCode": {
+    [Language.Turkish]: "Ürün Kodu",
+    [Language.English]: "Product Code",
+    [Language.Russian]: "Код продукта",
+    [Language.Georgian]: "პროდუქტის კოდი"
+  },
   "errors.loading_product": {
     [Language.Turkish]: "Ürün yüklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
     [Language.English]: "An error occurred while loading the product. Please try again later.",
