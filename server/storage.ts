@@ -525,6 +525,22 @@ export class MemStorage implements IStorage {
     return this.packages.get(id);
   }
 
+  async getPackageBySlug(slug: string): Promise<Package | undefined> {
+    return Array.from(this.packages.values()).find(p => p.slug === slug);
+  }
+
+  async getPackagesByCountry(countryCode: string): Promise<Package[]> {
+    return Array.from(this.packages.values())
+      .filter(p => p.countryOrigin === countryCode)
+      .sort((a, b) => a.order - b.order);
+  }
+
+  async getFeaturedPackages(): Promise<Package[]> {
+    return Array.from(this.packages.values())
+      .filter(p => p.isActive && p.isFeatured)
+      .sort((a, b) => a.order - b.order);
+  }
+
   async createPackage(pkg: InsertPackage): Promise<Package> {
     const id = this.currentPackageId++;
     const newPackage: Package = {

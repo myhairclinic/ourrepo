@@ -191,6 +191,7 @@ export const insertProductSchema = createInsertSchema(products).omit({
 // Packages
 export const packages = pgTable("packages", {
   id: serial("id").primaryKey(),
+  slug: text("slug").notNull().unique(),
   titleTR: text("title_tr").notNull(),
   titleEN: text("title_en").notNull(),
   titleRU: text("title_ru").notNull(),
@@ -203,10 +204,28 @@ export const packages = pgTable("packages", {
   contentEN: text("content_en").notNull(),
   contentRU: text("content_ru").notNull(),
   contentKA: text("content_ka").notNull(),
+  countryOrigin: text("country_origin").notNull(), // ülke kodu: TR, AZ, UA, RU, IR, EU, etc.
+  accommodationTR: text("accommodation_tr").notNull(),
+  accommodationEN: text("accommodation_en").notNull(),
+  accommodationRU: text("accommodation_ru").notNull(),
+  accommodationKA: text("accommodation_ka").notNull(),
+  transportationTR: text("transportation_tr").notNull(),
+  transportationEN: text("transportation_en").notNull(),
+  transportationRU: text("transportation_ru").notNull(),
+  transportationKA: text("transportation_ka").notNull(),
+  activitiesTR: text("activities_tr").notNull(),
+  activitiesEN: text("activities_en").notNull(),
+  activitiesRU: text("activities_ru").notNull(),
+  activitiesKA: text("activities_ka").notNull(),
+  durationDays: integer("duration_days").notNull().default(3), // 3, 5, 7 gün vb.
+  includesServiceIds: text("includes_service_ids"), // Örn: "1,3,4" (virgülle ayrılmış servis ID'leri)
+  highlights: text("highlights"), // JSON olarak saklanacak ana özellikler
   imageUrl: text("image_url").notNull(),
+  galleryImages: text("gallery_images"), // JSON array olarak saklanacak ek görseller
   price: integer("price").notNull().default(0),
   order: integer("order").notNull().default(0),
   isActive: boolean("is_active").notNull().default(true),
+  isFeatured: boolean("is_featured").notNull().default(false), // öne çıkan paket mi?
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

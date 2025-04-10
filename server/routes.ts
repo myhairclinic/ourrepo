@@ -7,7 +7,8 @@ import {
   insertChatSessionSchema, 
   insertChatMessageSchema, 
   insertChatOperatorSchema,
-  insertAftercareGuideSchema
+  insertAftercareGuideSchema,
+  insertPackageSchema
 } from "@shared/schema";
 import { 
   getServices, 
@@ -113,11 +114,124 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete("/api/products/:id", deleteProduct);
 
   // Package routes
-  app.get("/api/packages", getPackages);
-  app.get("/api/packages/:id", getPackageById);
-  app.post("/api/packages", createPackage);
-  app.put("/api/packages/:id", updatePackage);
-  app.delete("/api/packages/:id", deletePackage);
+  app.get("/api/packages", async (req, res) => {
+    try {
+      const packages = await storage.getPackages();
+      res.json(packages);
+    } catch (error) {
+      console.error("Error fetching packages:", error);
+      res.status(500).json({ message: "Failed to fetch packages" });
+    }
+  });
+  
+  app.get("/api/packages/featured", async (req, res) => {
+    try {
+      const packages = await storage.getFeaturedPackages();
+      res.json(packages);
+    } catch (error) {
+      console.error("Error fetching featured packages:", error);
+      res.status(500).json({ message: "Failed to fetch featured packages" });
+    }
+  });
+  
+  app.get("/api/packages/country/:countryCode", async (req, res) => {
+    try {
+      const { countryCode } = req.params;
+      const packages = await storage.getPackagesByCountry(countryCode);
+      res.json(packages);
+    } catch (error) {
+      console.error("Error fetching packages by country:", error);
+      res.status(500).json({ message: "Failed to fetch packages by country" });
+    }
+  });
+  
+  app.get("/api/packages/slug/:slug", async (req, res) => {
+    try {
+      const { slug } = req.params;
+      const pkg = await storage.getPackageBySlug(slug);
+      
+      if (!pkg) {
+        return res.status(404).json({ message: "Package not found" });
+      }
+      
+      res.json(pkg);
+    } catch (error) {
+      console.error("Error fetching package:", error);
+      res.status(500).json({ message: "Failed to fetch package" });
+    }
+  });
+  
+  app.get("/api/packages/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid package ID" });
+      }
+      
+      const pkg = await storage.getPackageById(id);
+      
+      if (!pkg) {
+        return res.status(404).json({ message: "Package not found" });
+      }
+      
+      res.json(pkg);
+    } catch (error) {
+      console.error("Error fetching package:", error);
+      res.status(500).json({ message: "Failed to fetch package" });
+    }
+  });
+  
+  app.post("/api/packages", async (req, res) => {
+    try {
+      const packageSchema = insertPackageSchema.parse(req.body);
+      const newPackage = await storage.createPackage(packageSchema);
+      res.status(201).json(newPackage);
+    } catch (error) {
+      console.error("Error creating package:", error);
+      res.status(400).json({ message: "Failed to create package", error });
+    }
+  });
+  
+  app.put("/api/packages/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid package ID" });
+      }
+      
+      const packageSchema = insertPackageSchema.partial().parse(req.body);
+      const updatedPackage = await storage.updatePackage(id, packageSchema);
+      
+      if (!updatedPackage) {
+        return res.status(404).json({ message: "Package not found" });
+      }
+      
+      res.json(updatedPackage);
+    } catch (error) {
+      console.error("Error updating package:", error);
+      res.status(400).json({ message: "Failed to update package", error });
+    }
+  });
+  
+  app.delete("/api/packages/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid package ID" });
+      }
+      
+      const success = await storage.deletePackage(id);
+      
+      if (!success) {
+        return res.status(404).json({ message: "Package not found" });
+      }
+      
+      res.json({ message: "Package deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting package:", error);
+      res.status(500).json({ message: "Failed to delete package" });
+    }
+  });
 
   // Testimonial routes
   app.get("/api/testimonials", getTestimonials);
