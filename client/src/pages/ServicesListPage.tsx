@@ -207,7 +207,11 @@ export default function ServicesListPage() {
                           ? '/images/services/eyebrow-transplant.jpg' 
                           : service.slug === 'hair-transplantation'
                             ? '/images/services/hair-transplant.jpg'
-                            : service.imageUrl} 
+                            : service.slug === 'beard-transplantation'
+                              ? '/images/services/beard-transplant.jpg'
+                              : service.slug === 'prp-treatment'
+                                ? '/images/services/prp-treatment.jpg'
+                                : service.imageUrl} 
                         alt={getLocalizedTitle(service)} 
                         className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105"
                         onError={(e) => {
