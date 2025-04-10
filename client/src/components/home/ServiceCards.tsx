@@ -1,33 +1,29 @@
 import { useQuery } from "@tanstack/react-query";
-import { useLanguage } from "@/hooks/use-language";
+import { useTranslation } from "@/hooks/use-translation";
 import { Link } from "wouter";
 import { Service } from "@shared/schema";
 import { Loader2 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { translations } from "@/lib/translations";
+import { Language } from "@shared/types";
 
 export default function ServiceCards() {
-  const { language, currentLanguage } = useLanguage();
+  const { t, language } = useTranslation();
   
   const { data: services, isLoading, error } = useQuery<Service[]>({
     queryKey: ["/api/services"],
   });
 
-  const title = translations[language].our_services || "Our Services";
-  const subtitle = translations[language].service_subtitle || "Services we provide";
-  const learnMoreButton = translations[language].learn_more || "Learn More";
-
   // Helper function to get the title based on the current language
   const getLocalizedTitle = (service: Service) => {
     switch (language) {
-      case "tr":
+      case Language.Turkish:
         return service.titleTR;
-      case "en":
+      case Language.English:
         return service.titleEN;
-      case "ru":
+      case Language.Russian:
         return service.titleRU;
-      case "ka":
+      case Language.Georgian:
         return service.titleKA;
       default:
         return service.titleEN;
@@ -37,13 +33,13 @@ export default function ServiceCards() {
   // Helper function to get the description based on the current language
   const getLocalizedDescription = (service: Service) => {
     switch (language) {
-      case "tr":
+      case Language.Turkish:
         return service.descriptionTR;
-      case "en":
+      case Language.English:
         return service.descriptionEN;
-      case "ru":
+      case Language.Russian:
         return service.descriptionRU;
-      case "ka":
+      case Language.Georgian:
         return service.descriptionKA;
       default:
         return service.descriptionEN;
@@ -53,9 +49,9 @@ export default function ServiceCards() {
   return (
     <section className="relative bg-white py-16">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-3">{title}</h2>
+        <h2 className="text-3xl font-bold text-center mb-3">{t("common.services")}</h2>
         <p className="text-center mb-12 text-muted-foreground max-w-2xl mx-auto">
-          {subtitle}
+          {t("services.subtitle")}
         </p>
 
         {isLoading ? (
@@ -64,7 +60,7 @@ export default function ServiceCards() {
           </div>
         ) : error ? (
           <div className="text-center text-red-500 py-10">
-            {translations[language].error_loading_services || "An error occurred while loading services. Please try again later."}
+            {t("error.somethingWentWrong")}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -84,8 +80,8 @@ export default function ServiceCards() {
                   <CardDescription>{getLocalizedDescription(service)}</CardDescription>
                 </CardContent>
                 <CardFooter>
-                  <Link href={`/${currentLanguage}/services/${service.slug}`}>
-                    <Button className="w-full">{learnMoreButton}</Button>
+                  <Link href={`/services/${service.slug}`}>
+                    <Button className="w-full">{t("common.learnMore")}</Button>
                   </Link>
                 </CardFooter>
               </Card>

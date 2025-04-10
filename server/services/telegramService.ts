@@ -8,8 +8,8 @@ let bot: TelegramBot | null = null;
 
 // Admin chat ID(s) - for sending notifications
 // Bot kullanıcı adı: @myhairclinic_bot
-// Mesaj aldığınız chat ID eklendi
-const ADMIN_CHAT_IDS = ['5631870985']; // Gerçek admin chat ID
+// İki admin chat ID'si eklendi, her ikisi de /start komutunu gönderdi 
+const ADMIN_CHAT_IDS = ['5631870985', '1062681151']; // Her iki admin chat ID'si de çalışıyor
 
 // Initialize the bot with webhook for production or polling for development
 try {

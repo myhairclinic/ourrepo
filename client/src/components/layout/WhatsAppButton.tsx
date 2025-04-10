@@ -1,13 +1,16 @@
 import { CONTACT } from "@/lib/constants";
+import { useTranslation } from "@/hooks/use-translation";
 
 export default function WhatsAppButton() {
+  const { t } = useTranslation();
+  
   return (
     <a
       href={`https://wa.me/${CONTACT.WHATSAPP.replace(/[^0-9]/g, "")}`}
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-6 right-6 bg-green-500 text-white p-3 rounded-full shadow-lg z-50 hover:bg-green-600 transition-colors"
-      aria-label="WhatsApp ile İletişime Geç"
+      aria-label={t("common.contactViaWhatsApp")}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

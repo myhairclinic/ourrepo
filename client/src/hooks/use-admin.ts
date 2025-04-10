@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { AdminContext } from "@/context/AdminContext";
 
-// Admin hook'u
 export function useAdmin() {
   const context = useContext(AdminContext);
   

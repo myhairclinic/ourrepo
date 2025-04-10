@@ -1,83 +1,114 @@
 import { createContext, ReactNode, useState, useEffect } from "react";
-import { apiRequest } from "@/lib/queryClient";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { User } from "@shared/schema";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
-// Admin kullanıcı tipi
-type AdminUser = {
-  id: number;
-  username: string;
-  role: string;
-};
-
-// Admin context için tip
-type AdminContextType = {
-  user: AdminUser | null;
+export interface AdminContextType {
+  user: User | null;
   isLoading: boolean;
+  error: Error | null;
   login: (username: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-};
+}
 
-// Admin context oluşturma
 export const AdminContext = createContext<AdminContextType | null>(null);
 
-// Admin Provider bileşeni
-export function AdminProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<AdminUser | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+interface AdminProviderProps {
+  children: ReactNode;
+}
 
-  useEffect(() => {
-    // Admin kullanıcı bilgilerini kontrol et
-    const checkUser = async () => {
+export const AdminProvider = ({ children }: AdminProviderProps) => {
+  const { toast } = useToast();
+  
+  // Fetch current admin user if logged in
+  const { data: user, error, isLoading } = useQuery<User | null, Error>({
+    queryKey: ["/api/admin/user"],
+    queryFn: async () => {
       try {
-        const response = await apiRequest("GET", "/api/user");
-        if (response.ok) {
-          const userData = await response.json();
-          setUser(userData);
-        } else {
-          setUser(null);
-        }
-      } catch (error) {
-        setUser(null);
-      } finally {
-        setIsLoading(false);
+        const res = await fetch("/api/admin/user");
+        if (res.status === 401) return null;
+        if (!res.ok) throw new Error("Failed to fetch admin user");
+        return await res.json();
+      } catch (err) {
+        console.error("Error fetching admin user:", err);
+        return null;
       }
-    };
-
-    checkUser();
-  }, []);
-
-  // Giriş fonksiyonu
+    },
+    retry: false,
+  });
+  
+  // Login mutation
+  const loginMutation = useMutation({
+    mutationFn: async (credentials: { username: string; password: string }) => {
+      const res = await apiRequest("POST", "/api/admin/login", credentials);
+      if (!res.ok) {
+        const error = await res.text();
+        throw new Error(error || "Login failed");
+      }
+      return await res.json();
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(["/api/admin/user"], data);
+      toast({
+        title: "Login successful",
+        description: "Welcome to admin panel",
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Login failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+  
+  // Logout mutation
+  const logoutMutation = useMutation({
+    mutationFn: async () => {
+      const res = await apiRequest("POST", "/api/admin/logout");
+      if (!res.ok) {
+        throw new Error("Logout failed");
+      }
+    },
+    onSuccess: () => {
+      queryClient.setQueryData(["/api/admin/user"], null);
+      toast({
+        title: "Logout successful",
+        description: "You have been logged out",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Logout failed",
+        description: "Failed to log out. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+  
+  // Login function
   const login = async (username: string, password: string) => {
-    setIsLoading(true);
-    
-    try {
-      const response = await apiRequest("POST", "/api/login", { username, password });
-      
-      if (!response.ok) {
-        throw new Error("Giriş yapılamadı");
-      }
-      
-      const userData = await response.json();
-      setUser(userData);
-    } finally {
-      setIsLoading(false);
-    }
+    await loginMutation.mutateAsync({ username, password });
   };
-
-  // Çıkış fonksiyonu
+  
+  // Logout function
   const logout = async () => {
-    setIsLoading(true);
-    
-    try {
-      await apiRequest("POST", "/api/logout");
-      setUser(null);
-    } finally {
-      setIsLoading(false);
-    }
+    await logoutMutation.mutateAsync();
   };
-
+  
   return (
-    <AdminContext.Provider value={{ user, isLoading, login, logout }}>
+    <AdminContext.Provider
+      value={{
+        user: user || null,
+        isLoading,
+        error,
+        login,
+        logout,
+      }}
+    >
       {children}
     </AdminContext.Provider>
   );
-}
+};

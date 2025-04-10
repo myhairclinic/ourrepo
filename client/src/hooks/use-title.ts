@@ -1,22 +1,15 @@
 import { useEffect } from "react";
-import { META } from "@/lib/constants";
-import { useLanguage } from "./use-language";
+import { useTranslation } from "./use-translation";
 
-export function useTitle() {
-  const { language } = useLanguage();
-  
-  const setTitle = (title: string) => {
-    document.title = `${title} ${META.TITLE_SUFFIX}`;
-  };
+export function useTitle(titleKey: string, fallback?: string) {
+  const { t } = useTranslation();
   
   useEffect(() => {
-    const defaultTitle = META.TITLE[language as keyof typeof META.TITLE];
-    document.title = defaultTitle;
+    const title = t(titleKey) || fallback || "MyHair Clinic";
+    document.title = `${title} | MyHair Clinic`;
     
     return () => {
-      document.title = defaultTitle;
+      document.title = "MyHair Clinic";
     };
-  }, [language]);
-  
-  return { setTitle };
+  }, [titleKey, fallback, t]);
 }
