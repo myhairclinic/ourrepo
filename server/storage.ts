@@ -154,6 +154,9 @@ export class MemStorage implements IStorage {
   private userReviews: Map<number, UserReview>;
   private messages: Map<number, Message>;
   private clinicInfo: ClinicInfo | undefined;
+  private chatSessions: Map<number, ChatSession>;
+  private chatMessages: Map<number, ChatMessage>;
+  private chatOperators: Map<number, ChatOperator>;
   
   private currentUserId: number;
   private currentServiceId: number;
@@ -166,6 +169,9 @@ export class MemStorage implements IStorage {
   private currentTestimonialId: number;
   private currentUserReviewId: number;
   private currentMessageId: number;
+  private currentChatSessionId: number;
+  private currentChatMessageId: number;
+  private currentChatOperatorId: number;
   
   sessionStore: any;
 
@@ -181,6 +187,9 @@ export class MemStorage implements IStorage {
     this.testimonials = new Map();
     this.userReviews = new Map();
     this.messages = new Map();
+    this.chatSessions = new Map();
+    this.chatMessages = new Map();
+    this.chatOperators = new Map();
 
     this.currentUserId = 1;
     this.currentServiceId = 1;
@@ -193,6 +202,9 @@ export class MemStorage implements IStorage {
     this.currentTestimonialId = 1;
     this.currentUserReviewId = 1;
     this.currentMessageId = 1;
+    this.currentChatSessionId = 1;
+    this.currentChatMessageId = 1;
+    this.currentChatOperatorId = 1;
 
     this.sessionStore = new MemoryStore({
       checkPeriod: 86400000, // Prune expired entries every 24h
@@ -699,6 +711,150 @@ export class MemStorage implements IStorage {
     };
 
     return this.clinicInfo;
+  }
+
+  // Chat Session operations
+  async getChatSessions(): Promise<ChatSession[]> {
+    return Array.from(this.chatSessions.values())
+      .sort((a, b) => b.lastMessageAt.getTime() - a.lastMessageAt.getTime());
+  }
+
+  async getChatSessionById(id: number): Promise<ChatSession | undefined> {
+    return this.chatSessions.get(id);
+  }
+
+  async getChatSessionByVisitorId(visitorId: string): Promise<ChatSession | undefined> {
+    return Array.from(this.chatSessions.values())
+      .find(session => session.visitorId === visitorId && session.status === 'active');
+  }
+
+  async createChatSession(session: InsertChatSession): Promise<ChatSession> {
+    const id = this.currentChatSessionId++;
+    const newSession: ChatSession = {
+      ...session,
+      id,
+      status: 'active',
+      lastMessageAt: new Date(),
+      createdAt: new Date(),
+      isArchived: false,
+      hasUnreadMessages: false
+    };
+    this.chatSessions.set(id, newSession);
+    return newSession;
+  }
+
+  async updateChatSession(id: number, sessionData: Partial<ChatSession>): Promise<ChatSession | undefined> {
+    const existingSession = this.chatSessions.get(id);
+    if (!existingSession) return undefined;
+
+    const updatedSession: ChatSession = {
+      ...existingSession,
+      ...sessionData,
+    };
+    this.chatSessions.set(id, updatedSession);
+    return updatedSession;
+  }
+
+  async deleteChatSession(id: number): Promise<boolean> {
+    return this.chatSessions.delete(id);
+  }
+
+  // Chat Message operations
+  async getChatMessagesBySessionId(sessionId: number): Promise<ChatMessage[]> {
+    return Array.from(this.chatMessages.values())
+      .filter(message => message.sessionId === sessionId)
+      .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+  }
+
+  async getChatMessageById(id: number): Promise<ChatMessage | undefined> {
+    return this.chatMessages.get(id);
+  }
+
+  async createChatMessage(message: InsertChatMessage): Promise<ChatMessage> {
+    const id = this.currentChatMessageId++;
+    const newMessage: ChatMessage = {
+      ...message,
+      id,
+      timestamp: new Date(),
+      isRead: message.senderType !== 'visitor' // mark operator and system messages as read by default
+    };
+    this.chatMessages.set(id, newMessage);
+
+    // Update the session's lastMessageAt
+    const session = this.chatSessions.get(message.sessionId);
+    if (session) {
+      this.updateChatSession(session.id, { 
+        lastMessageAt: new Date(),
+        hasUnreadMessages: message.senderType === 'visitor' // mark session as having unread messages if from visitor
+      });
+    }
+
+    return newMessage;
+  }
+
+  async markChatMessageAsRead(id: number): Promise<ChatMessage | undefined> {
+    const existingMessage = this.chatMessages.get(id);
+    if (!existingMessage) return undefined;
+
+    const updatedMessage: ChatMessage = {
+      ...existingMessage,
+      isRead: true
+    };
+    this.chatMessages.set(id, updatedMessage);
+    return updatedMessage;
+  }
+
+  async deleteChatMessage(id: number): Promise<boolean> {
+    return this.chatMessages.delete(id);
+  }
+
+  // Chat Operator operations
+  async getChatOperators(): Promise<ChatOperator[]> {
+    return Array.from(this.chatOperators.values());
+  }
+
+  async getChatOperatorByUserId(userId: number): Promise<ChatOperator | undefined> {
+    return Array.from(this.chatOperators.values())
+      .find(operator => operator.userId === userId);
+  }
+
+  async getAvailableChatOperators(): Promise<ChatOperator[]> {
+    return Array.from(this.chatOperators.values())
+      .filter(operator => operator.isAvailable);
+  }
+
+  async createChatOperator(operator: InsertChatOperator): Promise<ChatOperator> {
+    const id = this.currentChatOperatorId++;
+    const newOperator: ChatOperator = {
+      ...operator,
+      id,
+      lastActiveAt: new Date()
+    };
+    this.chatOperators.set(id, newOperator);
+    return newOperator;
+  }
+
+  async updateChatOperatorAvailability(userId: number, isAvailable: boolean): Promise<ChatOperator | undefined> {
+    const existingOperator = Array.from(this.chatOperators.values())
+      .find(operator => operator.userId === userId);
+    
+    if (!existingOperator) return undefined;
+
+    const updatedOperator: ChatOperator = {
+      ...existingOperator,
+      isAvailable,
+      lastActiveAt: new Date()
+    };
+    this.chatOperators.set(existingOperator.id, updatedOperator);
+    return updatedOperator;
+  }
+
+  async deleteChatOperator(userId: number): Promise<boolean> {
+    const operator = Array.from(this.chatOperators.values())
+      .find(op => op.userId === userId);
+    
+    if (!operator) return false;
+    return this.chatOperators.delete(operator.id);
   }
 }
 
@@ -1216,6 +1372,129 @@ export class DatabaseStorage implements IStorage {
         .returning();
       return newInfo;
     }
+  }
+  
+  // Chat Session operations
+  async getChatSessions(): Promise<ChatSession[]> {
+    return await db.select().from(chatSessions).orderBy(desc(chatSessions.lastMessageAt));
+  }
+
+  async getChatSessionById(id: number): Promise<ChatSession | undefined> {
+    const [session] = await db.select().from(chatSessions).where(eq(chatSessions.id, id));
+    return session;
+  }
+
+  async getChatSessionByVisitorId(visitorId: string): Promise<ChatSession | undefined> {
+    const [session] = await db.select().from(chatSessions)
+      .where(eq(chatSessions.visitorId, visitorId))
+      .where(eq(chatSessions.status, 'active'));
+    return session;
+  }
+
+  async createChatSession(session: InsertChatSession): Promise<ChatSession> {
+    const [newSession] = await db.insert(chatSessions).values({
+      ...session,
+      status: 'active',
+      lastMessageAt: new Date(),
+      createdAt: new Date(),
+      isArchived: false,
+      hasUnreadMessages: false
+    }).returning();
+    return newSession;
+  }
+
+  async updateChatSession(id: number, sessionData: Partial<ChatSession>): Promise<ChatSession | undefined> {
+    const [updatedSession] = await db.update(chatSessions)
+      .set(sessionData)
+      .where(eq(chatSessions.id, id))
+      .returning();
+    return updatedSession;
+  }
+
+  async deleteChatSession(id: number): Promise<boolean> {
+    await db.delete(chatSessions).where(eq(chatSessions.id, id));
+    return true;
+  }
+
+  // Chat Message operations
+  async getChatMessagesBySessionId(sessionId: number): Promise<ChatMessage[]> {
+    return await db.select().from(chatMessages)
+      .where(eq(chatMessages.sessionId, sessionId))
+      .orderBy(asc(chatMessages.timestamp));
+  }
+
+  async getChatMessageById(id: number): Promise<ChatMessage | undefined> {
+    const [message] = await db.select().from(chatMessages).where(eq(chatMessages.id, id));
+    return message;
+  }
+
+  async createChatMessage(message: InsertChatMessage): Promise<ChatMessage> {
+    const [newMessage] = await db.insert(chatMessages).values({
+      ...message,
+      timestamp: new Date(),
+      isRead: message.senderType !== 'visitor' // mark operator and system messages as read by default
+    }).returning();
+
+    // Update the session's lastMessageAt
+    await db.update(chatSessions)
+      .set({ 
+        lastMessageAt: new Date(),
+        hasUnreadMessages: message.senderType === 'visitor' // mark session as having unread messages if from visitor
+      })
+      .where(eq(chatSessions.id, message.sessionId));
+
+    return newMessage;
+  }
+
+  async markChatMessageAsRead(id: number): Promise<ChatMessage | undefined> {
+    const [updatedMessage] = await db.update(chatMessages)
+      .set({ isRead: true })
+      .where(eq(chatMessages.id, id))
+      .returning();
+    return updatedMessage;
+  }
+
+  async deleteChatMessage(id: number): Promise<boolean> {
+    await db.delete(chatMessages).where(eq(chatMessages.id, id));
+    return true;
+  }
+
+  // Chat Operator operations
+  async getChatOperators(): Promise<ChatOperator[]> {
+    return await db.select().from(chatOperators);
+  }
+
+  async getChatOperatorByUserId(userId: number): Promise<ChatOperator | undefined> {
+    const [operator] = await db.select().from(chatOperators).where(eq(chatOperators.userId, userId));
+    return operator;
+  }
+
+  async getAvailableChatOperators(): Promise<ChatOperator[]> {
+    return await db.select().from(chatOperators).where(eq(chatOperators.isAvailable, true));
+  }
+
+  async createChatOperator(operator: InsertChatOperator): Promise<ChatOperator> {
+    const [newOperator] = await db.insert(chatOperators).values({
+      ...operator,
+      lastActiveAt: new Date()
+    }).returning();
+    return newOperator;
+  }
+
+  async updateChatOperatorAvailability(userId: number, isAvailable: boolean): Promise<ChatOperator | undefined> {
+    const [updatedOperator] = await db.update(chatOperators)
+      .set({ 
+        isAvailable,
+        lastActiveAt: new Date()
+      })
+      .where(eq(chatOperators.userId, userId))
+      .returning();
+    return updatedOperator;
+  }
+
+  async deleteChatOperator(userId: number): Promise<boolean> {
+    await db.delete(chatOperators).where(eq(chatOperators.userId, userId));
+    return true;
   }
 }
 
