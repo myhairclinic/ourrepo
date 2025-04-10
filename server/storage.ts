@@ -11,6 +11,7 @@ import {
   userReviews, UserReview, InsertUserReview,
   messages, Message, InsertMessage,
   clinicInfo, ClinicInfo, UpdateClinicInfo,
+  aftercareGuides, AftercareGuide, InsertAftercareGuide,
   chatSessions, ChatSession, InsertChatSession,
   chatMessages, ChatMessage, InsertChatMessage,
   chatOperators, ChatOperator, InsertChatOperator
@@ -113,6 +114,14 @@ export interface IStorage {
   // Clinic Info operations
   getClinicInfo(): Promise<ClinicInfo | undefined>;
   updateClinicInfo(info: UpdateClinicInfo): Promise<ClinicInfo | undefined>;
+  
+  // Aftercare Guide operations
+  getAftercareGuides(): Promise<AftercareGuide[]>;
+  getAftercareGuideById(id: number): Promise<AftercareGuide | undefined>;
+  getAftercareGuidesByServiceId(serviceId: number): Promise<AftercareGuide[]>;
+  createAftercareGuide(guide: InsertAftercareGuide): Promise<AftercareGuide>;
+  updateAftercareGuide(id: number, guide: Partial<InsertAftercareGuide>): Promise<AftercareGuide | undefined>;
+  deleteAftercareGuide(id: number): Promise<boolean>;
 
   // Chat Session operations
   getChatSessions(): Promise<ChatSession[]>;
@@ -154,6 +163,7 @@ export class MemStorage implements IStorage {
   private userReviews: Map<number, UserReview>;
   private messages: Map<number, Message>;
   private clinicInfo: ClinicInfo | undefined;
+  private aftercareGuides: Map<number, AftercareGuide>;
   private chatSessions: Map<number, ChatSession>;
   private chatMessages: Map<number, ChatMessage>;
   private chatOperators: Map<number, ChatOperator>;
@@ -169,6 +179,7 @@ export class MemStorage implements IStorage {
   private currentTestimonialId: number;
   private currentUserReviewId: number;
   private currentMessageId: number;
+  private currentAftercareGuideId: number;
   private currentChatSessionId: number;
   private currentChatMessageId: number;
   private currentChatOperatorId: number;
@@ -187,6 +198,7 @@ export class MemStorage implements IStorage {
     this.testimonials = new Map();
     this.userReviews = new Map();
     this.messages = new Map();
+    this.aftercareGuides = new Map();
     this.chatSessions = new Map();
     this.chatMessages = new Map();
     this.chatOperators = new Map();
@@ -202,6 +214,7 @@ export class MemStorage implements IStorage {
     this.currentTestimonialId = 1;
     this.currentUserReviewId = 1;
     this.currentMessageId = 1;
+    this.currentAftercareGuideId = 1;
     this.currentChatSessionId = 1;
     this.currentChatMessageId = 1;
     this.currentChatOperatorId = 1;
