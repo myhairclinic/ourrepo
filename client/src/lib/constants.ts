@@ -47,7 +47,8 @@ export const ADMIN_PATHS = {
   BLOG: "/admin/blog",
   GALLERY: "/admin/gallery",
   APPOINTMENTS: "/admin/appointments",
-  MESSAGES: "/admin/messages"
+  MESSAGES: "/admin/messages",
+  REVIEWS: "/admin/reviews"
 };
 
 export const API_ROUTES = {
