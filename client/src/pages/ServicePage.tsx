@@ -266,43 +266,50 @@ export default function ServicePage() {
         <link rel="canonical" href={window.location.href} />
       </Helmet>
 
-      <main className="py-12 overflow-hidden bg-white">
+      <main className="py-12 overflow-hidden bg-gradient-to-b from-white to-gray-50/80">
         <div className="container mx-auto px-4 relative">
           {/* Modern background elements */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute -left-40 -top-40 w-96 h-96 rounded-full bg-primary/5 blur-3xl"></div>
             <div className="absolute right-10 top-1/3 w-[30rem] h-[30rem] rounded-full bg-blue-300/5 blur-3xl"></div>
+            <div className="absolute left-1/4 bottom-1/4 w-64 h-64 rounded-full bg-blue-100/10 blur-2xl"></div>
           </div>
           
           {/* Breadcrumb */}
-          <div className="mb-8 text-sm text-muted-foreground relative z-10">
+          <div className="mb-8 text-sm text-muted-foreground relative z-10 flex items-center">
             <Link href={addPrefix("/")}>
-              <span className="hover:text-primary cursor-pointer">{t("common.home")}</span>
+              <span className="hover:text-primary cursor-pointer transition-colors">{t("common.home")}</span>
             </Link>
-            <span className="mx-2">/</span>
+            <span className="mx-2 text-muted-foreground/50">/</span>
             <Link href={addPrefix("/services")}>
-              <span className="hover:text-primary cursor-pointer">{t("common.services")}</span>
+              <span className="hover:text-primary cursor-pointer transition-colors">{t("common.services")}</span>
             </Link>
-            <span className="mx-2">/</span>
-            <span className="text-primary">{getLocalizedTitle(service)}</span>
+            <span className="mx-2 text-muted-foreground/50">/</span>
+            <span className="text-primary font-medium">{getLocalizedTitle(service)}</span>
           </div>
 
           {/* Hero section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16 relative z-10">
             {/* Service Image */}
-            <div className="overflow-hidden rounded-xl shadow-xl">
+            <div className="overflow-hidden rounded-2xl shadow-xl group relative">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
               <img 
                 src={service.slug === 'hair-transplantation' ? hairTransplantImage : 
                     (service.slug === 'beard-transplantation' ? consultationImage : 
                     (service.slug === 'prp-treatment' ? hairTransplantImage : 
                     (service.slug === 'hair-mesotherapy' ? consultationImage : service.imageUrl)))}
                 alt={getLocalizedTitle(service)} 
-                className="w-full h-auto object-cover"
+                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
                 onError={(e) => {
                   console.log("Resim yükleme hatası düzeltiliyor:", service.slug);
                   e.currentTarget.src = hairTransplantImage;
                 }}
               />
+              <div className="absolute bottom-0 left-0 w-full p-6 z-20 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                <Badge variant="secondary" className="bg-white/90 text-primary mb-2">
+                  {service.duration ? getDurationText(service.duration) : getDurationText('60-90')}
+                </Badge>
+              </div>
             </div>
 
             {/* Service Overview */}
@@ -401,64 +408,126 @@ export default function ServicePage() {
           {/* Detailed content with tabs */}
           {(detailedContent || procedureSteps || candidateInfo || postCare) && (
             <div className="relative z-10 mb-20">
-              <Tabs defaultValue="details" className="w-full">
-                <TabsList className="w-full max-w-lg mx-auto mb-8 grid grid-cols-4">
-                  <TabsTrigger value="details">{detailsHeading}</TabsTrigger>
+              <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-10">
+                <Tabs defaultValue="details" className="w-full">
+                  <TabsList className="w-full max-w-lg mx-auto mb-10 grid grid-cols-4 bg-gray-100/60">
+                    <TabsTrigger value="details" className="data-[state=active]:bg-white data-[state=active]:shadow-md transition-all">
+                      <div className="flex flex-col items-center space-y-1 py-1">
+                        <BadgeCheck className="h-5 w-5" />
+                        <span>{detailsHeading}</span>
+                      </div>
+                    </TabsTrigger>
+                    {procedureSteps && (
+                      <TabsTrigger value="procedure" className="data-[state=active]:bg-white data-[state=active]:shadow-md transition-all">
+                        <div className="flex flex-col items-center space-y-1 py-1">
+                          <Scissors className="h-5 w-5" />
+                          <span>{procedureStepsHeading}</span>
+                        </div>
+                      </TabsTrigger>
+                    )}
+                    {candidateInfo && (
+                      <TabsTrigger value="candidates" className="data-[state=active]:bg-white data-[state=active]:shadow-md transition-all">
+                        <div className="flex flex-col items-center space-y-1 py-1">
+                          <User className="h-5 w-5" />
+                          <span>{candidateInfoHeading}</span>
+                        </div>
+                      </TabsTrigger>
+                    )}
+                    {postCare && (
+                      <TabsTrigger value="postcare" className="data-[state=active]:bg-white data-[state=active]:shadow-md transition-all">
+                        <div className="flex flex-col items-center space-y-1 py-1">
+                          <Heart className="h-5 w-5" />
+                          <span>{postCareHeading}</span>
+                        </div>
+                      </TabsTrigger>
+                    )}
+                  </TabsList>
+                  
+                  <TabsContent value="details" className="mt-8 animate-in fade-in-50 duration-500">
+                    <div className="prose prose-lg prose-headings:text-primary prose-h3:font-semibold prose-h2:border-b prose-h2:pb-2 prose-h2:border-gray-200 max-w-none mx-auto">
+                      {renderMarkdownLikeContent(detailedContent)}
+                    </div>
+                  </TabsContent>
+                  
                   {procedureSteps && (
-                    <TabsTrigger value="procedure">{procedureStepsHeading}</TabsTrigger>
+                    <TabsContent value="procedure" className="mt-8 animate-in fade-in-50 duration-500">
+                      <div className="prose prose-lg prose-headings:text-primary prose-h3:font-semibold prose-h2:border-b prose-h2:pb-2 prose-h2:border-gray-200 max-w-none mx-auto">
+                        {renderMarkdownLikeContent(procedureSteps)}
+                      </div>
+                    </TabsContent>
                   )}
+                  
                   {candidateInfo && (
-                    <TabsTrigger value="candidates">{candidateInfoHeading}</TabsTrigger>
+                    <TabsContent value="candidates" className="mt-8 animate-in fade-in-50 duration-500">
+                      <div className="prose prose-lg prose-headings:text-primary prose-h3:font-semibold prose-h2:border-b prose-h2:pb-2 prose-h2:border-gray-200 max-w-none mx-auto">
+                        {renderMarkdownLikeContent(candidateInfo)}
+                      </div>
+                    </TabsContent>
                   )}
+                  
                   {postCare && (
-                    <TabsTrigger value="postcare">{postCareHeading}</TabsTrigger>
+                    <TabsContent value="postcare" className="mt-8 animate-in fade-in-50 duration-500">
+                      <div className="prose prose-lg prose-headings:text-primary prose-h3:font-semibold prose-h2:border-b prose-h2:pb-2 prose-h2:border-gray-200 max-w-none mx-auto">
+                        {renderMarkdownLikeContent(postCare)}
+                      </div>
+                    </TabsContent>
                   )}
-                </TabsList>
-                
-                <TabsContent value="details" className="mt-6">
-                  <div className="prose prose-lg max-w-none mx-auto">
-                    {renderMarkdownLikeContent(detailedContent)}
-                  </div>
-                </TabsContent>
-                
-                {procedureSteps && (
-                  <TabsContent value="procedure" className="mt-6">
-                    <div className="prose prose-lg max-w-none mx-auto">
-                      {renderMarkdownLikeContent(procedureSteps)}
-                    </div>
-                  </TabsContent>
-                )}
-                
-                {candidateInfo && (
-                  <TabsContent value="candidates" className="mt-6">
-                    <div className="prose prose-lg max-w-none mx-auto">
-                      {renderMarkdownLikeContent(candidateInfo)}
-                    </div>
-                  </TabsContent>
-                )}
-                
-                {postCare && (
-                  <TabsContent value="postcare" className="mt-6">
-                    <div className="prose prose-lg max-w-none mx-auto">
-                      {renderMarkdownLikeContent(postCare)}
-                    </div>
-                  </TabsContent>
-                )}
-              </Tabs>
+                </Tabs>
+              </div>
             </div>
           )}
 
           {/* Appointment CTA */}
-          <div className="relative z-10 mb-20">
-            <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl p-8 lg:p-12">
-              <div className="max-w-3xl mx-auto text-center">
-                <h2 className="text-2xl md:text-3xl font-bold mb-4">{t("services.readyToStart")}</h2>
-                <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">{t("services.appointmentCTA")}</p>
-                <Link href={addPrefix(`/appointment?service=${service.id}`)}>
-                  <Button size="lg" className="px-8 py-6 text-lg shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
-                    {appointmentButton}
-                  </Button>
-                </Link>
+          <div className="relative z-10 mb-20 overflow-hidden">
+            <div className="bg-gradient-to-r from-primary/20 via-primary/15 to-primary/5 rounded-2xl p-8 lg:p-12 shadow-xl relative">
+              {/* Background patterns */}
+              <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
+              <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-white/20 to-transparent"></div>
+              <div className="absolute top-12 left-12 w-24 h-24 rounded-full border-8 border-primary/10 opacity-60"></div>
+              <div className="absolute bottom-12 right-12 w-16 h-16 rounded-full border-4 border-primary/20 opacity-70"></div>
+              
+              <div className="max-w-3xl mx-auto text-center relative z-10">
+                <Badge variant="secondary" className="mb-6 bg-white/80 backdrop-blur-sm">
+                  {t("services.exclusive")}
+                </Badge>
+                <h2 className="text-2xl md:text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
+                  {t("services.readyToStart")}
+                </h2>
+                <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
+                  {t("services.appointmentCTA")}
+                </p>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                  <Link href={addPrefix(`/appointment?service=${service.id}`)}>
+                    <Button 
+                      size="lg" 
+                      className="px-8 py-6 text-lg shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all group relative overflow-hidden"
+                    >
+                      <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></span>
+                      <span className="relative flex items-center gap-2">
+                        <Calendar className="h-5 w-5" />
+                        {appointmentButton}
+                      </span>
+                    </Button>
+                  </Link>
+                  <Link href={addPrefix(`/contact`)}>
+                    <Button 
+                      variant="outline" 
+                      size="lg" 
+                      className="px-8 py-6 text-lg bg-white/70 hover:bg-white backdrop-blur-sm transition-all"
+                    >
+                      <span className="flex items-center gap-2">
+                        <MapPin className="h-5 w-5" />
+                        {t("common.contactUs")}
+                      </span>
+                    </Button>
+                  </Link>
+                </div>
+                <div className="mt-8 text-sm text-muted-foreground">
+                  <div className="flex items-center justify-center gap-2">
+                    <ThumbsUp className="h-4 w-4 text-primary" />
+                    <span>{t("services.satisfaction")}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
