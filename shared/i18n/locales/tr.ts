@@ -150,6 +150,30 @@ export const translations = {
       description: "Saç dökülme faktörlerinin detaylı analizi ve kişiye özel tedavi önerileri."
     }
   },
+  appointment: {
+    title: "Randevu Al",
+    description: "MyHair Clinic'te saç ekimi ve diğer saç tedavileri için randevu oluşturun.",
+    formTitle: "Randevu Formu",
+    formDescription: "Aşağıdaki formu doldurarak kolayca randevu oluşturabilirsiniz. Ekibimiz en kısa sürede sizinle iletişime geçecektir.",
+    preferredDate: "Tercih Ettiğiniz Tarih",
+    sending: "Gönderiliyor...",
+    success: "Randevu Talebiniz Alındı!",
+    successMessage: "Randevu talebiniz başarıyla alınmıştır. En kısa sürede sizinle iletişime geçeceğiz.",
+    error: "Hata Oluştu!",
+    errorMessage: "Randevu talebiniz işlenirken bir hata oluştu. Lütfen tekrar deneyiniz.",
+    localPatients: "Yerel Hastalar İçin Bilgiler",
+    localInfo1: "Yerel hastalarımız için randevu süreci basit ve hızlıdır.",
+    localInfo2: "Randevu talebi oluşturarak veya direkt kliniğimizi arayarak görüşme ayarlayabilirsiniz.",
+    localPoint1: "İlk konsültasyon tamamen ücretsizdir",
+    localPoint2: "Aynı gün randevu imkanı (müsaitlik durumuna göre)",
+    localPoint3: "Kolay ulaşılabilir merkezi konum",
+    internationalPatients: "Yurtdışı Hastalar İçin Bilgiler",
+    internationalInfo1: "Türkiye, Rusya, Avrupa ve diğer ülkelerden gelen hastalarımız için özel hizmet sunuyoruz.",
+    internationalInfo2: "Ulaşım, konaklama ve tedavi sürecinin tamamını koordine ediyoruz.",
+    internationalPoint1: "Havaalanı transferleri sağlanmaktadır",
+    internationalPoint2: "4-5 yıldızlı otel konaklaması organize edilebilir",
+    internationalPoint3: "Çok dilli personel ile iletişim kolaylığı"
+  },
   admin: {
     login: "Yönetici Girişi",
     username: "Kullanıcı Adı",

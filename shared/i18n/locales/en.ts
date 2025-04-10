@@ -150,6 +150,30 @@ export const translations = {
       description: "Detailed analysis of hair loss factors and personalized treatment recommendations."
     }
   },
+  appointment: {
+    title: "Book an Appointment",
+    description: "Schedule an appointment for hair transplantation and other hair treatments at MyHair Clinic.",
+    formTitle: "Appointment Form",
+    formDescription: "Fill in the form below to easily create an appointment. Our team will contact you as soon as possible.",
+    preferredDate: "Preferred Date",
+    sending: "Sending...",
+    success: "Appointment Request Received!",
+    successMessage: "Your appointment request has been successfully received. We will contact you as soon as possible.",
+    error: "Error Occurred!",
+    errorMessage: "An error occurred while processing your appointment request. Please try again.",
+    localPatients: "Information for Local Patients",
+    localInfo1: "The appointment process for our local patients is simple and fast.",
+    localInfo2: "You can arrange a meeting by creating an appointment request or by directly calling our clinic.",
+    localPoint1: "First consultation is completely free",
+    localPoint2: "Same-day appointment possibility (subject to availability)",
+    localPoint3: "Easily accessible central location",
+    internationalPatients: "Information for International Patients",
+    internationalInfo1: "We offer special services for our patients from Turkey, Russia, Europe and other countries.",
+    internationalInfo2: "We coordinate the entire process of transportation, accommodation and treatment.",
+    internationalPoint1: "Airport transfers are provided",
+    internationalPoint2: "4-5 star hotel accommodation can be arranged",
+    internationalPoint3: "Multilingual staff for ease of communication"
+  },
   admin: {
     login: "Admin Login",
     username: "Username",
