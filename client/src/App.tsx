@@ -24,6 +24,7 @@ import ContactPage from "./pages/ContactPage";
 import AppointmentPage from "./pages/AppointmentPage";
 import AppointmentTracker from "./pages/AppointmentTracker";
 import SocialMediaPage from "./pages/SocialMediaPage";
+import AftercareGuidesPage from "./pages/AftercareGuidesPage";
 import NotFound from "./pages/not-found";
 
 // Admin Pages
@@ -139,6 +140,7 @@ function Router() {
       <Route path="/:lang/appointment" component={AppointmentPage} />
       <Route path="/:lang/appointment-tracker" component={AppointmentTracker} />
       <Route path="/:lang/social-media" component={SocialMediaPage} />
+      <Route path="/:lang/aftercare-guides" component={AftercareGuidesPage} />
       
       {/* Root redirect to language prefix */}
       <Route path="/">
