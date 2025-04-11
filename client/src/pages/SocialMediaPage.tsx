@@ -47,7 +47,6 @@ const socialPlatforms = [
     handle: "@myhair_clinic", 
     url: "https://instagram.com/myhair_clinic", 
     icon: <Instagram className="h-5 w-5" />,
-    followers: "15.6K",
     color: "bg-gradient-to-r from-purple-500 to-pink-500"
   },
   { 
@@ -55,7 +54,6 @@ const socialPlatforms = [
     handle: "MyHair Clinic", 
     url: "https://facebook.com/myhairclinic", 
     icon: <Facebook className="h-5 w-5" />,
-    followers: "12.8K",
     color: "bg-blue-600"
   },
   { 
@@ -63,7 +61,6 @@ const socialPlatforms = [
     handle: "@MyHairClinic", 
     url: "https://twitter.com/myhairclinic", 
     icon: <Twitter className="h-5 w-5" />,
-    followers: "8.3K",
     color: "bg-sky-500"
   },
   { 
@@ -71,7 +68,6 @@ const socialPlatforms = [
     handle: "MyHair Clinic Official", 
     url: "https://youtube.com/myhairclinic", 
     icon: <Youtube className="h-5 w-5" />,
-    followers: "24.5K",
     color: "bg-red-600"
   },
   { 
@@ -79,7 +75,6 @@ const socialPlatforms = [
     handle: "@myhairclinic", 
     url: "https://tiktok.com/@myhairclinic", 
     icon: <TikTok className="h-5 w-5" />,
-    followers: "32.7K",
     color: "bg-black"
   }
 ];
@@ -318,10 +313,7 @@ export default function SocialMediaPage() {
                     </div>
                   </div>
                   
-                  <div className="flex flex-col mb-4">
-                    <span className="text-2xl font-bold">{platform.followers}</span>
-                    <span className="text-sm text-muted-foreground">{t('socialMedia.followers')}</span>
-                  </div>
+                  {/* Takipçi sayısı kaldırıldı */}
                   
                   <a 
                     href={platform.url}
