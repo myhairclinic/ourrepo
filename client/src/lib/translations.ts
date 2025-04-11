@@ -2033,6 +2033,18 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Здоровье кожи головы",
     [Language.Georgian]: "თავის კანის ჯანმრთელობა"
   },
+  "services.features.quickRecovery": {
+    [Language.Turkish]: "Hızlı İyileşme",
+    [Language.English]: "Quick Recovery",
+    [Language.Russian]: "Быстрое Восстановление",
+    [Language.Georgian]: "სწრაფი აღდგენა"
+  },
+  "services.features.noSideEffects": {
+    [Language.Turkish]: "Yan Etki Yok",
+    [Language.English]: "No Side Effects",
+    [Language.Russian]: "Без Побочных Эффектов",
+    [Language.Georgian]: "არანაირი გვერდითი ეფექტი"
+  },
   "services.popular.label": {
     [Language.Turkish]: "Popüler",
     [Language.English]: "Popular",
