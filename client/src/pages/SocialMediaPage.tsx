@@ -84,12 +84,20 @@ const socialPlatforms = [
   }
 ];
 
+// Import images
+import instagramPost1 from "@assets/IMG-20250325-WA0070.jpg";
+import instagramPost2 from "@assets/IMG-20250325-WA0072.jpg";
+import facebookPost1 from "@assets/IMG-20250325-WA0093.jpg";
+import facebookPost2 from "@assets/IMG-20250325-WA0095.jpg";
+import youtubePost1 from "@assets/IMG-20250325-WA0071.jpg";
+import tiktokPost1 from "@assets/IMG-20250325-WA0073.jpg";
+
 const featuredPosts = [
   {
     id: 1,
     platform: "Instagram",
     icon: <Instagram className="h-4 w-4" />,
-    imageUrl: "/images/social/instagram-post-1.jpg",
+    imageUrl: instagramPost1,
     type: "image",
     date: "2 gün önce",
     likes: 1243,
@@ -100,7 +108,7 @@ const featuredPosts = [
     id: 2,
     platform: "Facebook",
     icon: <Facebook className="h-4 w-4" />,
-    imageUrl: "/images/social/facebook-post-1.jpg",
+    imageUrl: facebookPost1,
     type: "video",
     date: "3 gün önce",
     likes: 856,
@@ -112,7 +120,7 @@ const featuredPosts = [
     id: 3,
     platform: "YouTube",
     icon: <Youtube className="h-4 w-4" />,
-    imageUrl: "/images/social/youtube-post-1.jpg",
+    imageUrl: youtubePost1,
     type: "video",
     date: "1 hafta önce",
     views: 15678,
@@ -124,7 +132,7 @@ const featuredPosts = [
     id: 4,
     platform: "Instagram",
     icon: <Instagram className="h-4 w-4" />,
-    imageUrl: "/images/social/instagram-post-2.jpg",
+    imageUrl: instagramPost2,
     type: "carousel",
     date: "4 gün önce",
     likes: 1578,
@@ -135,7 +143,7 @@ const featuredPosts = [
     id: 5,
     platform: "TikTok",
     icon: <TikTok className="h-4 w-4" />,
-    imageUrl: "/images/social/tiktok-post-1.jpg",
+    imageUrl: tiktokPost1,
     type: "video",
     date: "2 gün önce",
     views: 45678,
@@ -147,7 +155,7 @@ const featuredPosts = [
     id: 6,
     platform: "Facebook",
     icon: <Facebook className="h-4 w-4" />,
-    imageUrl: "/images/social/facebook-post-2.jpg",
+    imageUrl: facebookPost2,
     type: "image",
     date: "1 hafta önce",
     likes: 678,
@@ -157,12 +165,17 @@ const featuredPosts = [
   }
 ];
 
+// Import avatar images
+import avatar1 from "@assets/IMG-20250325-WA0068.jpg";
+import avatar2 from "@assets/IMG-20250325-WA0069.jpg";
+import avatar3 from "@assets/IMG-20250325-WA0092.jpg";
+
 const reviews = [
   {
     id: 1,
     platform: "Instagram",
     username: "ahmet_kaya",
-    avatar: "/images/social/avatar-1.jpg",
+    avatar: avatar1,
     date: "3 hafta önce",
     rating: 5,
     comment: "MyHair Clinic'te saç ekimi operasyonum harika sonuçlar verdi. Ekip profesyonel ve çok ilgiliydi. Kesinlikle tavsiye ederim!"
@@ -171,7 +184,7 @@ const reviews = [
     id: 2,
     platform: "Facebook",
     username: "Elena Petrova",
-    avatar: "/images/social/avatar-2.jpg",
+    avatar: avatar2,
     date: "1 ay önce",
     rating: 5,
     comment: "Saç ekimi için Tiflis'e geldim ve bu kliniği seçtiğim için çok mutluyum. Rusça konuşan ekip ve mükemmel sonuçlar!"
@@ -180,7 +193,7 @@ const reviews = [
     id: 3,
     platform: "Google",
     username: "David Williams",
-    avatar: "/images/social/avatar-3.jpg",
+    avatar: avatar3,
     date: "2 hafta önce",
     rating: 4,
     comment: "Great experience with MyHair Clinic in Tbilisi. The hotel and transportation package was excellent value. Results starting to show after 3 months."
@@ -222,27 +235,59 @@ export default function SocialMediaPage() {
       <main className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Hero Section */}
         <section className="mb-16">
-          <div className="bg-gradient-to-r from-primary to-primary/80 rounded-2xl overflow-hidden">
-            <div className="px-6 py-16 md:py-20 md:px-12 text-white">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-                {t('socialMedia.heroTitle')}
-              </h1>
-              <p className="text-lg md:text-xl opacity-90 max-w-3xl mb-8">
-                {t('socialMedia.heroDescription')}
-              </p>
-              <div className="flex flex-wrap gap-3">
-                {socialPlatforms.map((platform, index) => (
-                  <a 
-                    key={index}
-                    href={platform.url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center bg-white text-primary px-4 py-2 rounded-full hover:bg-opacity-90 transition-all"
-                  >
-                    {platform.icon}
-                    <span className="ml-2 font-medium">{platform.name}</span>
-                  </a>
-                ))}
+          <div className="bg-gradient-to-r from-primary to-primary/80 rounded-2xl overflow-hidden relative shadow-xl">
+            {/* Background pattern */}
+            <div className="absolute inset-0 opacity-10">
+              <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <pattern id="socialPattern" patternUnits="userSpaceOnUse" width="30" height="30" patternTransform="rotate(45)">
+                    <rect width="4" height="4" fill="currentColor" />
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#socialPattern)" />
+              </svg>
+            </div>
+            
+            <div className="px-6 py-16 md:py-20 md:px-12 text-white relative z-10">
+              <div className="flex flex-col md:flex-row items-center justify-between">
+                <div className="mb-8 md:mb-0 md:w-3/5">
+                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+                    {t('socialMedia.heroTitle')}
+                  </h1>
+                  <p className="text-lg md:text-xl opacity-90 max-w-3xl mb-8">
+                    {t('socialMedia.heroDescription')}
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    {socialPlatforms.map((platform, index) => (
+                      <a 
+                        key={index}
+                        href={platform.url} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center bg-white text-primary px-4 py-2 rounded-full hover:bg-opacity-90 transition-all transform hover:-translate-y-1 hover:shadow-lg"
+                      >
+                        {platform.icon}
+                        <span className="ml-2 font-medium">{platform.name}</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+                <div className="md:w-2/5 flex justify-center">
+                  <div className="grid grid-cols-2 gap-2 max-w-xs">
+                    <div className="bg-white p-1 rounded-lg rotate-3 shadow-lg">
+                      <img src={instagramPost1} alt="Instagram post" className="h-24 w-24 object-cover rounded" />
+                    </div>
+                    <div className="bg-white p-1 rounded-lg -rotate-3 shadow-lg mt-4">
+                      <img src={facebookPost1} alt="Facebook post" className="h-24 w-24 object-cover rounded" />
+                    </div>
+                    <div className="bg-white p-1 rounded-lg -rotate-6 shadow-lg">
+                      <img src={tiktokPost1} alt="TikTok post" className="h-24 w-24 object-cover rounded" />
+                    </div>
+                    <div className="bg-white p-1 rounded-lg rotate-6 shadow-lg mt-4">
+                      <img src={youtubePost1} alt="YouTube post" className="h-24 w-24 object-cover rounded" />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -652,54 +697,75 @@ export default function SocialMediaPage() {
         
         {/* Social Reviews Section */}
         <section className="mb-16">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">
-              {t('socialMedia.socialReviews')}
-            </h2>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                {t('socialMedia.socialReviews')}
+              </h2>
+              <p className="text-muted-foreground max-w-2xl">
+                {t('socialMedia.testimonialDescription')}
+              </p>
+            </div>
+            <div className="mt-4 md:mt-0">
+              <Badge variant="outline" className="bg-primary/10 text-primary font-medium px-3 py-1">
+                <ThumbsUp className="h-4 w-4 mr-1" />
+                {t('reviews.satisfactionGuarantee')}
+              </Badge>
+            </div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {reviews.map((review) => (
-              <Card key={review.id} className="overflow-hidden">
-                <CardHeader className="pb-2">
-                  <div className="flex justify-between items-start">
-                    <div className="flex items-start gap-3">
-                      <Avatar>
-                        <AvatarImage src={review.avatar} alt={review.username} />
-                        <AvatarFallback>{review.username.substring(0, 2).toUpperCase()}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <CardTitle className="text-lg">{review.username}</CardTitle>
-                        <CardDescription className="flex items-center gap-1 text-sm">
-                          {review.platform === "Instagram" && <Instagram className="h-3 w-3" />}
-                          {review.platform === "Facebook" && <Facebook className="h-3 w-3" />}
-                          {review.platform === "Google" && (
-                            <svg className="h-3 w-3" viewBox="0 0 24 24">
-                              <path fill="currentColor" d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27 3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.56 2 12.1 2C6.42 2 2.03 6.8 2.03 12c0 5.05 4.13 10 10.22 10 5.35 0 9.25-3.67 9.25-9.09 0-1.15-.15-1.81-.15-1.81z"/>
-                            </svg>
-                          )}
-                          <span>{review.platform}</span>
-                          <span>•</span>
-                          <span>{review.date}</span>
-                        </CardDescription>
-                      </div>
-                    </div>
-                    <div className="flex">
-                      {[...Array(5)].map((_, i) => (
-                        <svg 
-                          key={i} 
-                          className={`h-4 w-4 ${i < review.rating ? 'text-yellow-400' : 'text-gray-300'}`} 
-                          fill="currentColor" 
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              <Card key={review.id} className="overflow-hidden group hover:shadow-md transition-all border-2 border-muted/50 hover:border-primary/20">
+                <CardHeader className="pb-2 relative">
+                  <div className="absolute top-2 right-2">
+                    <div className={`${
+                      review.platform === 'Instagram' ? 'bg-gradient-to-r from-purple-500 to-pink-500' : 
+                      review.platform === 'Facebook' ? 'bg-blue-600' :
+                      'bg-red-600'
+                    } text-white font-medium px-2 py-1 rounded-full text-xs flex items-center`}>
+                      {review.platform === "Instagram" && <Instagram className="h-3 w-3 mr-1" />}
+                      {review.platform === "Facebook" && <Facebook className="h-3 w-3 mr-1" />}
+                      {review.platform === "Google" && (
+                        <svg className="h-3 w-3 mr-1" viewBox="0 0 24 24">
+                          <path fill="currentColor" d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27 3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.56 2 12.1 2C6.42 2 2.03 6.8 2.03 12c0 5.05 4.13 10 10.22 10 5.35 0 9.25-3.67 9.25-9.09 0-1.15-.15-1.81-.15-1.81z"/>
                         </svg>
-                      ))}
+                      )}
+                      <span>{review.platform}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Avatar className="h-12 w-12 border-2 border-primary/20">
+                      <AvatarImage src={review.avatar} alt={review.username} />
+                      <AvatarFallback>{review.username.substring(0, 2).toUpperCase()}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <CardTitle className="text-lg flex items-center">
+                        {review.username}
+                        <span className="ml-2 bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded-full dark:bg-green-900 dark:text-green-100">
+                          {t('reviews.verifiedCustomer')}
+                        </span>
+                      </CardTitle>
+                      <CardDescription className="flex items-center gap-1 text-sm">
+                        <Clock className="h-3 w-3" />
+                        <span>{review.date}</span>
+                      </CardDescription>
+                      <div className="flex mt-1">
+                        {[...Array(5)].map((_, i) => (
+                          <svg 
+                            key={i} 
+                            className={`h-4 w-4 ${i < review.rating ? 'text-yellow-400' : 'text-gray-300'} fill-current`} 
+                            viewBox="0 0 20 20"
+                          >
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm">{review.comment}</p>
+                  <p className="text-sm italic leading-relaxed">"{review.comment}"</p>
                 </CardContent>
               </Card>
             ))}
@@ -708,32 +774,55 @@ export default function SocialMediaPage() {
         
         {/* Call to Action Section */}
         <section>
-          <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl overflow-hidden">
-            <div className="px-6 py-12 md:py-16 md:px-12 text-center">
-              <h2 className="text-2xl md:text-3xl font-bold mb-4 text-primary">
-                {t('socialMedia.ctaTitle')}
-              </h2>
-              <p className="text-lg opacity-90 max-w-2xl mx-auto mb-8">
-                {t('socialMedia.ctaDescription')}
-              </p>
-              <div className="flex flex-wrap justify-center gap-3">
-                {socialPlatforms.map((platform, index) => (
-                  <a 
-                    key={index}
-                    href={platform.url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className={`inline-flex items-center ${
-                      platform.name === 'Instagram' ? 'bg-gradient-to-r from-purple-500 to-pink-500' : 
-                      platform.name === 'Facebook' ? 'bg-blue-600' :
-                      platform.name === 'YouTube' ? 'bg-red-600' :
-                      platform.name === 'TikTok' ? 'bg-black' : 'bg-primary'
-                    } text-white px-4 py-2 rounded-full hover:opacity-90 transition-all`}
-                  >
-                    {platform.icon}
-                    <span className="ml-2 font-medium">{platform.name}</span>
-                  </a>
-                ))}
+          <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl overflow-hidden relative shadow-xl">
+            {/* Background pattern */}
+            <div className="absolute inset-0 opacity-5">
+              <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <pattern id="ctaPattern" patternUnits="userSpaceOnUse" width="40" height="40" patternTransform="rotate(45)">
+                    <circle cx="20" cy="20" r="4" fill="currentColor" />
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#ctaPattern)" />
+              </svg>
+            </div>
+            
+            <div className="px-6 py-12 md:py-16 md:px-12 text-center relative z-10">
+              <div className="flex flex-col items-center">
+                <div className="bg-primary/10 p-3 rounded-full inline-flex mb-6">
+                  <Share2 className="h-8 w-8 text-primary" />
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold mb-4 text-primary">
+                  {t('socialMedia.ctaTitle')}
+                </h2>
+                <p className="text-lg opacity-90 max-w-2xl mx-auto mb-8">
+                  {t('socialMedia.ctaDescription')}
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 w-full max-w-3xl mx-auto">
+                  {socialPlatforms.map((platform, index) => (
+                    <a 
+                      key={index}
+                      href={platform.url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className={`inline-flex items-center justify-center ${
+                        platform.name === 'Instagram' ? 'bg-gradient-to-r from-purple-500 to-pink-500' : 
+                        platform.name === 'Facebook' ? 'bg-blue-600' :
+                        platform.name === 'YouTube' ? 'bg-red-600' :
+                        platform.name === 'TikTok' ? 'bg-black' : 'bg-primary'
+                      } text-white px-3 py-3 rounded-xl hover:opacity-90 transition-all transform hover:-translate-y-1 hover:shadow-lg`}
+                    >
+                      <div className="flex flex-col items-center">
+                        <div className="mb-2">
+                          {React.cloneElement(platform.icon as React.ReactElement, {
+                            className: 'h-6 w-6'
+                          })}
+                        </div>
+                        <span className="text-sm font-medium">{platform.name}</span>
+                      </div>
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
