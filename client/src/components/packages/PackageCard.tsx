@@ -70,8 +70,8 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
   const getCountrySpecificImage = (code: string): string => {
     const imageMap: Record<string, string> = {
       'TR': '/images/packages/turkey-package.webp',
-      'RU': '/images/packages/russia-standard.jpg',
-      'UA': '/images/packages/premium-package-ua.jpg',
+      'RU': '/images/packages/russia-package.jpg',
+      'UA': '/images/packages/ukraine-package.jpg',
       'AZ': '/images/packages/azerbaijan-package.jpg',
       'IR': '/images/packages/iran-package.jpg',
       'KZ': '/images/packages/kazakhstan-package.jpg',
