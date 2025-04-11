@@ -1112,42 +1112,72 @@ export class DatabaseStorage implements IStorage {
 
   // Blog operations
   async getBlogPosts(): Promise<BlogPost[]> {
-    return await db.select().from(blogPosts).orderBy(desc(blogPosts.id));
+    try {
+      return await db.select().from(blogPosts).orderBy(desc(blogPosts.createdAt));
+    } catch (error) {
+      console.error("Error in getBlogPosts:", error);
+      return [];
+    }
   }
 
   async getBlogPostById(id: number): Promise<BlogPost | undefined> {
-    const [post] = await db.select().from(blogPosts).where(eq(blogPosts.id, id));
-    return post;
+    try {
+      const [post] = await db.select().from(blogPosts).where(eq(blogPosts.id, id));
+      return post;
+    } catch (error) {
+      console.error(`Error in getBlogPostById(${id}):`, error);
+      return undefined;
+    }
   }
 
   async getBlogPostBySlug(slug: string): Promise<BlogPost | undefined> {
-    const [post] = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug));
-    return post;
+    try {
+      const [post] = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug));
+      return post;
+    } catch (error) {
+      console.error(`Error in getBlogPostBySlug(${slug}):`, error);
+      return undefined;
+    }
   }
 
   async createBlogPost(post: InsertBlogPost): Promise<BlogPost> {
-    const [newPost] = await db.insert(blogPosts).values({
-      ...post,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }).returning();
-    return newPost;
+    try {
+      const [newPost] = await db.insert(blogPosts).values({
+        ...post,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }).returning();
+      return newPost;
+    } catch (error) {
+      console.error("Error in createBlogPost:", error);
+      throw error;
+    }
   }
 
   async updateBlogPost(id: number, post: Partial<InsertBlogPost>): Promise<BlogPost | undefined> {
-    const [updatedPost] = await db.update(blogPosts)
-      .set({
-        ...post,
-        updatedAt: new Date()
-      })
-      .where(eq(blogPosts.id, id))
-      .returning();
-    return updatedPost;
+    try {
+      const [updatedPost] = await db.update(blogPosts)
+        .set({
+          ...post,
+          updatedAt: new Date()
+        })
+        .where(eq(blogPosts.id, id))
+        .returning();
+      return updatedPost;
+    } catch (error) {
+      console.error(`Error in updateBlogPost(${id}):`, error);
+      return undefined;
+    }
   }
 
   async deleteBlogPost(id: number): Promise<boolean> {
-    await db.delete(blogPosts).where(eq(blogPosts.id, id));
-    return true;
+    try {
+      await db.delete(blogPosts).where(eq(blogPosts.id, id));
+      return true;
+    } catch (error) {
+      console.error(`Error in deleteBlogPost(${id}):`, error);
+      return false;
+    }
   }
 
   // Gallery operations
