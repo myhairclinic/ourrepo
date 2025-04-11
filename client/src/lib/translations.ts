@@ -6,6 +6,223 @@ type LanguageMap = Record<Language, string>;
 // Our translations object with simple key structure
 // Translations object (exported for direct usage in components)
 export const translations: Record<string, LanguageMap> = {
+  // Gallery Page
+  "gallery.pageTitle": {
+    [Language.Turkish]: "Galeri",
+    [Language.English]: "Gallery",
+    [Language.Russian]: "Галерея",
+    [Language.Georgian]: "გალერეა"
+  },
+  "gallery.pageDescription": {
+    [Language.Turkish]: "Kliniğimizden görüntüler, öncesi/sonrası fotoğraflar ve videolar",
+    [Language.English]: "Images from our clinic, before/after photos, and videos",
+    [Language.Russian]: "Изображения нашей клиники, фотографии до/после и видео",
+    [Language.Georgian]: "ჩვენი კლინიკის სურათები, ფოტოები სამკურნალომდე/შემდეგ და ვიდეოები"
+  },
+  "gallery.clinicImages": {
+    [Language.Turkish]: "Klinik Görüntüleri",
+    [Language.English]: "Clinic Images",
+    [Language.Russian]: "Изображения клиники",
+    [Language.Georgian]: "კლინიკის სურათები"
+  },
+  "gallery.videos": {
+    [Language.Turkish]: "Videolar",
+    [Language.English]: "Videos",
+    [Language.Russian]: "Видео",
+    [Language.Georgian]: "ვიდეოები"
+  },
+  "gallery.beforeAfter": {
+    [Language.Turkish]: "Öncesi/Sonrası",
+    [Language.English]: "Before/After",
+    [Language.Russian]: "До/После",
+    [Language.Georgian]: "მკურნალობამდე/შემდეგ"
+  },
+  "gallery.all": {
+    [Language.Turkish]: "Tümü",
+    [Language.English]: "All",
+    [Language.Russian]: "Все",
+    [Language.Georgian]: "ყველა"
+  },
+  "gallery.procedures": {
+    [Language.Turkish]: "İşlemler",
+    [Language.English]: "Procedures",
+    [Language.Russian]: "Процедуры",
+    [Language.Georgian]: "პროცედურები"
+  },
+  "gallery.facilities": {
+    [Language.Turkish]: "Tesisler",
+    [Language.English]: "Facilities",
+    [Language.Russian]: "Помещения",
+    [Language.Georgian]: "ობიექტები"
+  },
+  "gallery.team": {
+    [Language.Turkish]: "Ekip",
+    [Language.English]: "Team",
+    [Language.Russian]: "Команда",
+    [Language.Georgian]: "გუნდი"
+  },
+  "gallery.highResolution": {
+    [Language.Turkish]: "Yüksek Çözünürlük",
+    [Language.English]: "High Resolution",
+    [Language.Russian]: "Высокое разрешение",
+    [Language.Georgian]: "მაღალი გარჩევადობა"
+  },
+  "gallery.before": {
+    [Language.Turkish]: "Öncesi",
+    [Language.English]: "Before",
+    [Language.Russian]: "До",
+    [Language.Georgian]: "მკურნალობამდე"
+  },
+  "gallery.after": {
+    [Language.Turkish]: "Sonrası",
+    [Language.English]: "After",
+    [Language.Russian]: "После",
+    [Language.Georgian]: "შემდეგ"
+  },
+  "gallery.resultAfter": {
+    [Language.Turkish]: "Sonuç: İşlemden",
+    [Language.English]: "Result: After",
+    [Language.Russian]: "Результат: После",
+    [Language.Georgian]: "შედეგი: შემდეგ"
+  },
+  "gallery.months": {
+    [Language.Turkish]: "ay sonra",
+    [Language.English]: "months",
+    [Language.Russian]: "месяцев",
+    [Language.Georgian]: "თვე"
+  },
+  "gallery.hairTransplantProcedure": {
+    [Language.Turkish]: "Saç Ekimi İşlemi",
+    [Language.English]: "Hair Transplant Procedure",
+    [Language.Russian]: "Процедура трансплантации волос",
+    [Language.Georgian]: "თმის გადანერგვის პროცედურა"
+  },
+  "gallery.hairAnalysis": {
+    [Language.Turkish]: "Saç Analizi",
+    [Language.English]: "Hair Analysis",
+    [Language.Russian]: "Анализ волос",
+    [Language.Georgian]: "თმის ანალიზი"
+  },
+  "gallery.postOperativeCare": {
+    [Language.Turkish]: "Operasyon Sonrası Bakım",
+    [Language.English]: "Post-Operative Care",
+    [Language.Russian]: "Послеоперационный уход",
+    [Language.Georgian]: "პოსტოპერაციული მოვლა"
+  },
+  "gallery.consultationProcess": {
+    [Language.Turkish]: "Danışma Süreci",
+    [Language.English]: "Consultation Process",
+    [Language.Russian]: "Процесс консультации",
+    [Language.Georgian]: "კონსულტაციის პროცესი"
+  },
+  "gallery.donorAreaPreparation": {
+    [Language.Turkish]: "Donör Alan Hazırlığı",
+    [Language.English]: "Donor Area Preparation",
+    [Language.Russian]: "Подготовка донорской зоны",
+    [Language.Georgian]: "დონორის ზონის მომზადება"
+  },
+  "gallery.hairTransplantTechnique": {
+    [Language.Turkish]: "Saç Ekimi Tekniği",
+    [Language.English]: "Hair Transplant Technique",
+    [Language.Russian]: "Техника трансплантации волос",
+    [Language.Georgian]: "თმის გადანერგვის ტექნიკა"
+  },
+  "gallery.microscopicView": {
+    [Language.Turkish]: "Mikroskobik Görünüm",
+    [Language.English]: "Microscopic View",
+    [Language.Russian]: "Микроскопический вид",
+    [Language.Georgian]: "მიკროსკოპული ხედი"
+  },
+  "gallery.clinicExterior": {
+    [Language.Turkish]: "Klinik Dış Mekan",
+    [Language.English]: "Clinic Exterior",
+    [Language.Russian]: "Внешний вид клиники",
+    [Language.Georgian]: "კლინიკის ექსტერიერი"
+  },
+  "gallery.receptionArea": {
+    [Language.Turkish]: "Resepsiyon Alanı",
+    [Language.English]: "Reception Area",
+    [Language.Russian]: "Зона приема",
+    [Language.Georgian]: "მიმღები ზონა"
+  },
+  "gallery.surgeryRoom": {
+    [Language.Turkish]: "Ameliyathane",
+    [Language.English]: "Surgery Room",
+    [Language.Russian]: "Операционная",
+    [Language.Georgian]: "საოპერაციო ოთახი"
+  },
+  "gallery.recoveryRoom": {
+    [Language.Turkish]: "İyileşme Odası",
+    [Language.English]: "Recovery Room",
+    [Language.Russian]: "Комната восстановления",
+    [Language.Georgian]: "სარეაბილიტაციო ოთახი"
+  },
+  "gallery.headSurgeon": {
+    [Language.Turkish]: "Baş Cerrah",
+    [Language.English]: "Head Surgeon",
+    [Language.Russian]: "Главный хирург",
+    [Language.Georgian]: "მთავარი ქირურგი"
+  },
+  "gallery.medicalTeam": {
+    [Language.Turkish]: "Medikal Ekip",
+    [Language.English]: "Medical Team",
+    [Language.Russian]: "Медицинская команда",
+    [Language.Georgian]: "სამედიცინო გუნდი"
+  },
+  "gallery.supportStaff": {
+    [Language.Turkish]: "Destek Personeli",
+    [Language.English]: "Support Staff",
+    [Language.Russian]: "Вспомогательный персонал",
+    [Language.Georgian]: "დამხმარე პერსონალი"
+  },
+  "gallery.hairTransplantProcess": {
+    [Language.Turkish]: "Saç Ekimi Süreci",
+    [Language.English]: "Hair Transplant Process",
+    [Language.Russian]: "Процесс трансплантации волос",
+    [Language.Georgian]: "თმის გადანერგვის პროცესი"
+  },
+  "gallery.patientTestimonial": {
+    [Language.Turkish]: "Hasta Memnuniyeti",
+    [Language.English]: "Patient Testimonial",
+    [Language.Russian]: "Отзыв пациента",
+    [Language.Georgian]: "პაციენტის გამოხმაურება"
+  },
+  "gallery.clinicTour": {
+    [Language.Turkish]: "Klinik Turu",
+    [Language.English]: "Clinic Tour",
+    [Language.Russian]: "Тур по клинике",
+    [Language.Georgian]: "კლინიკის ტური"
+  },
+  "gallery.doctorInterview": {
+    [Language.Turkish]: "Doktor Röportajı",
+    [Language.English]: "Doctor Interview",
+    [Language.Russian]: "Интервью с доктором",
+    [Language.Georgian]: "ექიმის ინტერვიუ"
+  },
+  "gallery.malePatterBaldness": {
+    [Language.Turkish]: "Erkek Tipi Saç Dökülmesi",
+    [Language.English]: "Male Pattern Baldness",
+    [Language.Russian]: "Мужской тип облысения",
+    [Language.Georgian]: "მამაკაცის ტიპის მელოტი"
+  },
+  "gallery.recededHairline": {
+    [Language.Turkish]: "Geri Çekilmiş Saç Çizgisi",
+    [Language.English]: "Receded Hairline",
+    [Language.Russian]: "Отступающая линия волос",
+    [Language.Georgian]: "უკან დახეული თმის ხაზი"
+  },
+  "gallery.crownThinning": {
+    [Language.Turkish]: "Tepe Bölgesinde Seyrelme",
+    [Language.English]: "Crown Thinning",
+    [Language.Russian]: "Истончение в области макушки",
+    [Language.Georgian]: "გვირგვინის გათხელება"
+  },
+  "gallery.eyebrowTransplant": {
+    [Language.Turkish]: "Kaş Ekimi",
+    [Language.English]: "Eyebrow Transplant",
+    [Language.Russian]: "Пересадка бровей",
+    [Language.Georgian]: "წარბების გადანერგვა"
+  },
   // Eksik çeviriler
   "services.exclusive": {
     [Language.Turkish]: "Özel Hizmet",
