@@ -199,6 +199,48 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Интервью с доктором",
     [Language.Georgian]: "ექიმის ინტერვიუ"
   },
+  "gallery.consultationSession": {
+    [Language.Turkish]: "Danışma Seansı",
+    [Language.English]: "Consultation Session",
+    [Language.Russian]: "Консультационная сессия",
+    [Language.Georgian]: "საკონსულტაციო სესია"
+  },
+  "gallery.operationOverview": {
+    [Language.Turkish]: "Operasyon Genel Bakış",
+    [Language.English]: "Operation Overview",
+    [Language.Russian]: "Обзор операции",
+    [Language.Georgian]: "ოპერაციის მიმოხილვა"
+  },
+  "gallery.hairTransplantResults": {
+    [Language.Turkish]: "Saç Ekimi Sonuçları",
+    [Language.English]: "Hair Transplant Results",
+    [Language.Russian]: "Результаты пересадки волос",
+    [Language.Georgian]: "თმის გადანერგვის შედეგები"
+  },
+  "gallery.patientJourney": {
+    [Language.Turkish]: "Hasta Yolculuğu",
+    [Language.English]: "Patient Journey",
+    [Language.Russian]: "Путешествие пациента",
+    [Language.Georgian]: "პაციენტის მოგზაურობა"
+  },
+  "gallery.testimonialVideo": {
+    [Language.Turkish]: "Müşteri Yorumu",
+    [Language.English]: "Testimonial Video",
+    [Language.Russian]: "Видео с отзывом",
+    [Language.Georgian]: "სარეკომენდაციო ვიდეო"
+  },
+  "gallery.treatmentExplained": {
+    [Language.Turkish]: "Tedavi Açıklaması",
+    [Language.English]: "Treatment Explained",
+    [Language.Russian]: "Объяснение лечения",
+    [Language.Georgian]: "მკურნალობის განმარტება"
+  },
+  "gallery.facilityTour": {
+    [Language.Turkish]: "Tesis Turu",
+    [Language.English]: "Facility Tour",
+    [Language.Russian]: "Тур по объекту",
+    [Language.Georgian]: "ობიექტის ტური"
+  },
   "gallery.malePatterBaldness": {
     [Language.Turkish]: "Erkek Tipi Saç Dökülmesi",
     [Language.English]: "Male Pattern Baldness",
