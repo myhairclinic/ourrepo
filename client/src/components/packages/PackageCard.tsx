@@ -6,8 +6,9 @@ import { useLanguage } from "@/context/LanguageContext";
 import { Package } from "@shared/schema";
 import { Language } from "@shared/types";
 import { Link } from "wouter";
-import { MapPin, Calendar, Users, Briefcase, ArrowRight, Star, Sparkles, Check } from "lucide-react";
+import { MapPin, Calendar, Users, Briefcase, ArrowRight, Star, Sparkles, Check, Building, Plane } from "lucide-react";
 import { getTranslation } from "@/lib/translations";
+import { getPackageTranslation } from "@/lib/packageTranslations";
 import { Separator } from "@/components/ui/separator";
 
 interface PackageCardProps {
@@ -23,37 +24,75 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
   const country = pkg.countryOrigin;
   
   // Get translated country name
-  const countryName = getTranslation(`countries.${country.toLowerCase()}`, language) || country;
+  const countryName = getPackageTranslation(`countries.${country.toLowerCase()}`, language) || country;
+  
+  // Helper function to get country flag
+  const getCountryFlag = (code: string): string => {
+    const flagMap: Record<string, string> = {
+      'TR': '🇹🇷', // Türkiye
+      'RU': '🇷🇺', // Rusya
+      'UA': '🇺🇦', // Ukrayna
+      'AZ': '🇦🇿', // Azerbaycan
+      'IR': '🇮🇷', // İran
+      'EU': '🇪🇺', // Avrupa Birliği
+      'SA': '🇸🇦', // Suudi Arabistan
+      'AE': '🇦🇪', // Birleşik Arap Emirlikleri
+      'IQ': '🇮🇶', // Irak
+      'AM': '🇦🇲', // Ermenistan
+      'KZ': '🇰🇿', // Kazakistan
+      'BY': '🇧🇾', // Belarus
+      'MD': '🇲🇩', // Moldova
+      'GR': '🇬🇷', // Yunanistan
+      'BG': '🇧🇬', // Bulgaristan
+      'RO': '🇷🇴', // Romanya
+    };
+    
+    return flagMap[code] || '🏳️';
+  };
+  
+  // Extract features from highlights if available
+  const getPackageFeatures = (): string[] => {
+    if (!pkg.highlights) return [];
+    
+    try {
+      const highlights = JSON.parse(pkg.highlights as string);
+      return highlights.slice(0, 4); // Get first 4 highlights
+    } catch (e) {
+      console.error("Error parsing highlights:", e);
+      return [];
+    }
+  };
+  
+  const packageFeatures = getPackageFeatures();
   
   return (
-    <Card className="h-full flex flex-col overflow-hidden group hover:shadow-md transition-shadow duration-300 border-muted">
+    <Card className="h-full flex flex-col overflow-hidden group hover:shadow-md transition-shadow duration-300 border-border">
       <div className="relative overflow-hidden">
         <img
-          src={pkg.imageUrl}
+          src={pkg.imageUrl || '/images/package-placeholder.jpg'}
           alt={title}
           className="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-105"
         />
         
-        {/* Label ribbon */}
-        <div className="absolute top-4 left-0 bg-primary shadow-md py-1 pl-3 pr-4 text-primary-foreground text-xs font-medium flex items-center">
-          <MapPin className="h-3 w-3 mr-1" />
+        {/* Country Flag Badge */}
+        <div className="absolute top-3 left-3 bg-white/90 dark:bg-black/80 shadow-md rounded-full py-1 px-3 text-foreground dark:text-white text-xs font-medium flex items-center gap-1.5">
+          <span className="text-base">{getCountryFlag(country)}</span>
           {countryName}
-          <div className="absolute -right-2 top-0 h-full w-2 bg-primary-foreground/10"></div>
         </div>
         
         {pkg.isFeatured && (
           <div className="absolute top-0 right-0 bg-gradient-to-bl from-amber-500 to-amber-600 text-white text-xs py-1 px-3 shadow-md">
             <div className="flex items-center gap-1">
               <Sparkles className="h-3 w-3" />
-              {getTranslation("packages.exclusive", language)}
+              {getPackageTranslation("packages.exclusive", language)}
             </div>
           </div>
         )}
         
         {/* Duration badge */}
-        <div className="absolute bottom-3 right-3 bg-black/70 text-white text-xs py-1 px-2 rounded-full flex items-center">
-          <Calendar className="h-3 w-3 mr-1" />
-          {pkg.durationDays} {getTranslation("packages.days", language)}
+        <div className="absolute bottom-3 right-3 bg-white/90 dark:bg-black/80 shadow-md text-foreground dark:text-white text-xs py-1 px-3 rounded-full flex items-center gap-1.5">
+          <Calendar className="h-3.5 w-3.5" />
+          {pkg.durationDays} {getPackageTranslation("packages.days", language)}
         </div>
       </div>
       
@@ -73,51 +112,83 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
       </CardHeader>
       
       <CardContent className="grow pb-2">
+        <div className="flex gap-3 flex-wrap mt-1">
+          {/* Premium badge */}
+          {pkg.packageType === 'premium' && (
+            <Badge variant="secondary" className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white border-none">
+              <Sparkles className="h-3 w-3 mr-1" />
+              {getPackageTranslation("packages.premium", language)}
+            </Badge>
+          )}
+          
+          {/* All-inclusive badge */}
+          {pkg.isAllInclusive && (
+            <Badge variant="secondary" className="bg-teal-500 hover:bg-teal-600 text-white border-none">
+              <Check className="h-3 w-3 mr-1" />
+              {getPackageTranslation("packages.allInclusive", language)}
+            </Badge>
+          )}
+        </div>
+        
         <Separator className="my-3" />
         
-        <div className="grid grid-cols-2 gap-3 mt-3">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-3 mt-3">
           <div className="flex items-start gap-2">
-            <div className="w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center mt-0.5 shrink-0">
-              <Check className="h-3 w-3 text-primary" />
+            <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center mt-0.5 shrink-0">
+              <Building className="h-3.5 w-3.5 text-primary" />
             </div>
             <span className="text-sm">
-              {getTranslation("packages.luxuryAccommodation", language)}
+              {getPackageTranslation("packages.luxuryAccommodation", language)}
             </span>
           </div>
           
           <div className="flex items-start gap-2">
-            <div className="w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center mt-0.5 shrink-0">
-              <Check className="h-3 w-3 text-primary" />
+            <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center mt-0.5 shrink-0">
+              <Plane className="h-3.5 w-3.5 text-primary" />
             </div>
             <span className="text-sm">
-              {getTranslation("packages.privateTransportation", language)}
+              {getPackageTranslation("packages.airportTransfer", language)}
             </span>
           </div>
           
-          <div className="flex items-start gap-2">
-            <div className="w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center mt-0.5 shrink-0">
-              <Check className="h-3 w-3 text-primary" />
-            </div>
-            <span className="text-sm">
-              {getTranslation("packages.tourismActivities", language)}
-            </span>
-          </div>
-          
-          <div className="flex items-start gap-2">
-            <div className="w-5 h-5 bg-primary/10 rounded-full flex items-center justify-center mt-0.5 shrink-0">
-              <Check className="h-3 w-3 text-primary" />
-            </div>
-            <span className="text-sm">
-              {getTranslation("packages.translationServices", language)}
-            </span>
-          </div>
+          {packageFeatures.length > 0 ? (
+            // Show actual package features if available
+            packageFeatures.slice(0, 2).map((feature, index) => (
+              <div key={index} className="flex items-start gap-2">
+                <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center mt-0.5 shrink-0">
+                  <Check className="h-3.5 w-3.5 text-primary" />
+                </div>
+                <span className="text-sm">{feature}</span>
+              </div>
+            ))
+          ) : (
+            // Show default features if no specific ones are available
+            <>
+              <div className="flex items-start gap-2">
+                <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center mt-0.5 shrink-0">
+                  <Users className="h-3.5 w-3.5 text-primary" />
+                </div>
+                <span className="text-sm">
+                  {getPackageTranslation("packages.features.translator", language)}
+                </span>
+              </div>
+              <div className="flex items-start gap-2">
+                <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center mt-0.5 shrink-0">
+                  <Briefcase className="h-3.5 w-3.5 text-primary" />
+                </div>
+                <span className="text-sm">
+                  {getPackageTranslation("packages.features.citytour", language)}
+                </span>
+              </div>
+            </>
+          )}
         </div>
       </CardContent>
       
       <CardFooter className="pt-0 mt-auto">
         <Button asChild className="w-full gap-2 mt-2 shadow-sm group">
           <Link href={addPrefix(`/packages/${pkg.slug}`)}>
-            {getTranslation("packages.viewDetails", language)}
+            {getPackageTranslation("packages.viewDetails", language)}
             <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </Button>

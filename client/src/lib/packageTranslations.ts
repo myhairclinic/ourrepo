@@ -308,6 +308,38 @@ export const packageTranslations: Record<string, LanguageMap> = {
     [Language.English]: "Post-Travel Massage",
     [Language.Russian]: "Массаж после путешествия",
     [Language.Georgian]: "მოგზაურობის შემდგომი მასაჟი"
+  },
+  
+  // Package Types
+  "packages.premium": {
+    [Language.Turkish]: "Premium Paket",
+    [Language.English]: "Premium Package",
+    [Language.Russian]: "Премиум-пакет",
+    [Language.Georgian]: "პრემიუმ პაკეტი"
+  },
+  "packages.standard": {
+    [Language.Turkish]: "Standart Paket",
+    [Language.English]: "Standard Package",
+    [Language.Russian]: "Стандартный пакет",
+    [Language.Georgian]: "სტანდარტული პაკეტი"
+  },
+  "packages.luxury": {
+    [Language.Turkish]: "Lüks Paket",
+    [Language.English]: "Luxury Package",
+    [Language.Russian]: "Люкс пакет",
+    [Language.Georgian]: "ლუქსი პაკეტი"
+  },
+  "packages.budget": {
+    [Language.Turkish]: "Ekonomik Paket",
+    [Language.English]: "Budget Package",
+    [Language.Russian]: "Бюджетный пакет",
+    [Language.Georgian]: "ეკონომიური პაკეტი"
+  },
+  "packages.allInclusive": {
+    [Language.Turkish]: "Her Şey Dahil",
+    [Language.English]: "All Inclusive",
+    [Language.Russian]: "Всё включено",
+    [Language.Georgian]: "ყველაფერი ჩართულია"
   }
 };
 

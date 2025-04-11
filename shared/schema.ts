@@ -226,6 +226,8 @@ export const packages = pgTable("packages", {
   order: integer("order").notNull().default(0),
   isActive: boolean("is_active").notNull().default(true),
   isFeatured: boolean("is_featured").notNull().default(false), // öne çıkan paket mi?
+  packageType: text("package_type").default("standard"), // premium, standard, luxury, budget
+  isAllInclusive: boolean("is_all_inclusive").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
