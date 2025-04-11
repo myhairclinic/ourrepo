@@ -372,14 +372,14 @@ export default function PackageDetailPage() {
                     </div>
                     
                     <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="bg-muted overflow-hidden rounded-lg relative h-40">
-                        <img src="/images/tbilisi-1.jpg" alt="Tbilisi view" className="w-full h-full object-cover" />
+                      <div className="bg-muted overflow-hidden rounded-lg relative h-48">
+                        <img src="/images/activities/tbilisi-night.webp" alt="Tbilisi night view" className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
                           <span className="text-white font-medium">{getTranslation("packages.cityTours", language)}</span>
                         </div>
                       </div>
-                      <div className="bg-muted overflow-hidden rounded-lg relative h-40">
-                        <img src="/images/georgian-cuisine.jpg" alt="Georgian cuisine" className="w-full h-full object-cover" />
+                      <div className="bg-muted overflow-hidden rounded-lg relative h-48">
+                        <img src="/images/activities/georgian-cuisine.jpg" alt="Georgian cuisine" className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
                           <span className="text-white font-medium">{getTranslation("packages.traditionalCuisine", language)}</span>
                         </div>
