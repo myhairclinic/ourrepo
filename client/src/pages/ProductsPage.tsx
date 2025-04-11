@@ -76,13 +76,13 @@ export default function ProductsPage() {
                     <div className="relative overflow-hidden h-64">
                       <img 
                         src={service.imageUrl} 
-                        alt={service[`title${language}`]} 
+                        alt={service[`title${language.toUpperCase()}`]} 
                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-70"></div>
                       <div className="absolute bottom-4 left-4 right-4">
                         <h3 className="text-white text-xl font-bold line-clamp-2">
-                          {service[`title${language}`]}
+                          {service[`title${language.toUpperCase()}`]}
                         </h3>
                       </div>
                     </div>
@@ -127,7 +127,7 @@ export default function ProductsPage() {
                       </div>
                       
                       <p className="text-muted-foreground mb-6 line-clamp-3">
-                        {service[`description${language}`]}
+                        {service[`description${language.toUpperCase()}`]}
                       </p>
                       
                       <div className="space-y-3">
@@ -182,7 +182,7 @@ export default function ProductsPage() {
                       <div className="relative overflow-hidden h-48">
                         <img 
                           src={product.imageUrl} 
-                          alt={product[`name${lang}`]} 
+                          alt={product[`name${language.toUpperCase()}`]} 
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                         {product.isNew && (
@@ -194,10 +194,10 @@ export default function ProductsPage() {
                       
                       <CardHeader className="p-4 pb-2">
                         <CardTitle className="text-lg line-clamp-1">
-                          {product[`name${language}`]}
+                          {product[`name${language.toUpperCase()}`]}
                         </CardTitle>
                         <CardDescription className="line-clamp-2">
-                          {product[`description${language}`]}
+                          {product[`description${language.toUpperCase()}`]}
                         </CardDescription>
                       </CardHeader>
                       
