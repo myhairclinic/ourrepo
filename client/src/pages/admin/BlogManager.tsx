@@ -335,6 +335,36 @@ export default function BlogManager() {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
+          <Button 
+            variant="outline" 
+            onClick={async () => {
+              try {
+                const response = await fetch('/api/seed/blog', { method: 'POST' });
+                const data = await response.json();
+                if (response.ok) {
+                  queryClient.invalidateQueries({ queryKey: [API_ROUTES.BLOG] });
+                  toast({
+                    title: "Örnek blog içerikleri eklendi",
+                    description: `${data.count} adet blog içeriği başarıyla eklendi.`,
+                  });
+                } else {
+                  toast({
+                    title: "Hata",
+                    description: data.message || "Örnek blog içerikleri eklenirken bir hata oluştu.",
+                    variant: "destructive",
+                  });
+                }
+              } catch (error) {
+                toast({
+                  title: "Hata",
+                  description: "Örnek blog içerikleri eklenirken bir hata oluştu.",
+                  variant: "destructive",
+                });
+              }
+            }}
+          >
+            Örnek İçerik Ekle
+          </Button>
         </div>
         
         <Dialog open={isCreateDialogOpen} onOpenChange={setCreateDialogOpen}>
