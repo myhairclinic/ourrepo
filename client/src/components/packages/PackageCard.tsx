@@ -99,17 +99,14 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
     <div className="group h-full">
       <div className="relative h-full bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.01] border border-gray-100 dark:border-gray-700">
         {/* Package Type Ribbon - Top Left Corner, Angled */}
-        {(pkg.packageType === 'luxury' || pkg.packageType === 'premium' || pkg.isAllInclusive) && (
+        {(pkg.packageType === 'premium' || pkg.isAllInclusive) && (
           <div className="absolute top-0 left-0 z-20 w-32 h-32 overflow-hidden">
             <div className={`absolute top-0 left-0 transform -translate-x-1/2 translate-y-1/4 rotate-[-45deg] py-1.5 px-12 shadow-md text-white text-sm font-bold
-              ${pkg.packageType === 'luxury' ? 'bg-gradient-to-r from-purple-500 to-pink-500' : 
-                pkg.packageType === 'premium' ? 'bg-gradient-to-r from-blue-500 to-indigo-500' : 
+              ${pkg.packageType === 'premium' ? 'bg-gradient-to-r from-blue-500 to-indigo-500' : 
                 'bg-gradient-to-r from-teal-500 to-emerald-500'}`}>
-              {pkg.packageType === 'luxury' 
-                ? getPackageTranslation("packages.luxury", language)
-                : pkg.packageType === 'premium'
-                  ? getPackageTranslation("packages.premium", language)
-                  : getPackageTranslation("packages.allInclusive", language)
+              {pkg.packageType === 'premium'
+                ? getPackageTranslation("packages.premium", language)
+                : getPackageTranslation("packages.allInclusive", language)
               }
             </div>
           </div>
