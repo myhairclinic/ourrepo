@@ -1,8 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="300" height="400" viewBox="0 0 300 400">
   <rect x="0" y="0" width="300" height="400" fill="#f4f4f4"/>
-  <rect x="110" y="75" width="80" height="180" rx="8" ry="8" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
-  <circle cx="150" cy="60" r="25" fill="#2c3e50"/>
-  <text x="150" y="68" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle">V</text>
-  <text x="150" y="340" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Sakal Büyüme Yağı</text>
-  <text x="150" y="165" font-family="Arial" font-size="28" font-weight="bold" fill="white" text-anchor="middle">VIE</text>
+  <rect x="115" y="70" width="70" height="190" rx="8" ry="8" fill="#795548" stroke="#5d4037" stroke-width="2"/>
+  <circle cx="150" cy="45" r="25" fill="#5d4037"/>
+  <text x="150" y="53" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle">V</text>
+  <text x="150" y="165" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle">VIE</text>
+  <text x="150" y="340" font-family="Arial" font-size="12" fill="#333" text-anchor="middle">Sakal Büyüme Yağı</text>
+  <path d="M135,260 Q150,290 165,260" stroke="#5d4037" stroke-width="5" fill="none"/>
+  <path d="M130,245 Q150,275 170,245" stroke="#5d4037" stroke-width="5" fill="none"/>
+  <path d="M125,230 Q150,260 175,230" stroke="#5d4037" stroke-width="5" fill="none"/>
 </svg>

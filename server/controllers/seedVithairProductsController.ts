@@ -1,12 +1,14 @@
 import { Request, Response } from "express";
 import { storage } from "../storage";
-import slugify from "slugify";
 
 // Seed Vithair hair products
 export async function seedVithairProducts(req: Request, res: Response) {
   try {
-    // Delete existing products first
-    await storage.deleteAllProducts();
+    // Delete existing products if any
+    const existingProducts = await storage.getProducts();
+    for (const product of existingProducts) {
+      await storage.deleteProduct(product.id);
+    }
 
     const products = [
       {
