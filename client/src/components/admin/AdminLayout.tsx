@@ -15,7 +15,8 @@ import {
   FileEdit,
   Star,
   HelpCircle,
-  Heart
+  Heart,
+  Upload
 } from "lucide-react";
 
 interface AdminLayoutProps {
@@ -47,6 +48,11 @@ export default function AdminLayout({ children, title }: AdminLayoutProps) {
       name: "Products",
       href: ADMIN_PATHS.PRODUCTS,
       icon: <ShoppingBag className="h-5 w-5" />,
+    },
+    {
+      name: "Ürünleri Yükle",
+      href: ADMIN_PATHS.SEED_PRODUCTS,
+      icon: <Upload className="h-5 w-5" />,
     },
     {
       name: "Blog",

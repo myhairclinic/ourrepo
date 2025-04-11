@@ -122,6 +122,9 @@ function Router() {
       <Route path="/admin/products">
         <ProtectedAdminRoute component={ProductsManager} />
       </Route>
+      <Route path="/admin/seed-products">
+        <ProtectedAdminRoute component={SeedProducts} />
+      </Route>
       <Route path="/admin/reviews">
         <ProtectedAdminRoute component={ReviewsManager} />
       </Route>
