@@ -401,6 +401,87 @@ export default function BlogPosts() {
       .trim();
   };
 
+  // Calculate blog post completeness
+  const calculateCompleteness = (posts: BlogPost[]) => {
+    const completenessData: Record<number, number> = {};
+    
+    posts.forEach(post => {
+      let fieldsToCheck = 0;
+      let filledFields = 0;
+      
+      // Check Turkish fields (primary language)
+      if (post.titleTR && post.titleTR.trim().length > 0) filledFields++;
+      fieldsToCheck++;
+      
+      if (post.contentTR && post.contentTR.trim().length > 50) filledFields++;
+      fieldsToCheck++;
+      
+      if (post.metaTitleTR && post.metaTitleTR.trim().length > 0) filledFields++;
+      fieldsToCheck++;
+      
+      if (post.metaDescriptionTR && post.metaDescriptionTR.trim().length > 0) filledFields++;
+      fieldsToCheck++;
+      
+      // Check English fields
+      if (post.titleEN && post.titleEN.trim().length > 0) filledFields++;
+      fieldsToCheck++;
+      
+      if (post.contentEN && post.contentEN.trim().length > 50) filledFields++;
+      fieldsToCheck++;
+      
+      if (post.metaTitleEN && post.metaTitleEN.trim().length > 0) filledFields++;
+      fieldsToCheck++;
+      
+      if (post.metaDescriptionEN && post.metaDescriptionEN.trim().length > 0) filledFields++;
+      fieldsToCheck++;
+      
+      // Check Russian fields
+      if (post.titleRU && post.titleRU.trim().length > 0) filledFields++;
+      fieldsToCheck++;
+      
+      if (post.contentRU && post.contentRU.trim().length > 50) filledFields++;
+      fieldsToCheck++;
+      
+      if (post.metaTitleRU && post.metaTitleRU.trim().length > 0) filledFields++;
+      fieldsToCheck++;
+      
+      if (post.metaDescriptionRU && post.metaDescriptionRU.trim().length > 0) filledFields++;
+      fieldsToCheck++;
+      
+      // Check Georgian fields
+      if (post.titleKA && post.titleKA.trim().length > 0) filledFields++;
+      fieldsToCheck++;
+      
+      if (post.contentKA && post.contentKA.trim().length > 50) filledFields++;
+      fieldsToCheck++;
+      
+      if (post.metaTitleKA && post.metaTitleKA.trim().length > 0) filledFields++;
+      fieldsToCheck++;
+      
+      if (post.metaDescriptionKA && post.metaDescriptionKA.trim().length > 0) filledFields++;
+      fieldsToCheck++;
+      
+      // Check other important fields
+      if (post.imageUrl && post.imageUrl.trim().length > 0) filledFields++;
+      fieldsToCheck++;
+      
+      if (post.slug && post.slug.trim().length > 0) filledFields++;
+      fieldsToCheck++;
+      
+      if (post.categoryTR && post.categoryTR.trim().length > 0) filledFields++;
+      fieldsToCheck++;
+      
+      if (post.authorTR && post.authorTR.trim().length > 0) filledFields++;
+      fieldsToCheck++;
+      
+      // Calculate percentage
+      const percentage = Math.round((filledFields / fieldsToCheck) * 100);
+      completenessData[post.id] = percentage;
+    });
+    
+    return completenessData;
+  };
+
   // Reset form
   const resetForm = () => {
     setNewPost({
@@ -1005,8 +1086,52 @@ export default function BlogPosts() {
               </div>
             ) : filteredPosts.length === 0 ? (
               // Empty state
-              <div className="text-center py-6">
-                <p className="text-muted-foreground">Henüz blog yazısı bulunmuyor veya arama kriterinize uygun sonuç yok.</p>
+              <div className="flex flex-col items-center justify-center text-center p-12 space-y-4">
+                {searchTerm || filterCategory !== "all" || filterStatus !== "all" || filterFeatured !== "all" ? (
+                  <>
+                    <div className="rounded-full p-3 bg-muted">
+                      <Search className="h-6 w-6 text-muted-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold">Aranan içerik bulunamadı</h3>
+                      <p className="text-muted-foreground">
+                        Filtreleri değiştirmeyi veya aramayı temizlemeyi deneyin.
+                      </p>
+                      <Button 
+                        variant="link" 
+                        onClick={() => {
+                          setSearchTerm("");
+                          setFilterCategory("all");
+                          setFilterStatus("all");
+                          setFilterFeatured("all");
+                          setSortBy("newest");
+                        }}
+                      >
+                        Tüm filtreleri temizle
+                      </Button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="rounded-full p-3 bg-muted">
+                      <FileEdit className="h-6 w-6 text-muted-foreground" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold">Henüz blog yazısı yok</h3>
+                      <p className="text-muted-foreground mb-4">
+                        "Yeni Blog Yazısı" butonuna tıklayarak içerik eklemeye başlayabilirsiniz.
+                      </p>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button onClick={() => setIsAddDialogOpen(true)}>
+                            <Plus className="mr-2 h-4 w-4" />
+                            Yeni Blog Yazısı
+                          </Button>
+                        </DialogTrigger>
+                      </Dialog>
+                    </div>
+                  </>
+                )}
               </div>
             ) : (
               // List of blog posts
