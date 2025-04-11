@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
@@ -814,9 +814,8 @@ export default function SocialMediaPage() {
                     >
                       <div className="flex flex-col items-center">
                         <div className="mb-2">
-                          {React.cloneElement(platform.icon as React.ReactElement, {
-                            className: 'h-6 w-6'
-                          })}
+                          {/* Clone the icon element with updated properties */}
+                          <span className="h-6 w-6">{platform.icon}</span>
                         </div>
                         <span className="text-sm font-medium">{platform.name}</span>
                       </div>
