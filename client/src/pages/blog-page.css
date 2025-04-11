@@ -1,0 +1,155 @@
+/* Blog Sayfası Özel Stilleri */
+
+/* Blog üst başlık animasyonları */
+.blog-header {
+  position: relative;
+  overflow: hidden;
+}
+
+.blog-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,30,60,0.85) 100%);
+  z-index: 0;
+}
+
+.blog-header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/images/pattern-dots.svg');
+  background-size: 15px;
+  opacity: 0.1;
+  z-index: 1;
+}
+
+/* Blog başlık içeriği */
+.blog-header h1 {
+  position: relative;
+  z-index: 10;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  background: linear-gradient(to right, #ffffff, #e0e7ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  animation: fadeIn 0.8s ease-out;
+}
+
+.blog-header p {
+  position: relative;
+  z-index: 10;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #e5e7eb;
+  max-width: 800px;
+  animation: slideUp 0.8s ease-out 0.2s both;
+}
+
+/* Öne çıkan yazılar için stil geliştirmeleri */
+.featured-post-card {
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+}
+
+.featured-post-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Blog listesi için stil geliştirmeleri */
+.blog-list-tabs [data-state="active"] {
+  position: relative;
+}
+
+.blog-list-tabs [data-state="active"]::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, var(--color-primary), var(--color-primary-light));
+  border-radius: 2px;
+  animation: tabLine 0.3s ease-out;
+}
+
+/* Blog kartları için hover efektleri */
+.blog-post-card {
+  transition: all 0.3s ease;
+}
+
+.blog-post-card:hover {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  transform: translateY(-3px);
+}
+
+.blog-post-card .content-wrapper {
+  transition: all 0.3s ease;
+}
+
+.blog-post-card:hover .content-wrapper {
+  background-color: rgba(255,255,255,0.05);
+}
+
+/* Blog sidebar kartları hover efektleri */
+.blog-sidebar-card {
+  transition: all 0.3s ease;
+}
+
+.blog-sidebar-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+/* Animasyonlar */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes tabLine {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Mobil için düzenlemeler */
+@media (max-width: 768px) {
+  .blog-header h1 {
+    font-size: 1.75rem;
+  }
+  
+  .blog-header p {
+    font-size: 1rem;
+  }
+}

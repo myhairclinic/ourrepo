@@ -21,8 +21,13 @@ import {
   SortAsc,
   SortDesc,
   Search,
-  Users
+  Users,
+  BookOpen,
+  ArrowRight
 } from "lucide-react";
+
+// Blog sayfası için özel stiller
+import '../styles/blog-page.css';
 
 // Import our new blog components
 import { BlogListSection } from "@/components/blog/BlogListSection";
@@ -327,8 +332,10 @@ export default function BlogPage() {
       </Helmet>
       
       <PageHeader
-        title={t('blog.title')}
-        description={t('blog.description')}
+        title="Saç Ekimi Blogu | Uzman Makaleler ve Başarı Hikayeleri"
+        description="Saç ekimi, saç dökülmesi tedavileri ve saç bakımı hakkında uzman makaleler ve gerçek başarı hikayeleri. Saç sağlığınız için en güncel bilgiler ve klinik deneyimlerimiz burada."
+        imageUrl="/images/blog/blog-header-bg.jpg"
+        className="blog-header"
       />
       
       <Container className="py-12">
