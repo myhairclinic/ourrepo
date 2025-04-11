@@ -223,6 +223,11 @@ function Router() {
 function AppContent() {
   const [pathname] = useLocation();
   const isAdminRoute = pathname.startsWith("/admin");
+  
+  // Scroll to top on page navigation
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
     <>
