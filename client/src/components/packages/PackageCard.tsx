@@ -93,6 +93,11 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
   
   // Map package type to corresponding icon and color
   const getTypeIcon = () => {
+    // Azerbaycan ve Kazakistan için rozet gösterme
+    if (country === 'AZ' || country === 'KZ') {
+      return false;
+    }
+    
     if (pkg.packageType === 'premium') {
       return {
         icon: <Trophy className="h-4 w-4" />,
@@ -148,17 +153,19 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
       
       {/* Main card */}
       <div className="relative h-full bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg shadow-black/5 dark:shadow-black/30 hover:shadow-xl border border-slate-100 dark:border-slate-800 transition-all duration-500 transform group-hover:-translate-y-1 group-hover:scale-[1.02] z-10">
-        {/* Package Type Badge - Top Right */}
-        <div className={`absolute top-4 right-4 z-30 py-1 px-3 rounded-full text-xs font-semibold flex items-center gap-1.5 shadow-sm ${typeInfo.color}`}>
-          {typeInfo.icon}
-          {typeInfo.text}
-        </div>
+        {/* Package Type Badge - Top Right - sadece typeInfo varsa göster */}
+        {typeInfo && (
+          <div className={`absolute top-4 right-4 z-30 py-1 px-3 rounded-full text-xs font-semibold flex items-center gap-1.5 shadow-sm ${typeInfo.color}`}>
+            {typeInfo.icon}
+            {typeInfo.text}
+          </div>
+        )}
         
         {/* Country banner on top */}
         <div className="absolute top-0 left-0 right-0 z-30 bg-gradient-to-r from-primary via-indigo-500 to-violet-600 h-1.5"></div>
         
-        {/* Featured star marker */}
-        {pkg.isFeatured && (
+        {/* Featured star marker - Azerbaycan ve Kazakistan için gösterme */}
+        {pkg.isFeatured && country !== 'AZ' && country !== 'KZ' && (
           <div className="absolute top-0 left-0 z-30 w-0 h-0 border-t-[60px] border-l-[60px] border-t-amber-500 border-l-transparent border-r-transparent rotate-90">
             <Star className="absolute text-white h-4 w-4 left-[-52px] top-[-48px] fill-white" />
           </div>
