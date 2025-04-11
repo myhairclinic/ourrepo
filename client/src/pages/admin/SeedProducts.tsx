@@ -17,10 +17,15 @@ export default function SeedProducts() {
   const { data: productsCount = 0 } = useQuery<number>({
     queryKey: ["admin", "productsCount"],
     queryFn: async () => {
-      const response = await fetch(`${API_ROUTES.PRODUCTS}/count`);
-      if (!response.ok) return 0;
-      const data = await response.json();
-      return data.count;
+      try {
+        const response = await fetch(`/api/products/count`);
+        if (!response.ok) return 0;
+        const data = await response.json();
+        return data.count;
+      } catch (error) {
+        console.error("Error fetching products count:", error);
+        return 0;
+      }
     },
     enabled: true, // Always enabled, not just for admin users
   });
