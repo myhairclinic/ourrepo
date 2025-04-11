@@ -47,6 +47,13 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Edit,
   Trash2,
   Plus,
@@ -54,12 +61,18 @@ import {
   Eye,
   ArrowUpDown,
   Loader2,
+  Check,
+  Sparkles,
+  Building,
 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 // Extend the package schema
 const formSchema = insertPackageSchema.extend({
   price: z.coerce.number().min(0),
   order: z.coerce.number().min(0),
+  packageType: z.enum(['standard', 'premium', 'luxury', 'budget']).default('standard'),
+  isAllInclusive: z.boolean().default(false),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -223,6 +236,8 @@ export default function PackagesManager() {
       price: 0,
       order: 0,
       isActive: true,
+      packageType: "standard",
+      isAllInclusive: false,
     },
   });
 
