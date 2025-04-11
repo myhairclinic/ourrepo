@@ -166,6 +166,138 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "В настоящее время нет доступных пакетов.",
     [Language.Georgian]: "ამჟამად პაკეტები არ არის ხელმისაწვდომი."
   },
+  "packages.overview": {
+    [Language.Turkish]: "Genel Bakış",
+    [Language.English]: "Overview",
+    [Language.Russian]: "Обзор",
+    [Language.Georgian]: "მიმოხილვა"
+  },
+  "packages.gallery": {
+    [Language.Turkish]: "Galeri",
+    [Language.English]: "Gallery",
+    [Language.Russian]: "Галерея",
+    [Language.Georgian]: "გალერეა"
+  },
+  "packages.accommodation": {
+    [Language.Turkish]: "Konaklama",
+    [Language.English]: "Accommodation",
+    [Language.Russian]: "Проживание",
+    [Language.Georgian]: "საცხოვრებელი"
+  },
+  "packages.transportation": {
+    [Language.Turkish]: "Ulaşım",
+    [Language.English]: "Transportation",
+    [Language.Russian]: "Транспорт",
+    [Language.Georgian]: "ტრანსპორტირება"
+  },
+  "packages.activities": {
+    [Language.Turkish]: "Aktiviteler",
+    [Language.English]: "Activities",
+    [Language.Russian]: "Мероприятия",
+    [Language.Georgian]: "აქტივობები"
+  },
+  "packages.requestInfo": {
+    [Language.Turkish]: "Bilgi İste",
+    [Language.English]: "Request Information",
+    [Language.Russian]: "Запросить информацию",
+    [Language.Georgian]: "ინფორმაციის მოთხოვნა"
+  },
+  "packages.packageDetails": {
+    [Language.Turkish]: "Paket Detayları",
+    [Language.English]: "Package Details",
+    [Language.Russian]: "Детали пакета",
+    [Language.Georgian]: "პაკეტის დეტალები"
+  },
+  "packages.days": {
+    [Language.Turkish]: "gün",
+    [Language.English]: "days",
+    [Language.Russian]: "дней",
+    [Language.Georgian]: "დღე"
+  },
+  "packages.includes": {
+    [Language.Turkish]: "Dahil Olanlar",
+    [Language.English]: "Includes",
+    [Language.Russian]: "Включает",
+    [Language.Georgian]: "მოიცავს"
+  },
+  "packages.hairTransplantationService": {
+    [Language.Turkish]: "Saç Ekimi Hizmeti",
+    [Language.English]: "Hair Transplantation Service",
+    [Language.Russian]: "Услуга трансплантации волос",
+    [Language.Georgian]: "თმის გადანერგვის სერვისი"
+  },
+  "packages.highlights": {
+    [Language.Turkish]: "Öne Çıkanlar",
+    [Language.English]: "Highlights",
+    [Language.Russian]: "Основные моменты",
+    [Language.Georgian]: "მთავარი მომენტები"
+  },
+  "packages.noGalleryImages": {
+    [Language.Turkish]: "Bu paket için galeri görüntüleri henüz eklenmemiştir.",
+    [Language.English]: "Gallery images for this package have not been added yet.",
+    [Language.Russian]: "Изображения галереи для этого пакета еще не добавлены.",
+    [Language.Georgian]: "ამ პაკეტისთვის გალერეის სურათები ჯერ არ არის დამატებული."
+  },
+  "countries.tr": {
+    [Language.Turkish]: "Türkiye",
+    [Language.English]: "Turkey",
+    [Language.Russian]: "Турция",
+    [Language.Georgian]: "თურქეთი"
+  },
+  "countries.ru": {
+    [Language.Turkish]: "Rusya",
+    [Language.English]: "Russia",
+    [Language.Russian]: "Россия",
+    [Language.Georgian]: "რუსეთი"
+  },
+  "countries.ua": {
+    [Language.Turkish]: "Ukrayna",
+    [Language.English]: "Ukraine",
+    [Language.Russian]: "Украина",
+    [Language.Georgian]: "უკრაინა"
+  },
+  "countries.az": {
+    [Language.Turkish]: "Azerbaycan",
+    [Language.English]: "Azerbaijan",
+    [Language.Russian]: "Азербайджан",
+    [Language.Georgian]: "აზერბაიჯანი"
+  },
+  "countries.ir": {
+    [Language.Turkish]: "İran",
+    [Language.English]: "Iran",
+    [Language.Russian]: "Иран",
+    [Language.Georgian]: "ირანი"
+  },
+  "countries.eu": {
+    [Language.Turkish]: "Avrupa",
+    [Language.English]: "Europe",
+    [Language.Russian]: "Европа",
+    [Language.Georgian]: "ევროპა"
+  },
+  "countries.sa": {
+    [Language.Turkish]: "Suudi Arabistan",
+    [Language.English]: "Saudi Arabia",
+    [Language.Russian]: "Саудовская Аравия",
+    [Language.Georgian]: "საუდის არაბეთი"
+  },
+  "countries.ae": {
+    [Language.Turkish]: "Birleşik Arap Emirlikleri",
+    [Language.English]: "United Arab Emirates",
+    [Language.Russian]: "Объединенные Арабские Эмираты",
+    [Language.Georgian]: "არაბთა გაერთიანებული საემიროები"
+  },
+  "countries.iq": {
+    [Language.Turkish]: "Irak",
+    [Language.English]: "Iraq",
+    [Language.Russian]: "Ирак",
+    [Language.Georgian]: "ერაყი"
+  },
+  "countries.all": {
+    [Language.Turkish]: "Tüm Ülkeler",
+    [Language.English]: "All Countries",
+    [Language.Russian]: "Все страны",
+    [Language.Georgian]: "ყველა ქვეყანა"
+  },
   
   // Services Page
   "services.subtitle": {

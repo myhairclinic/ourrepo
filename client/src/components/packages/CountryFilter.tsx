@@ -3,6 +3,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Language } from '@shared/types';
+import { getTranslation } from '@/lib/translations';
 
 interface CountryFilterProps {
   countries: string[];
@@ -19,58 +20,13 @@ const CountryFilter: React.FC<CountryFilterProps> = ({
 
   // Get country name based on country code and current language
   const getCountryName = (code: string) => {
-    const countryNames: Record<Language, Record<string, string>> = {
-      [Language.Turkish]: {
-        'TR': 'Türkiye',
-        'RU': 'Rusya',
-        'UA': 'Ukrayna',
-        'AZ': 'Azerbaycan',
-        'IR': 'İran',
-        'EU': 'Avrupa',
-        'SA': 'Suudi Arabistan',
-        'AE': 'Birleşik Arap Emirlikleri',
-        'IQ': 'Irak',
-        'ALL': 'Tüm Ülkeler'
-      },
-      [Language.English]: {
-        'TR': 'Turkey',
-        'RU': 'Russia',
-        'UA': 'Ukraine',
-        'AZ': 'Azerbaijan',
-        'IR': 'Iran',
-        'EU': 'Europe',
-        'SA': 'Saudi Arabia',
-        'AE': 'United Arab Emirates',
-        'IQ': 'Iraq',
-        'ALL': 'All Countries'
-      },
-      [Language.Russian]: {
-        'TR': 'Турция',
-        'RU': 'Россия',
-        'UA': 'Украина',
-        'AZ': 'Азербайджан',
-        'IR': 'Иран',
-        'EU': 'Европа',
-        'SA': 'Саудовская Аравия',
-        'AE': 'Объединенные Арабские Эмираты',
-        'IQ': 'Ирак',
-        'ALL': 'Все страны'
-      },
-      [Language.Georgian]: {
-        'TR': 'თურქეთი',
-        'RU': 'რუსეთი',
-        'UA': 'უკრაინა',
-        'AZ': 'აზერბაიჯანი',
-        'IR': 'ირანი',
-        'EU': 'ევროპა',
-        'SA': 'საუდის არაბეთი',
-        'AE': 'არაბთა გაერთიანებული საემიროები',
-        'IQ': 'ერაყი',
-        'ALL': 'ყველა ქვეყანა'
-      }
-    };
-
-    return countryNames[language]?.[code] || code;
+    // Handle special case for "ALL"
+    if (code === 'ALL') {
+      return getTranslation("countries.all", language);
+    }
+    
+    // Get translation for country code
+    return getTranslation(`countries.${code.toLowerCase()}`, language) || code;
   };
 
   return (
