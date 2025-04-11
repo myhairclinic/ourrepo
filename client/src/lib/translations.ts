@@ -109,6 +109,24 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Посмотреть все",
     [Language.Georgian]: "ყველას ნახვა"
   },
+  "common.latestFromOurBlog": {
+    [Language.Turkish]: "Blog'dan Son Yazılar",
+    [Language.English]: "Latest From Our Blog",
+    [Language.Russian]: "Последние Статьи из Блога",
+    [Language.Georgian]: "უახლესი ჩვენი ბლოგიდან"
+  },
+  "blog.exploreRecentArticles": {
+    [Language.Turkish]: "Saç ekimi ve bakımı hakkında son makaleleri keşfedin",
+    [Language.English]: "Explore recent articles about hair transplantation and care",
+    [Language.Russian]: "Изучите последние статьи о трансплантации и уходе за волосами",
+    [Language.Georgian]: "გაეცანით ბოლო სტატიებს თმის გადანერგვისა და მოვლის შესახებ"
+  },
+  "blog.readMore": {
+    [Language.Turkish]: "Devamını Oku",
+    [Language.English]: "Read More",
+    [Language.Russian]: "Читать Далее",
+    [Language.Georgian]: "მეტის წაკითხვა"
+  },
   // Common elements
   "common.name": {
     [Language.Turkish]: "Ad",

@@ -110,6 +110,30 @@ export interface BlogPostSummary {
   date: string;
 }
 
+// Blog post (full)
+export interface Blog {
+  id: number;
+  slug: string;
+  titleTR: string;
+  titleEN: string;
+  titleRU: string;
+  titleKA: string;
+  contentTR: string;
+  contentEN: string;
+  contentRU: string;
+  contentKA: string;
+  categoryTR: string;
+  categoryEN: string;
+  categoryRU: string;
+  categoryKA: string;
+  imageUrl: string;
+  author: string;
+  createdAt: string;
+  updatedAt: string;
+  tags?: string[];
+  isPublished: boolean;
+}
+
 // Navigation item
 export interface NavItem {
   label: string;
