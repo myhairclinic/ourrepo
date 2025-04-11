@@ -415,6 +415,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Seed data routes (public during development)
   app.post("/api/seed/services", seedServices);
   app.post("/api/seed/packages", seedPackages);
+  app.get("/api/seed-packages", (req, res) => res.redirect("/"));
+  app.post("/api/seed-packages", seedPackages);
 
   const httpServer = createServer(app);
 
