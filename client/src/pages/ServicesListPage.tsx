@@ -3,7 +3,7 @@ import { useLanguage } from "@/hooks/use-language";
 import { Link } from "wouter";
 import { Service } from "@shared/schema";
 import { Helmet } from "react-helmet";
-import { Loader2, Star, Check, ArrowRight, Info, Calendar, Clock, Users, BadgeCheck, Heart } from "lucide-react";
+import { Loader2, Star, Check, ArrowRight, Info, Calendar, Clock, Users, BadgeCheck, Heart, Sparkles, Zap, ThumbsUp } from "lucide-react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +11,7 @@ import { META } from "@/lib/constants";
 import { getTranslation, useTranslation } from "@/lib/translations";
 import { Language } from "@shared/types";
 import { useState, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 
 export default function ServicesListPage() {
   const { language, currentLanguage, addPrefix } = useLanguage();
@@ -86,17 +87,17 @@ export default function ServicesListPage() {
   const getServiceIcon = (slug: string) => {
     switch (slug) {
       case 'hair-transplantation':
-        return <BadgeCheck className="h-5 w-5 text-primary" />;
+        return <BadgeCheck className="h-6 w-6 text-primary" />;
       case 'eyebrow-transplantation':
-        return <Star className="h-5 w-5 text-amber-500" />;
+        return <Sparkles className="h-6 w-6 text-amber-500" />;
       case 'beard-transplantation':
-        return <Heart className="h-5 w-5 text-rose-500" />;
+        return <Heart className="h-6 w-6 text-rose-500" />;
       case 'prp-treatment':
-        return <Calendar className="h-5 w-5 text-emerald-500" />;
+        return <Zap className="h-6 w-6 text-emerald-500" />;
       case 'hair-mesotherapy':
-        return <Clock className="h-5 w-5 text-blue-500" />;
+        return <ThumbsUp className="h-6 w-6 text-blue-500" />;
       default:
-        return <Info className="h-5 w-5 text-primary" />;
+        return <Info className="h-6 w-6 text-primary" />;
     }
   };
 
@@ -120,6 +121,30 @@ export default function ServicesListPage() {
     return serviceId in specificFeatures ? [...specificFeatures[serviceId], ...commonFeatures] : commonFeatures;
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+  
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: { 
+        type: "spring",
+        stiffness: 100,
+        damping: 12
+      }
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -134,13 +159,18 @@ export default function ServicesListPage() {
         <meta name="twitter:description" content={pageDescription} />
       </Helmet>
       
-      <main className="py-16 bg-gradient-to-b from-white to-gray-50/80 overflow-hidden" ref={sectionRef}>
-        {/* Decorative background elements */}
+      <main className="py-20 bg-gradient-to-b from-white via-gray-50/50 to-white overflow-hidden" ref={sectionRef}>
+        {/* Modern dekoratif arka plan elementleri */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -left-40 -top-40 w-96 h-96 rounded-full bg-primary/5 blur-3xl"></div>
-          <div className="absolute right-10 top-1/3 w-[30rem] h-[30rem] rounded-full bg-blue-300/5 blur-3xl"></div>
-          <div className="absolute left-1/4 bottom-1/4 w-64 h-64 rounded-full bg-blue-100/10 blur-2xl"></div>
+          <div className="absolute -left-40 -top-40 w-[500px] h-[500px] rounded-full bg-primary/5 blur-[100px] animate-blob"></div>
+          <div className="absolute right-10 top-1/3 w-[600px] h-[600px] rounded-full bg-blue-300/5 blur-[120px] animate-blob animation-delay-2000"></div>
+          <div className="absolute left-1/4 bottom-1/4 w-[400px] h-[400px] rounded-full bg-blue-100/10 blur-[80px] animate-blob animation-delay-4000"></div>
         </div>
+        
+        {/* Dekoratif şekiller */}
+        <div className="absolute top-20 left-10 w-16 h-16 border-2 border-primary/10 rounded-full opacity-50 animate-spin-slow"></div>
+        <div className="absolute bottom-40 right-20 w-24 h-24 border-2 border-primary/10 rounded-lg rotate-12 opacity-40"></div>
+        <div className="absolute top-1/3 right-1/4 w-12 h-12 border-2 border-primary/10 rounded-full opacity-30"></div>
 
         <div className="container mx-auto px-4 relative z-10">
           {/* Breadcrumb */}
@@ -152,36 +182,54 @@ export default function ServicesListPage() {
             <span className="text-primary font-medium">{pageTitle}</span>
           </div>
 
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <Badge variant="outline" className="px-4 py-1 rounded-full text-primary border-primary/30 font-medium mb-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-3xl mx-auto text-center mb-20"
+          >
+            <Badge variant="outline" className="px-6 py-1.5 rounded-full text-primary border-primary/30 font-medium mb-6 text-sm shadow-sm">
               {t("services.badge")}
             </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
+            <h1 className="text-4xl md:text-6xl font-bold mb-8 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/90 to-primary/70">
               {pageTitle}
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               {pageDescription}
             </p>
-          </div>
+          </motion.div>
 
           {isLoading ? (
             <div className="flex justify-center items-center py-20">
-              <div className="relative">
-                <div className="w-16 h-16 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
-                <Loader2 className="h-8 w-8 animate-spin text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
-              </div>
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="relative"
+              >
+                <div className="w-20 h-20 rounded-full border-4 border-primary/20 border-t-primary animate-spin"></div>
+                <Loader2 className="h-10 w-10 animate-spin text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+              </motion.div>
             </div>
           ) : error ? (
-            <div className="text-center text-red-500 py-10 bg-red-50 rounded-lg border border-red-100 shadow-sm">
-              <div className="flex flex-col items-center gap-2">
-                <span className="text-lg font-medium">{errorMessage}</span>
-                <Button variant="outline" size="sm" className="mt-2" onClick={() => window.location.reload()}>
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center text-red-500 py-12 px-6 bg-red-50 rounded-xl border border-red-100 shadow-md max-w-2xl mx-auto"
+            >
+              <div className="flex flex-col items-center gap-4">
+                <span className="text-xl font-medium">{errorMessage}</span>
+                <Button variant="outline" size="lg" className="mt-2 px-6 hover:scale-105 transition-transform" onClick={() => window.location.reload()}>
                   {t("common.tryAgain")}
                 </Button>
               </div>
-            </div>
+            </motion.div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <motion.div 
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10"
+            >
               {[...(services || [])]
                 .sort((a, b) => {
                   // Saç ekimi her zaman ilk sırada olsun
@@ -191,17 +239,13 @@ export default function ServicesListPage() {
                   return 0;
                 })
                 .map((service, index) => (
-                <div
+                <motion.div
                   key={service.id}
-                  className={`transition-all duration-1000 transform ${
-                    isInView
-                      ? 'opacity-100 translate-y-0'
-                      : 'opacity-0 translate-y-20'
-                  }`}
-                  style={{ transitionDelay: `${index * 150}ms` }}
+                  variants={itemVariants}
+                  className="h-full"
                 >
-                  <Card className="overflow-hidden flex flex-col h-full hover:shadow-xl transition-all duration-300 border-primary/10 group">
-                    <div className="h-64 overflow-hidden relative">
+                  <Card className="overflow-hidden flex flex-col h-full rounded-xl hover:shadow-2xl transition-all duration-500 border-0 group bg-white/70 backdrop-blur-sm">
+                    <div className="h-[280px] overflow-hidden relative">
                       <img 
                         src={service.slug === 'eyebrow-transplantation' 
                           ? '/images/services/eyebrow-transplant.jpg' 
@@ -213,37 +257,47 @@ export default function ServicesListPage() {
                                 ? '/images/services/prp-treatment.jpg'
                                 : service.imageUrl} 
                         alt={getLocalizedTitle(service)} 
-                        className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-105"
+                        className="w-full h-full object-cover transform transition-transform duration-700 ease-in-out group-hover:scale-110"
                         onError={(e) => {
                           e.currentTarget.src = '/images/services/default.jpg';
                         }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       
-                      {/* Service badge */}
-                      <div className="absolute top-4 left-4">
-                        <Badge variant="secondary" className="bg-white/90 text-primary">
+                      {/* Gradient overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-40 group-hover:opacity-60 transition-opacity duration-500"></div>
+                      
+                      {/* Top badge with enhanced styling */}
+                      <div className="absolute top-4 left-4 z-10">
+                        <Badge variant="secondary" className="bg-white shadow-lg text-primary px-3 py-1.5 rounded-full text-sm font-medium">
                           {service.duration ? `${service.duration} ${t("common.duration")}` : '60-90 min'}
                         </Badge>
                       </div>
+                      
+                      {/* Service icon with floating effect */}
+                      <div className="absolute bottom-0 right-0 transform translate-y-1/2 translate-x-0 mr-6">
+                        <div className="bg-white shadow-xl rounded-full p-3 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                          {getServiceIcon(service.slug)}
+                        </div>
+                      </div>
                     </div>
                     
-                    <CardHeader className="pb-2">
-                      <div className="flex items-center gap-2 mb-1">
-                        {getServiceIcon(service.slug)}
-                        <CardTitle className="text-2xl font-bold">{getLocalizedTitle(service)}</CardTitle>
-                      </div>
+                    <CardHeader className="pt-8 pb-3">
+                      <CardTitle className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-700">
+                        {getLocalizedTitle(service)}
+                      </CardTitle>
                     </CardHeader>
                     
                     <CardContent className="flex-grow">
-                      <p className="text-muted-foreground mb-4">{getLocalizedDescription(service)}</p>
+                      <p className="text-muted-foreground">{getLocalizedDescription(service)}</p>
                       
-                      {/* Service features */}
-                      <div className="space-y-2 mt-4">
+                      {/* Service features with enhanced styling */}
+                      <div className="space-y-3 mt-6 border-t border-gray-100 pt-4">
                         {getServiceFeatures(service.id).slice(0, 3).map((feature, idx) => (
-                          <div key={idx} className="flex items-center gap-2">
-                            <Check className="h-4 w-4 text-primary shrink-0" />
-                            <span className="text-sm">{feature}</span>
+                          <div key={idx} className="flex items-start gap-3 group/feature">
+                            <div className="mt-0.5 bg-primary/10 rounded-full p-1 group-hover/feature:bg-primary/20 transition-colors">
+                              <Check className="h-4 w-4 text-primary shrink-0" />
+                            </div>
+                            <span className="text-sm text-gray-600 font-medium">{feature}</span>
                           </div>
                         ))}
                       </div>
@@ -251,24 +305,90 @@ export default function ServicesListPage() {
                     
                     <CardFooter className="pt-0">
                       <Link href={addPrefix(`/services/${service.slug}`)} className="w-full">
-                        <Button className="w-full group-hover:bg-primary/90 transition-colors mt-2 flex items-center justify-center gap-2">
+                        <Button className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary shadow-md hover:shadow-xl transition-all duration-300 mt-2 text-white font-medium py-6 rounded-md flex items-center justify-center gap-2">
                           {learnMoreButton}
                           <ArrowRight className="h-4 w-4 transform group-hover:translate-x-1 transition-transform" />
                         </Button>
                       </Link>
                     </CardFooter>
                   </Card>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           )}
           
-          {/* Decorative bottom line */}
-          <div className="mx-auto max-w-md mt-20 flex justify-center">
-            <div className="h-px w-full bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
-          </div>
+          {/* Modern footer section */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            className="mx-auto mt-24 mb-8 text-center max-w-xl"
+          >
+            {/* Animasyonlu dekoratif çizgi */}
+            <div className="relative h-px w-full bg-gradient-to-r from-transparent via-primary/30 to-transparent mb-16">
+              <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-5 h-5">
+                <div className="absolute inset-0 bg-primary/20 rounded-full animate-ping"></div>
+                <div className="absolute inset-[3px] bg-primary rounded-full"></div>
+              </div>
+            </div>
+            
+            <h3 className="text-2xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
+              {t("services.needHelp")}
+            </h3>
+            <p className="text-muted-foreground mb-6 text-lg">
+              {t("services.contactUs")}
+            </p>
+            <Link href={addPrefix("/contact")}>
+              <Button className="px-8 py-6 text-base bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary shadow-lg hover:shadow-xl transition-all">
+                {t("common.contactUs")}
+              </Button>
+            </Link>
+          </motion.div>
         </div>
       </main>
+      
+      {/* Global CSS animations */}
+      <style jsx global>{`
+        @keyframes blob {
+          0%, 100% {
+            transform: scale(1) translate(0px, 0px);
+          }
+          25% {
+            transform: scale(1.1) translate(20px, 15px);
+          }
+          50% {
+            transform: scale(1) translate(0px, 20px);
+          }
+          75% {
+            transform: scale(0.9) translate(-20px, 15px);
+          }
+        }
+        
+        @keyframes spin-slow {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+        
+        .animate-blob {
+          animation: blob 15s infinite ease-in-out;
+        }
+        
+        .animate-spin-slow {
+          animation: spin-slow 15s linear infinite;
+        }
+        
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+      `}</style>
     </>
   );
 }
