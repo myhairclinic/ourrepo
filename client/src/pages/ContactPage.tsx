@@ -212,7 +212,6 @@ export default function ContactPage() {
                       <div>
                         <h3 className="font-semibold text-lg mb-2">{t('home.location.phone')}</h3>
                         <p className="text-muted-foreground mb-1">{CONTACT.PHONE}</p>
-                        <p className="text-muted-foreground">+90 (532) 123 45 67 (Türkiye)</p>
                       </div>
                     </div>
                   </div>
@@ -327,7 +326,7 @@ export default function ContactPage() {
                 <div className="h-2 bg-gradient-to-r from-primary to-primary/50"></div>
                 <CardContent className="p-0 h-[550px]">
                   <iframe
-                    src="https://maps.google.com/maps?q=tbilisi&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                    src="https://maps.google.com/maps?q=Tsotne+Dadiani+59+Tbilisi&t=&z=15&ie=UTF8&iwloc=&output=embed"
                     className="w-full h-full border-0" 
                     title="Google Maps Location"
                     loading="lazy"

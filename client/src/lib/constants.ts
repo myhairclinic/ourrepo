@@ -21,14 +21,14 @@ export const API_ROUTES = {
 };
 
 export const CONTACT = {
-  PHONE: "+995 32 555 55 55",
-  EMAIL: "info@myhairclinic.com",
-  WHATSAPP: "+995 32 555 55 55",
+  PHONE: "+995 555 003 044",
+  EMAIL: "clinicmyhair@gmail.com",
+  WHATSAPP: "+995 555 003 044",
   ADDRESS: {
-    TR: "Rustaveli Caddesi, No:123, Tiflis, Gürcistan",
-    EN: "123 Rustaveli Avenue, Tbilisi, Georgia",
-    RU: "Проспект Руставели, 123, Тбилиси, Грузия",
-    KA: "რუსთაველის გამზირი 123, თბილისი, საქართველო"
+    TR: "Tsotne Dadiani 59, Tiflis, Gürcistan",
+    EN: "Tsotne Dadiani 59, Tbilisi, Georgia",
+    RU: "Цотне Дадиани 59, Тбилиси, Грузия",
+    KA: "წოტნე დადიანი 59, თბილისი, საქართველო"
   }
 };
 
