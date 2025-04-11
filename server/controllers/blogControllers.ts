@@ -52,18 +52,53 @@ export const getBlogPostBySlug = async (req: Request, res: Response) => {
 export const createBlogPost = async (req: Request, res: Response) => {
   try {
     // Check if slug already exists
-    const { slug } = req.body;
+    const { 
+      slug, 
+      titleTR, titleEN, titleRU, titleKA,
+      contentTR, contentEN, contentRU, contentKA,
+      imageUrl, 
+      categoryTR, categoryEN, categoryRU, categoryKA,
+      authorTR, authorEN, authorRU, authorKA,
+      isFeatured, isPublished 
+    } = req.body;
+    
     const existingPost = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug));
     
     if (existingPost.length > 0) {
       return res.status(400).json({ message: "A blog post with this slug already exists" });
     }
     
-    const newPost = await db.insert(blogPosts).values({
-      ...req.body,
+    // Şemaya uygun veri hazırlama
+    const postData = {
+      slug,
+      titleTR, titleEN, titleRU, titleKA,
+      // Özet değerleri içerikten oluştur (ilk 150 karakter)
+      summaryTR: contentTR.substring(0, 150) + (contentTR.length > 150 ? '...' : ''),
+      summaryEN: contentEN.substring(0, 150) + (contentEN.length > 150 ? '...' : ''),
+      summaryRU: contentRU.substring(0, 150) + (contentRU.length > 150 ? '...' : ''),
+      summaryKA: contentKA.substring(0, 150) + (contentKA.length > 150 ? '...' : ''),
+      contentTR, contentEN, contentRU, contentKA,
+      imageUrl,
+      category: categoryTR, // Ana kategori olarak TR kategorisini kullan
+      tags: "",  // Varsayılan boş
+      author: authorTR || "MyHair Clinic", // Yazar yoksa varsayılan değer
+      isFeatured: isFeatured || false,
+      isPublished: isPublished || false,
+      // Meta alanları
+      metaTitleTR: req.body.metaTitleTR || titleTR,
+      metaTitleEN: req.body.metaTitleEN || titleEN,
+      metaTitleRU: req.body.metaTitleRU || titleRU,
+      metaTitleKA: req.body.metaTitleKA || titleKA,
+      metaDescriptionTR: req.body.metaDescriptionTR || "",
+      metaDescriptionEN: req.body.metaDescriptionEN || "",
+      metaDescriptionRU: req.body.metaDescriptionRU || "",
+      metaDescriptionKA: req.body.metaDescriptionKA || "",
+      // Tarih alanları
       createdAt: new Date(),
       updatedAt: new Date()
-    }).returning();
+    };
+    
+    const newPost = await db.insert(blogPosts).values(postData).returning();
     
     return res.status(201).json(newPost[0]);
   } catch (error) {
@@ -92,11 +127,42 @@ export const updateBlogPost = async (req: Request, res: Response) => {
       }
     }
     
+    // İçerik güncellemelerini doğrudan db.update() içinde yapıyoruz
+    const setData: any = {
+      ...req.body,
+      updatedAt: new Date()
+    };
+
+    // İçerik değişmişse özeti güncelle
+    if (req.body.contentTR) {
+      setData.summaryTR = req.body.contentTR.substring(0, 150) + (req.body.contentTR.length > 150 ? '...' : '');
+    }
+    
+    if (req.body.contentEN) {
+      setData.summaryEN = req.body.contentEN.substring(0, 150) + (req.body.contentEN.length > 150 ? '...' : '');
+    }
+    
+    if (req.body.contentRU) {
+      setData.summaryRU = req.body.contentRU.substring(0, 150) + (req.body.contentRU.length > 150 ? '...' : '');
+    }
+    
+    if (req.body.contentKA) {
+      setData.summaryKA = req.body.contentKA.substring(0, 150) + (req.body.contentKA.length > 150 ? '...' : '');
+    }
+    
+    // Kategori güncelleme
+    if (req.body.categoryTR) {
+      setData.category = req.body.categoryTR;
+    }
+    
+    // Dönüştürülmüş alanları kaldır
+    delete setData.categoryTR;
+    delete setData.categoryEN;
+    delete setData.categoryRU;
+    delete setData.categoryKA;
+    
     const [updatedPost] = await db.update(blogPosts)
-      .set({
-        ...req.body,
-        updatedAt: new Date()
-      })
+      .set(setData)
       .where(eq(blogPosts.id, Number(id)))
       .returning();
     
