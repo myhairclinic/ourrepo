@@ -453,7 +453,7 @@ export default function PackageDetailPage() {
                 
                 {galleryImages && galleryImages.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {galleryImages.map((img: string, index: number) => (
+                    {galleryImages.filter(img => img && img.trim() !== '').map((img: string, index: number) => (
                       <div 
                         key={index}
                         className="group relative overflow-hidden rounded-xl aspect-video hover:shadow-md transition-all duration-300 cursor-pointer"
@@ -471,8 +471,6 @@ export default function PackageDetailPage() {
                         </div>
                       </div>
                     ))}
-                    
-                    {/* Removed redundant images that are now included in the tbilisiLandmarkImages array */}
                   </div>
                 ) : (
                   <div className="text-center py-12 px-4 border border-dashed border-border rounded-xl">
