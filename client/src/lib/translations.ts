@@ -25,6 +25,12 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Эл. почта",
     [Language.Georgian]: "ელ.ფოსტა"
   },
+  "common.emailPlaceholder": {
+    [Language.Turkish]: "E-posta adresiniz",
+    [Language.English]: "Your email address",
+    [Language.Russian]: "Ваш адрес электронной почты",
+    [Language.Georgian]: "თქვენი ელფოსტის მისამართი"
+  },
   "common.phoneNumber": {
     [Language.Turkish]: "Telefon Numarası",
     [Language.English]: "Phone Number",
