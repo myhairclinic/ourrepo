@@ -6,6 +6,103 @@ type LanguageMap = Record<Language, string>;
 // Our translations object with simple key structure
 // Translations object (exported for direct usage in components)
 export const translations: Record<string, LanguageMap> = {
+  // Why Choose Us section
+  "home.whyChooseUs.title": {
+    [Language.Turkish]: "Neden Bizi Seçmelisiniz",
+    [Language.English]: "Why Choose Us",
+    [Language.Russian]: "Почему Выбирают Нас",
+    [Language.Georgian]: "რატომ უნდა აგვირჩიოთ"
+  },
+  "home.whyChooseUs.subtitle": {
+    [Language.Turkish]: "MyHair Tbilisi ile saç ekimi konusunda en iyi hizmeti alın",
+    [Language.English]: "Get the best hair transplantation service with MyHair Tbilisi",
+    [Language.Russian]: "Получите лучший сервис по трансплантации волос с MyHair Тбилиси",
+    [Language.Georgian]: "მიიღეთ საუკეთესო თმის გადანერგვის სერვისი MyHair თბილისთან ერთად"
+  },
+  "home.whyChooseUs.experience.title": {
+    [Language.Turkish]: "Uzman Deneyimi",
+    [Language.English]: "Expert Experience",
+    [Language.Russian]: "Экспертный Опыт",
+    [Language.Georgian]: "ექსპერტული გამოცდილება"
+  },
+  "home.whyChooseUs.experience.description": {
+    [Language.Turkish]: "10 yılı aşkın deneyime sahip uzman doktorlarımızla hizmet veriyoruz.",
+    [Language.English]: "We serve with our expert doctors with more than 10 years of experience.",
+    [Language.Russian]: "Мы работаем с нашими опытными врачами с более чем 10-летним опытом.",
+    [Language.Georgian]: "ჩვენ გემსახურებით ჩვენი ექსპერტი ექიმებით, რომლებსაც 10 წელზე მეტი გამოცდილება აქვთ."
+  },
+  "home.whyChooseUs.experience.years": {
+    [Language.Turkish]: "{years} Yıllık Deneyim",
+    [Language.English]: "{years} Years of Experience",
+    [Language.Russian]: "{years} Лет Опыта",
+    [Language.Georgian]: "{years} წლიანი გამოცდილება"
+  },
+  "home.whyChooseUs.results.title": {
+    [Language.Turkish]: "Garantili Sonuçlar",
+    [Language.English]: "Guaranteed Results",
+    [Language.Russian]: "Гарантированные Результаты",
+    [Language.Georgian]: "გარანტირებული შედეგები"
+  },
+  "home.whyChooseUs.results.description": {
+    [Language.Turkish]: "Modern tekniklerle doğal ve kalıcı sonuçları garanti ediyoruz.",
+    [Language.English]: "We guarantee natural and permanent results with modern techniques.",
+    [Language.Russian]: "Мы гарантируем естественные и постоянные результаты с современными техниками.",
+    [Language.Georgian]: "ჩვენ ვუზრუნველყოფთ ბუნებრივ და მუდმივ შედეგებს თანამედროვე ტექნიკით."
+  },
+  "home.whyChooseUs.technology.title": {
+    [Language.Turkish]: "İleri Teknoloji",
+    [Language.English]: "Advanced Technology",
+    [Language.Russian]: "Передовая Технология",
+    [Language.Georgian]: "მოწინავე ტექნოლოგია"
+  },
+  "home.whyChooseUs.technology.description": {
+    [Language.Turkish]: "En son teknolojilerle donatılmış kliniğimizde en iyi hizmeti sunuyoruz.",
+    [Language.English]: "We offer the best service in our clinic equipped with the latest technologies.",
+    [Language.Russian]: "Мы предлагаем лучший сервис в нашей клинике, оснащенной новейшими технологиями.",
+    [Language.Georgian]: "ჩვენ გთავაზობთ საუკეთესო მომსახურებას ჩვენს კლინიკაში, რომელიც აღჭურვილია უახლესი ტექნოლოგიებით."
+  },
+  "home.whyChooseUs.natural.title": {
+    [Language.Turkish]: "Doğal Görünüm",
+    [Language.English]: "Natural Look",
+    [Language.Russian]: "Естественный Вид",
+    [Language.Georgian]: "ბუნებრივი იერსახე"
+  },
+  "home.whyChooseUs.natural.description": {
+    [Language.Turkish]: "Doğal saç çizgisi ve yoğunluk için kişiye özel tasarım yapıyoruz.",
+    [Language.English]: "We make custom designs for natural hairline and density.",
+    [Language.Russian]: "Мы делаем индивидуальный дизайн для естественной линии роста волос и густоты.",
+    [Language.Georgian]: "ჩვენ ვქმნით ინდივიდუალურ დიზაინს ბუნებრივი თმის ხაზისა და სიმკვრივისთვის."
+  },
+  "home.whyChooseUs.aftercare.title": {
+    [Language.Turkish]: "Sonrası Bakım",
+    [Language.English]: "Aftercare",
+    [Language.Russian]: "Послеоперационный Уход",
+    [Language.Georgian]: "შემდგომი მოვლა"
+  },
+  "home.whyChooseUs.aftercare.description": {
+    [Language.Turkish]: "İşlem sonrası 1 yıl boyunca ücretsiz takip ve danışmanlık hizmeti.",
+    [Language.English]: "Free follow-up and consultancy service for 1 year after the procedure.",
+    [Language.Russian]: "Бесплатное последующее наблюдение и консультации в течение 1 года после процедуры.",
+    [Language.Georgian]: "უფასო მეთვალყურეობა და საკონსულტაციო მომსახურება 1 წლის განმავლობაში პროცედურის შემდეგ."
+  },
+  "home.whyChooseUs.satisfaction.title": {
+    [Language.Turkish]: "Müşteri Memnuniyeti",
+    [Language.English]: "Customer Satisfaction",
+    [Language.Russian]: "Удовлетворенность Клиентов",
+    [Language.Georgian]: "მომხმარებელთა კმაყოფილება"
+  },
+  "home.whyChooseUs.satisfaction.description": {
+    [Language.Turkish]: "%98 hasta memnuniyeti ile sektörde öncü konumdayız.",
+    [Language.English]: "We are a leader in the sector with 98% patient satisfaction.",
+    [Language.Russian]: "Мы являемся лидером в отрасли с 98% удовлетворенностью пациентов.",
+    [Language.Georgian]: "ჩვენ ვართ ლიდერი სექტორში 98% პაციენტთა კმაყოფილებით."
+  },
+  "home.whyChooseUs.doctorQuote": {
+    [Language.Turkish]: "Saçınız için en iyisini hak ediyorsunuz. MyHair Tbilisi'de bunu sunuyoruz.",
+    [Language.English]: "You deserve the best for your hair. We offer this at MyHair Tbilisi.",
+    [Language.Russian]: "Вы заслуживаете лучшего для своих волос. Мы предлагаем это в MyHair Тбилиси.",
+    [Language.Georgian]: "თქვენ იმსახურებთ საუკეთესოს თქვენი თმისთვის. ჩვენ გთავაზობთ ამას MyHair თბილისში."
+  },
   "common.viewAll": {
     [Language.Turkish]: "Tümünü Gör",
     [Language.English]: "View All",

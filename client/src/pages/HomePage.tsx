@@ -46,9 +46,9 @@ export default function HomePage() {
         </div>
         
         <MainSlider />
+        <WhyChooseUs />
         <ServiceCards />
         <PackageCards />
-        <WhyChooseUs />
         <BeforeAfterSlider />
         <Testimonials />
         
