@@ -32,6 +32,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { CONTACT, SOCIAL } from "@/lib/constants";
 
 // Contact form schema
 const contactFormSchema = z.object({
@@ -89,11 +90,20 @@ export default function ContactPage() {
     contactMutation.mutate(data);
   };
   
+  // Fallback değerler için güvenlik kontrolü
+  const getTranslation = (key: string, fallback: string) => {
+    try {
+      return t(key) || fallback;
+    } catch (e) {
+      return fallback;
+    }
+  };
+
   return (
     <>
       <Helmet>
-        <title>{t('contact.title')} | {META.SITE_NAME}</title>
-        <meta name="description" content={t('contact.description')} />
+        <title>{getTranslation('contact.title', 'İletişim')} | {META.SITE_NAME}</title>
+        <meta name="description" content={getTranslation('contact.description', 'MyHair Clinic ile iletişime geçin')} />
         <link rel="canonical" href={window.location.origin + addPrefix("/contact")} />
         <link rel="alternate" hrefLang="tr" href={window.location.origin + "/tr/contact"} />
         <link rel="alternate" hrefLang="en" href={window.location.origin + "/en/contact"} />
@@ -188,7 +198,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <h3 className="font-semibold text-lg mb-2">{t('home.location.address')}</h3>
-                        <p className="text-muted-foreground">{CONTACT.ADDRESS[language.toUpperCase()]}</p>
+                        <p className="text-muted-foreground">{CONTACT.ADDRESS[language.toUpperCase() as keyof typeof CONTACT.ADDRESS]}</p>
                       </div>
                     </div>
                   </div>
@@ -249,7 +259,7 @@ export default function ContactPage() {
                 
                 {/* Social Media Links */}
                 <div className="p-6 bg-gray-50 dark:bg-gray-900">
-                  <h3 className="font-semibold text-lg mb-4">{t('contact.followUs')}</h3>
+                  <h3 className="font-semibold text-lg mb-4">{getTranslation('contact.followUs', 'Bizi Takip Edin')}</h3>
                   <div className="flex gap-3">
                     <a 
                       href={SOCIAL.FACEBOOK}
@@ -339,10 +349,10 @@ export default function ContactPage() {
               <div className="h-2 bg-gradient-to-r from-primary to-primary/50"></div>
               <CardHeader className="p-8 pb-4 text-center">
                 <CardTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
-                  {t('contact.formTitle')}
+                  {getTranslation('contact.formTitle', 'Bizimle İletişime Geçin')}
                 </CardTitle>
                 <CardDescription className="text-center mt-3 text-base max-w-2xl mx-auto">
-                  {t('contact.formDescription')} <span className="text-primary font-medium">{t('contact.responseTime')}</span>
+                  {getTranslation('contact.formDescription', 'Soru ve talepleriniz için bizimle iletişime geçebilirsiniz.')} <span className="text-primary font-medium">{getTranslation('contact.responseTime', '24 saat içinde dönüş yapıyoruz')}</span>
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-8">
@@ -445,44 +455,44 @@ export default function ContactPage() {
           {/* FAQ Section */}
           <div className="max-w-4xl mx-auto mb-16">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold">{t('contact.frequentlyAsked')}</h2>
-              <p className="text-muted-foreground mt-3">{t('contact.faqDescription')}</p>
+              <h2 className="text-3xl font-bold">{getTranslation('contact.frequentlyAsked', 'Sık Sorulan Sorular')}</h2>
+              <p className="text-muted-foreground mt-3">{getTranslation('contact.faqDescription', 'Aşağıdaki cevaplar size yardımcı olabilir')}</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card className="overflow-hidden hover:shadow-md transition-shadow duration-300">
                 <CardHeader>
-                  <CardTitle className="text-xl">{t('contact.faq1Title')}</CardTitle>
+                  <CardTitle className="text-xl">{getTranslation('contact.faq1Title', 'Saç ekimi ne kadar sürer?')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">{t('contact.faq1Content')}</p>
+                  <p className="text-muted-foreground">{getTranslation('contact.faq1Content', 'Saç ekimi işlemi ortalama 6-8 saat sürer. İşlem sonrası iyileşme süreci yaklaşık 10-14 gündür.')}</p>
                 </CardContent>
               </Card>
               
               <Card className="overflow-hidden hover:shadow-md transition-shadow duration-300">
                 <CardHeader>
-                  <CardTitle className="text-xl">{t('contact.faq2Title')}</CardTitle>
+                  <CardTitle className="text-xl">{getTranslation('contact.faq2Title', 'Kaç ekimi ne zaman sonuç verir?')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">{t('contact.faq2Content')}</p>
+                  <p className="text-muted-foreground">{getTranslation('contact.faq2Content', 'Saç ekimi sonuçları genellikle 6-9 ay içinde tam olarak görülür. İlk 3 ay içinde yeni saç büyümesi başlar.')}</p>
                 </CardContent>
               </Card>
               
               <Card className="overflow-hidden hover:shadow-md transition-shadow duration-300">
                 <CardHeader>
-                  <CardTitle className="text-xl">{t('contact.faq3Title')}</CardTitle>
+                  <CardTitle className="text-xl">{getTranslation('contact.faq3Title', 'Sonuçlar doğal görünür mü?')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">{t('contact.faq3Content')}</p>
+                  <p className="text-muted-foreground">{getTranslation('contact.faq3Content', 'Evet, modern saç ekimi teknikleri ile tamamen doğal görünümlü sonuçlar elde edilir. DHI ve Safir FUE teknikleri doğal saç çizgisi ve yoğunluğu sağlar.')}</p>
                 </CardContent>
               </Card>
               
               <Card className="overflow-hidden hover:shadow-md transition-shadow duration-300">
                 <CardHeader>
-                  <CardTitle className="text-xl">{t('contact.faq4Title')}</CardTitle>
+                  <CardTitle className="text-xl">{getTranslation('contact.faq4Title', 'Saç ekimi sonrası dikkat edilmesi gerekenler nelerdir?')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">{t('contact.faq4Content')}</p>
+                  <p className="text-muted-foreground">{getTranslation('contact.faq4Content', 'İlk hafta yatarken dikkatli olmalı, tuz ve alkol tüketmemeli, sigara içmemeli, direkt güneş ışığından korunmalı ve doktorunuzun önerdiği bakım ürünlerini kullanmalısınız.')}</p>
                 </CardContent>
               </Card>
             </div>
