@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
+import { useTranslation } from "@/lib/translations";
 import { 
   Instagram, 
   Facebook, 
@@ -187,7 +188,8 @@ const reviews = [
 ];
 
 export default function SocialMediaPage() {
-  const { language, t, addPrefix } = useLanguage();
+  const { language, addPrefix } = useLanguage();
+  const { t } = useTranslation(language);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -200,7 +202,8 @@ export default function SocialMediaPage() {
   }, []);
 
   // Helper function for number formatting
-  const formatNumber = (num: number) => {
+  const formatNumber = (num: number | undefined) => {
+    if (!num) return "0";
     if (num >= 1000000) {
       return (num / 1000000).toFixed(1) + 'M';
     } else if (num >= 1000) {
@@ -721,7 +724,7 @@ export default function SocialMediaPage() {
                     target="_blank" 
                     rel="noopener noreferrer"
                     className={`inline-flex items-center ${
-                      platform.platform === 'Instagram' ? 'bg-gradient-to-r from-purple-500 to-pink-500' : 
+                      platform.name === 'Instagram' ? 'bg-gradient-to-r from-purple-500 to-pink-500' : 
                       platform.name === 'Facebook' ? 'bg-blue-600' :
                       platform.name === 'YouTube' ? 'bg-red-600' :
                       platform.name === 'TikTok' ? 'bg-black' : 'bg-primary'
