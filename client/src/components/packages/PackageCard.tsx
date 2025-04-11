@@ -167,7 +167,7 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
         {/* Main image with overlay */}
         <div className="relative h-52 overflow-hidden">
           <img
-            src={getCountrySpecificImage(country) || pkg.imageUrl || '/images/package-placeholder.jpg'}
+            src={getCountrySpecificImage(country) || pkg.imageUrl || '/images/placeholder.jpg'}
             alt={title}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />

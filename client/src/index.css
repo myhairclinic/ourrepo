@@ -22,7 +22,7 @@
   }
   
   /* Fade in animation for country cards */
-  @keyframes fadeIn {
+  @keyframes fade-in {
     from {
       opacity: 0;
       transform: translateY(10px);
@@ -34,7 +34,7 @@
   }
   
   .fade-in {
-    animation: fadeIn 0.6s ease-in-out forwards;
+    animation: fade-in 0.6s ease-in-out forwards;
   }
   
   /* Staggered animation delays for country cards */
