@@ -19,7 +19,15 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
   const { language, addPrefix } = useLanguage();
   
   // Get the title and description based on language
-  const title = pkg[`title${language.toUpperCase()}` as keyof Package] as string;
+  const titleFieldMap: Record<string, string> = {
+    'TR': 'title_tr',
+    'EN': 'title_en',
+    'RU': 'title_ru',
+    'KA': 'title_ka'
+  };
+  
+  const titleField = titleFieldMap[language] as keyof Package;
+  const title = pkg[titleField] as string;
   const description = pkg[`description${language.toUpperCase()}` as keyof Package] as string;
   const country = pkg.countryOrigin;
   
