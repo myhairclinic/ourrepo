@@ -22,7 +22,7 @@ export const API_ROUTES = {
 
 export const CONTACT = {
   PHONE: "+995 555 003 044",
-  EMAIL: "clinicmyhair@gmail.com",
+  EMAIL: "myhairtbilisi@gmail.com",
   WHATSAPP: "+995 555 003 044",
   ADDRESS: {
     TR: "Tsotne Dadiani 59, Tiflis, Gürcistan",

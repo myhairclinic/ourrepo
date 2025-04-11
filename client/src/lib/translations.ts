@@ -6,6 +6,43 @@ type LanguageMap = Record<Language, string>;
 // Our translations object with simple key structure
 // Translations object (exported for direct usage in components)
 export const translations: Record<string, LanguageMap> = {
+  // Common elements
+  "common.name": {
+    [Language.Turkish]: "Ad",
+    [Language.English]: "Name",
+    [Language.Russian]: "Имя", 
+    [Language.Georgian]: "სახელი"
+  },
+  "common.surname": {
+    [Language.Turkish]: "Soyad",
+    [Language.English]: "Surname",
+    [Language.Russian]: "Фамилия",
+    [Language.Georgian]: "გვარი"
+  },
+  "common.email": {
+    [Language.Turkish]: "E-posta",
+    [Language.English]: "Email",
+    [Language.Russian]: "Эл. почта",
+    [Language.Georgian]: "ელ.ფოსტა"
+  },
+  "common.phoneNumber": {
+    [Language.Turkish]: "Telefon Numarası",
+    [Language.English]: "Phone Number",
+    [Language.Russian]: "Номер телефона",
+    [Language.Georgian]: "ტელეფონის ნომერი"
+  },
+  "common.message": {
+    [Language.Turkish]: "Mesaj",
+    [Language.English]: "Message",
+    [Language.Russian]: "Сообщение",
+    [Language.Georgian]: "შეტყობინება"
+  },
+  "common.submitForm": {
+    [Language.Turkish]: "Gönder",
+    [Language.English]: "Submit",
+    [Language.Russian]: "Отправить",
+    [Language.Georgian]: "გაგზავნა"
+  },
   // Contact Page
   "contact.pageTitle": {
     [Language.Turkish]: "İletişim",
