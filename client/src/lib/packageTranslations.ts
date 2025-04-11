@@ -5,6 +5,97 @@ type LanguageMap = Record<Language, string>;
 
 // Additional translations for package filters and features
 export const packageTranslations: Record<string, LanguageMap> = {
+  // Countries
+  "countries.all": {
+    [Language.Turkish]: "Tüm Ülkeler",
+    [Language.English]: "All Countries",
+    [Language.Russian]: "Все страны",
+    [Language.Georgian]: "ყველა ქვეყანა"
+  },
+  "countries.tr": {
+    [Language.Turkish]: "Türkiye",
+    [Language.English]: "Turkey",
+    [Language.Russian]: "Турция",
+    [Language.Georgian]: "თურქეთი"
+  },
+  "countries.ru": {
+    [Language.Turkish]: "Rusya",
+    [Language.English]: "Russia",
+    [Language.Russian]: "Россия",
+    [Language.Georgian]: "რუსეთი"
+  },
+  "countries.az": {
+    [Language.Turkish]: "Azerbaycan",
+    [Language.English]: "Azerbaijan",
+    [Language.Russian]: "Азербайджан",
+    [Language.Georgian]: "აზერბაიჯანი"
+  },
+  "countries.kz": {
+    [Language.Turkish]: "Kazakistan",
+    [Language.English]: "Kazakhstan",
+    [Language.Russian]: "Казахстан",
+    [Language.Georgian]: "ყაზახეთი"
+  },
+  "countries.ua": {
+    [Language.Turkish]: "Ukrayna",
+    [Language.English]: "Ukraine",
+    [Language.Russian]: "Украина",
+    [Language.Georgian]: "უკრაინა"
+  },
+  "countries.ir": {
+    [Language.Turkish]: "İran",
+    [Language.English]: "Iran",
+    [Language.Russian]: "Иран",
+    [Language.Georgian]: "ირანი"
+  },
+  "countries.sa": {
+    [Language.Turkish]: "Suudi Arabistan",
+    [Language.English]: "Saudi Arabia",
+    [Language.Russian]: "Саудовская Аравия",
+    [Language.Georgian]: "საუდის არაბეთი"
+  },
+  "countries.ae": {
+    [Language.Turkish]: "BAE",
+    [Language.English]: "UAE",
+    [Language.Russian]: "ОАЭ",
+    [Language.Georgian]: "არაბთა გაერთიანებული საამიროები"
+  },
+  "countries.am": {
+    [Language.Turkish]: "Ermenistan",
+    [Language.English]: "Armenia",
+    [Language.Russian]: "Армения",
+    [Language.Georgian]: "სომხეთი"
+  },
+  "countries.by": {
+    [Language.Turkish]: "Belarus",
+    [Language.English]: "Belarus",
+    [Language.Russian]: "Беларусь",
+    [Language.Georgian]: "ბელარუსი"
+  },
+  "countries.md": {
+    [Language.Turkish]: "Moldova",
+    [Language.English]: "Moldova",
+    [Language.Russian]: "Молдова",
+    [Language.Georgian]: "მოლდოვა"
+  },
+  "countries.gr": {
+    [Language.Turkish]: "Yunanistan",
+    [Language.English]: "Greece",
+    [Language.Russian]: "Греция",
+    [Language.Georgian]: "საბერძნეთი"
+  },
+  "countries.bg": {
+    [Language.Turkish]: "Bulgaristan",
+    [Language.English]: "Bulgaria",
+    [Language.Russian]: "Болгария",
+    [Language.Georgian]: "ბულგარეთი"
+  },
+  "countries.ro": {
+    [Language.Turkish]: "Romanya",
+    [Language.English]: "Romania",
+    [Language.Russian]: "Румыния",
+    [Language.Georgian]: "რუმინეთი"
+  },
   // Package Filters
   "packages.filters": {
     [Language.Turkish]: "Filtreler",
