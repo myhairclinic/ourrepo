@@ -109,7 +109,7 @@ function PackageCard({ package: pkg, getTitle, getDescription, addPrefix, t }: P
           </span>
           <span className="flex items-center gap-1">
             <Users className="h-4 w-4 text-primary/80" />
-            {t("packages.forPerson")}
+            {t("packages.home.forPerson")}
           </span>
         </div>
         
@@ -129,7 +129,7 @@ function PackageCard({ package: pkg, getTitle, getDescription, addPrefix, t }: P
                 variant="outline" 
                 className="w-full group-hover:bg-primary group-hover:text-white transition-colors duration-300 border-primary/30"
               >
-                {t("packages.details")}
+                {t("packages.home.details")}
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
@@ -274,13 +274,13 @@ export function PackageCards() {
           }`}
         >
           <Badge variant="outline" className="mb-4 px-5 py-1.5 text-sm font-medium rounded-full border-primary/30 bg-primary/5 shadow-sm">
-            {t("packages.tagline")}
+            {t("packages.home.tagline")}
           </Badge>
           <h2 className="text-5xl md:text-6xl font-bold text-center mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80 leading-tight">
-            {t("packages.title")}
+            {t("packages.home.title")}
           </h2>
           <p className="text-center text-foreground/70 max-w-2xl mx-auto text-lg font-light leading-relaxed">
-            {t("packages.subtitle")}
+            {t("packages.home.subtitle")}
           </p>
           
           <div className="flex justify-center gap-2 mt-6">
