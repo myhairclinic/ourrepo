@@ -43,6 +43,18 @@ export interface IStorage {
 
   // Blog operations
   getBlogPosts(): Promise<BlogPost[]>;
+  getPaginatedBlogPosts(params: {
+    page: number;
+    limit: number;
+    category?: string;
+    tag?: string;
+    search?: string;
+    sort?: string;
+  }): Promise<{
+    posts: BlogPost[];
+    totalPosts: number;
+    totalPages: number;
+  }>;
   getBlogPostById(id: number): Promise<BlogPost | undefined>;
   getBlogPostBySlug(slug: string): Promise<BlogPost | undefined>;
   createBlogPost(post: InsertBlogPost): Promise<BlogPost>;
@@ -344,6 +356,78 @@ export class MemStorage implements IStorage {
   // Blog operations
   async getBlogPosts(): Promise<BlogPost[]> {
     return Array.from(this.blogPosts.values()).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  }
+  
+  async getPaginatedBlogPosts(params: {
+    page: number;
+    limit: number;
+    category?: string;
+    tag?: string;
+    search?: string;
+    sort?: string;
+  }): Promise<{
+    posts: BlogPost[];
+    totalPosts: number;
+    totalPages: number;
+  }> {
+    const { page, limit, category, tag, search, sort } = params;
+    
+    // Temel verileri filtrele
+    let filtered = Array.from(this.blogPosts.values());
+    
+    // Kategori filtresi
+    if (category) {
+      filtered = filtered.filter(post => post.category === category);
+    }
+    
+    // Etiket filtresi
+    if (tag) {
+      filtered = filtered.filter(post => {
+        const tagArray = typeof post.tags === 'string' 
+          ? post.tags.split(',').map(t => t.trim()) 
+          : post.tags;
+        return Array.isArray(tagArray) && tagArray.some(t => t.toLowerCase() === tag.toLowerCase());
+      });
+    }
+    
+    // Arama filtresi
+    if (search) {
+      const searchLower = search.toLowerCase();
+      filtered = filtered.filter(post => {
+        const title = (post.titleTR + ' ' + post.titleEN + ' ' + post.titleRU + ' ' + post.titleKA).toLowerCase();
+        const summary = (post.summaryTR + ' ' + post.summaryEN + ' ' + post.summaryRU + ' ' + post.summaryKA).toLowerCase();
+        const content = (post.contentTR + ' ' + post.contentEN + ' ' + post.contentRU + ' ' + post.contentKA).toLowerCase();
+        
+        return title.includes(searchLower) || 
+               summary.includes(searchLower) || 
+               content.includes(searchLower) ||
+               post.author.toLowerCase().includes(searchLower);
+      });
+    }
+    
+    // Sıralama
+    if (sort === 'oldest') {
+      filtered.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+    } else if (sort === 'popular') {
+      filtered.sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0));
+    } else {
+      // Default: en yeni (newest)
+      filtered.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    }
+    
+    // Toplam sayfa sayısını hesapla
+    const totalPosts = filtered.length;
+    const totalPages = Math.ceil(totalPosts / limit);
+    
+    // Sayfalama
+    const startIndex = (page - 1) * limit;
+    const paginatedPosts = filtered.slice(startIndex, startIndex + limit);
+    
+    return {
+      posts: paginatedPosts,
+      totalPosts,
+      totalPages
+    };
   }
 
   async getBlogPostById(id: number): Promise<BlogPost | undefined> {
