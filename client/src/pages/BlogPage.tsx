@@ -3,34 +3,10 @@ import { Helmet } from "react-helmet";
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
 import { useQuery } from "@tanstack/react-query";
-import { Link, useLocation } from "wouter";
+import { useLocation } from "wouter";
 import { META } from "@/lib/constants";
 import PageHeader from "@/components/ui/PageHeader";
 import Container from "@/components/ui/container";
-import { 
-  Card, 
-  CardContent, 
-  CardFooter, 
-  CardHeader, 
-  CardTitle, 
-  CardDescription,
-  CardBackground 
-} from "@/components/ui/card";
-import { 
-  Tabs, 
-  TabsContent, 
-  TabsList, 
-  TabsTrigger 
-} from "@/components/ui/tabs";
-import { 
-  Select, 
-  SelectContent, 
-  SelectGroup, 
-  SelectItem, 
-  SelectLabel, 
-  SelectTrigger, 
-  SelectValue 
-} from "@/components/ui/select";
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -39,34 +15,19 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { 
-  Calendar, 
-  Clock, 
-  Search, 
-  Tag, 
-  Share2, 
-  Twitter, 
-  Facebook, 
-  Linkedin, 
-  Mail,
-  BookOpen,
-  Users,
-  ArrowRight,
   Filter,
   SortAsc,
   SortDesc,
-  ChevronLeft,
-  ChevronRight,
-  Heart,
-  MessageCircle,
-  TrendingUp,
-  Bookmark,
-  Eye
+  Search,
+  Users
 } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+// Import our new blog components
+import { BlogListSection } from "@/components/blog/BlogListSection";
+import { BlogSidebar } from "@/components/blog/BlogSidebar";
+import { FeaturedPostsSection } from "@/components/blog/FeaturedPostsSection";
 
 // Örnek blog etiketleri
 const POPULAR_TAGS = [
@@ -371,6 +332,16 @@ export default function BlogPage() {
       />
       
       <Container className="py-12">
+        {/* Öne çıkan blog yazıları */}
+        {!searchQuery && !selectedCategory && currentPage === 1 && (
+          <FeaturedPostsSection
+            featuredPosts={blogPosts.filter(post => post.viewCount > 50 || (post.tags && post.tags.includes('öne çıkan'))).slice(0, 1)}
+            getCategoryName={getCategoryName}
+            formatDate={formatDate}
+            isLoading={isLoading}
+          />
+        )}
+        
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Ana içerik bölümü */}
           <div className="lg:col-span-8">
@@ -441,377 +412,35 @@ export default function BlogPage() {
               </div>
             </div>
             
-            {/* Kategoriler (mobil için scroll) */}
-            <div className="mb-8 pb-2 overflow-x-auto">
-              <div className="flex gap-2 min-w-max">
-                <Button 
-                  variant={selectedCategory === null ? "default" : "outline"} 
-                  size="sm"
-                  onClick={() => setSelectedCategory(null)}
-                >
-                  {t('blog.allCategories')}
-                </Button>
-                {categories.map((category) => (
-                  <Button 
-                    key={category}
-                    variant={selectedCategory === category ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => setSelectedCategory(category)}
-                  >
-                    {getCategoryName(category)}
-                  </Button>
-                ))}
-              </div>
-            </div>
-            
-            {/* Tabs */}
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-8">
-              <TabsList className="mb-6">
-                <TabsTrigger value="latest" className="flex items-center gap-1.5">
-                  <Calendar className="h-4 w-4" />
-                  {t('blog.recentPosts')}
-                </TabsTrigger>
-                <TabsTrigger value="popular" className="flex items-center gap-1.5">
-                  <Users className="h-4 w-4" />
-                  {t('blog.popularPosts')}
-                </TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="latest" className="mt-0">
-                {/* Blog Posts Grid */}
-                {isLoading ? (
-                  <div className="flex justify-center items-center min-h-[400px]">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                  </div>
-                ) : blogPosts && blogPosts.length > 0 ? (
-                  <>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {blogPosts.map((post) => (
-                        <Card key={post.id} className="overflow-hidden h-full group hover:shadow-md transition-shadow duration-300">
-                          <Link href={addPrefix(`/blog/${post.slug}`)}>
-                            <div className="relative h-52 overflow-hidden">
-                              <img 
-                                src={post.imageUrl} 
-                                alt={post[`title${language.toUpperCase()}` as keyof BlogPost] as string} 
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                              />
-                              <Badge className="absolute top-3 right-3 bg-primary/80 backdrop-blur-sm hover:bg-primary">
-                                {getCategoryName(post.category)}
-                              </Badge>
-                            </div>
-                          </Link>
-                          
-                          <CardContent className="p-5">
-                            <div className="flex items-center text-xs text-muted-foreground gap-4 mb-3">
-                              <div className="flex items-center">
-                                <Calendar className="h-3 w-3 mr-1" />
-                                {formatDate(post.createdAt)}
-                              </div>
-                              <div className="flex items-center">
-                                <Clock className="h-3 w-3 mr-1" />
-                                {post.readingTime} {t('blog.minutes')}
-                              </div>
-                            </div>
-                            
-                            <Link href={addPrefix(`/blog/${post.slug}`)}>
-                              <h3 className="text-xl font-semibold mb-3 leading-tight group-hover:text-primary transition-colors">
-                                {post[`title${language.toUpperCase()}` as keyof BlogPost] as string}
-                              </h3>
-                            </Link>
-                            
-                            <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                              {post[`summary${language.toUpperCase()}` as keyof BlogPost] as string}
-                            </p>
-                          </CardContent>
-                          
-                          <CardFooter className="pt-0 px-5 pb-5 flex justify-between items-center">
-                            <div className="flex items-center gap-2">
-                              {post.authorAvatar && (
-                                <img 
-                                  src={post.authorAvatar} 
-                                  alt={post.author}
-                                  className="w-8 h-8 rounded-full" 
-                                />
-                              )}
-                              <span className="text-sm font-medium">{post.author}</span>
-                            </div>
-                            
-                            <Link href={addPrefix(`/blog/${post.slug}`)}>
-                              <Button variant="ghost" size="sm" className="group/button flex items-center gap-1 text-primary hover:text-primary">
-                                {t('common.readMore')}
-                                <ArrowRight className="h-3.5 w-3.5 group-hover/button:translate-x-1 transition-transform" />
-                              </Button>
-                            </Link>
-                          </CardFooter>
-                        </Card>
-                      ))}
-                    </div>
-                    
-                    {/* Pagination */}
-                    {totalPages > 1 && (
-                      <div className="flex justify-center items-center mt-10 gap-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          onClick={goToPrevPage}
-                          disabled={currentPage === 1}
-                          className="flex items-center px-2.5 h-8"
-                        >
-                          <ChevronLeft className="h-4 w-4" />
-                        </Button>
-                        
-                        {getPaginationArray().map((page, index) => (
-                          page === '...' ? (
-                            <span key={`ellipsis-${index}`} className="px-2">...</span>
-                          ) : (
-                            <Button
-                              key={`page-${page}`}
-                              variant={currentPage === page ? "default" : "outline"}
-                              size="sm"
-                              onClick={() => goToPage(page as number)}
-                              className="w-8 h-8 p-0"
-                            >
-                              {page}
-                            </Button>
-                          )
-                        ))}
-                        
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          onClick={goToNextPage}
-                          disabled={currentPage === totalPages}
-                          className="flex items-center px-2.5 h-8"
-                        >
-                          <ChevronRight className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <div className="text-center py-12 border rounded-lg bg-muted/20">
-                    <p className="text-muted-foreground">{t('blog.noPosts')}</p>
-                  </div>
-                )}
-              </TabsContent>
-              
-              <TabsContent value="popular" className="mt-0">
-                {/* Blog Posts Grid - aynı içerik, sadece sıralama farklı */}
-                {isLoading ? (
-                  <div className="flex justify-center items-center min-h-[400px]">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                  </div>
-                ) : blogPosts && blogPosts.length > 0 ? (
-                  <>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {blogPosts.map((post) => (
-                        <Card key={post.id} className="overflow-hidden h-full group hover:shadow-md transition-shadow duration-300">
-                          <Link href={addPrefix(`/blog/${post.slug}`)}>
-                            <div className="relative h-52 overflow-hidden">
-                              <img 
-                                src={post.imageUrl} 
-                                alt={post[`title${language.toUpperCase()}` as keyof BlogPost] as string} 
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                              />
-                              <Badge className="absolute top-3 right-3 bg-primary/80 backdrop-blur-sm hover:bg-primary">
-                                {getCategoryName(post.category)}
-                              </Badge>
-                            </div>
-                          </Link>
-                          
-                          <CardContent className="p-5">
-                            <div className="flex items-center text-xs text-muted-foreground gap-4 mb-3">
-                              <div className="flex items-center">
-                                <Calendar className="h-3 w-3 mr-1" />
-                                {formatDate(post.createdAt)}
-                              </div>
-                              <div className="flex items-center">
-                                <Clock className="h-3 w-3 mr-1" />
-                                {post.readingTime} {t('blog.minutes')}
-                              </div>
-                            </div>
-                            
-                            <Link href={addPrefix(`/blog/${post.slug}`)}>
-                              <h3 className="text-xl font-semibold mb-3 leading-tight group-hover:text-primary transition-colors">
-                                {post[`title${language.toUpperCase()}` as keyof BlogPost] as string}
-                              </h3>
-                            </Link>
-                            
-                            <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                              {post[`summary${language.toUpperCase()}` as keyof BlogPost] as string}
-                            </p>
-                          </CardContent>
-                          
-                          <CardFooter className="pt-0 px-5 pb-5 flex justify-between items-center">
-                            <div className="flex items-center gap-2">
-                              {post.authorAvatar && (
-                                <img 
-                                  src={post.authorAvatar} 
-                                  alt={post.author}
-                                  className="w-8 h-8 rounded-full" 
-                                />
-                              )}
-                              <span className="text-sm font-medium">{post.author}</span>
-                            </div>
-                            
-                            <Link href={addPrefix(`/blog/${post.slug}`)}>
-                              <Button variant="ghost" size="sm" className="group/button flex items-center gap-1 text-primary hover:text-primary">
-                                {t('common.readMore')}
-                                <ArrowRight className="h-3.5 w-3.5 group-hover/button:translate-x-1 transition-transform" />
-                              </Button>
-                            </Link>
-                          </CardFooter>
-                        </Card>
-                      ))}
-                    </div>
-                    
-                    {/* Pagination */}
-                    {totalPages > 1 && (
-                      <div className="flex justify-center items-center mt-10 gap-2">
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          onClick={goToPrevPage}
-                          disabled={currentPage === 1}
-                          className="flex items-center px-2.5 h-8"
-                        >
-                          <ChevronLeft className="h-4 w-4" />
-                        </Button>
-                        
-                        {getPaginationArray().map((page, index) => (
-                          page === '...' ? (
-                            <span key={`ellipsis-${index}`} className="px-2">...</span>
-                          ) : (
-                            <Button
-                              key={`page-${page}`}
-                              variant={currentPage === page ? "default" : "outline"}
-                              size="sm"
-                              onClick={() => goToPage(page as number)}
-                              className="w-8 h-8 p-0"
-                            >
-                              {page}
-                            </Button>
-                          )
-                        ))}
-                        
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
-                          onClick={goToNextPage}
-                          disabled={currentPage === totalPages}
-                          className="flex items-center px-2.5 h-8"
-                        >
-                          <ChevronRight className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <div className="text-center py-12 border rounded-lg bg-muted/20">
-                    <p className="text-muted-foreground">{t('blog.noPosts')}</p>
-                  </div>
-                )}
-              </TabsContent>
-            </Tabs>
+            {/* Blog listesi */}
+            <BlogListSection 
+              blogPosts={blogPosts}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              goToNextPage={goToNextPage}
+              goToPrevPage={goToPrevPage}
+              goToPage={goToPage}
+              getPaginationArray={getPaginationArray}
+              formatDate={formatDate}
+              getCategoryName={getCategoryName}
+              isLoading={isLoading}
+            />
           </div>
           
-          {/* Sidebar */}
-          <div className="lg:col-span-4">
-            {/* Recent Posts */}
-            <div className="mb-8">
-              <h3 className="text-lg font-semibold mb-4">{t('blog.recentPosts')}</h3>
-              
-              <div className="space-y-4">
-                {blogPosts.slice(0, 5).map((post) => (
-                  <div key={post.id} className="flex items-start gap-3">
-                    <Link href={addPrefix(`/blog/${post.slug}`)}>
-                      <div className="w-16 h-16 rounded-md overflow-hidden shrink-0">
-                        <img 
-                          src={post.imageUrl} 
-                          alt={post[`title${language.toUpperCase()}` as keyof BlogPost] as string}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    </Link>
-                    
-                    <div>
-                      <Link href={addPrefix(`/blog/${post.slug}`)}>
-                        <h4 className="text-sm font-medium leading-tight line-clamp-2 hover:text-primary transition-colors">
-                          {post[`title${language.toUpperCase()}` as keyof BlogPost] as string}
-                        </h4>
-                      </Link>
-                      <div className="text-xs text-muted-foreground mt-1 flex items-center">
-                        <Calendar className="h-3 w-3 mr-1 inline" />
-                        {formatDate(post.createdAt)}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            {/* Categories Cloud */}
-            <div className="mb-8">
-              <h3 className="text-lg font-semibold mb-4">{t('blog.categoriesTitle')}</h3>
-              
-              <div className="flex flex-wrap gap-2">
-                {categories.map((category) => (
-                  <div
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`flex items-center gap-1 px-3 py-1.5 text-sm cursor-pointer rounded-full border transition-colors ${
-                      selectedCategory === category 
-                        ? "bg-primary text-primary-foreground border-primary" 
-                        : "hover:bg-muted hover:border-muted-foreground/20"
-                    }`}
-                  >
-                    {getCategoryName(category)}
-                  </div>
-                ))}
-              </div>
-            </div>
-            
-            {/* Tags Cloud */}
-            <div className="mb-8">
-              <h3 className="text-lg font-semibold mb-4">{t('blog.tagsTitle')}</h3>
-              
-              <div className="flex flex-wrap gap-2">
-                {POPULAR_TAGS.map((tag) => (
-                  <span 
-                    key={tag}
-                    className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full border hover:bg-muted transition-colors cursor-pointer"
-                  >
-                    <Tag className="h-3 w-3" />
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-            
-            {/* Featured Authors */}
-            <div>
-              <h3 className="text-lg font-semibold mb-4">{t('blog.featuredAuthors')}</h3>
-              
-              <div className="space-y-4">
-                {FEATURED_AUTHORS.map((author) => (
-                  <Card key={author.id} className="overflow-hidden">
-                    <CardContent className="p-4 flex items-center gap-4">
-                      <img 
-                        src={author.avatar} 
-                        alt={author.name}
-                        className="w-16 h-16 rounded-full border-2 border-primary/20" 
-                      />
-                      
-                      <div>
-                        <h4 className="font-semibold text-base">{author.name}</h4>
-                        <p className="text-xs text-primary">{author.title}</p>
-                        <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{author.bio}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
+          {/* Yan panel */}
+          <div className="lg:col-span-4 space-y-8">
+            <BlogSidebar 
+              popularTags={POPULAR_TAGS}
+              featuredAuthors={FEATURED_AUTHORS}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              allCategories={categories}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              getCategoryName={getCategoryName}
+            />
           </div>
         </div>
       </Container>
