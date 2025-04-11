@@ -127,7 +127,26 @@ export default function PackageDetailPage() {
   const activities = getContentByLang(packageData, "activities", language);
 
   const highlights = parseJsonString(packageData.highlights);
-  const galleryImages = parseJsonString(packageData.galleryImages);
+  // Base gallery images from package data
+  let galleryImages = parseJsonString(packageData.galleryImages, []);
+  
+  // Add Tbilisi landmark images to every package's gallery
+  const tbilisiLandmarkImages = [
+    '/images/tbilisi-landmarks/colorful-houses.jpg',
+    '/images/tbilisi-landmarks/liberty-monument.jpg',
+    '/images/tbilisi-landmarks/night-panorama.webp',
+    '/images/tbilisi-landmarks/city-castle-night.webp',
+    '/images/tbilisi-landmarks/souvenir-shop.webp',
+    '/images/tbilisi-landmarks/old-bath-district.jpg',
+    '/images/tbilisi-landmarks/trinity-cathedral.jpg',
+    '/images/tbilisi-landmarks/ananuri-castle.webp',
+    '/images/tbilisi-landmarks/narikala-fortress.jpg',
+    '/images/tbilisi-landmarks/rustaveli-avenue.jpg',
+    '/images/tbilisi-landmarks/peace-bridge.webp',
+  ];
+  
+  // Combine original gallery with Tbilisi landmarks
+  galleryImages = [...galleryImages, ...tbilisiLandmarkImages];
 
   return (
     <>
@@ -422,11 +441,11 @@ export default function PackageDetailPage() {
                     {galleryImages.map((img: string, index: number) => (
                       <div 
                         key={index}
-                        className="group relative overflow-hidden rounded-xl aspect-square hover:shadow-md transition-all duration-300 cursor-pointer"
+                        className="group relative overflow-hidden rounded-xl aspect-video hover:shadow-md transition-all duration-300 cursor-pointer"
                       >
                         <img
                           src={img}
-                          alt={`${title} - ${index + 1}`}
+                          alt={`${title} - ${getTranslation("packages.tbilisiView", language)} ${index + 1}`}
                           className="object-cover h-full w-full group-hover:scale-105 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
@@ -438,38 +457,7 @@ export default function PackageDetailPage() {
                       </div>
                     ))}
                     
-                    {/* Georgia and Tbilisi images */}
-                    <div 
-                      className="group relative overflow-hidden rounded-xl aspect-square hover:shadow-md transition-all duration-300 cursor-pointer"
-                    >
-                      <img
-                        src="/images/tbilisi-1.jpg"
-                        alt="Tbilisi Old Town"
-                        className="object-cover h-full w-full group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                        <div className="text-white">
-                          <span className="text-sm font-medium">{getTranslation("packages.tbilisiOldTown", language)}</span>
-                          <p className="text-xs text-white/80">{getTranslation("packages.clickToExpand", language)}</p>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div 
-                      className="group relative overflow-hidden rounded-xl aspect-square hover:shadow-md transition-all duration-300 cursor-pointer"
-                    >
-                      <img
-                        src="/images/clinic-exterior.jpg"
-                        alt="MyHair Clinic Exterior"
-                        className="object-cover h-full w-full group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                        <div className="text-white">
-                          <span className="text-sm font-medium">{getTranslation("packages.clinicExterior", language)}</span>
-                          <p className="text-xs text-white/80">{getTranslation("packages.clickToExpand", language)}</p>
-                        </div>
-                      </div>
-                    </div>
+                    {/* Removed redundant images that are now included in the tbilisiLandmarkImages array */}
                   </div>
                 ) : (
                   <div className="text-center py-12 px-4 border border-dashed border-border rounded-xl">
