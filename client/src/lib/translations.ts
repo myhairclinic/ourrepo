@@ -44,6 +44,12 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Georgian]: "გაგზავნა"
   },
   // Contact Page
+  "contact.whatsappMessage": {
+    [Language.Turkish]: "Web sitesinden geldim",
+    [Language.English]: "I'm coming from the website",
+    [Language.Russian]: "Я пришел с веб-сайта",
+    [Language.Georgian]: "მე მოვდივარ ვებსაიტიდან"
+  },
   "contact.pageTitle": {
     [Language.Turkish]: "İletişim",
     [Language.English]: "Contact",

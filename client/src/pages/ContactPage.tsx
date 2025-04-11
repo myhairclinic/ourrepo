@@ -159,7 +159,7 @@ export default function ContactPage() {
                   {CONTACT.EMAIL}
                 </a>
                 <a 
-                  href={`https://wa.me/${CONTACT.WHATSAPP.replace(/\D/g, '')}`}
+                  href={`https://wa.me/${CONTACT.WHATSAPP.replace(/\D/g, '')}?text=${encodeURIComponent(t('contact.whatsappMessage'))}`}
                   className="flex items-center gap-2 bg-[#25D366] hover:bg-[#25D366]/90 px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -293,20 +293,9 @@ export default function ContactPage() {
                         <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
                       </svg>
                     </a>
+                    {/* WhatsApp button removed to avoid duplication as it exists below */}
                     <a 
-                      href={SOCIAL.WHATSAPP}
-                      className="h-10 w-10 flex items-center justify-center rounded-full bg-[#25D366] text-white hover:opacity-90 transition-opacity"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="WhatsApp"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
-                        <path d="M12.04 21.805h-.004a9.928 9.928 0 01-5.058-1.386l-.363-.214-3.763.986 1.005-3.665-.238-.375a9.861 9.861 0 01-1.514-5.285c.002-5.461 4.448-9.907 9.908-9.907 2.647 0 5.134 1.033 7.003 2.907a9.897 9.897 0 012.897 7.012c-.003 5.456-4.444 9.892-9.891 9.892zm8.434-18.297A11.815 11.815 0 0012.042 0c-6.545 0-11.878 5.328-11.882 11.875 0 2.09.547 4.127 1.589 5.932L.057 24l6.304-1.652a11.882 11.882 0 005.684 1.448h.005c6.542 0 11.88-5.328 11.882-11.875a11.821 11.821 0 00-3.489-8.413z" />
-                      </svg>
-                    </a>
-                    <a 
-                      href={`https://wa.me/${CONTACT.WHATSAPP.replace(/\D/g, '')}`}
+                      href={`https://wa.me/${CONTACT.WHATSAPP.replace(/\D/g, '')}?text=${encodeURIComponent(t('contact.whatsappMessage'))}`}
                       className="h-10 w-10 flex items-center justify-center rounded-full bg-[#25D366] text-white hover:opacity-90 transition-opacity"
                       target="_blank"
                       rel="noopener noreferrer"
