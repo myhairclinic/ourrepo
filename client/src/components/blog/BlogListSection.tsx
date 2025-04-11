@@ -1,13 +1,12 @@
-import { useState } from "react";
-import { Link } from "wouter";
 import { useTranslation } from "@/hooks/use-translation";
-import { useLanguage } from "@/hooks/use-language";
+import { useState } from "react";
+import { BlogPostCard } from "./BlogPostCard";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { BlogPostCard } from "./BlogPostCard";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
+// Blog Post tipi
 interface BlogPost {
   id: number;
   slug: string;
@@ -33,12 +32,12 @@ interface BlogPost {
   createdAt: string;
   updatedAt: string;
   viewCount: number;
-};
+}
 
 interface BlogListSectionProps {
   blogPosts: BlogPost[];
   activeTab: string;
-  setActiveTab: (value: string) => void;
+  setActiveTab: (tab: string) => void;
   currentPage: number;
   totalPages: number;
   goToNextPage: () => void;
@@ -65,102 +64,124 @@ export function BlogListSection({
   isLoading
 }: BlogListSectionProps) {
   const { t } = useTranslation();
-  const { addPrefix } = useLanguage();
   
-  // Tab filtreleme
-  const filteredPosts = blogPosts;
+  // Blog gönderisi yüklenirken görünecek iskelet yükleyici
+  const renderSkeletons = () => {
+    return Array(4).fill(0).map((_, index) => (
+      <div key={index} className="space-y-3">
+        <Skeleton className="h-[250px] w-full rounded-xl" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-1/4" />
+          <Skeleton className="h-6 w-3/4" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-full" />
+          <div className="flex justify-between items-center pt-2">
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-8 w-8 rounded-full" />
+              <div>
+                <Skeleton className="h-3 w-20" />
+                <Skeleton className="h-2 w-16 mt-1" />
+              </div>
+            </div>
+            <Skeleton className="h-8 w-24" />
+          </div>
+        </div>
+      </div>
+    ));
+  };
+  
+  // Blog yazısı yoksa gösterilecek boş durum
+  const renderEmptyState = () => (
+    <div className="text-center py-12">
+      <h3 className="text-lg font-medium">{t('blog.noPosts')}</h3>
+      <p className="text-muted-foreground mt-2">
+        {t('blog.noPosts')}
+      </p>
+    </div>
+  );
   
   return (
-    <div className="space-y-6">
-      <Tabs 
-        defaultValue={activeTab} 
-        value={activeTab} 
+    <div className="space-y-8">
+      {/* Sekmeler - En son, En popüler */}
+      <Tabs
+        value={activeTab}
         onValueChange={setActiveTab}
         className="w-full"
       >
-        <TabsList className="mb-6">
-          <TabsTrigger value="latest" className="flex-1">{t('blog.recentPosts')}</TabsTrigger>
-          <TabsTrigger value="popular" className="flex-1">{t('blog.mostPopular')}</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 max-w-[400px]">
+          <TabsTrigger value="latest">{t('blog.newest')}</TabsTrigger>
+          <TabsTrigger value="popular">{t('blog.mostPopular')}</TabsTrigger>
         </TabsList>
       </Tabs>
       
-      {isLoading ? (
-        // Loading state
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {[1, 2, 3, 4].map(index => (
-            <div key={index} className="flex flex-col space-y-3">
-              <Skeleton className="h-48 w-full rounded-xl" />
-              <Skeleton className="h-6 w-3/4" />
-              <Skeleton className="h-4 w-1/2" />
-              <Skeleton className="h-24 w-full" />
-              <div className="flex justify-between items-center">
-                <Skeleton className="h-4 w-1/4" />
-                <Skeleton className="h-4 w-1/4" />
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : filteredPosts.length > 0 ? (
-        <>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredPosts.map((post) => (
-              <BlogPostCard
-                key={post.id}
-                post={post}
-                formatDate={formatDate}
-                getCategoryName={getCategoryName}
-              />
-            ))}
-          </div>
+      {/* Blog yazıları listesi */}
+      <div className="grid grid-cols-1 gap-8">
+        {isLoading ? (
+          renderSkeletons()
+        ) : blogPosts.length > 0 ? (
+          blogPosts.map((post) => (
+            <BlogPostCard
+              key={post.id}
+              post={post}
+              formatDate={formatDate}
+              getCategoryName={getCategoryName}
+            />
+          ))
+        ) : (
+          renderEmptyState()
+        )}
+      </div>
+      
+      {/* Sayfalama kontrolleri */}
+      {totalPages > 1 && !isLoading && (
+        <div className="flex items-center justify-center gap-1 pt-8">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={goToPrevPage}
+            disabled={currentPage === 1}
+            aria-label="Previous page"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
           
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex justify-center mt-8">
-              <div className="flex items-center gap-1">
+          {getPaginationArray().map((page, i) => {
+            if (typeof page === 'string') {
+              return (
                 <Button
-                  variant="outline"
+                  key={`ellipsis-${i}`}
+                  variant="ghost"
                   size="icon"
-                  onClick={goToPrevPage}
-                  disabled={currentPage === 1}
-                  className="h-8 w-8"
+                  disabled
                 >
-                  <ChevronLeft className="h-4 w-4" />
+                  ...
                 </Button>
-                
-                {getPaginationArray().map((page, index) => (
-                  typeof page === 'number' ? (
-                    <Button
-                      key={index}
-                      variant={currentPage === page ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => goToPage(page)}
-                      className="h-8 w-8 p-0"
-                    >
-                      {page}
-                    </Button>
-                  ) : (
-                    <span key={index} className="h-8 w-8 flex items-center justify-center">
-                      {page}
-                    </span>
-                  )
-                ))}
-                
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={goToNextPage}
-                  disabled={currentPage === totalPages}
-                  className="h-8 w-8"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          )}
-        </>
-      ) : (
-        <div className="text-center py-12 border rounded-lg bg-muted/20">
-          <p className="text-muted-foreground">{t('blog.noPosts')}</p>
+              );
+            }
+            
+            return (
+              <Button
+                key={page}
+                variant={currentPage === page ? "default" : "outline"}
+                size="icon"
+                onClick={() => goToPage(page)}
+                aria-label={`Page ${page}`}
+                aria-current={currentPage === page ? "page" : undefined}
+              >
+                {page}
+              </Button>
+            );
+          })}
+          
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={goToNextPage}
+            disabled={currentPage === totalPages}
+            aria-label="Next page"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
         </div>
       )}
     </div>

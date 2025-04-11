@@ -3,7 +3,6 @@ import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
 import { 
   Card, 
-  CardBackground,
   CardContent, 
   CardFooter, 
   CardHeader, 
@@ -11,7 +10,8 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Clock, Calendar, Eye } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Clock, Calendar, Eye, ArrowRight } from "lucide-react";
 
 interface BlogPost {
   id: number;
@@ -63,57 +63,83 @@ export function BlogPostCard({ post, formatDate, getCategoryName }: BlogPostCard
       .toUpperCase();
   };
   
+  const blogUrl = addPrefix(`/blog/${post.slug}`);
+  
   return (
-    <Card className="group overflow-hidden rounded-xl transition-all duration-200 hover:shadow-md h-full flex flex-col">
-      <div className="absolute inset-0 z-20">
-        <Link href={addPrefix(`/blog/${post.slug}`)}>
-          <span className="sr-only">{title}</span>
-          <span className="absolute inset-0"></span>
-        </Link>
-      </div>
-      
-      <div className="relative h-48">
-        <CardBackground src={post.imageUrl || '/images/blog/default-blog.jpg'} />
-        <CardHeader className="relative z-10 text-white">
-          <div className="flex justify-between items-start">
-            <Badge 
-              variant="secondary" 
-              className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white"
-            >
+    <Card className="group overflow-hidden transition-all duration-200 hover:shadow-md">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-0">
+        <div className="relative md:col-span-4 aspect-[16/9] md:aspect-auto">
+          <div className="absolute inset-0 z-20">
+            <Link href={blogUrl}>
+              <span className="sr-only">{title}</span>
+              <span className="absolute inset-0"></span>
+            </Link>
+          </div>
+          <img 
+            src={post.imageUrl || '/images/blog/default-blog.jpg'} 
+            alt={title}
+            className="object-cover w-full h-full" 
+          />
+          <div className="absolute top-4 left-4 z-10">
+            <Badge variant="secondary" className="bg-white/80 hover:bg-white/90 text-primary">
               {getCategoryName(post.category)}
             </Badge>
           </div>
-          <CardTitle className="text-white drop-shadow-md mt-auto">{title}</CardTitle>
-        </CardHeader>
-      </div>
-      
-      <CardContent className="flex-grow pt-4">
-        <p className="text-muted-foreground line-clamp-3 text-sm">{summary}</p>
-      </CardContent>
-      
-      <CardFooter className="flex justify-between items-center border-t pt-4 text-xs text-muted-foreground">
-        <div className="flex items-center gap-2">
-          <div className="flex items-center">
-            <Calendar className="h-3 w-3 mr-1" />
-            <span>{formatDate(post.createdAt)}</span>
-          </div>
-          
-          <div className="flex items-center ml-2">
-            <Clock className="h-3 w-3 mr-1" />
-            <span>{post.readingTime} {t('blog.minutes')}</span>
-          </div>
         </div>
         
-        <div className="flex items-center">
-          <Eye className="h-3 w-3 mr-1" />
-          <span>{post.viewCount} {t('blog.views')}</span>
+        <div className="md:col-span-8 p-6">
+          <CardHeader className="p-0 pb-4">
+            <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
+              <span className="flex items-center">
+                <Calendar className="h-3 w-3 mr-1" />
+                {formatDate(post.createdAt)}
+              </span>
+              <span className="flex items-center">
+                <Clock className="h-3 w-3 mr-1" />
+                {post.readingTime} {t('blog.minutes')}
+              </span>
+              <span className="flex items-center">
+                <Eye className="h-3 w-3 mr-1" />
+                {post.viewCount} {t('blog.views')}
+              </span>
+            </div>
+            <CardTitle className="text-xl">
+              <Link href={blogUrl}>
+                <span className="hover:text-primary transition-colors">{title}</span>
+              </Link>
+            </CardTitle>
+          </CardHeader>
+          
+          <CardContent className="p-0 pb-4">
+            <p className="text-muted-foreground line-clamp-3">{summary}</p>
+          </CardContent>
+          
+          <CardFooter className="p-0 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Avatar className="h-8 w-8">
+                {post.authorAvatar ? (
+                  <AvatarImage src={post.authorAvatar} alt={post.author} />
+                ) : null}
+                <AvatarFallback>{getInitials(post.author)}</AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="text-sm font-medium leading-none">{post.author}</p>
+                <p className="text-xs text-muted-foreground">{post.authorTitle}</p>
+              </div>
+            </div>
+            
+            <Link href={blogUrl}>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="gap-1 text-primary group-hover:bg-primary/5"
+              >
+                {t('common.readMore')}
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+          </CardFooter>
         </div>
-      </CardFooter>
-      
-      <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-30">
-        <span className="text-xs bg-primary text-primary-foreground px-2 py-1 rounded-md">
-          {t('common.readMore')} →
-        </span>
       </div>
     </Card>
   );

@@ -2,6 +2,7 @@ import { useTranslation } from "@/hooks/use-translation";
 import { FeaturedPostCard } from "./FeaturedPostCard";
 import { Skeleton } from "@/components/ui/skeleton";
 
+// Blog Post tipi
 interface BlogPost {
   id: number;
   slug: string;
@@ -31,37 +32,38 @@ interface BlogPost {
 
 interface FeaturedPostsSectionProps {
   featuredPosts: BlogPost[];
-  getCategoryName: (category: string) => string;
   formatDate: (date: string) => string;
+  getCategoryName: (category: string) => string;
   isLoading: boolean;
 }
 
 export function FeaturedPostsSection({
   featuredPosts,
-  getCategoryName,
   formatDate,
+  getCategoryName,
   isLoading
 }: FeaturedPostsSectionProps) {
   const { t } = useTranslation();
   
+  // Blog gönderisi yüklenirken görünecek iskelet yükleyici
+  const renderSkeletons = () => (
+    <div className="space-y-3">
+      <Skeleton className="h-8 w-1/4" />
+      <Skeleton className="h-[450px] w-full rounded-xl" />
+    </div>
+  );
+  
+  // Öne çıkan yazı yoksa hiçbir şey gösterme
+  if (featuredPosts.length === 0 && !isLoading) return null;
+  
   return (
     <section className="mb-12">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold tracking-tight">{t('blog.featuredPosts')}</h2>
-      </div>
-      
+      <h2 className="text-2xl font-bold mb-6">{t('blog.featuredPosts')}</h2>
       {isLoading ? (
-        <div className="grid grid-cols-1 gap-6">
-          <div className="flex flex-col space-y-3">
-            <Skeleton className="h-96 w-full rounded-xl" />
-            <Skeleton className="h-8 w-1/2" />
-            <Skeleton className="h-4 w-1/3" />
-            <Skeleton className="h-24 w-full" />
-          </div>
-        </div>
-      ) : featuredPosts.length > 0 ? (
-        <div className="grid grid-cols-1 gap-6">
-          {featuredPosts.map(post => (
+        renderSkeletons()
+      ) : (
+        <div className="space-y-8">
+          {featuredPosts.map((post) => (
             <FeaturedPostCard
               key={post.id}
               post={post}
@@ -70,7 +72,7 @@ export function FeaturedPostsSection({
             />
           ))}
         </div>
-      ) : null}
+      )}
     </section>
   );
 }
