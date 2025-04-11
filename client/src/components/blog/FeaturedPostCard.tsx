@@ -100,7 +100,7 @@ export function FeaturedPostCard({ post, formatDate, getCategoryName }: Featured
               {getCategoryName(post.category)}
             </Badge>
             
-            {post.tags.slice(0, 3).map((tag) => (
+            {post.tags && Array.isArray(post.tags) && post.tags.length > 0 && post.tags.slice(0, 3).map((tag) => (
               <Badge 
                 key={tag} 
                 variant="outline" 

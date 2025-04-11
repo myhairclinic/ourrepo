@@ -135,7 +135,7 @@ export function BlogSidebar({
         </CardHeader>
         <CardContent className="pt-4">
           <div className="flex flex-wrap gap-2">
-            {popularTags.map((tag, index) => (
+            {popularTags && Array.isArray(popularTags) && popularTags.length > 0 && popularTags.map((tag, index) => (
               <Badge
                 key={tag}
                 variant={index % 3 === 0 ? "default" : "secondary"}

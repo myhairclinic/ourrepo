@@ -113,13 +113,15 @@ export function BlogPostCard({ post, formatDate, getCategoryName }: BlogPostCard
           <CardContent className="p-0 pb-5">
             <p className="text-muted-foreground line-clamp-3 text-sm leading-relaxed">{summary}</p>
             
-            <div className="mt-3 flex flex-wrap gap-2">
-              {post.tags.slice(0, 2).map((tag) => (
-                <Badge key={tag} variant="outline" className="text-xs bg-background">
-                  {tag}
-                </Badge>
-              ))}
-            </div>
+            {post.tags && Array.isArray(post.tags) && post.tags.length > 0 && (
+              <div className="mt-3 flex flex-wrap gap-2">
+                {post.tags.slice(0, 2).map((tag) => (
+                  <Badge key={tag} variant="outline" className="text-xs bg-background">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            )}
           </CardContent>
           
           <CardFooter className="p-0 flex items-center justify-between">
