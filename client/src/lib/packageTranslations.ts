@@ -24,6 +24,12 @@ export const packageTranslations: Record<string, LanguageMap> = {
     [Language.Russian]: "Пакеты по странам",
     [Language.Georgian]: "პაკეტები ქვეყნების მიხედვით"
   },
+  "packages.packageCount": {
+    [Language.Turkish]: "paket",
+    [Language.English]: "packages",
+    [Language.Russian]: "пакеты",
+    [Language.Georgian]: "პაკეტები"
+  },
   "packages.packageFeatures": {
     [Language.Turkish]: "Paket Özellikleri",
     [Language.English]: "Package Features",
