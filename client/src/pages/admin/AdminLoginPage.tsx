@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAdmin } from "@/hooks/use-admin";
+import { useAdmin } from "../../hooks/use-admin";
 import { useLocation } from "wouter";
 
 export default function AdminLoginPage() {
