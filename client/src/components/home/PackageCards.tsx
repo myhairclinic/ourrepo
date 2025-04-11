@@ -19,6 +19,14 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
+// Ülke görsellerini doğrudan import edelim
+import turkeyImage from "@assets/kız-kulesi.webp";
+import russiaImage from "@assets/U-kremlin-sarayi-rusya-sehir-manzarasi-dunyaca-unlu-sehirler-kanvas-tablo1455893402-800.jpg";
+import azerbaijanImage from "@assets/azerbaycan-giris-Jy5Z_cover.jpg";
+import kazakhstanImage from "@assets/kazakistanin-ruhu-bu-topr-700.jpg";
+import iranImage from "@assets/iran-resimleri.jpg";
+import ukraineImage from "@assets/st-andrew-s-church.jpg";
+
 interface Package {
   id: number;
   slug: string;
@@ -93,22 +101,22 @@ function getCountryName(countryCode: string, t: (key: string) => string): string
 }
 
 function getCountryImage(countryCode: string): string {
-  // Kullanıcı tarafından yüklenen local görseller
+  // İmport edilen görsellere referans ver
   switch (countryCode) {
     case 'TR':
-      return '/images/countries/turkey.webp';
+      return turkeyImage;
     case 'RU':
-      return '/images/countries/russia.jpg';
+      return russiaImage;
     case 'AZ':
-      return '/images/countries/azerbaijan.jpg';
+      return azerbaijanImage;
     case 'KZ':
-      return '/images/countries/kazakhstan.jpg';
+      return kazakhstanImage;
     case 'IR':
-      return '/images/countries/iran.jpg';
+      return iranImage;
+    case 'UA': // Ukraine
+      return ukraineImage;
     case 'GE': // Georgia
       return '/images/countries/georgia.jpg';
-    case 'UA': // Ukraine
-      return '/images/countries/ukraine.jpg';
     default:
       return '/images/packages/default-package.jpg';
   }
