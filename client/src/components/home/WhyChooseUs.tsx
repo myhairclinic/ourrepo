@@ -13,9 +13,12 @@ interface FeatureCardProps {
 
 function FeatureCard({ icon, title, description, index }: FeatureCardProps) {
   return (
-    <div className="group flex flex-col items-center text-center transition-all hover:translate-y-[-5px]">
+    <div className="group relative overflow-hidden rounded-xl border border-gray-100 bg-white p-8 shadow-sm transition-all duration-300 hover:shadow-md hover:translate-y-[-5px] hover:border-primary/20">
+      <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-gradient-to-br opacity-10 
+        from-primary to-blue-400 group-hover:opacity-20 transition-opacity"></div>
+      
       <div className={cn(
-        "mb-5 relative flex items-center justify-center rounded-full w-16 h-16 bg-gradient-to-br transition-all duration-300",
+        "mb-5 relative flex items-center justify-center rounded-full w-20 h-20 bg-gradient-to-br transition-all duration-500",
         index % 3 === 0 ? "from-blue-400 to-blue-600 group-hover:from-blue-500 group-hover:to-blue-700" :
         index % 3 === 1 ? "from-primary/80 to-primary group-hover:from-primary/90 group-hover:to-primary" :
         "from-cyan-400 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-600"
@@ -25,8 +28,12 @@ function FeatureCard({ icon, title, description, index }: FeatureCardProps) {
         </div>
         <div className="absolute inset-0 rounded-full bg-white/20 blur-sm"></div>
       </div>
-      <h3 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">{title}</h3>
-      <p className="text-gray-600 text-sm max-w-xs mx-auto">{description}</p>
+      
+      <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">{title}</h3>
+      <p className="text-gray-600 text-sm leading-relaxed">{description}</p>
+      
+      <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r 
+        from-transparent via-primary/0 to-transparent group-hover:via-primary/30 transition-all duration-500"></div>
     </div>
   );
 }
@@ -37,39 +44,39 @@ export default function WhyChooseUs() {
   
   const features = [
     {
-      icon: <Award className="h-6 w-6" />,
+      icon: <Award className="h-7 w-7" />,
       title: t("home.whyChooseUs.experience.title"),
       description: t("home.whyChooseUs.experience.description"),
     },
     {
-      icon: <ThumbsUp className="h-6 w-6" />,
+      icon: <ThumbsUp className="h-7 w-7" />,
       title: t("home.whyChooseUs.results.title"),
       description: t("home.whyChooseUs.results.description"),
     },
     {
-      icon: <BadgeCheck className="h-6 w-6" />,
+      icon: <BadgeCheck className="h-7 w-7" />,
       title: t("home.whyChooseUs.technology.title"),
       description: t("home.whyChooseUs.technology.description"),
     },
     {
-      icon: <Leaf className="h-6 w-6" />,
+      icon: <Leaf className="h-7 w-7" />,
       title: t("home.whyChooseUs.natural.title"),
       description: t("home.whyChooseUs.natural.description"),
     },
     {
-      icon: <Clock className="h-6 w-6" />,
+      icon: <Clock className="h-7 w-7" />,
       title: t("home.whyChooseUs.aftercare.title"),
       description: t("home.whyChooseUs.aftercare.description"),
     },
     {
-      icon: <Heart className="h-6 w-6" />,
+      icon: <Heart className="h-7 w-7" />,
       title: t("home.whyChooseUs.satisfaction.title"),
       description: t("home.whyChooseUs.satisfaction.description"),
     },
   ];
 
   return (
-    <section className="relative py-16 overflow-hidden">
+    <section className="relative py-20 overflow-hidden bg-gray-50/50">
       {/* Arka plan dekoratif elementleri */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-white to-transparent"></div>
@@ -86,8 +93,8 @@ export default function WhyChooseUs() {
           centered
         />
         
-        <div className="mt-14 max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 gap-y-16">
+        <div className="mt-16 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => (
               <FeatureCard
                 key={index}
@@ -99,15 +106,19 @@ export default function WhyChooseUs() {
             ))}
           </div>
           
-          <div className="mt-16 flex flex-col items-center justify-center relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent h-[1px] w-full"></div>
-            <div className="bg-white px-6 py-1 relative">
-              <div className="flex items-center gap-2 text-primary font-medium">
-                <BadgeCheck className="h-5 w-5" />
-                <span>{t("home.whyChooseUs.experience.years", { years: 10 })}</span>
+          <div className="mt-20 flex flex-col items-center justify-center">
+            <div className="flex items-center">
+              <div className="h-px w-12 bg-gradient-to-r from-transparent to-primary/30"></div>
+              <div className="mx-4 bg-white px-6 py-2 rounded-full shadow-sm border border-primary/10">
+                <div className="flex items-center gap-2 text-primary font-medium">
+                  <BadgeCheck className="h-5 w-5" />
+                  <span>{t("home.whyChooseUs.experience.years", { years: 10 })}</span>
+                </div>
               </div>
+              <div className="h-px w-12 bg-gradient-to-l from-transparent to-primary/30"></div>
             </div>
-            <p className="text-gray-600 mt-4 text-center max-w-xl mx-auto italic">
+            
+            <p className="text-gray-600 mt-6 text-center max-w-xl mx-auto italic text-lg font-light">
               "{t("home.whyChooseUs.doctorQuote")}"
             </p>
           </div>
