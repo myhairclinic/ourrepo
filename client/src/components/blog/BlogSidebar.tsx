@@ -1,16 +1,13 @@
-import { useState } from "react";
+import { useTranslation } from "@/hooks/use-translation";
+import { useLanguage } from "@/hooks/use-language";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Search, Tag, Mail } from "lucide-react";
-import { useTranslation } from "@/hooks/use-translation";
-import { useLanguage } from "@/hooks/use-language";
 import { Link } from "wouter";
 
-interface BlogAuthor {
+interface Author {
   id: number;
   name: string;
   title: string;
@@ -20,7 +17,7 @@ interface BlogAuthor {
 
 interface BlogSidebarProps {
   popularTags: string[];
-  featuredAuthors: BlogAuthor[];
+  featuredAuthors: Author[];
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   allCategories: string[];
@@ -40,116 +37,121 @@ export function BlogSidebar({
   getCategoryName
 }: BlogSidebarProps) {
   const { t } = useTranslation();
-  const { addPrefix } = useLanguage();
+  const { language, addPrefix } = useLanguage();
+  
+  // Handle email subscription
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const emailInput = form.elements.namedItem('email') as HTMLInputElement;
+    const email = emailInput.value;
+    
+    // Implement subscription logic here (e.g. API call)
+    console.log(`Subscribing email: ${email}`);
+    
+    // Reset the form
+    form.reset();
+    
+    // Show success message (in a real app, you'd want to use a toast notification)
+    alert('Successfully subscribed!');
+  };
   
   return (
     <div className="space-y-8">
       {/* Search */}
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-xl">{t('blog.search')}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input 
-              placeholder={t('blog.searchPlaceholder')}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-        </CardContent>
-      </Card>
+      <div className="relative">
+        <h3 className="text-lg font-medium mb-4">{t('blog.search')}</h3>
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder={t('blog.searchPlaceholder')}
+            className="pl-10"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+      </div>
       
       {/* Categories */}
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-xl">{t('blog.categoriesTitle')}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col gap-2">
-            <Button 
-              variant={selectedCategory === null ? "default" : "outline"} 
+      <div>
+        <h3 className="text-lg font-medium mb-4">{t('blog.categoriesTitle')}</h3>
+        <div className="space-y-2">
+          <Button
+            variant={selectedCategory === null ? "default" : "outline"}
+            size="sm"
+            className="mr-2 mb-2"
+            onClick={() => setSelectedCategory(null)}
+          >
+            {t('blog.allCategories')}
+          </Button>
+          
+          {allCategories.map((category) => (
+            <Button
+              key={category}
+              variant={selectedCategory === category ? "default" : "outline"}
               size="sm"
-              className="justify-start"
-              onClick={() => setSelectedCategory(null)}
+              className="mr-2 mb-2"
+              onClick={() => setSelectedCategory(category)}
             >
-              {t('blog.allCategories')}
+              {getCategoryName(category)}
             </Button>
-            {allCategories.map((category) => (
-              <Button 
-                key={category}
-                variant={selectedCategory === category ? "default" : "outline"}
-                size="sm"
-                className="justify-start"
-                onClick={() => setSelectedCategory(category)}
-              >
-                {getCategoryName(category)}
-              </Button>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+          ))}
+        </div>
+      </div>
       
       {/* Popular Tags */}
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-xl">{t('blog.popularTags')}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-wrap gap-2">
-            {popularTags.map((tag, index) => (
-              <Badge key={index} variant="outline" className="cursor-pointer" onClick={() => setSearchQuery(tag)}>
-                <Tag className="h-3 w-3 mr-1" />
-                {tag}
-              </Badge>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <div>
+        <h3 className="text-lg font-medium mb-4">{t('blog.popularTags')}</h3>
+        <div className="flex flex-wrap gap-2">
+          {popularTags.map((tag) => (
+            <Badge
+              key={tag}
+              variant="secondary"
+              className="cursor-pointer hover:bg-secondary/80"
+              onClick={() => setSearchQuery(tag)}
+            >
+              {tag}
+            </Badge>
+          ))}
+        </div>
+      </div>
       
       {/* Featured Authors */}
-      <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-xl">{t('blog.featuredAuthors')}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
+      <div>
+        <h3 className="text-lg font-medium mb-4">{t('blog.featuredAuthors')}</h3>
+        <div className="space-y-4">
           {featuredAuthors.map((author) => (
-            <div key={author.id} className="flex gap-3">
-              <Avatar className="h-12 w-12">
+            <div key={author.id} className="flex items-start space-x-4">
+              <Avatar className="h-10 w-10">
                 <AvatarImage src={author.avatar} alt={author.name} />
-                <AvatarFallback>{author.name.charAt(0)}</AvatarFallback>
+                <AvatarFallback>{author.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
               </Avatar>
               <div>
-                <h4 className="font-semibold text-sm">{author.name}</h4>
-                <p className="text-xs text-muted-foreground">{author.title}</p>
-                <p className="text-xs mt-1 line-clamp-2">{author.bio}</p>
+                <h4 className="font-medium">{author.name}</h4>
+                <p className="text-sm text-muted-foreground">{author.title}</p>
+                <p className="text-xs mt-1">{author.bio}</p>
               </div>
             </div>
           ))}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
       
-      {/* Newsletter */}
-      <Card className="bg-primary/5 border-primary/20">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-xl">{t('blog.subscribeNewsletter')}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground mb-4">{t('blog.subscribeDescription')}</p>
-          <form className="space-y-3">
-            <Input 
-              placeholder={t('blog.emailPlaceholder')} 
-              type="email"
-            />
-            <Button className="w-full">
-              <Mail className="h-4 w-4 mr-2" />
-              {t('blog.subscribe')}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+      {/* Newsletter Subscription */}
+      <div className="bg-secondary/30 p-6 rounded-lg">
+        <h3 className="text-lg font-medium mb-2">{t('blog.subscribeNewsletter')}</h3>
+        <p className="text-sm text-muted-foreground mb-4">{t('blog.subscribeDescription')}</p>
+        <form onSubmit={handleSubscribe} className="space-y-2">
+          <Input 
+            name="email"
+            type="email"
+            placeholder={t('blog.emailPlaceholder')}
+            required
+          />
+          <Button type="submit" className="w-full">
+            {t('blog.subscribe')}
+          </Button>
+        </form>
+      </div>
     </div>
   );
 }
