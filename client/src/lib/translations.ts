@@ -478,6 +478,18 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Нажмите, чтобы увеличить",
     [Language.Georgian]: "დააჭირეთ გასაფართოებლად"
   },
+  "packages.tbilisiView": {
+    [Language.Turkish]: "Tiflis Manzarası",
+    [Language.English]: "Tbilisi View",
+    [Language.Russian]: "Вид на Тбилиси",
+    [Language.Georgian]: "თბილისის ხედი"
+  },
+  "packages.clinicProcedure": {
+    [Language.Turkish]: "Klinik Tedavi Süreci",
+    [Language.English]: "Clinic Procedure",
+    [Language.Russian]: "Процедура в клинике",
+    [Language.Georgian]: "კლინიკის პროცედურა"
+  },
   "packages.comingSoon": {
     [Language.Turkish]: "Yakında",
     [Language.English]: "Coming Soon",
