@@ -59,11 +59,11 @@ function getContentByLang(data: any, fieldPrefix: string, lang: string): string 
   // Mevcut dile göre alan adı belirle
   let fieldName = '';
   
-  if (lang === 'TR') fieldName = `${fieldPrefix}Tr`;
-  else if (lang === 'EN') fieldName = `${fieldPrefix}En`;
-  else if (lang === 'RU') fieldName = `${fieldPrefix}Ru`;
-  else if (lang === 'KA') fieldName = `${fieldPrefix}Ka`;
-  else fieldName = `${fieldPrefix}En`; // Fallback to English
+  if (lang === 'TR') fieldName = `${fieldPrefix}TR`;
+  else if (lang === 'EN') fieldName = `${fieldPrefix}EN`;
+  else if (lang === 'RU') fieldName = `${fieldPrefix}RU`;
+  else if (lang === 'KA') fieldName = `${fieldPrefix}KA`;
+  else fieldName = `${fieldPrefix}EN`; // Fallback to English
   
   return data[fieldName] || '';
 }
