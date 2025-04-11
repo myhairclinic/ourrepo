@@ -67,18 +67,26 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
   
   return (
     <Card className="h-full flex flex-col overflow-hidden group hover:shadow-md transition-shadow duration-300 border-border">
+      {/* Country Badge - Now moved above image as a prominent header with gradient */}
+      <div className="bg-gradient-to-r from-primary/90 to-primary/70 text-white px-4 py-2 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="text-xl">{getCountryFlag(country)}</span>
+          <span className="font-medium">{countryName}</span>
+        </div>
+        
+        {/* Duration badge */}
+        <div className="bg-white/20 text-white text-xs py-1 px-2.5 rounded-full flex items-center gap-1.5">
+          <Calendar className="h-3 w-3" />
+          {pkg.durationDays} {getPackageTranslation("packages.days", language)}
+        </div>
+      </div>
+      
       <div className="relative overflow-hidden">
         <img
           src={pkg.imageUrl || '/images/package-placeholder.jpg'}
           alt={title}
-          className="w-full h-52 object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        
-        {/* Country Flag Badge */}
-        <div className="absolute top-3 left-3 bg-white/90 dark:bg-black/80 shadow-md rounded-full py-1 px-3 text-foreground dark:text-white text-xs font-medium flex items-center gap-1.5">
-          <span className="text-base">{getCountryFlag(country)}</span>
-          {countryName}
-        </div>
         
         {pkg.isFeatured && (
           <div className="absolute top-0 right-0 bg-gradient-to-bl from-amber-500 to-amber-600 text-white text-xs py-1 px-3 shadow-md">
@@ -88,19 +96,13 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
             </div>
           </div>
         )}
-        
-        {/* Duration badge */}
-        <div className="absolute bottom-3 right-3 bg-white/90 dark:bg-black/80 shadow-md text-foreground dark:text-white text-xs py-1 px-3 rounded-full flex items-center gap-1.5">
-          <Calendar className="h-3.5 w-3.5" />
-          {pkg.durationDays} {getPackageTranslation("packages.days", language)}
-        </div>
       </div>
       
-      <CardHeader className="pb-2">
+      <CardHeader className="pb-2 pt-3">
         <div className="flex justify-between items-start">
           <div>
-            <CardTitle className="text-xl group-hover:text-primary transition-colors duration-200">{title}</CardTitle>
-            <CardDescription className="line-clamp-2 mt-1">{description}</CardDescription>
+            <CardTitle className="text-lg group-hover:text-primary transition-colors duration-200 line-clamp-1">{title}</CardTitle>
+            <CardDescription className="line-clamp-2 mt-1 text-sm">{description}</CardDescription>
           </div>
           
           {/* Rating */}

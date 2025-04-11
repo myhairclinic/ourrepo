@@ -88,8 +88,27 @@ const PackagesPage: React.FC = () => {
     );
   };
   
-  // Filter packages
-  const filteredPackages = packages?.filter(pkg => {
+  // First get one package per country - keep only the most recently added package for each country
+  const uniqueCountryPackages = packages?.reduce((acc, pkg) => {
+    // Get existing package for this country, if any
+    const existingPkg = acc.find(p => p.countryOrigin === pkg.countryOrigin);
+    
+    // If no package exists for this country yet, add the current one
+    if (!existingPkg) {
+      return [...acc, pkg];
+    }
+    
+    // Otherwise, replace the existing one if this one is newer (has a higher ID)
+    if (pkg.id > existingPkg.id) {
+      return [...acc.filter(p => p.countryOrigin !== pkg.countryOrigin), pkg];
+    }
+    
+    // Keep the existing package
+    return acc;
+  }, [] as Package[]) || [];
+  
+  // Then apply filters to the already-unique packages
+  const filteredPackages = uniqueCountryPackages.filter(pkg => {
     // Country filter
     if (selectedCountry && pkg.countryOrigin !== selectedCountry) {
       return false;
