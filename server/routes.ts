@@ -19,6 +19,7 @@ import {
 } from "./controllers/contentController";
 import { seedServices, seedPackages, seedNewCountryPackages } from "./controllers/seedController";
 import { seedBlogPosts } from "./controllers/seedBlogController";
+import { seedExtendedBlogPosts } from "./controllers/extendedBlogSeedController";
 import {
   getBlogPosts,
   getBlogPostBySlug,
@@ -424,6 +425,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/seed/services", seedServices);
   app.post("/api/seed/packages", seedPackages);
   app.post("/api/seed/blog", seedBlogPosts);
+  app.post("/api/seed/extended-blog", seedExtendedBlogPosts);
   app.get("/api/seed-packages", (req, res) => res.redirect("/"));
   app.post("/api/seed-packages", seedPackages);
   // Route for adding only new country packages (Azerbaijan and Kazakhstan)
