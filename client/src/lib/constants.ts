@@ -60,6 +60,7 @@ export const PUBLIC_PATHS = {
   ABOUT: "about",
   SERVICES: "services",
   PACKAGES: "packages",
+  PRODUCTS: "products",
   BLOG: "blog",
   GALLERY: "gallery",
   TESTIMONIALS: "testimonials",
