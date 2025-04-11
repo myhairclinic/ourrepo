@@ -1086,7 +1086,7 @@ export const seedPackages = async (req: Request, res: Response) => {
         contentEN: "Luxury package specially prepared for our Iranian patients. Includes suite accommodation in a 5-star hotel, VIP transfers, dinner at a restaurant offering Iranian cuisine, and a comprehensive city tour with a Farsi-speaking guide.",
         contentRU: "Роскошный пакет, специально подготовленный для наших иранских пациентов. Включает проживание в люксе в 5-звездочном отеле, VIP-трансферы, ужин в ресторане, предлагающем иранскую кухню, и комплексную экскурсию по городу с персональным гидом, говорящим на фарси.",
         contentKA: "ლუქსი პაკეტი, სპეციალურად მომზადებული ჩვენი ირანელი პაციენტებისთვის. მოიცავს სუიტის საცხოვრებელს 5-ვარსკვლავიან სასტუმროში, VIP ტრანსფერებს, ვახშამს რესტორანში, რომელიც გთავაზობთ ირანულ სამზარეულოს და ყოვლისმომცველ ქალაქის ტურს სპარსულად მოლაპარაკე გიდით.",
-        imageUrl: "/images/packages/premium-package-ir.jpg",
+        imageUrl: "/images/packages/iran-package.jpg",
         countryOrigin: "IR",
         durationDays: 5,
         accommodationTR: "5 yıldızlı otelde 4 gece süit konaklama",
