@@ -454,7 +454,12 @@ export default function PackageDetailPage() {
                 
                 {galleryImages && galleryImages.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {galleryImages.filter(img => img && img.trim() !== '').map((img: string, index: number) => (
+                    {galleryImages.filter(img => {
+                      // Check if image exists in the public folder by testing if it's a valid path
+                      return img && img.trim() !== '' && 
+                             (img.includes('/images/tbilisi-landmarks/') || 
+                              img.includes('/images/clinic-procedures/'));
+                    }).map((img: string, index: number) => (
                       <div 
                         key={index}
                         className="group relative overflow-hidden rounded-xl aspect-video hover:shadow-md transition-all duration-300 cursor-pointer"
