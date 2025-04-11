@@ -15,6 +15,7 @@ import ServicePage from "./pages/ServicePage";
 import ServicesListPage from "./pages/ServicesListPage";
 import GalleryPage from "./pages/GalleryPage";
 import PackagesPage from "./pages/PackagesPage";
+import PackageDetailPage from "./pages/PackageDetailPage";
 import ProductsPage from "./pages/ProductsPage";
 import ProductPage from "./pages/ProductPage";
 import BlogPage from "./pages/BlogPage";
@@ -135,6 +136,7 @@ function Router() {
       <Route path="/:lang/services/:slug" component={ServicePage} />
       <Route path="/:lang/gallery" component={GalleryPage} />
       <Route path="/:lang/packages" component={PackagesPage} />
+      <Route path="/:lang/packages/:slug" component={PackageDetailPage} />
       <Route path="/:lang/products" component={ProductsPage} />
       <Route path="/:lang/products/:productSlug" component={ProductPage} />
       <Route path="/:lang/blog" component={BlogPage} />
@@ -167,6 +169,9 @@ function Router() {
       </Route>
       <Route path="/packages">
         {() => { setLocation(addPrefix('/packages')); return null; }}
+      </Route>
+      <Route path="/packages/:slug">
+        {({slug}) => { setLocation(addPrefix(`/packages/${slug}`)); return null; }}
       </Route>
       <Route path="/products">
         {() => { setLocation(addPrefix('/products')); return null; }}

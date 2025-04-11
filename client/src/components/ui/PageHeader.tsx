@@ -1,66 +1,46 @@
-import React from 'react';
-import { cn } from '@/lib/utils';
-import { Container } from '@/components/ui/container';
+import Container from "./container";
+import { cn } from "@/lib/utils";
 
 interface PageHeaderProps {
   title: string;
   description?: string;
-  bgImage?: string;
-  centered?: boolean;
-  actions?: React.ReactNode;
+  imageUrl?: string;
   className?: string;
 }
 
-const PageHeader: React.FC<PageHeaderProps> = ({
+export default function PageHeader({
   title,
   description,
-  bgImage,
-  centered = true,
-  actions,
+  imageUrl,
   className,
-}) => {
+}: PageHeaderProps) {
   return (
     <div
       className={cn(
-        'relative py-12 md:py-20 mb-10 bg-muted/40',
-        bgImage ? 'bg-cover bg-center' : '',
+        "bg-muted relative py-16 md:py-24",
+        imageUrl ? "bg-cover bg-center bg-no-repeat" : "",
         className
       )}
-      style={bgImage ? { backgroundImage: `url(${bgImage})` } : {}}
+      style={
+        imageUrl
+          ? {
+              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url(${imageUrl})`,
+            }
+          : {}
+      }
     >
-      {bgImage && (
-        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
-      )}
-      <Container className="relative z-10">
-        <div
-          className={cn(
-            'flex flex-col gap-4',
-            centered && 'text-center items-center'
-          )}
-        >
-          <h1 className={cn(
-            'text-3xl md:text-4xl lg:text-5xl font-bold',
-            bgImage ? 'text-white' : 'text-foreground'
-          )}>
+      <Container>
+        <div className={cn("max-w-3xl", imageUrl ? "text-white" : "")}>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
             {title}
           </h1>
           {description && (
-            <p className={cn(
-              'text-lg md:text-xl max-w-3xl',
-              bgImage ? 'text-white/90' : 'text-muted-foreground'
-            )}>
+            <p className={cn("text-lg md:text-xl", imageUrl ? "text-gray-200" : "text-muted-foreground")}>
               {description}
             </p>
-          )}
-          {actions && (
-            <div className="flex flex-wrap gap-4 mt-4">
-              {actions}
-            </div>
           )}
         </div>
       </Container>
     </div>
   );
-};
-
-export default PageHeader;
+}

@@ -4,7 +4,7 @@ import { getQueryFn } from '@/lib/queryClient';
 import { useLanguage } from '@/context/LanguageContext';
 import { Package } from '@shared/schema';
 import { Language } from '@shared/types';
-import { Container } from '@/components/ui/container';
+import Container from '@/components/ui/container';
 import PageHeader from '@/components/ui/PageHeader';
 import { Loader2 } from 'lucide-react';
 import PackageCard from '@/components/packages/PackageCard';
@@ -18,7 +18,13 @@ const PackagesPage: React.FC = () => {
   // Fetch all packages
   const { data: packages, isLoading, error } = useQuery<Package[]>({
     queryKey: ['/api/packages'],
-    queryFn: getQueryFn({ endpoint: '/api/packages' }),
+    queryFn: async () => {
+      const res = await fetch('/api/packages');
+      if (!res.ok) {
+        throw new Error('Failed to fetch packages');
+      }
+      return res.json();
+    },
   });
   
   // Extract unique countries from packages
@@ -75,7 +81,7 @@ const PackagesPage: React.FC = () => {
           language === Language.Russian ? 'Трансплантация волос и отдых вместе - Комфортные туристические пакеты в Грузии' : 
           'თმის გადანერგვა და დასვენება ერთად - კომფორტული სამოგზაურო პაკეტები საქართველოში'
         }
-        bgImage="/images/tbilisi-panorama.jpg"
+        imageUrl="/images/tbilisi-panorama.jpg"
       />
       
       <Container>
