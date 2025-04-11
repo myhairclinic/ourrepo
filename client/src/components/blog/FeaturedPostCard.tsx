@@ -67,7 +67,7 @@ export function FeaturedPostCard({ post, formatDate, getCategoryName }: Featured
   const blogUrl = addPrefix(`/blog/${post.slug}`);
   
   return (
-    <Card className="group relative h-[460px] overflow-hidden transition-all duration-300 hover:shadow-xl rounded-xl">
+    <Card className="group relative h-[460px] overflow-hidden transition-all duration-300 hover:shadow-xl rounded-xl featured-post-card">
       {/* Görsel arka planı */}
       <div className="absolute inset-0 z-0 transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1">
         <img 

@@ -108,7 +108,7 @@ export function BlogListSection({
         onValueChange={setActiveTab}
         className="w-full"
       >
-        <TabsList className="grid w-full grid-cols-2 max-w-[400px] bg-muted/50 p-1 rounded-lg shadow-sm">
+        <TabsList className="blog-list-tabs grid w-full grid-cols-2 max-w-[400px] bg-muted/50 p-1 rounded-lg shadow-sm">
           <TabsTrigger 
             value="latest" 
             className="data-[state=active]:bg-background data-[state=active]:shadow-sm rounded-md transition-all"

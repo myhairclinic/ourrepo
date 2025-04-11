@@ -62,7 +62,7 @@ export function BlogSidebar({
   return (
     <>
       {/* Arama Kutusu */}
-      <Card className="shadow-sm hover:shadow transition-shadow duration-300 border-muted/60">
+      <Card className="shadow-sm hover:shadow transition-shadow duration-300 border-muted/60 blog-sidebar-card">
         <CardHeader className="pb-3">
           <CardTitle className="text-lg flex gap-2 items-center">
             <Search className="h-4 w-4 text-primary" />
@@ -85,7 +85,7 @@ export function BlogSidebar({
       </Card>
 
       {/* Kategoriler */}
-      <Card className="shadow-sm hover:shadow transition-shadow duration-300 border-muted/60 overflow-hidden">
+      <Card className="shadow-sm hover:shadow transition-shadow duration-300 border-muted/60 overflow-hidden blog-sidebar-card blog-categories-card">
         <CardHeader className="pb-3 bg-muted/30">
           <CardTitle className="text-lg flex gap-2 items-center">
             <Tag className="h-4 w-4 text-primary" />

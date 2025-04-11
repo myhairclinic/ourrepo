@@ -66,7 +66,7 @@ export function BlogPostCard({ post, formatDate, getCategoryName }: BlogPostCard
   const blogUrl = addPrefix(`/blog/${post.slug}`);
   
   return (
-    <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg border border-border/50 hover:border-primary/20 bg-card/50 hover:bg-card">
+    <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg border border-border/50 hover:border-primary/20 bg-card/50 hover:bg-card blog-post-card">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-0">
         <div className="relative md:col-span-5 aspect-[16/9] md:aspect-auto overflow-hidden">
           <div className="absolute inset-0 z-20">
