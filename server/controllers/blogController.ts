@@ -13,6 +13,37 @@ export const getBlogPosts = async (req: Request, res: Response) => {
   }
 };
 
+// Get paginated blog posts
+export const getPaginatedBlogPosts = async (req: Request, res: Response) => {
+  try {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const category = req.query.category as string || undefined;
+    const tag = req.query.tag as string || undefined;
+    const search = req.query.search as string || undefined;
+    const sort = req.query.sort as string || 'newest';
+    
+    const result = await storage.getPaginatedBlogPosts({
+      page,
+      limit,
+      category,
+      tag,
+      search,
+      sort
+    });
+    
+    res.json({
+      posts: result.posts,
+      totalPosts: result.totalPosts,
+      totalPages: result.totalPages,
+      currentPage: page
+    });
+  } catch (error) {
+    console.error("Error fetching paginated blog posts:", error);
+    res.status(500).json({ message: "Failed to fetch blog posts" });
+  }
+};
+
 // Get a blog post by slug
 export const getBlogPostBySlug = async (req: Request, res: Response) => {
   try {
