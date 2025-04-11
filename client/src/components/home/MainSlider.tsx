@@ -359,7 +359,7 @@ export default function MainSlider() {
                 {/* İçerik alanı */}
                 <div className="absolute inset-0 z-10 flex items-center">
                   <div className="container mx-auto px-6 md:px-12">
-                    <div className="max-w-xl ml-auto mr-0"> {/* Text içeriğini sağa yerleştirmek için */}
+                    <div className={`max-w-xl ${slide.id === 1 ? 'ml-auto mr-0' : 'ml-0 mr-auto'}`}> {/* MyHair Tbilisi için sağda, diğerleri için solda */}
                       <div 
                         className={`transition-all duration-1000 delay-300 transform ${
                           index === activeSlide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
