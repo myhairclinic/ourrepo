@@ -265,6 +265,126 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Пересадка бровей",
     [Language.Georgian]: "წარბების გადანერგვა"
   },
+  "gallery.advancedBaldness": {
+    [Language.Turkish]: "İlerlemiş Kellik",
+    [Language.English]: "Advanced Baldness",
+    [Language.Russian]: "Прогрессирующее облысение",
+    [Language.Georgian]: "მოწინავე მელოტი"
+  },
+  "gallery.youngPatientTransformation": {
+    [Language.Turkish]: "Genç Hasta Dönüşümü",
+    [Language.English]: "Young Patient Transformation",
+    [Language.Russian]: "Трансформация молодого пациента",
+    [Language.Georgian]: "ახალგაზრდა პაციენტის ტრანსფორმაცია"
+  },
+  "gallery.hairlinePlanning": {
+    [Language.Turkish]: "Saç Çizgisi Planlama",
+    [Language.English]: "Hairline Planning",
+    [Language.Russian]: "Планирование линии волос",
+    [Language.Georgian]: "თმის ხაზის დაგეგმვა"
+  },
+  "gallery.extensiveRestoration": {
+    [Language.Turkish]: "Kapsamlı Restorasyon",
+    [Language.English]: "Extensive Restoration",
+    [Language.Russian]: "Комплексное восстановление",
+    [Language.Georgian]: "ფართო რესტავრაცია"
+  },
+  "gallery.seniorPatientTransformation": {
+    [Language.Turkish]: "Yaşlı Hasta Dönüşümü",
+    [Language.English]: "Senior Patient Transformation",
+    [Language.Russian]: "Трансформация пожилого пациента",
+    [Language.Georgian]: "უფროსი პაციენტის ტრანსფორმაცია"
+  },
+  "gallery.advancedThinning": {
+    [Language.Turkish]: "İlerlemiş Saç Seyrelmesi",
+    [Language.English]: "Advanced Thinning",
+    [Language.Russian]: "Прогрессирующее истончение волос",
+    [Language.Georgian]: "მოწინავე გათხელება"
+  },
+  "gallery.youngMaleTransformation": {
+    [Language.Turkish]: "Genç Erkek Dönüşümü",
+    [Language.English]: "Young Male Transformation",
+    [Language.Russian]: "Трансформация молодого мужчины",
+    [Language.Georgian]: "ახალგაზრდა მამაკაცის ტრანსფორმაცია"
+  },
+  "gallery.fullHairTransformation": {
+    [Language.Turkish]: "Tam Saç Dönüşümü",
+    [Language.English]: "Full Hair Transformation",
+    [Language.Russian]: "Полная трансформация волос",
+    [Language.Georgian]: "სრული თმის ტრანსფორმაცია"
+  },
+  "gallery.naturalHairlineRestoration": {
+    [Language.Turkish]: "Doğal Saç Çizgisi Restorasyonu",
+    [Language.English]: "Natural Hairline Restoration",
+    [Language.Russian]: "Восстановление естественной линии волос",
+    [Language.Georgian]: "ბუნებრივი თმის ხაზის აღდგენა"
+  },
+  "gallery.completeHairRestoration": {
+    [Language.Turkish]: "Tam Saç Restorasyonu",
+    [Language.English]: "Complete Hair Restoration",
+    [Language.Russian]: "Полное восстановление волос",
+    [Language.Georgian]: "სრული თმის აღდგენა"
+  },
+  "gallery.naturalEyebrowEnhancement": {
+    [Language.Turkish]: "Doğal Kaş Geliştirme",
+    [Language.English]: "Natural Eyebrow Enhancement",
+    [Language.Russian]: "Естественное улучшение бровей",
+    [Language.Georgian]: "ბუნებრივი წარბების გაუმჯობესება"
+  },
+  "gallery.improvedHairDensity": {
+    [Language.Turkish]: "Geliştirilmiş Saç Yoğunluğu",
+    [Language.English]: "Improved Hair Density",
+    [Language.Russian]: "Улучшенная плотность волос",
+    [Language.Georgian]: "გაუმჯობესებული თმის სიმკვრივე"
+  },
+  "gallery.precisionHairlineDesign": {
+    [Language.Turkish]: "Hassas Saç Çizgisi Tasarımı",
+    [Language.English]: "Precision Hairline Design",
+    [Language.Russian]: "Точный дизайн линии волос",
+    [Language.Georgian]: "ზუსტი თმის ხაზის დიზაინი"
+  },
+  "gallery.completeHairCoverage": {
+    [Language.Turkish]: "Tam Saç Kaplaması",
+    [Language.English]: "Complete Hair Coverage",
+    [Language.Russian]: "Полное покрытие волос",
+    [Language.Georgian]: "სრული თმის დაფარვა"
+  },
+  "gallery.naturalRejuvenation": {
+    [Language.Turkish]: "Doğal Gençleşme",
+    [Language.English]: "Natural Rejuvenation",
+    [Language.Russian]: "Естественное омоложение",
+    [Language.Georgian]: "ბუნებრივი განახლება"
+  },
+  "gallery.professionalApplication": {
+    [Language.Turkish]: "Profesyonel Uygulama",
+    [Language.English]: "Professional Application",
+    [Language.Russian]: "Профессиональное применение",
+    [Language.Georgian]: "პროფესიონალური გამოყენება"
+  },
+  "gallery.dramaticImprovement": {
+    [Language.Turkish]: "Çarpıcı İyileşme",
+    [Language.English]: "Dramatic Improvement",
+    [Language.Russian]: "Значительное улучшение",
+    [Language.Georgian]: "დრამატული გაუმჯობესება"
+  },
+  "gallery.naturalHairlineAndDensity": {
+    [Language.Turkish]: "Doğal Saç Çizgisi ve Yoğunluğu",
+    [Language.English]: "Natural Hairline and Density",
+    [Language.Russian]: "Естественная линия волос и плотность",
+    [Language.Georgian]: "ბუნებრივი თმის ხაზი და სიმკვრივე"
+  },
+  "gallery.hairTransplant": {
+    [Language.Turkish]: "Saç Ekimi",
+    [Language.English]: "Hair Transplant",
+    [Language.Russian]: "Пересадка волос",
+    [Language.Georgian]: "თმის გადანერგვა"
+  },
+  "gallery.beardTransplant": {
+    [Language.Turkish]: "Sakal Ekimi",
+    [Language.English]: "Beard Transplant",
+    [Language.Russian]: "Пересадка бороды",
+    [Language.Georgian]: "წვერის გადანერგვა"
+  },
   "gallery.graftExtraction": {
     [Language.Turkish]: "Greft Çıkarma",
     [Language.English]: "Graft Extraction",
