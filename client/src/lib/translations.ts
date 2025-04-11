@@ -6,6 +6,158 @@ type LanguageMap = Record<Language, string>;
 // Our translations object with simple key structure
 // Translations object (exported for direct usage in components)
 export const translations: Record<string, LanguageMap> = {
+  // Contact Page
+  "contact.pageTitle": {
+    [Language.Turkish]: "İletişim",
+    [Language.English]: "Contact",
+    [Language.Russian]: "Контакты",
+    [Language.Georgian]: "კონტაქტი"
+  },
+  "contact.pageDescription": {
+    [Language.Turkish]: "MyHair Clinic ile iletişime geçin",
+    [Language.English]: "Get in touch with MyHair Clinic",
+    [Language.Russian]: "Свяжитесь с клиникой MyHair",
+    [Language.Georgian]: "დაუკავშირდით MyHair კლინიკას"
+  },
+  "contact.success": {
+    [Language.Turkish]: "Mesajınız gönderildi",
+    [Language.English]: "Your message has been sent",
+    [Language.Russian]: "Ваше сообщение отправлено",
+    [Language.Georgian]: "თქვენი შეტყობინება გაიგზავნა"
+  },
+  "contact.successMessage": {
+    [Language.Turkish]: "En kısa sürede size geri dönüş yapacağız.",
+    [Language.English]: "We will get back to you as soon as possible.",
+    [Language.Russian]: "Мы свяжемся с вами как можно скорее.",
+    [Language.Georgian]: "ჩვენ დაგიკავშირდებით რაც შეიძლება მალე."
+  },
+  "contact.error": {
+    [Language.Turkish]: "Bir hata oluştu",
+    [Language.English]: "An error occurred",
+    [Language.Russian]: "Произошла ошибка",
+    [Language.Georgian]: "დაფიქსირდა შეცდომა"
+  },
+  "contact.errorMessage": {
+    [Language.Turkish]: "Mesajınız gönderilirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+    [Language.English]: "There was an error sending your message. Please try again later.",
+    [Language.Russian]: "Произошла ошибка при отправке вашего сообщения. Пожалуйста, попробуйте позже.",
+    [Language.Georgian]: "თქვენი შეტყობინების გაგზავნისას მოხდა შეცდომა. გთხოვთ, სცადოთ მოგვიანებით."
+  },
+  "contact.sending": {
+    [Language.Turkish]: "Gönderiliyor...",
+    [Language.English]: "Sending...",
+    [Language.Russian]: "Отправка...",
+    [Language.Georgian]: "იგზავნება..."
+  },
+  "contact.namePlaceholder": {
+    [Language.Turkish]: "Adınız ve soyadınız",
+    [Language.English]: "Your full name",
+    [Language.Russian]: "Ваше полное имя",
+    [Language.Georgian]: "თქვენი სრული სახელი"
+  },
+  "contact.emailPlaceholder": {
+    [Language.Turkish]: "E-posta adresiniz",
+    [Language.English]: "Your email address",
+    [Language.Russian]: "Ваш адрес электронной почты",
+    [Language.Georgian]: "თქვენი ელ-ფოსტის მისამართი"
+  },
+  "contact.phonePlaceholder": {
+    [Language.Turkish]: "Telefon numaranız (isteğe bağlı)",
+    [Language.English]: "Your phone number (optional)",
+    [Language.Russian]: "Ваш номер телефона (необязательно)",
+    [Language.Georgian]: "თქვენი ტელეფონის ნომერი (არასავალდებულო)"
+  },
+  "contact.messagePlaceholder": {
+    [Language.Turkish]: "Mesajınız...",
+    [Language.English]: "Your message...",
+    [Language.Russian]: "Ваше сообщение...",
+    [Language.Georgian]: "თქვენი შეტყობინება..."
+  },
+  "contact.followUs": {
+    [Language.Turkish]: "Bizi Takip Edin",
+    [Language.English]: "Follow Us",
+    [Language.Russian]: "Подписывайтесь на нас",
+    [Language.Georgian]: "გამოგვყევით"
+  },
+  "contact.formTitle": {
+    [Language.Turkish]: "Bizimle İletişime Geçin",
+    [Language.English]: "Contact Us",
+    [Language.Russian]: "Свяжитесь с нами",
+    [Language.Georgian]: "დაგვიკავშირდით"
+  },
+  "contact.formDescription": {
+    [Language.Turkish]: "Soru ve talepleriniz için bizimle iletişime geçebilirsiniz.",
+    [Language.English]: "You can contact us with your questions and requests.",
+    [Language.Russian]: "Вы можете связаться с нами с вашими вопросами и запросами.",
+    [Language.Georgian]: "შეგიძლიათ დაგვიკავშირდეთ თქვენი შეკითხვებით და მოთხოვნებით."
+  },
+  "contact.responseTime": {
+    [Language.Turkish]: "24 saat içinde dönüş yapıyoruz",
+    [Language.English]: "We respond within 24 hours",
+    [Language.Russian]: "Мы отвечаем в течение 24 часов",
+    [Language.Georgian]: "ჩვენ ვპასუხობთ 24 საათის განმავლობაში"
+  },
+  "contact.frequentlyAsked": {
+    [Language.Turkish]: "Sık Sorulan Sorular",
+    [Language.English]: "Frequently Asked Questions",
+    [Language.Russian]: "Часто задаваемые вопросы",
+    [Language.Georgian]: "ხშირად დასმული კითხვები"
+  },
+  "contact.faqDescription": {
+    [Language.Turkish]: "Aşağıdaki cevaplar size yardımcı olabilir",
+    [Language.English]: "The answers below may help you",
+    [Language.Russian]: "Ответы ниже могут вам помочь",
+    [Language.Georgian]: "ქვემოთ მოცემულმა პასუხებმა შეიძლება დაგეხმაროთ"
+  },
+  "contact.faq1Title": {
+    [Language.Turkish]: "Saç ekimi ne kadar sürer?",
+    [Language.English]: "How long does hair transplantation take?",
+    [Language.Russian]: "Сколько времени занимает трансплантация волос?",
+    [Language.Georgian]: "რამდენ ხანს გრძელდება თმის გადანერგვა?"
+  },
+  "contact.faq1Content": {
+    [Language.Turkish]: "Saç ekimi işlemi ortalama 6-8 saat sürer. İşlem sonrası iyileşme süreci yaklaşık 10-14 gündür.",
+    [Language.English]: "Hair transplantation procedure takes about 6-8 hours. The post-procedure recovery period is approximately 10-14 days.",
+    [Language.Russian]: "Процедура трансплантации волос занимает около 6-8 часов. Период восстановления после процедуры составляет примерно 10-14 дней.",
+    [Language.Georgian]: "თმის გადანერგვის პროცედურა გრძელდება დაახლოებით 6-8 საათი. პროცედურის შემდგომი აღდგენის პერიოდი დაახლოებით 10-14 დღეა."
+  },
+  "contact.faq2Title": {
+    [Language.Turkish]: "Saç ekimi ne zaman sonuç verir?",
+    [Language.English]: "When do hair transplant results show?",
+    [Language.Russian]: "Когда проявляются результаты пересадки волос?",
+    [Language.Georgian]: "როდის ჩანს თმის გადანერგვის შედეგები?"
+  },
+  "contact.faq2Content": {
+    [Language.Turkish]: "Saç ekimi sonuçları genellikle 6-9 ay içinde tam olarak görülür. İlk 3 ay içinde yeni saç büyümesi başlar.",
+    [Language.English]: "Hair transplant results are usually fully visible within 6-9 months. New hair growth begins within the first 3 months.",
+    [Language.Russian]: "Результаты пересадки волос обычно полностью видны в течение 6-9 месяцев. Рост новых волос начинается в первые 3 месяца.",
+    [Language.Georgian]: "თმის გადანერგვის შედეგები ჩვეულებრივ სრულად ჩანს 6-9 თვის განმავლობაში. ახალი თმის ზრდა იწყება პირველი 3 თვის განმავლობაში."
+  },
+  "contact.faq3Title": {
+    [Language.Turkish]: "Sonuçlar doğal görünür mü?",
+    [Language.English]: "Do the results look natural?",
+    [Language.Russian]: "Выглядят ли результаты естественно?",
+    [Language.Georgian]: "შედეგები ბუნებრივად გამოიყურება?"
+  },
+  "contact.faq3Content": {
+    [Language.Turkish]: "Evet, modern saç ekimi teknikleri ile tamamen doğal görünümlü sonuçlar elde edilir. DHI ve Safir FUE teknikleri doğal saç çizgisi ve yoğunluğu sağlar.",
+    [Language.English]: "Yes, completely natural-looking results are achieved with modern hair transplantation techniques. DHI and Sapphire FUE techniques provide a natural hairline and density.",
+    [Language.Russian]: "Да, современные методы трансплантации волос позволяют добиться полностью естественного вида. Методы DHI и Sapphire FUE обеспечивают естественную линию роста волос и их плотность.",
+    [Language.Georgian]: "დიახ, თანამედროვე თმის გადანერგვის ტექნიკებით მიიღწევა სრულიად ბუნებრივი შედეგები. DHI და Sapphire FUE ტექნიკები უზრუნველყოფს ბუნებრივ თმის ხაზსა და სიმკვრივეს."
+  },
+  "contact.faq4Title": {
+    [Language.Turkish]: "Saç ekimi sonrası dikkat edilmesi gerekenler nelerdir?",
+    [Language.English]: "What precautions should be taken after hair transplantation?",
+    [Language.Russian]: "Какие меры предосторожности следует соблюдать после трансплантации волос?",
+    [Language.Georgian]: "რა სიფრთხილის ზომები უნდა იქნას მიღებული თმის გადანერგვის შემდეგ?"
+  },
+  "contact.faq4Content": {
+    [Language.Turkish]: "İlk hafta yatarken dikkatli olmalı, tuz ve alkol tüketmemeli, sigara içmemeli, direkt güneş ışığından korunmalı ve doktorunuzun önerdiği bakım ürünlerini kullanmalısınız.",
+    [Language.English]: "In the first week, you should be careful when lying down, avoid consuming salt and alcohol, avoid smoking, protect from direct sunlight, and use care products recommended by your doctor.",
+    [Language.Russian]: "В первую неделю следует быть осторожным при лежании, избегать употребления соли и алкоголя, не курить, защищаться от прямых солнечных лучей и использовать средства ухода, рекомендованные вашим врачом.",
+    [Language.Georgian]: "პირველ კვირაში უნდა იყოთ ფრთხილად დაწოლისას, თავი აარიდოთ მარილისა და ალკოჰოლის მოხმარებას, არ მოწიოთ, დაიცვათ თავი პირდაპირი მზის სინათლისგან და გამოიყენოთ ექიმის მიერ რეკომენდებული მოვლის პროდუქტები."
+  },
+  
   // Gallery Page
   "gallery.pageTitle": {
     [Language.Turkish]: "Galeri",
