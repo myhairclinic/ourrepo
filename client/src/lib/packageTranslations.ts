@@ -448,31 +448,14 @@ export const packageTranslations: Record<string, LanguageMap> = {
 
 // Get translation function for package translations
 export function getPackageTranslation(key: string, language: Language): string {
-  const nestedKeys = key.split('.');
+  // Try accessing directly first
+  const translation = packageTranslations[key];
   
-  let current = packageTranslations;
-  for (let i = 0; i < nestedKeys.length - 1; i++) {
-    const nestedKey = nestedKeys[i];
-    if (!current[nestedKey]) {
-      // If we can't find the key, return the last part of the key as fallback
-      console.log(`Translation key not found: ${key}`);
-      return nestedKeys[nestedKeys.length - 1];
-    }
-    current = current[nestedKey] as any;
+  if (translation) {
+    return translation[language] || key.split('.').pop() || key;
   }
   
-  const finalKey = nestedKeys[nestedKeys.length - 1];
-  const translation = current[finalKey];
-  
-  if (!translation) {
-    console.log(`Translation not found for final key: ${finalKey} in ${key}`);
-    return finalKey;
-  }
-  
-  if (!translation[language]) {
-    console.log(`Translation for language ${language} not found in key: ${key}`);
-    return finalKey;
-  }
-  
-  return translation[language];
+  // If key is not found with direct access, log and return fallback
+  console.log(`Translation key not found: ${key}`);
+  return key.split('.').pop() || key;
 }
