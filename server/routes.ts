@@ -17,7 +17,7 @@ import {
   updateService,
   deleteService
 } from "./controllers/contentController";
-import { seedServices, seedPackages } from "./controllers/seedController";
+import { seedServices, seedPackages, seedNewCountryPackages } from "./controllers/seedController";
 import {
   getBlogPosts,
   getBlogPostBySlug,
@@ -417,6 +417,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/seed/packages", seedPackages);
   app.get("/api/seed-packages", (req, res) => res.redirect("/"));
   app.post("/api/seed-packages", seedPackages);
+  // Route for adding only new country packages (Azerbaijan and Kazakhstan)
+  app.post("/api/seed/new-country-packages", seedNewCountryPackages);
 
   const httpServer = createServer(app);
 
