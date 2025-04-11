@@ -1449,6 +1449,92 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Ключевые Особенности",
     [Language.Georgian]: "ძირითადი მახასიათებლები"
   },
+  
+  // Social Media Page Translations
+  "socialMedia.pageTitle": {
+    [Language.Turkish]: "Sosyal Medya",
+    [Language.English]: "Social Media",
+    [Language.Russian]: "Социальные сети",
+    [Language.Georgian]: "სოციალური მედია"
+  },
+  "socialMedia.metaDescription": {
+    [Language.Turkish]: "MyHair Clinic'in sosyal medya hesaplarını takip edin ve son gelişmelerden haberdar olun.",
+    [Language.English]: "Follow MyHair Clinic's social media accounts and stay updated with the latest news.",
+    [Language.Russian]: "Следите за аккаунтами MyHair Clinic в социальных сетях и будьте в курсе последних новостей.",
+    [Language.Georgian]: "გამოიწერეთ MyHair Clinic-ის სოციალური მედიის ანგარიშები და მიიღეთ უახლესი სიახლეები."
+  },
+  "socialMedia.heroTitle": {
+    [Language.Turkish]: "Bizi Sosyal Medyada Takip Edin",
+    [Language.English]: "Follow Us on Social Media",
+    [Language.Russian]: "Подписывайтесь на нас в социальных сетях",
+    [Language.Georgian]: "გამოგვყევით სოციალურ მედიაში"
+  },
+  "socialMedia.heroDescription": {
+    [Language.Turkish]: "Saç ekimi sonuçları, hasta hikayeleri ve en son klinik yeniliklerimiz hakkında güncel bilgiler için sosyal medya hesaplarımızı takip edin.",
+    [Language.English]: "Follow our social media accounts for updates on hair transplant results, patient stories, and our latest clinic innovations.",
+    [Language.Russian]: "Подписывайтесь на наши аккаунты в социальных сетях, чтобы быть в курсе результатов трансплантации волос, историй пациентов и наших последних клинических инноваций.",
+    [Language.Georgian]: "გამოიწერეთ ჩვენი სოციალური მედიის ანგარიშები თმის გადანერგვის შედეგების, პაციენტების ისტორიების და ჩვენი უახლესი კლინიკური ინოვაციების შესახებ განახლებებისთვის."
+  },
+  "socialMedia.followUs": {
+    [Language.Turkish]: "Bizi Takip Edin",
+    [Language.English]: "Follow Us",
+    [Language.Russian]: "Подписывайтесь на нас",
+    [Language.Georgian]: "გამოგვყევით"
+  },
+  "socialMedia.followers": {
+    [Language.Turkish]: "takipçi",
+    [Language.English]: "followers",
+    [Language.Russian]: "подписчиков",
+    [Language.Georgian]: "გამომწერები"
+  },
+  "socialMedia.follow": {
+    [Language.Turkish]: "Takip Et",
+    [Language.English]: "Follow",
+    [Language.Russian]: "Подписаться",
+    [Language.Georgian]: "გამოწერა"
+  },
+  "socialMedia.featuredPosts": {
+    [Language.Turkish]: "Öne Çıkan Paylaşımlar",
+    [Language.English]: "Featured Posts",
+    [Language.Russian]: "Избранные публикации",
+    [Language.Georgian]: "რჩეული პოსტები"
+  },
+  "socialMedia.viewAllPosts": {
+    [Language.Turkish]: "Tüm Paylaşımları Gör",
+    [Language.English]: "View All Posts",
+    [Language.Russian]: "Посмотреть все публикации",
+    [Language.Georgian]: "ყველა პოსტის ნახვა"
+  },
+  "socialMedia.allPosts": {
+    [Language.Turkish]: "Tüm Paylaşımlar",
+    [Language.English]: "All Posts",
+    [Language.Russian]: "Все публикации",
+    [Language.Georgian]: "ყველა პოსტი"
+  },
+  "socialMedia.clientTestimonials": {
+    [Language.Turkish]: "Müşteri Yorumları",
+    [Language.English]: "Client Testimonials",
+    [Language.Russian]: "Отзывы клиентов",
+    [Language.Georgian]: "კლიენტის ტესტიმონიები"
+  },
+  "socialMedia.testimonialDescription": {
+    [Language.Turkish]: "Sosyal medya platformlarında bizim hakkımızda ne söylüyorlar?",
+    [Language.English]: "What are they saying about us on social media platforms?",
+    [Language.Russian]: "Что о нас говорят в социальных сетях?",
+    [Language.Georgian]: "რას ამბობენ ჩვენზე სოციალური მედიის პლატფორმებზე?"
+  },
+  "socialMedia.ctaTitle": {
+    [Language.Turkish]: "Bize Ulaşın",
+    [Language.English]: "Connect With Us",
+    [Language.Russian]: "Свяжитесь с нами",
+    [Language.Georgian]: "დაგვიკავშირდით"
+  },
+  "socialMedia.ctaDescription": {
+    [Language.Turkish]: "Saç ekimi yolculuğunuza başlamak için bugün bizimle iletişime geçin",
+    [Language.English]: "Reach out to us today to start your hair transplant journey",
+    [Language.Russian]: "Свяжитесь с нами сегодня, чтобы начать путь к трансплантации волос",
+    [Language.Georgian]: "დაგვიკავშირდით დღეს თმის გადანერგვის მოგზაურობის დასაწყებად"
+  },
   "services.details": {
     [Language.Turkish]: "Detaylar",
     [Language.English]: "Details",
