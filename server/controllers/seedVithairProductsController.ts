@@ -1,36 +1,33 @@
 import { Request, Response } from "express";
 import { storage } from "../storage";
-import { InsertProduct } from "@shared/schema";
+import slugify from "slugify";
 
+// Seed Vithair hair products
 export async function seedVithairProducts(req: Request, res: Response) {
   try {
-    // Temizleme: Önce mevcut tüm ürünleri silelim
-    const existingProducts = await storage.getProducts();
-    for (const product of existingProducts) {
-      await storage.deleteProduct(product.id);
-    }
-    
-    // Yeni ürünleri ekleme
-    const products: InsertProduct[] = [
+    // Delete existing products first
+    await storage.deleteAllProducts();
+
+    const products = [
       {
         slug: "vie-anti-hair-loss-shampoo",
         nameTR: "Vie Saç Dökülmesine Karşı Şampuan",
         nameEN: "Vie Anti Hair Loss Shampoo",
-        nameRU: "Vie Шампунь Против Выпадения Волос",
+        nameRU: "Vie Шампунь против выпадения волос",
         nameKA: "Vie თმის ცვენის საწინააღმდეგო შამპუნი",
-        descriptionTR: "Saç dökülmesini azaltan ve saç köklerini güçlendiren özel formüllü şampuan.",
-        descriptionEN: "Specially formulated shampoo that reduces hair loss and strengthens hair roots.",
-        descriptionRU: "Специально разработанный шампунь, уменьшающий выпадение волос и укрепляющий корни волос.",
-        descriptionKA: "სპეციალურად ფორმულირებული შამპუნი, რომელიც ამცირებს თმის ცვენას და აძლიერებს თმის ფესვებს.",
+        descriptionTR: "Saç dökülmesine karşı etkili formül içeren bu şampuan, saç köklerini güçlendirir ve saç dökülmesini önlemeye yardımcı olur.",
+        descriptionEN: "This shampoo contains an effective formula against hair loss that strengthens hair roots and helps prevent hair loss.",
+        descriptionRU: "Этот шампунь содержит эффективную формулу против выпадения волос, которая укрепляет корни волос и помогает предотвратить их выпадение.",
+        descriptionKA: "ეს შამპუნი შეიცავს ეფექტურ ფორმულას თმის ცვენის წინააღმდეგ, რომელიც აძლიერებს თმის ფესვებს და ხელს უწყობს თმის ცვენის პრევენციას.",
+        usageTR: "Islak saça uygulayın, nazikçe masaj yapın ve durulayın. En iyi sonuç için haftada en az 3 kez kullanın.",
+        usageEN: "Apply to wet hair, massage gently, and rinse. Use at least 3 times per week for best results.",
+        usageRU: "Нанесите на влажные волосы, аккуратно помассируйте и смойте. Используйте не менее 3 раз в неделю для достижения наилучших результатов.",
+        usageKA: "წაუსვით სველ თმას, ფრთხილად დაიმასაჟეთ და გაავლეთ. გამოიყენეთ კვირაში მინიმუმ 3-ჯერ საუკეთესო შედეგებისთვის.",
+        ingredientsTR: "Su, Sodyum Laureth Sülfat, Kakao Yağı, Argan Yağı, Bitkisel Proteinler, Biotin, Keratin",
+        ingredientsEN: "Water, Sodium Laureth Sulfate, Cocoa Butter, Argan Oil, Vegetable Proteins, Biotin, Keratin",
+        ingredientsRU: "Вода, Лаурет Сульфат Натрия, Масло Какао, Аргановое Масло, Растительные Белки, Биотин, Кератин",
+        ingredientsKA: "წყალი, ნატრიუმის ლაურეტ სულფატი, კაკაოს კარაქი, არგანის ზეთი, მცენარეული ცილები, ბიოტინი, კერატინი",
         imageUrl: "/images/products/vie-anti-hair-loss-shampoo.svg",
-        usageTR: "Islak saça uygulayın, nazikçe masaj yapın ve durulayın. Haftada 2-3 kez kullanın.",
-        usageEN: "Apply to wet hair, massage gently, and rinse. Use 2-3 times per week.",
-        usageRU: "Нанесите на влажные волосы, мягко помассируйте и смойте. Используйте 2-3 раза в неделю.",
-        usageKA: "წაისვით სველ თმაზე, ნაზად გაიმასაჟეთ და გაიწმინდეთ. გამოიყენეთ კვირაში 2-3-ჯერ.",
-        ingredientsTR: "Su, Sodyum Lauret Sülfat, Kakao Yağı, Argan Yağı, Keratin, Kafein, Biotin",
-        ingredientsEN: "Water, Sodium Laureth Sulfate, Cocoa Butter, Argan Oil, Keratin, Caffeine, Biotin",
-        ingredientsRU: "Вода, Лаурет Сульфат Натрия, Масло Какао, Аргановое Масло, Кератин, Кофеин, Биотин",
-        ingredientsKA: "წყალი, ნატრიუმის ლაურეთ სულფატი, კაკაოს კარაქი, არგანის ზეთი, კერატინი, კოფეინი, ბიოტინი",
         order: 1,
         isActive: true
       },
@@ -38,21 +35,21 @@ export async function seedVithairProducts(req: Request, res: Response) {
         slug: "vie-volumizing-shampoo",
         nameTR: "Vie Saç Hacim Şampuanı",
         nameEN: "Vie Volumizing Shampoo",
-        nameRU: "Vie Объемный Шампунь",
-        nameKA: "Vie მოცულობითი შამპუნი",
-        descriptionTR: "İnce telli saçlara hacim ve canlılık veren besleyici şampuan.",
-        descriptionEN: "Nourishing shampoo that gives volume and vitality to fine hair.",
-        descriptionRU: "Питательный шампунь, придающий объем и жизненную силу тонким волосам.",
-        descriptionKA: "მკვებავი შამპუნი, რომელიც ანიჭებს მოცულობასა და სიცოცხლეს წვრილ თმას.",
+        nameRU: "Vie Шампунь для объема волос",
+        nameKA: "Vie მოცულობის შამპუნი",
+        descriptionTR: "İnce telli saçlar için özel olarak formüle edilmiş bu şampuan, saçlara ekstra hacim ve canlılık kazandırır.",
+        descriptionEN: "Specially formulated for fine hair, this shampoo gives extra volume and vitality to your hair.",
+        descriptionRU: "Специально разработанный для тонких волос, этот шампунь придает волосам дополнительный объем и жизненную силу.",
+        descriptionKA: "სპეციალურად ფორმულირებული თხელი თმისთვის, ეს შამპუნი აძლევს დამატებით მოცულობას და სიცოცხლეს თქვენს თმას.",
+        usageTR: "Islak saça uygulayın, masaj yapın ve iyice durulayın. Hacim için köklerden uçlara doğru masaj yapın.",
+        usageEN: "Apply to wet hair, massage, and rinse thoroughly. Massage from roots to ends for volume.",
+        usageRU: "Нанесите на влажные волосы, помассируйте и тщательно смойте. Для объема массируйте от корней до кончиков.",
+        usageKA: "წაუსვით სველ თმას, დაიმასაჟეთ და საფუძვლიანად გაავლეთ. დაიმასაჟეთ ფესვებიდან ბოლოებამდე მოცულობისთვის.",
+        ingredientsTR: "Su, Sodyum Laureth Sülfat, Hindistan Cevizi Yağı, Pantenol, Keratin, E Vitamini",
+        ingredientsEN: "Water, Sodium Laureth Sulfate, Coconut Oil, Panthenol, Keratin, Vitamin E",
+        ingredientsRU: "Вода, Лаурет Сульфат Натрия, Кокосовое Масло, Пантенол, Кератин, Витамин Е",
+        ingredientsKA: "წყალი, ნატრიუმის ლაურეტ სულფატი, ქოქოსის ზეთი, პანთენოლი, კერატინი, ვიტამინი E",
         imageUrl: "/images/products/vie-volumizing-shampoo.svg",
-        usageTR: "Islak saça uygulayın, 2-3 dakika bekletin ve durulayın. Günlük kullanıma uygundur.",
-        usageEN: "Apply to wet hair, wait 2-3 minutes, and rinse. Suitable for daily use.",
-        usageRU: "Нанесите на влажные волосы, подождите 2-3 минуты и смойте. Подходит для ежедневного использования.",
-        usageKA: "წაისვით სველ თმაზე, დაელოდეთ 2-3 წუთი და გაიწმინდეთ. შესაფერისია ყოველდღიური გამოყენებისთვის.",
-        ingredientsTR: "Su, Sodyum Lauret Sülfat, Panthenol, Hidrolize Protein, Nane Özü, E Vitamini",
-        ingredientsEN: "Water, Sodium Laureth Sulfate, Panthenol, Hydrolyzed Protein, Mint Extract, Vitamin E",
-        ingredientsRU: "Вода, Лаурет Сульфат Натрия, Пантенол, Гидролизованный Протеин, Мятный Экстракт, Витамин Е",
-        ingredientsKA: "წყალი, ნატრიუმის ლაურეთ სულფატი, პანთენოლი, ჰიდროლიზებული ცილა, პიტნის ექსტრაქტი, ვიტამინი E",
         order: 2,
         isActive: true
       },
@@ -60,21 +57,21 @@ export async function seedVithairProducts(req: Request, res: Response) {
         slug: "vie-keratin-hair-mask",
         nameTR: "Vie Keratin Saç Maskesi",
         nameEN: "Vie Keratin Hair Mask",
-        nameRU: "Vie Кератиновая Маска для Волос",
+        nameRU: "Vie Кератиновая маска для волос",
         nameKA: "Vie კერატინის თმის ნიღაბი",
-        descriptionTR: "Yıpranmış saçları derinlemesine onaran ve pürüzsüzleştiren yoğun bakım maskesi.",
-        descriptionEN: "Intensive care mask that deeply repairs and smoothes damaged hair.",
-        descriptionRU: "Маска интенсивного ухода, глубоко восстанавливающая и разглаживающая поврежденные волосы.",
-        descriptionKA: "ინტენსიური მოვლის ნიღაბი, რომელიც ღრმად აღადგენს და ასწორებს დაზიანებულ თმას.",
+        descriptionTR: "Yoğun keratin içeren bu maske, yıpranmış saçları onarır, güçlendirir ve parlaklık kazandırır.",
+        descriptionEN: "This mask, rich in keratin, repairs damaged hair, strengthens it, and adds shine.",
+        descriptionRU: "Эта маска, богатая кератином, восстанавливает поврежденные волосы, укрепляет их и придает блеск.",
+        descriptionKA: "ეს ნიღაბი, მდიდარი კერატინით, არემონტებს დაზიანებულ თმას, აძლიერებს მას და მატებს ბზინვარებას.",
+        usageTR: "Yıkanmış saça uygulayın, 10-15 dakika bekletin ve iyice durulayın. Haftada 1-2 kez kullanın.",
+        usageEN: "Apply to washed hair, leave for 10-15 minutes, and rinse thoroughly. Use 1-2 times per week.",
+        usageRU: "Нанесите на вымытые волосы, оставьте на 10-15 минут и тщательно смойте. Используйте 1-2 раза в неделю.",
+        usageKA: "წაუსვით გარეცხილ თმას, დატოვეთ 10-15 წუთი და საფუძვლიანად გაავლეთ. გამოიყენეთ კვირაში 1-2-ჯერ.",
+        ingredientsTR: "Su, Keratin, Argan Yağı, Makadamya Yağı, Shea Yağı, E Vitamini",
+        ingredientsEN: "Water, Keratin, Argan Oil, Macadamia Oil, Shea Butter, Vitamin E",
+        ingredientsRU: "Вода, Кератин, Аргановое Масло, Масло Макадамии, Масло Ши, Витамин Е",
+        ingredientsKA: "წყალი, კერატინი, არგანის ზეთი, მაკადამიის ზეთი, ში კარაქი, ვიტამინი E",
         imageUrl: "/images/products/vie-keratin-hair-mask.svg",
-        usageTR: "Şampuanlı yıkamadan sonra nemli saça uygulayın, 10-15 dakika bekletin ve durulayın. Haftada 1-2 kez kullanın.",
-        usageEN: "Apply to damp hair after shampooing, wait 10-15 minutes, and rinse. Use 1-2 times per week.",
-        usageRU: "Нанесите на влажные волосы после мытья шампунем, подождите 10-15 минут и смойте. Используйте 1-2 раза в неделю.",
-        usageKA: "წაისვით ნოტიო თმაზე შამპუნის შემდეგ, დაელოდეთ 10-15 წუთი და გაიწმინდეთ. გამოიყენეთ კვირაში 1-2-ჯერ.",
-        ingredientsTR: "Su, Keratin, Argan Yağı, Shea Yağı, Biotin, D Panthenol, E Vitamini, Gliserin",
-        ingredientsEN: "Water, Keratin, Argan Oil, Shea Butter, Biotin, D-Panthenol, Vitamin E, Glycerin",
-        ingredientsRU: "Вода, Кератин, Аргановое Масло, Масло Ши, Биотин, D-Пантенол, Витамин Е, Глицерин",
-        ingredientsKA: "წყალი, კერატინი, არგანის ზეთი, შეას კარაქი, ბიოტინი, D-პანთენოლი, ვიტამინი E, გლიცერინი",
         order: 3,
         isActive: true
       },
@@ -82,21 +79,21 @@ export async function seedVithairProducts(req: Request, res: Response) {
         slug: "vie-hair-growth-serum",
         nameTR: "Vie Saç Büyüme Serumu",
         nameEN: "Vie Hair Growth Serum",
-        nameRU: "Vie Сыворотка для Роста Волос",
+        nameRU: "Vie Сыворотка для роста волос",
         nameKA: "Vie თმის ზრდის შრატი",
-        descriptionTR: "Saç büyümesini hızlandıran ve saç köklerini canlandıran konsantre serum.",
-        descriptionEN: "Concentrated serum that accelerates hair growth and revitalizes hair roots.",
-        descriptionRU: "Концентрированная сыворотка, ускоряющая рост волос и оживляющая корни волос.",
-        descriptionKA: "კონცენტრირებული შრატი, რომელიც აჩქარებს თმის ზრდას და აცოცხლებს თმის ფესვებს.",
+        descriptionTR: "Bu konsantre serum, saç büyümesini uyarır, dökülmeyi azaltır ve saç köklerini güçlendirir.",
+        descriptionEN: "This concentrated serum stimulates hair growth, reduces hair loss, and strengthens hair follicles.",
+        descriptionRU: "Эта концентрированная сыворотка стимулирует рост волос, уменьшает их выпадение и укрепляет волосяные фолликулы.",
+        descriptionKA: "ეს კონცენტრირებული შრატი ასტიმულირებს თმის ზრდას, ამცირებს თმის ცვენას და აძლიერებს თმის ფოლიკულებს.",
+        usageTR: "Temiz, kuru saç derisine direkt uygulayın ve nazikçe masaj yapın. Günde 1 kez kullanın.",
+        usageEN: "Apply directly to clean, dry scalp and massage gently. Use once daily.",
+        usageRU: "Нанесите непосредственно на чистую, сухую кожу головы и аккуратно помассируйте. Используйте один раз в день.",
+        usageKA: "წაუსვით პირდაპირ სუფთა, მშრალ თავის კანს და ფრთხილად დაიმასაჟეთ. გამოიყენეთ დღეში ერთხელ.",
+        ingredientsTR: "Su, Kafein, Biyotin, Niasinamid, Peptitler, Procapil, Pantenol",
+        ingredientsEN: "Water, Caffeine, Biotin, Niacinamide, Peptides, Procapil, Panthenol",
+        ingredientsRU: "Вода, Кофеин, Биотин, Ниацинамид, Пептиды, Прокапил, Пантенол",
+        ingredientsKA: "წყალი, კაფეინი, ბიოტინი, ნიაცინამიდი, პეპტიდები, პროკაპილი, პანთენოლი",
         imageUrl: "/images/products/vie-hair-growth-serum.svg",
-        usageTR: "Temiz kuru veya nemli saç derisine birkaç damla uygulayın ve nazikçe masaj yapın. Günlük kullanım için uygundur.",
-        usageEN: "Apply a few drops to clean dry or damp scalp and massage gently. Suitable for daily use.",
-        usageRU: "Нанесите несколько капель на чистую сухую или влажную кожу головы и мягко помассируйте. Подходит для ежедневного использования.",
-        usageKA: "წაისვით რამდენიმე წვეთი სუფთა მშრალ ან ნოტიო თავის კანზე და ნაზად გაიმასაჟეთ. შესაფერისია ყოველდღიური გამოყენებისთვის.",
-        ingredientsTR: "Kafein, Biotin, Peptidler, Niasinamid, Argan Yağı, Biberiye Özü, Ginseng Özü",
-        ingredientsEN: "Caffeine, Biotin, Peptides, Niacinamide, Argan Oil, Rosemary Extract, Ginseng Extract",
-        ingredientsRU: "Кофеин, Биотин, Пептиды, Ниацинамид, Аргановое Масло, Экстракт Розмарина, Экстракт Женьшеня",
-        ingredientsKA: "კოფეინი, ბიოტინი, პეპტიდები, ნიაცინამიდი, არგანის ზეთი, როზმარინის ექსტრაქტი, ჟენშენის ექსტრაქტი",
         order: 4,
         isActive: true
       },
@@ -104,21 +101,21 @@ export async function seedVithairProducts(req: Request, res: Response) {
         slug: "vie-beard-growth-oil",
         nameTR: "Vie Sakal Büyüme Yağı",
         nameEN: "Vie Beard Growth Oil",
-        nameRU: "Vie Масло для Роста Бороды",
+        nameRU: "Vie Масло для роста бороды",
         nameKA: "Vie წვერის ზრდის ზეთი",
-        descriptionTR: "Sakal büyümesini destekleyen ve cildi nemlendiren doğal yağ karışımı.",
-        descriptionEN: "Natural oil blend that supports beard growth and moisturizes the skin.",
-        descriptionRU: "Натуральная смесь масел, которая поддерживает рост бороды и увлажняет кожу.",
-        descriptionKA: "ბუნებრივი ზეთების ნარევი, რომელიც ხელს უწყობს წვერის ზრდას და ატენიანებს კანს.",
+        descriptionTR: "Özel olarak formüle edilmiş bu yağ, sakal büyümesini teşvik eder, kaşıntıyı azaltır ve sakalı yumuşatır.",
+        descriptionEN: "This specially formulated oil promotes beard growth, reduces itching, and softens the beard.",
+        descriptionRU: "Это специально разработанное масло способствует росту бороды, уменьшает зуд и смягчает бороду.",
+        descriptionKA: "ეს სპეციალურად ფორმულირებული ზეთი ხელს უწყობს წვერის ზრდას, ამცირებს ქავილს და არბილებს წვერს.",
+        usageTR: "Birkaç damla yağı avucunuza alın, elleriniz arasında yayın ve sakalınıza masaj yaparak uygulayın. Günde 1-2 kez kullanın.",
+        usageEN: "Take a few drops of oil in your palm, spread between your hands, and apply to your beard by massaging. Use 1-2 times daily.",
+        usageRU: "Возьмите несколько капель масла на ладонь, распределите между руками и нанесите на бороду, массируя. Используйте 1-2 раза в день.",
+        usageKA: "აიღეთ რამდენიმე წვეთი ზეთი ხელისგულზე, გაშალეთ ხელებს შორის და წაუსვით წვერს მასაჟით. გამოიყენეთ დღეში 1-2-ჯერ.",
+        ingredientsTR: "Argan Yağı, Jojoba Yağı, Biberiye Yağı, Kekik Yağı, E Vitamini, Üzüm Çekirdeği Yağı",
+        ingredientsEN: "Argan Oil, Jojoba Oil, Rosemary Oil, Thyme Oil, Vitamin E, Grapeseed Oil",
+        ingredientsRU: "Аргановое Масло, Масло Жожоба, Масло Розмарина, Масло Тимьяна, Витамин Е, Масло Виноградных Косточек",
+        ingredientsKA: "არგანის ზეთი, ჟოჟობას ზეთი, როზმარინის ზეთი, ურცის ზეთი, ვიტამინი E, ყურძნის წიპწის ზეთი",
         imageUrl: "/images/products/vie-beard-growth-oil.svg",
-        usageTR: "Temiz cilde 3-4 damla uygulayın ve nazikçe masaj yapın. Günlük kullanım için uygundur.",
-        usageEN: "Apply 3-4 drops to clean skin and massage gently. Suitable for daily use.",
-        usageRU: "Нанесите 3-4 капли на чистую кожу и мягко помассируйте. Подходит для ежедневного использования.",
-        usageKA: "წაისვით 3-4 წვეთი სუფთა კანზე და ნაზად გაიმასაჟეთ. შესაფერისია ყოველდღიური გამოყენებისთვის.",
-        ingredientsTR: "Jojoba Yağı, Argan Yağı, Üzüm Çekirdeği Yağı, Biberiye Özü, E Vitamini, Minoxidil",
-        ingredientsEN: "Jojoba Oil, Argan Oil, Grapeseed Oil, Rosemary Extract, Vitamin E, Minoxidil",
-        ingredientsRU: "Масло Жожоба, Аргановое Масло, Масло Виноградных Косточек, Экстракт Розмарина, Витамин Е, Миноксидил",
-        ingredientsKA: "ჟოჟობას ზეთი, არგანის ზეთი, ყურძნის წიპწის ზეთი, როზმარინის ექსტრაქტი, ვიტამინი E, მინოქსიდილი",
         order: 5,
         isActive: true
       },
@@ -126,21 +123,21 @@ export async function seedVithairProducts(req: Request, res: Response) {
         slug: "vie-scalp-therapy-lotion",
         nameTR: "Vie Saç Derisi Terapi Losyonu",
         nameEN: "Vie Scalp Therapy Lotion",
-        nameRU: "Vie Лосьон Терапии Кожи Головы",
+        nameRU: "Vie Лосьон для терапии кожи головы",
         nameKA: "Vie თავის კანის თერაპიის ლოსიონი",
-        descriptionTR: "Kuru ve kaşıntılı saç derisini yatıştıran ve tedavi eden özel formüllü losyon.",
-        descriptionEN: "Specially formulated lotion that soothes and treats dry and itchy scalp.",
-        descriptionRU: "Специально разработанный лосьон, успокаивающий и лечащий сухую и зудящую кожу головы.",
-        descriptionKA: "სპეციალურად ფორმულირებული ლოსიონი, რომელიც ამშვიდებს და მკურნალობს მშრალ და ქავილიან თავის კანს.",
+        descriptionTR: "Hassas ve kuru saç derisi için özel olarak geliştirilmiş bu losyon, saç derisini yatıştırır, nemlenmesini sağlar ve sağlıklı kalmaya yardımcı olur.",
+        descriptionEN: "Specially developed for sensitive and dry scalps, this lotion soothes the scalp, provides hydration, and helps it stay healthy.",
+        descriptionRU: "Специально разработанный для чувствительной и сухой кожи головы, этот лосьон успокаивает кожу головы, обеспечивает увлажнение и помогает ей оставаться здоровой.",
+        descriptionKA: "სპეციალურად შექმნილი მგრძნობიარე და მშრალი თავის კანისთვის, ეს ლოსიონი ამშვიდებს თავის კანს, უზრუნველყოფს ჰიდრატაციას და ეხმარება მას ჯანმრთელად დარჩენაში.",
+        usageTR: "Temiz saça uygulayın ve saç derisine nazikçe masaj yapın. Durulamayın. Haftada 2-3 kez kullanın.",
+        usageEN: "Apply to clean hair and gently massage into scalp. Do not rinse. Use 2-3 times per week.",
+        usageRU: "Нанесите на чистые волосы и аккуратно вмассируйте в кожу головы. Не смывайте. Используйте 2-3 раза в неделю.",
+        usageKA: "წაუსვით სუფთა თმას და ფრთხილად დაიმასაჟეთ თავის კანში. არ გაავლოთ. გამოიყენეთ კვირაში 2-3-ჯერ.",
+        ingredientsTR: "Su, Pantenol, Aloe Vera, Çay Ağacı Yağı, Glikolik Asit, Hiyalüronik Asit, Allantoin",
+        ingredientsEN: "Water, Panthenol, Aloe Vera, Tea Tree Oil, Glycolic Acid, Hyaluronic Acid, Allantoin",
+        ingredientsRU: "Вода, Пантенол, Алоэ Вера, Масло Чайного Дерева, Гликолевая Кислота, Гиалуроновая Кислота, Аллантоин",
+        ingredientsKA: "წყალი, პანთენოლი, ალოე ვერა, ჩაის ხის ზეთი, გლიკოლის მჟავა, ჰიალურონის მჟავა, ალანტოინი",
         imageUrl: "/images/products/vie-scalp-therapy-lotion.svg",
-        usageTR: "Temiz saç derisine uygulayın ve nazikçe masaj yapın. Durulamayın. Haftada 2-3 kez kullanın.",
-        usageEN: "Apply to clean scalp and massage gently. Do not rinse. Use 2-3 times per week.",
-        usageRU: "Нанесите на чистую кожу головы и мягко помассируйте. Не смывайте. Используйте 2-3 раза в неделю.",
-        usageKA: "წაისვით სუფთა თავის კანზე და ნაზად გაიმასაჟეთ. არ გაირეცხოთ. გამოიყენეთ კვირაში 2-3-ჯერ.",
-        ingredientsTR: "Aloe Vera, Çay Ağacı Yağı, Salisilik Asit, Menthol, Panthenol, Niasinamid",
-        ingredientsEN: "Aloe Vera, Tea Tree Oil, Salicylic Acid, Menthol, Panthenol, Niacinamide",
-        ingredientsRU: "Алоэ Вера, Масло Чайного Дерева, Салициловая Кислота, Ментол, Пантенол, Ниацинамид",
-        ingredientsKA: "ალოე ვერა, ჩაის ხის ზეთი, სალიცილის მჟავა, მენთოლი, პანთენოლი, ნიაცინამიდი",
         order: 6,
         isActive: true
       },
@@ -148,21 +145,21 @@ export async function seedVithairProducts(req: Request, res: Response) {
         slug: "vie-argan-hair-oil",
         nameTR: "Vie Argan Saç Yağı",
         nameEN: "Vie Argan Hair Oil",
-        nameRU: "Vie Аргановое Масло для Волос",
+        nameRU: "Vie Аргановое масло для волос",
         nameKA: "Vie არგანის თმის ზეთი",
-        descriptionTR: "Kuru ve yıpranmış saçları besleyen ve parlaklaştıran lüks argan yağı formülü.",
-        descriptionEN: "Luxurious argan oil formula that nourishes and adds shine to dry and damaged hair.",
-        descriptionRU: "Роскошная формула арганового масла, питающая и придающая блеск сухим и поврежденным волосам.",
-        descriptionKA: "ძვირფასი არგანის ზეთის ფორმულა, რომელიც კვებავს და ბზინვარებას ანიჭებს მშრალ და დაზიანებულ თმას.",
+        descriptionTR: "Saf argan yağından yapılan bu ürün, saçları besler, onarır ve ipeksi pürüzsüzlük sağlar.",
+        descriptionEN: "Made from pure argan oil, this product nourishes, repairs, and provides silky smoothness to hair.",
+        descriptionRU: "Сделанный из чистого арганового масла, этот продукт питает, восстанавливает и придает волосам шелковистую гладкость.",
+        descriptionKA: "დამზადებული სუფთა არგანის ზეთისგან, ეს პროდუქტი კვებავს, აღადგენს და უზრუნველყოფს აბრეშუმისებრ სიგლუვეს თმას.",
+        usageTR: "Nemli veya kuru saça birkaç damla uygulayın. Özellikle saç uçlarına odaklanın. Yıkamayın.",
+        usageEN: "Apply a few drops to damp or dry hair. Focus especially on hair ends. Do not wash out.",
+        usageRU: "Нанесите несколько капель на влажные или сухие волосы. Сосредоточьтесь особенно на кончиках волос. Не смывайте.",
+        usageKA: "წაუსვით რამდენიმე წვეთი ნესტიან ან მშრალ თმას. განსაკუთრებით ყურადღება მიაქციეთ თმის ბოლოებს. არ ჩამოიბანოთ.",
+        ingredientsTR: "Saf Argan Yağı, E Vitamini",
+        ingredientsEN: "Pure Argan Oil, Vitamin E",
+        ingredientsRU: "Чистое Аргановое Масло, Витамин Е",
+        ingredientsKA: "სუფთა არგანის ზეთი, ვიტამინი E",
         imageUrl: "/images/products/vie-argan-hair-oil.svg",
-        usageTR: "Nemli veya kuru saçlara birkaç damla uygulayın. Durulama gerektirmez. Günlük kullanıma uygundur.",
-        usageEN: "Apply a few drops to damp or dry hair. No need to rinse. Suitable for daily use.",
-        usageRU: "Нанесите несколько капель на влажные или сухие волосы. Не требует смывания. Подходит для ежедневного использования.",
-        usageKA: "წაისვით რამდენიმე წვეთი ნოტიო ან მშრალ თმაზე. არ საჭიროებს გარეცხვას. შესაფერისია ყოველდღიური გამოყენებისთვის.",
-        ingredientsTR: "Argan Yağı, Jojoba Yağı, Hindistan Cevizi Yağı, E Vitamini, Keten Tohumu Yağı",
-        ingredientsEN: "Argan Oil, Jojoba Oil, Coconut Oil, Vitamin E, Flaxseed Oil",
-        ingredientsRU: "Аргановое Масло, Масло Жожоба, Кокосовое Масло, Витамин Е, Льняное Масло",
-        ingredientsKA: "არგანის ზეთი, ჟოჟობას ზეთი, ქოქოსის ზეთი, ვიტამინი E, სელის ზეთი",
         order: 7,
         isActive: true
       },
@@ -170,43 +167,39 @@ export async function seedVithairProducts(req: Request, res: Response) {
         slug: "vie-hair-repair-conditioner",
         nameTR: "Vie Saç Onarıcı Saç Kremi",
         nameEN: "Vie Hair Repair Conditioner",
-        nameRU: "Vie Восстанавливающий Кондиционер для Волос",
+        nameRU: "Vie Восстанавливающий кондиционер для волос",
         nameKA: "Vie თმის აღმდგენი კონდიციონერი",
-        descriptionTR: "Yıpranmış ve boyalı saçlar için derinlemesine onarım sağlayan zengin saç kremi.",
-        descriptionEN: "Rich conditioner that provides deep repair for damaged and colored hair.",
-        descriptionRU: "Насыщенный кондиционер, обеспечивающий глубокое восстановление поврежденных и окрашенных волос.",
-        descriptionKA: "მდიდარი კონდიციონერი, რომელიც უზრუნველყოფს ღრმა აღდგენას დაზიანებული და შეღებილი თმისთვის.",
+        descriptionTR: "Yıpranmış ve hasar görmüş saçlar için ideal olan bu saç kremi, saçları derinlemesine besler, yumuşatır ve yönetimi kolaylaştırır.",
+        descriptionEN: "Ideal for worn and damaged hair, this conditioner deeply nourishes hair, softens it, and makes it easier to manage.",
+        descriptionRU: "Идеально подходящий для поврежденных волос, этот кондиционер глубоко питает волосы, смягчает их и облегчает укладку.",
+        descriptionKA: "იდეალური გაცვეთილი და დაზიანებული თმისთვის, ეს კონდიციონერი ღრმად კვებავს თმას, არბილებს მას და ამარტივებს მის მართვას.",
+        usageTR: "Şampuandan sonra uygulayın, 2-3 dakika bekletin ve durulayın. Haftada en az 2 kez kullanın.",
+        usageEN: "Apply after shampooing, leave for 2-3 minutes, and rinse. Use at least twice a week.",
+        usageRU: "Нанесите после мытья шампунем, оставьте на 2-3 минуты и смойте. Используйте не менее двух раз в неделю.",
+        usageKA: "წაუსვით დაბანის შემდეგ, დატოვეთ 2-3 წუთი და გაავლეთ. გამოიყენეთ კვირაში მინიმუმ ორჯერ.",
+        ingredientsTR: "Su, Hindistan Cevizi Yağı, Keratin, Şea Yağı, Pantenol, E Vitamini, Jojoba Yağı",
+        ingredientsEN: "Water, Coconut Oil, Keratin, Shea Butter, Panthenol, Vitamin E, Jojoba Oil",
+        ingredientsRU: "Вода, Кокосовое Масло, Кератин, Масло Ши, Пантенол, Витамин Е, Масло Жожоба",
+        ingredientsKA: "წყალი, ქოქოსის ზეთი, კერატინი, ში კარაქი, პანთენოლი, ვიტამინი E, ჟოჟობას ზეთი",
         imageUrl: "/images/products/vie-hair-repair-conditioner.svg",
-        usageTR: "Şampuanla yıkadıktan sonra nemli saça uygulayın, 2-3 dakika bekletin ve durulayın. Her yıkamada kullanılabilir.",
-        usageEN: "Apply to damp hair after shampooing, wait 2-3 minutes, and rinse. Can be used with every wash.",
-        usageRU: "Нанесите на влажные волосы после мытья шампунем, подождите 2-3 минуты и смойте. Можно использовать при каждом мытье.",
-        usageKA: "წაისვით ნოტიო თმაზე შამპუნის შემდეგ, დაელოდეთ 2-3 წუთი და გაიწმინდეთ. შეიძლება გამოყენებული იყოს ყოველი დაბანისას.",
-        ingredientsTR: "Su, Keratin, Argan Yağı, Hindistan Cevizi Yağı, Shea Yağı, Protein Kompleksi, Biotin",
-        ingredientsEN: "Water, Keratin, Argan Oil, Coconut Oil, Shea Butter, Protein Complex, Biotin",
-        ingredientsRU: "Вода, Кератин, Аргановое Масло, Кокосовое Масло, Масло Ши, Протеиновый Комплекс, Биотин",
-        ingredientsKA: "წყალი, კერატინი, არგანის ზეთი, ქოქოსის ზეთი, შეას კარაქი, ცილოვანი კომპლექსი, ბიოტინი",
         order: 8,
         isActive: true
       }
     ];
-    
-    const addedProducts = [];
-    
-    for (const productData of products) {
-      const newProduct = await storage.createProduct(productData);
-      addedProducts.push(newProduct);
+
+    const createdProducts = [];
+
+    for (const product of products) {
+      const newProduct = await storage.createProduct(product);
+      createdProducts.push(newProduct);
     }
-    
-    return res.status(201).json({
-      message: `${addedProducts.length} ürün başarıyla eklendi.`,
-      products: addedProducts
+
+    res.status(200).json({
+      message: "Vithair ürünleri başarıyla eklendi",
+      products: createdProducts
     });
-    
   } catch (error) {
-    console.error("Vithair ürünleri eklenirken hata oluştu:", error);
-    return res.status(500).json({
-      message: "Ürünler eklenirken bir hata oluştu.",
-      error: (error as Error).message
-    });
+    console.error("Error seeding Vithair products:", error);
+    res.status(500).json({ error: "Vithair ürünleri eklenirken bir hata oluştu" });
   }
 }

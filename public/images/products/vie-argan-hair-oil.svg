@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="300" height="400" viewBox="0 0 300 400">
   <rect x="0" y="0" width="300" height="400" fill="#f4f4f4"/>
-  <rect x="95" y="75" width="110" height="240" rx="5" ry="5" fill="#f39c12" stroke="#d68910" stroke-width="2"/>
-  <circle cx="150" cy="60" r="25" fill="#d68910"/>
+  <rect x="110" y="75" width="80" height="180" rx="8" ry="8" fill="#f39c12" stroke="#d35400" stroke-width="2"/>
+  <circle cx="150" cy="60" r="25" fill="#d35400"/>
   <text x="150" y="68" font-family="Arial" font-size="24" font-weight="bold" fill="white" text-anchor="middle">V</text>
   <text x="150" y="340" font-family="Arial" font-size="14" fill="#333" text-anchor="middle">Argan Saç Yağı</text>
-  <text x="150" y="200" font-family="Arial" font-size="36" font-weight="bold" fill="white" text-anchor="middle">VIE</text>
+  <text x="150" y="165" font-family="Arial" font-size="28" font-weight="bold" fill="white" text-anchor="middle">VIE</text>
 </svg>
