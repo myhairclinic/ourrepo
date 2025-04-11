@@ -8,14 +8,12 @@ import { Globe, ChevronDown, Menu, X } from "lucide-react";
 // SVG Logo Component
 const MyHairLogo = () => (
   <div className="flex items-center">
-    <svg width="36" height="36" viewBox="0 0 36 36" className="text-primary fill-current mr-2">
-      <path d="M18 3C9.729 3 3 9.729 3 18s6.729 15 15 15 15-6.729 15-15S26.271 3 18 3zm0 2c7.17 0 13 5.83 13 13s-5.83 13-13 13S5 25.17 5 18 10.83 5 18 5z"/>
-      <path d="M18 9c-2.209 0-4 1.791-4 4 0 1.477.81 2.752 2 3.445V25h4V16.445c1.19-.693 2-1.968 2-3.445 0-2.209-1.791-4-4-4zm0 2c1.105 0 2 .895 2 2s-.895 2-2 2-2-.895-2-2 .895-2 2-2z"/>
-    </svg>
-    <div>
-      <span className="font-bold text-xl text-primary">MyHair</span>
-      <span className="font-light text-neutral-700 text-xl">Clinic</span>
-    </div>
+    <img 
+      src="/images/logo.svg" 
+      alt="MyHair Clinic Logo" 
+      className="h-10 md:h-11 mr-2"
+      style={{ filter: 'drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.1))' }}
+    />
   </div>
 );
 
@@ -159,7 +157,14 @@ export default function Header() {
         isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
       } md:hidden`}>
         <div className="flex justify-between items-center p-4 border-b">
-          <span className="font-semibold text-primary">MyHair Clinic</span>
+          <div className="flex items-center">
+            <img 
+              src="/images/logo.svg" 
+              alt="MyHair Clinic Logo" 
+              className="h-8"
+              style={{ filter: 'drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.1))' }}
+            />
+          </div>
           <button 
             onClick={toggleMobileMenu}
             className="text-neutral-600 p-2"
