@@ -28,7 +28,15 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
   
   const titleField = titleFieldMap[language] as keyof Package;
   const title = pkg[titleField] as string;
-  const description = pkg[`description${language.toUpperCase()}` as keyof Package] as string;
+  const descriptionFieldMap: Record<string, string> = {
+    'TR': 'description_tr',
+    'EN': 'description_en',
+    'RU': 'description_ru',
+    'KA': 'description_ka'
+  };
+  
+  const descriptionField = descriptionFieldMap[language] as keyof Package;
+  const description = pkg[descriptionField] as string;
   const country = pkg.countryOrigin;
   
   // Get translated country name
