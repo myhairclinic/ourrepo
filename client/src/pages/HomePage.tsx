@@ -8,7 +8,7 @@ import WhyChooseUs from "@/components/home/WhyChooseUs";
 import BeforeAfterSlider from "@/components/home/BeforeAfterSlider";
 import Testimonials from "@/components/home/Testimonials";
 import { useTranslation } from "@/lib/translations";
-import SliderWithBanners from "@/components/home/SliderWithBanners";
+import MainSlider from "@/components/home/MainSlider";
 
 export default function HomePage() {
   const { language } = useLanguage();
@@ -43,8 +43,7 @@ export default function HomePage() {
           <p>Pakete başlangıç fiyatı: {packagePrice}</p>
         </div>
         
-        <SliderWithBanners />
-        <HeroSlider />
+        <MainSlider />
         <ServiceCards />
         <PackageCards />
         <WhyChooseUs />
