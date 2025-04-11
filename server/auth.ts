@@ -120,6 +120,23 @@ export function setupAuth(app: Express) {
     }
   });
 
+  // Admin authentication routes
+  app.post("/api/admin/login", passport.authenticate("local"), (req, res) => {
+    res.status(200).json(req.user);
+  });
+
+  app.post("/api/admin/logout", (req, res, next) => {
+    req.logout((err) => {
+      if (err) return next(err);
+      res.sendStatus(200);
+    });
+  });
+
+  app.get("/api/admin/user", (req, res) => {
+    if (!req.isAuthenticated()) return res.status(401).json({ message: "Unauthorized" });
+    res.json(req.user);
+  });
+
   // Auth middleware for protected routes
   app.use("/api/admin/*", (req, res, next) => {
     if (!req.isAuthenticated()) {
