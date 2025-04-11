@@ -126,15 +126,15 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
           {/* Pattern overlay */}
           <div className="absolute inset-0 opacity-10 bg-[url('/images/pattern-dots.svg')] bg-center mix-blend-overlay"></div>
           
-          {/* Country Flag Badge - Bottom Left on Image */}
-          <div className="absolute bottom-20 left-4 z-20 py-1.5 px-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-md flex items-center gap-2 border border-white/50 dark:border-gray-700/50">
+          {/* Country Banner - Top of Image */}
+          <div className="absolute top-0 left-0 right-0 z-30 py-2 px-4 bg-gradient-to-r from-primary/90 to-indigo-500/90 backdrop-blur-sm shadow-md flex items-center gap-2 justify-center">
             <span className="text-lg">{getCountryFlag(country)}</span>
-            <span className="font-medium text-sm text-gray-800 dark:text-white">{countryName}</span>
+            <span className="font-semibold text-sm text-white uppercase tracking-wider">{countryName}</span>
           </div>
           
           {/* Featured Badge */}
           {pkg.isFeatured && (
-            <div className="absolute top-3 right-3 z-20 bg-gradient-to-r from-orange-400 to-amber-500 text-white text-xs py-1.5 px-3 rounded-full shadow-md flex items-center">
+            <div className="absolute top-12 right-3 z-20 bg-gradient-to-r from-orange-400 to-amber-500 text-white text-xs py-1.5 px-3 rounded-full shadow-md flex items-center">
               <Heart className="h-3.5 w-3.5 mr-1.5 fill-white" />
               {getPackageTranslation("packages.exclusive", language)}
             </div>
@@ -147,8 +147,8 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
             </div>
           </div>
           
-          {/* Duration Badge - Top Right on Image */}
-          <div className="absolute top-3 right-3 z-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm text-gray-800 dark:text-white text-xs py-1.5 px-3 rounded-full shadow-md flex items-center border border-white/50 dark:border-gray-700/50">
+          {/* Duration Badge - Bottom Right on Image */}
+          <div className="absolute bottom-4 right-4 z-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm text-gray-800 dark:text-white text-xs py-1.5 px-3 rounded-full shadow-md flex items-center border border-white/50 dark:border-gray-700/50">
             <Clock className="h-3.5 w-3.5 mr-1.5 text-primary" />
             {pkg.durationDays} {getPackageTranslation("packages.days", language)}
           </div>

@@ -12,6 +12,40 @@ import { Separator } from "@/components/ui/separator";
 import { getTranslation } from "@/lib/translations";
 import { getPackageTranslation } from "@/lib/packageTranslations";
 
+// Function to get country flag emoji
+const getCountryFlag = (countryCode: string): string => {
+  switch (countryCode.toLowerCase()) {
+    case 'tr':
+      return '🇹🇷';
+    case 'ru':
+      return '🇷🇺';
+    case 'az':
+      return '🇦🇿';
+    case 'kz':
+      return '🇰🇿';
+    case 'ua':
+      return '🇺🇦';
+    case 'ir':
+      return '🇮🇷';
+    case 'ge':
+      return '🇬🇪';
+    case 'am':
+      return '🇦🇲';
+    case 'by':
+      return '🇧🇾';
+    case 'md':
+      return '🇲🇩';
+    case 'gr':
+      return '🇬🇷';
+    case 'bg':
+      return '🇧🇬';
+    case 'ro':
+      return '🇷🇴';
+    default:
+      return '🌍';
+  }
+};
+
 const PackagesPage: React.FC = () => {
   const { language } = useLanguage();
   
@@ -198,6 +232,48 @@ const PackagesPage: React.FC = () => {
                 <p className="text-gray-600 dark:text-gray-300">{getTranslation("packages.seamlessTransportDesc", language)}</p>
               </div>
             </div>
+          </div>
+        </div>
+        
+        {/* Countries List */}
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="h-10 w-10 bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/30 dark:to-indigo-900/30 rounded-full flex items-center justify-center shadow-sm">
+              <Globe className="h-5 w-5 text-blue-500" />
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">
+              {language === Language.Turkish ? 'Ülkelere Göre Paketler' : 
+              language === Language.English ? 'Packages by Country' : 
+              language === Language.Russian ? 'Пакеты по странам' : 
+              'პაკეტები ქვეყნების მიხედვით'}
+            </h2>
+          </div>
+          
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 mb-12">
+            {['tr', 'ru', 'az', 'ua', 'ir', 'kz'].map((countryCode) => {
+              // Count packages for this country
+              const countryPackages = packages?.filter(pkg => pkg.countryOrigin === countryCode) || [];
+              
+              const height = countryCode === 'tr' || countryCode === 'ru' ? 'h-36' : 'h-32';
+              
+              return (
+                <div key={countryCode} className={`${height} relative group overflow-hidden rounded-xl shadow-md border border-blue-100 dark:border-blue-900/30`}>
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/40 to-purple-500/40 group-hover:opacity-70 opacity-50 transition-opacity duration-300"></div>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
+                    <span className="text-4xl mb-2">{getCountryFlag(countryCode)}</span>
+                    <h3 className="text-lg font-bold text-white drop-shadow-md">
+                      {getPackageTranslation(`countries.${countryCode}`, language)}
+                    </h3>
+                    <div className="text-sm mt-2 bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full text-white/90 font-medium border border-white/20">
+                      {countryPackages.length} {language === Language.Turkish ? 'paket' : 
+                      language === Language.English ? 'packages' : 
+                      language === Language.Russian ? 'пакетов' : 
+                      'პაკეტები'}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
         
