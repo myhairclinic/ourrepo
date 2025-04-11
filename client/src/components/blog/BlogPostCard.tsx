@@ -66,57 +66,69 @@ export function BlogPostCard({ post, formatDate, getCategoryName }: BlogPostCard
   const blogUrl = addPrefix(`/blog/${post.slug}`);
   
   return (
-    <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg border border-border/50 hover:border-primary/20 bg-card/50 hover:bg-card blog-post-card">
+    <Card className="group overflow-hidden transition-all duration-300 hover:shadow-xl border border-border/50 hover:border-primary/20 bg-gradient-to-b from-card to-card/90 hover:from-card/80 hover:to-card blog-post-card rounded-xl">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-0">
-        <div className="relative md:col-span-5 aspect-[16/9] md:aspect-auto overflow-hidden">
+        <div className="relative md:col-span-5 aspect-[16/9] md:aspect-auto overflow-hidden md:rounded-l-xl">
           <div className="absolute inset-0 z-20">
             <Link href={blogUrl}>
               <span className="sr-only">{title}</span>
               <span className="absolute inset-0"></span>
             </Link>
           </div>
+          <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
           <img 
             src={post.imageUrl || '/images/blog/default-blog.jpg'} 
             alt={title}
-            className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500" 
+            className="object-cover w-full h-full transform group-hover:scale-110 transition-transform duration-700 ease-in-out" 
           />
           <div className="absolute top-4 left-4 z-10">
-            <Badge variant="secondary" className="bg-primary text-primary-foreground shadow-md hover:bg-primary/90">
+            <Badge 
+              variant="secondary" 
+              className="bg-primary text-primary-foreground shadow-md hover:bg-primary/90 backdrop-blur-sm"
+            >
               {getCategoryName(post.category)}
             </Badge>
           </div>
+          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent z-[5] opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
         </div>
         
-        <div className="md:col-span-7 p-6">
-          <CardHeader className="p-0 pb-4">
+        <div className="md:col-span-7 p-6 relative">
+          {/* Subtle pattern background */}
+          <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none"></div>
+          
+          <CardHeader className="p-0 pb-4 relative z-10">
             <div className="mb-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-              <span className="flex items-center bg-muted/50 px-2 py-1 rounded-full">
-                <Calendar className="h-3 w-3 mr-1" />
+              <span className="flex items-center bg-muted/70 px-2 py-1 rounded-full shadow-sm">
+                <Calendar className="h-3 w-3 mr-1 text-primary" />
                 {formatDate(post.createdAt)}
               </span>
-              <span className="flex items-center bg-muted/50 px-2 py-1 rounded-full">
-                <Clock className="h-3 w-3 mr-1" />
+              <span className="flex items-center bg-muted/70 px-2 py-1 rounded-full shadow-sm">
+                <Clock className="h-3 w-3 mr-1 text-primary" />
                 {post.readingTime} {t('blog.minutes')}
               </span>
-              <span className="flex items-center bg-muted/50 px-2 py-1 rounded-full">
-                <Eye className="h-3 w-3 mr-1" />
+              <span className="flex items-center bg-muted/70 px-2 py-1 rounded-full shadow-sm">
+                <Eye className="h-3 w-3 mr-1 text-primary" />
                 {post.viewCount} {t('blog.views')}
               </span>
             </div>
-            <CardTitle className="text-xl font-bold">
+            <CardTitle className="text-xl md:text-2xl font-bold group-hover:text-primary transition-colors duration-300">
               <Link href={blogUrl}>
-                <span className="hover:text-primary transition-colors line-clamp-2">{title}</span>
+                <span className="bg-clip-text hover:text-transparent hover:bg-gradient-to-r hover:from-primary hover:to-primary/70 transition-all line-clamp-2">{title}</span>
               </Link>
             </CardTitle>
           </CardHeader>
           
-          <CardContent className="p-0 pb-5">
-            <p className="text-muted-foreground line-clamp-3 text-sm leading-relaxed">{summary}</p>
+          <CardContent className="p-0 pb-5 relative z-10">
+            <p className="text-muted-foreground line-clamp-3 text-sm leading-relaxed group-hover:text-foreground/90 transition-colors duration-300">{summary}</p>
             
             {post.tags && Array.isArray(post.tags) && post.tags.length > 0 && (
               <div className="mt-3 flex flex-wrap gap-2">
-                {post.tags.slice(0, 2).map((tag) => (
-                  <Badge key={tag} variant="outline" className="text-xs bg-background">
+                {post.tags.slice(0, 3).map((tag) => (
+                  <Badge 
+                    key={tag} 
+                    variant="outline" 
+                    className="text-xs bg-background/80 backdrop-blur-sm hover:bg-primary/10 transition-colors duration-300 border-primary/20"
+                  >
                     {tag}
                   </Badge>
                 ))}
@@ -124,9 +136,9 @@ export function BlogPostCard({ post, formatDate, getCategoryName }: BlogPostCard
             )}
           </CardContent>
           
-          <CardFooter className="p-0 flex items-center justify-between">
+          <CardFooter className="p-0 flex items-center justify-between relative z-10 mt-auto">
             <div className="flex items-center gap-2">
-              <Avatar className="h-8 w-8 ring-2 ring-background">
+              <Avatar className="h-9 w-9 ring-2 ring-background shadow-sm transition-transform group-hover:scale-105 duration-300">
                 {post.authorAvatar ? (
                   <AvatarImage src={post.authorAvatar} alt={post.author} />
                 ) : null}
@@ -142,10 +154,12 @@ export function BlogPostCard({ post, formatDate, getCategoryName }: BlogPostCard
               <Button
                 size="sm"
                 variant="secondary"
-                className="gap-1 shadow-sm group-hover:bg-primary group-hover:text-primary-foreground"
+                className="gap-1 shadow-sm group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300"
               >
-                {t('common.readMore')}
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                <span className="relative overflow-hidden inline-block">
+                  <span className="relative z-10">{t('common.readMore')}</span>
+                </span>
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 duration-300" />
               </Button>
             </Link>
           </CardFooter>
