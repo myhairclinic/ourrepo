@@ -491,10 +491,10 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Georgian]: "დააჭირეთ გასაფართოებლად"
   },
   "packages.tbilisiView": {
-    [Language.Turkish]: "Tiflis Manzarası",
-    [Language.English]: "Tbilisi View",
-    [Language.Russian]: "Вид на Тбилиси",
-    [Language.Georgian]: "თბილისის ხედი"
+    [Language.Turkish]: "",
+    [Language.English]: "",
+    [Language.Russian]: "",
+    [Language.Georgian]: ""
   },
   "packages.clinicProcedure": {
     [Language.Turkish]: "Klinik Tedavi Süreci",

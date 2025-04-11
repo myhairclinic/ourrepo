@@ -461,12 +461,12 @@ export default function PackageDetailPage() {
                       >
                         <img
                           src={img}
-                          alt={`${title} - ${img.includes('clinic-procedures') ? getTranslation("packages.clinicProcedure", language) : getTranslation("packages.tbilisiView", language)} ${index + 1}`}
+                          alt={`${title} ${img.includes('clinic-procedures') ? '- ' + getTranslation("packages.clinicProcedure", language) : ''} ${index + 1}`}
                           className="object-cover h-full w-full group-hover:scale-105 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                           <div className="text-white">
-                            <span className="text-sm font-medium">{img.includes('clinic-procedures') ? getTranslation("packages.clinicProcedure", language) : getTranslation("packages.tbilisiView", language)}</span>
+                            <span className="text-sm font-medium">{img.includes('clinic-procedures') ? getTranslation("packages.clinicProcedure", language) : ''}</span>
                             <p className="text-xs text-white/80">{getTranslation("packages.clickToExpand", language)}</p>
                           </div>
                         </div>
