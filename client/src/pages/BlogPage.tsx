@@ -127,53 +127,95 @@ export default function BlogPage() {
     }
   }, [location]);
   
-  // Fetch blog posts
-  const { data: allBlogPosts, isLoading } = useQuery<BlogPost[]>({
-    queryKey: ["/api/blog"],
+  // Paginated blog posts state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  
+  // Sayfalama sorgusu
+  const { 
+    data: paginatedData, 
+    isLoading 
+  } = useQuery<{
+    posts: BlogPost[];
+    totalPosts: number;
+    totalPages: number;
+    currentPage: number;
+  }>({
+    queryKey: [
+      "/api/blog/paginated", 
+      currentPage,
+      selectedCategory || 'all',
+      activeSort === 'date-desc' ? 'newest' : 
+      activeSort === 'date-asc' ? 'oldest' : 'popular',
+      searchQuery
+    ],
+    queryFn: async () => {
+      const params = new URLSearchParams({
+        page: currentPage.toString(),
+        limit: '10',
+      });
+      
+      if (selectedCategory) {
+        params.append('category', selectedCategory);
+      }
+      
+      if (searchQuery.trim()) {
+        params.append('search', searchQuery);
+      }
+      
+      const sortParam = 
+        activeSort === 'date-desc' ? 'newest' :
+        activeSort === 'date-asc' ? 'oldest' : 'popular';
+      params.append('sort', sortParam);
+      
+      const response = await fetch(`/api/blog/paginated?${params.toString()}`);
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch paginated blog posts');
+      }
+      
+      return await response.json();
+    },
   });
   
-  // Filter ve sıralama işlemleri
-  const processedPosts = () => {
-    if (!allBlogPosts) return [];
-    
-    // Kategori filtresi
-    let filtered = selectedCategory 
-      ? allBlogPosts.filter(post => post.category === selectedCategory)
-      : allBlogPosts;
-    
-    // Arama filtresi
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(post => 
-        post[`title${language.toUpperCase()}` as keyof typeof post]?.toString().toLowerCase().includes(query) ||
-        post[`summary${language.toUpperCase()}` as keyof typeof post]?.toString().toLowerCase().includes(query) ||
-        post.tags?.some(tag => tag.toLowerCase().includes(query))
-      );
-    }
-    
-    // Tab filtresi
-    if (activeTab === 'popular') {
-      filtered = [...filtered].sort((a, b) => b.viewCount - a.viewCount);
-    }
-    
-    // Sıralama
-    return [...filtered].sort((a, b) => {
-      if (activeSort === 'date-desc') {
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-      } else if (activeSort === 'date-asc') {
-        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-      } else {
-        return b.viewCount - a.viewCount;
-      }
-    });
-  };
+  // API'dan gelen veriler  
+  const blogPosts = paginatedData?.posts || [];
+  const totalPostsCount = paginatedData?.totalPosts || 0;
   
-  const filteredPosts = processedPosts();
+  // Sayfalama bilgilerini güncelle
+  useEffect(() => {
+    if (paginatedData) {
+      setTotalPages(paginatedData.totalPages);
+    }
+  }, [paginatedData]);
+  
+  // Tab filtresi
+  useEffect(() => {
+    // activeTab değiştiğinde sorgu parametrelerini güncelle
+    if (activeTab === 'popular') {
+      setActiveSort('popular');
+    } else {
+      setActiveSort('date-desc');
+    }
+  }, [activeTab]);
+  
+  // Filtre değişikliklerinde sayfayı sıfırla
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory, searchQuery, activeSort]);
+  
+  // Kategorileri alma işlemi
+  const { data: categoriesData } = useQuery<BlogPost[]>({
+    queryKey: ["/api/blog"],
+    staleTime: 1000 * 60 * 5, // 5 dakika boyunca yeni istek gönderme
+  });
   
   // Eşsiz kategorileri al
   const categoriesSet = new Set<string>();
-  allBlogPosts?.forEach(post => categoriesSet.add(post.category));
+  categoriesData?.forEach(post => categoriesSet.add(post.category));
   const categories = Array.from(categoriesSet);
+  
+
   
   // Tarih formatı
   const formatDate = (date: string) => {
