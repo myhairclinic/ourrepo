@@ -6,6 +6,12 @@ type LanguageMap = Record<Language, string>;
 // Our translations object with simple key structure
 // Translations object (exported for direct usage in components)
 export const translations: Record<string, LanguageMap> = {
+  "common.viewAll": {
+    [Language.Turkish]: "Tümünü Gör",
+    [Language.English]: "View All",
+    [Language.Russian]: "Посмотреть все",
+    [Language.Georgian]: "ყველას ნახვა"
+  },
   // Common elements
   "common.name": {
     [Language.Turkish]: "Ad",

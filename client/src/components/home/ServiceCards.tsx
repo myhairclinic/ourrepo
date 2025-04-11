@@ -166,7 +166,8 @@ export default function ServiceCards() {
     loop: false, 
     align: 'start',
     dragFree: true,
-    containScroll: 'trimSnaps'
+    containScroll: 'trimSnaps',
+    slidesToScroll: 1
   });
   const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
   const [nextBtnEnabled, setNextBtnEnabled] = useState(true);
@@ -359,7 +360,7 @@ export default function ServiceCards() {
                     .map((service, index) => (
                       <div
                         key={service.id}
-                        className={`transition-all duration-700 transform flex-shrink-0 ${
+                        className={`transition-all duration-700 transform flex-shrink-0 min-w-[320px] w-[320px] px-3 ${
                           isInView
                             ? 'opacity-100 translate-y-0'
                             : 'opacity-0 translate-y-10'
