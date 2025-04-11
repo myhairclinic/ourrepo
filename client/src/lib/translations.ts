@@ -694,6 +694,96 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Результаты пересадки волос",
     [Language.Georgian]: "თმის გადანერგვის შედეგები"
   },
+  "home.patientJourney.title": {
+    [Language.Turkish]: "Hasta Yolculuğu",
+    [Language.English]: "Patient Journey",
+    [Language.Russian]: "Путь Пациента",
+    [Language.Georgian]: "პაციენტის მოგზაურობა"
+  },
+  "home.patientJourney.subtitle": {
+    [Language.Turkish]: "Saç ekimi sürecinde adım adım sizinle birlikteyiz",
+    [Language.English]: "We are with you every step of the way during the hair transplantation process",
+    [Language.Russian]: "Мы с вами на каждом этапе процесса трансплантации волос",
+    [Language.Georgian]: "ჩვენ თქვენთან ერთად ვართ თმის გადანერგვის პროცესის ყოველ ეტაპზე"
+  },
+  "home.patientJourney.consultation.title": {
+    [Language.Turkish]: "Ücretsiz Konsültasyon",
+    [Language.English]: "Free Consultation",
+    [Language.Russian]: "Бесплатная Консультация",
+    [Language.Georgian]: "უფასო კონსულტაცია"
+  },
+  "home.patientJourney.consultation.description": {
+    [Language.Turkish]: "WhatsApp veya telefon üzerinden fotoğraflarınızı gönderin, uzmanlarımız size özel değerlendirme yapsın.",
+    [Language.English]: "Send your photos via WhatsApp or phone, and our experts will make a custom evaluation for you.",
+    [Language.Russian]: "Отправьте свои фотографии через WhatsApp или телефон, и наши эксперты сделают индивидуальную оценку для вас.",
+    [Language.Georgian]: "გამოგვიგზავნეთ თქვენი ფოტოები WhatsApp-ით ან ტელეფონით და ჩვენი ექსპერტები გაგიკეთებენ ინდივიდუალურ შეფასებას."
+  },
+  "home.patientJourney.planning.title": {
+    [Language.Turkish]: "Kişisel Plan",
+    [Language.English]: "Personal Plan",
+    [Language.Russian]: "Персональный План",
+    [Language.Georgian]: "პირადი გეგმა"
+  },
+  "home.patientJourney.planning.description": {
+    [Language.Turkish]: "Size özel tedavi planı, saç çizgisi tasarımı ve seyahat programı hazırlanır.",
+    [Language.English]: "A personalized treatment plan, hairline design, and travel schedule are prepared for you.",
+    [Language.Russian]: "Для вас готовится индивидуальный план лечения, дизайн линии роста волос и план поездки.",
+    [Language.Georgian]: "თქვენთვის მზადდება პერსონალიზებული მკურნალობის გეგმა, თმის ხაზის დიზაინი და მოგზაურობის განრიგი."
+  },
+  "home.patientJourney.arrival.title": {
+    [Language.Turkish]: "Tiflis'e Varış",
+    [Language.English]: "Arrival in Tbilisi",
+    [Language.Russian]: "Прибытие в Тбилиси",
+    [Language.Georgian]: "ჩამოსვლა თბილისში"
+  },
+  "home.patientJourney.arrival.description": {
+    [Language.Turkish]: "Havaalanında karşılama ve konforlu transferiniz ile kliniğimize ulaşım sağlanır.",
+    [Language.English]: "Airport pickup and comfortable transfer to our clinic are provided.",
+    [Language.Russian]: "Предоставляется встреча в аэропорту и комфортный трансфер в нашу клинику.",
+    [Language.Georgian]: "უზრუნველყოფილია აეროპორტში დახვედრა და კომფორტული ტრანსფერი ჩვენს კლინიკაში."
+  },
+  "home.patientJourney.procedure.title": {
+    [Language.Turkish]: "Saç Ekimi İşlemi",
+    [Language.English]: "Hair Transplant Procedure",
+    [Language.Russian]: "Процедура Трансплантации Волос",
+    [Language.Georgian]: "თმის გადანერგვის პროცედურა"
+  },
+  "home.patientJourney.procedure.description": {
+    [Language.Turkish]: "Uzman ekibimiz tarafından en son teknoloji ile ağrısız saç ekimi işlemi gerçekleştirilir.",
+    [Language.English]: "Painless hair transplantation procedure is performed by our expert team with the latest technology.",
+    [Language.Russian]: "Безболезненная процедура трансплантации волос выполняется нашей командой экспертов с использованием новейших технологий.",
+    [Language.Georgian]: "უმტკივნეულო თმის გადანერგვის პროცედურა ხორციელდება ჩვენი ექსპერტთა გუნდის მიერ უახლესი ტექნოლოგიით."
+  },
+  "home.patientJourney.aftercare.title": {
+    [Language.Turkish]: "Bakım ve Dinlenme",
+    [Language.English]: "Aftercare and Rest",
+    [Language.Russian]: "Уход и Отдых",
+    [Language.Georgian]: "შემდგომი მოვლა და დასვენება"
+  },
+  "home.patientJourney.aftercare.description": {
+    [Language.Turkish]: "Tam bir gün dinlenmenin ardından ilk yıkama ve detaylı bakım talimatları verilir.",
+    [Language.English]: "After a full day of rest, the first wash and detailed care instructions are provided.",
+    [Language.Russian]: "После полного дня отдыха предоставляются инструкции по первому мытью и детальному уходу.",
+    [Language.Georgian]: "სრული დღის დასვენების შემდეგ, პირველი დაბანვისა და დეტალური მოვლის ინსტრუქციები მოგეწოდებათ."
+  },
+  "home.patientJourney.results.title": {
+    [Language.Turkish]: "Kalıcı Sonuçlar",
+    [Language.English]: "Permanent Results",
+    [Language.Russian]: "Постоянные Результаты",
+    [Language.Georgian]: "მუდმივი შედეგები"
+  },
+  "home.patientJourney.results.description": {
+    [Language.Turkish]: "İlk aylar süren gelişim sonrası, 6-12 ay içinde doğal ve kalıcı saçlarınıza kavuşursunuz.",
+    [Language.English]: "After the development during the first months, you will have your natural and permanent hair within 6-12 months.",
+    [Language.Russian]: "После развития в течение первых месяцев, вы обретете свои естественные и постоянные волосы в течение 6-12 месяцев.",
+    [Language.Georgian]: "პირველი თვეების განმავლობაში განვითარების შემდეგ, თქვენ გექნებათ თქვენი ბუნებრივი და მუდმივი თმა 6-12 თვის განმავლობაში."
+  },
+  "home.patientJourney.cta": {
+    [Language.Turkish]: "Ücretsiz Konsültasyon Alın",
+    [Language.English]: "Get a Free Consultation",
+    [Language.Russian]: "Получить Бесплатную Консультацию",
+    [Language.Georgian]: "მიიღეთ უფასო კონსულტაცია"
+  },
   "gallery.patientJourney": {
     [Language.Turkish]: "Hasta Yolculuğu",
     [Language.English]: "Patient Journey",

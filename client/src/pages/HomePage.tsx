@@ -7,6 +7,7 @@ import { PackageCards } from "@/components/home/PackageCards";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import { useTranslation } from "@/lib/translations";
 import MainSlider from "@/components/home/MainSlider";
+import PatientJourney from "@/components/home/PatientJourney";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import AppointmentButton from "@/components/layout/AppointmentButton";
 
@@ -44,6 +45,7 @@ export default function HomePage() {
         </div>
         
         <MainSlider />
+        <PatientJourney />
         <WhyChooseUs />
         <ServiceCards />
         <PackageCards />
