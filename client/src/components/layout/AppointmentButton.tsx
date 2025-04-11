@@ -36,7 +36,7 @@ export default function AppointmentButton({ text, fixed = true }: AppointmentBut
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
   
-  // Button with gradient background
+  // Button with gradient background - use primary color like the brand
   const baseClasses = "bg-gradient-to-r from-primary-500 to-primary-600 text-white hover:from-primary-600 hover:to-primary-700 transition-all duration-300 shadow-lg";
   const fixedClasses = fixed ? "fixed bottom-6 left-6 z-50" : "";
   
@@ -75,7 +75,7 @@ export default function AppointmentButton({ text, fixed = true }: AppointmentBut
           <div className="relative">
             <a
               href={addPrefix("/appointment")}
-              className={`${baseClasses} p-4 rounded-full flex items-center justify-center`}
+              className={`${baseClasses} p-4 rounded-full flex items-center justify-center w-16 h-16`}
               aria-label={t("common.makeAppointment")}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
@@ -84,7 +84,7 @@ export default function AppointmentButton({ text, fixed = true }: AppointmentBut
                 animation: "pulse 2s infinite"
               }}
             >
-              <Calendar size={26} />
+              <Calendar size={30} className="stroke-[1.5]" />
             </a>
             
             {/* Tooltip that appears on hover */}
