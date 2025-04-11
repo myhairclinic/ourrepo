@@ -250,17 +250,31 @@ const PackagesPage: React.FC = () => {
           </div>
           
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 mb-12">
-            {['tr', 'ru', 'az', 'ua', 'ir', 'kz'].map((countryCode) => {
+            {['tr', 'ru', 'az', 'ua', 'ir', 'kz'].map((countryCode, index) => {
               // Count packages for this country
               const countryPackages = packages?.filter(pkg => pkg.countryOrigin === countryCode) || [];
               
               const height = countryCode === 'tr' || countryCode === 'ru' ? 'h-36' : 'h-32';
+              const delayClass = `delay-${(index + 1) * 100}`;
+              
+              // Get background image for countries
+              let bgImage = '';
+              if (countryCode === 'tr') bgImage = "bg-[url('/images/kız-kulesi.webp')]";
+              else if (countryCode === 'ru') bgImage = "bg-[url('/images/U-kremlin-sarayi-rusya-sehir-manzarasi-dunyaca-unlu-sehirler-kanvas-tablo1455893402-800.jpg')]";
+              else if (countryCode === 'az') bgImage = "bg-[url('/images/azerbaycan-giris-Jy5Z_cover.jpg')]";
+              else if (countryCode === 'ua') bgImage = "bg-[url('/images/st-andrew-s-church.jpg')]";
+              else if (countryCode === 'ir') bgImage = "bg-[url('/images/iran-resimleri.jpg')]";
+              else if (countryCode === 'kz') bgImage = "bg-[url('/images/kazakistanin-ruhu-bu-topr-700.jpg')]";
               
               return (
-                <div key={countryCode} className={`${height} relative group overflow-hidden rounded-xl shadow-md border border-blue-100 dark:border-blue-900/30`}>
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/40 to-purple-500/40 group-hover:opacity-70 opacity-50 transition-opacity duration-300"></div>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
-                    <span className="text-4xl mb-2">{getCountryFlag(countryCode)}</span>
+                <div 
+                  key={countryCode} 
+                  className={`${height} relative group overflow-hidden rounded-xl shadow-md border border-blue-100 dark:border-blue-900/30 fade-in opacity-0 ${delayClass} ${bgImage} bg-cover bg-center`}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/60 to-purple-500/60 group-hover:opacity-70 opacity-50 transition-opacity duration-300"></div>
+                  <div className="absolute inset-0 backdrop-blur-[2px] group-hover:backdrop-blur-none transition-all duration-300"></div>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center z-10">
+                    <span className="text-4xl mb-2 drop-shadow-md">{getCountryFlag(countryCode)}</span>
                     <h3 className="text-lg font-bold text-white drop-shadow-md">
                       {getPackageTranslation(`countries.${countryCode}`, language)}
                     </h3>
