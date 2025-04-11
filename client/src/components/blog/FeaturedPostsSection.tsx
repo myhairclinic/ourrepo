@@ -57,8 +57,14 @@ export function FeaturedPostsSection({
   if (featuredPosts.length === 0 && !isLoading) return null;
   
   return (
-    <section className="mb-12">
-      <h2 className="text-2xl font-bold mb-6">{t('blog.featuredPosts')}</h2>
+    <section className="mb-14 relative">
+      <div className="flex items-center justify-between mb-8">
+        <h2 className="text-2xl font-bold relative pl-3 before:content-[''] before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:bg-primary before:rounded-full">
+          {t('blog.featuredPosts')}
+        </h2>
+        <div className="h-px flex-1 bg-border mx-6 opacity-50 hidden sm:block"></div>
+      </div>
+      
       {isLoading ? (
         renderSkeletons()
       ) : (
