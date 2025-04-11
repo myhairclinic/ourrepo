@@ -48,6 +48,18 @@ export const packageTranslations: Record<string, LanguageMap> = {
     [Language.Russian]: "пакетов",
     [Language.Georgian]: "პაკეტები"
   },
+  "packages.emptyState": {
+    [Language.Turkish]: "Seçili kriterlere uygun paket bulunamadı",
+    [Language.English]: "No packages found matching your criteria",
+    [Language.Russian]: "Не найдено пакетов, соответствующих вашим критериям",
+    [Language.Georgian]: "თქვენი კრიტერიუმებით შესაბამისი პაკეტები ვერ მოიძებნა"
+  },
+  "packages.noPackages": {
+    [Language.Turkish]: "Şu anda uygun paket bulunmuyor",
+    [Language.English]: "No packages available at the moment",
+    [Language.Russian]: "На данный момент пакеты недоступны",
+    [Language.Georgian]: "ამჟამად პაკეტები არ არის ხელმისაწვდომი"
+  },
   // Countries
   "countries.all": {
     [Language.Turkish]: "Tüm Ülkeler",
@@ -272,6 +284,24 @@ export const packageTranslations: Record<string, LanguageMap> = {
     [Language.Russian]: "Полный опыт",
     [Language.Georgian]: "სრული გამოცდილება"
   },
+  "packages.medicalExcellence": {
+    [Language.Turkish]: "Tıbbi Mükemmellik",
+    [Language.English]: "Medical Excellence",
+    [Language.Russian]: "Медицинское превосходство",
+    [Language.Georgian]: "სამედიცინო უპირატესობა"
+  },
+  "packages.medicalExcellenceDesc": {
+    [Language.Turkish]: "Deneyimli uzmanlar ve en yeni teknolojilerle üstün saç ekimi sonuçları elde edin.",
+    [Language.English]: "Get superior hair transplantation results with experienced specialists and latest technologies.",
+    [Language.Russian]: "Получите превосходные результаты трансплантации волос с опытными специалистами и новейшими технологиями.",
+    [Language.Georgian]: "მიიღეთ უმაღლესი ხარისხის თმის გადანერგვის შედეგები გამოცდილი სპეციალისტებითა და უახლესი ტექნოლოგიებით."
+  },
+  "packages.luxuryAccommodation": {
+    [Language.Turkish]: "Lüks Konaklama",
+    [Language.English]: "Luxury Accommodation",
+    [Language.Russian]: "Люкс размещение",
+    [Language.Georgian]: "ლუქს საცხოვრებელი"
+  },
   "packages.completeExperienceDesc": {
     [Language.Turkish]: "Tıbbi tedavi ve tatil deneyimini bir araya getiren paketlerimizle, sağlığınız ve konforunuz için her şey düşünülmüştür.",
     [Language.English]: "Our packages combine medical treatment and holiday experience, with everything thoughtfully arranged for your health and comfort.",
@@ -351,6 +381,24 @@ export const packageTranslations: Record<string, LanguageMap> = {
     [Language.English]: "Post-Travel Massage",
     [Language.Russian]: "Массаж после путешествия",
     [Language.Georgian]: "მოგზაურობის შემდგომი მასაჟი"
+  },
+  "packages.airportTransfer": {
+    [Language.Turkish]: "Havalimanı Transferi",
+    [Language.English]: "Airport Transfer",
+    [Language.Russian]: "Трансфер из аэропорта",
+    [Language.Georgian]: "აეროპორტის ტრანსფერი"
+  },
+  "packages.personalCare": {
+    [Language.Turkish]: "Kişisel Bakım",
+    [Language.English]: "Personal Care",
+    [Language.Russian]: "Личный уход",
+    [Language.Georgian]: "პირადი მოვლა"
+  },
+  "packages.freeConsultation": {
+    [Language.Turkish]: "Ücretsiz Konsültasyon",
+    [Language.English]: "Free Consultation",
+    [Language.Russian]: "Бесплатная консультация",
+    [Language.Georgian]: "უფასო კონსულტაცია"
   },
   
   // Package Types
