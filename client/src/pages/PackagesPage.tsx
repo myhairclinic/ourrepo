@@ -8,16 +8,22 @@ import Container from '@/components/ui/container';
 import PageHeader from '@/components/ui/PageHeader';
 import { Loader2, Plane, MapPin, Clock, LucideHotel, Users, HeartPulse, Sparkles } from 'lucide-react';
 import PackageCard from '@/components/packages/PackageCard';
-import CountryFilter from '@/components/packages/CountryFilter';
+import PackageFilters from '@/components/packages/PackageFilters';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { getTranslation } from "@/lib/translations";
+import { getPackageTranslation } from "@/lib/packageTranslations";
 
 const PackagesPage: React.FC = () => {
   const { language } = useLanguage();
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [countries, setCountries] = useState<string[]>([]);
+  const [selectedDuration, setSelectedDuration] = useState<[number, number]>([3, 10]);
+  const [durationRange, setDurationRange] = useState<[number, number]>([3, 10]);
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
+  const [availableFeatures, setAvailableFeatures] = useState<string[]>([]);
+  const [isFeaturedOnly, setIsFeaturedOnly] = useState<boolean>(false);
   
   // Fetch all packages
   const { data: packages, isLoading, error } = useQuery<Package[]>({
@@ -31,18 +37,124 @@ const PackagesPage: React.FC = () => {
     },
   });
   
-  // Extract unique countries from packages
+  // Extract unique countries and features from packages
   useEffect(() => {
     if (packages) {
+      // Get unique countries
       const uniqueCountries = Array.from(new Set(packages.map(pkg => pkg.countryOrigin)));
       setCountries(uniqueCountries);
+      
+      // Find min and max duration
+      const durations = packages.map(pkg => pkg.durationDays || 5);
+      const minDuration = Math.min(...durations);
+      const maxDuration = Math.max(...durations);
+      setDurationRange([minDuration, maxDuration]);
+      setSelectedDuration([minDuration, maxDuration]);
+      
+      // Extract features from package highlights
+      const features = new Set<string>();
+      packages.forEach(pkg => {
+        if (pkg.highlights) {
+          try {
+            const highlights = JSON.parse(pkg.highlights as string);
+            highlights.forEach((highlight: string) => {
+              // Extract key features like "VIP", "Massage", "City Tour", etc.
+              if (highlight.includes("VIP")) features.add("vip");
+              if (highlight.includes("Masaj") || highlight.includes("массаж") || highlight.includes("Massage")) features.add("massage");
+              if (highlight.includes("Tercüman") || highlight.includes("Translator") || highlight.includes("переводчик")) features.add("translator");
+              if (highlight.includes("Şehir Turu") || highlight.includes("City Tour") || highlight.includes("Экскурсия по городу")) features.add("citytour");
+              if (highlight.includes("Spa")) features.add("spa");
+              if (highlight.includes("Premium") || highlight.includes("Премиум")) features.add("premium");
+              if (highlight.includes("Şarap") || highlight.includes("Wine") || highlight.includes("Вино")) features.add("wine");
+              if (highlight.includes("Sınır") || highlight.includes("Border") || highlight.includes("граница")) features.add("border");
+              if (highlight.includes("Havalimanı") || highlight.includes("Airport") || highlight.includes("Аэропорт")) features.add("airport");
+            });
+          } catch (e) {
+            console.error("Error parsing highlights:", e);
+          }
+        }
+      });
+      
+      setAvailableFeatures(Array.from(features));
     }
   }, [packages]);
   
-  // Filter packages by selected country
-  const filteredPackages = selectedCountry
-    ? packages?.filter(pkg => pkg.countryOrigin === selectedCountry)
-    : packages;
+  // Handle feature toggle
+  const handleFeatureToggle = (feature: string) => {
+    setSelectedFeatures(prev => 
+      prev.includes(feature) 
+        ? prev.filter(f => f !== feature) 
+        : [...prev, feature]
+    );
+  };
+  
+  // Filter packages
+  const filteredPackages = packages?.filter(pkg => {
+    // Country filter
+    if (selectedCountry && pkg.countryOrigin !== selectedCountry) {
+      return false;
+    }
+    
+    // Duration filter
+    if (pkg.durationDays < selectedDuration[0] || pkg.durationDays > selectedDuration[1]) {
+      return false;
+    }
+    
+    // Featured filter
+    if (isFeaturedOnly && !pkg.isFeatured) {
+      return false;
+    }
+    
+    // Feature filter (only if features are selected)
+    if (selectedFeatures.length > 0 && pkg.highlights) {
+      try {
+        const highlights = JSON.parse(pkg.highlights as string);
+        // Check if any selected feature is in the highlights
+        const hasSelectedFeature = selectedFeatures.some(feature => {
+          const featureKeywords = getFeatureKeywords(feature);
+          return highlights.some((highlight: string) => 
+            featureKeywords.some(keyword => 
+              highlight.toLowerCase().includes(keyword.toLowerCase())
+            )
+          );
+        });
+        
+        if (!hasSelectedFeature) {
+          return false;
+        }
+      } catch (e) {
+        console.error("Error parsing highlights:", e);
+      }
+    }
+    
+    return true;
+  });
+  
+  // Helper to get keywords for features in different languages
+  const getFeatureKeywords = (feature: string): string[] => {
+    switch(feature) {
+      case 'vip':
+        return ['VIP', 'Vip', 'vip'];
+      case 'massage':
+        return ['Masaj', 'Massage', 'массаж', 'მასაჟი'];
+      case 'translator':
+        return ['Tercüman', 'Translator', 'переводчик', 'თარჯიმანი'];
+      case 'citytour':
+        return ['Şehir Turu', 'City Tour', 'Экскурсия', 'ქალაქის ტური'];
+      case 'spa':
+        return ['Spa', 'СПА', 'სპა'];
+      case 'premium':
+        return ['Premium', 'Премиум', 'პრემიუმი'];
+      case 'wine':
+        return ['Şarap', 'Wine', 'Вино', 'ღვინო'];
+      case 'border':
+        return ['Sınır', 'Border', 'граница', 'საზღვარი'];
+      case 'airport':
+        return ['Havalimanı', 'Airport', 'Аэропорт', 'აეროპორტი'];
+      default:
+        return [feature];
+    }
+  };
   
   if (isLoading) {
     return (
@@ -187,37 +299,53 @@ const PackagesPage: React.FC = () => {
         
         {/* Package Filter and Listings */}
         <div className="mb-6">
-          <div className="flex flex-wrap justify-between items-center gap-4 mb-6">
-            <h2 className="text-2xl font-semibold">
-              {getTranslation("packages.availablePackages", language)}
-            </h2>
+          <div className="flex flex-wrap justify-between items-start gap-8">
+            <div className="w-full md:w-1/4">
+              <h2 className="text-2xl font-semibold mb-6">
+                {getPackageTranslation("packages.filters", language)}
+              </h2>
+              
+              {countries.length > 0 && (
+                <PackageFilters 
+                  countries={countries}
+                  selectedCountry={selectedCountry}
+                  onCountryChange={setSelectedCountry}
+                  durationRange={durationRange}
+                  selectedDuration={selectedDuration}
+                  onDurationChange={setSelectedDuration}
+                  features={availableFeatures}
+                  selectedFeatures={selectedFeatures}
+                  onFeatureChange={handleFeatureToggle}
+                  isFeaturedOnly={isFeaturedOnly}
+                  onFeaturedChange={setIsFeaturedOnly}
+                />
+              )}
+            </div>
             
-            {countries.length > 0 && (
-              <CountryFilter 
-                countries={countries} 
-                selectedCountry={selectedCountry} 
-                onCountryChange={setSelectedCountry} 
-              />
-            )}
+            <div className="flex-1">
+              <h2 className="text-2xl font-semibold mb-6">
+                {getPackageTranslation("packages.availablePackages", language)}
+              </h2>
+              
+              {filteredPackages && filteredPackages.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                  {filteredPackages.map(pkg => (
+                    <PackageCard key={pkg.id} pkg={pkg} />
+                  ))}
+                </div>
+              ) : (
+                <div className="py-12 text-center bg-muted/30 rounded-lg border border-dashed border-muted-foreground/20">
+                  <MapPin className="h-12 w-12 text-muted-foreground/50 mx-auto mb-4" />
+                  <h3 className="text-xl font-medium text-muted-foreground">
+                    {getPackageTranslation("packages.noPackages", language)}
+                  </h3>
+                  <p className="text-muted-foreground mt-2 max-w-md mx-auto">
+                    {getPackageTranslation("packages.tryDifferentFilter", language)}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
-          
-          {filteredPackages && filteredPackages.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              {filteredPackages.map(pkg => (
-                <PackageCard key={pkg.id} pkg={pkg} />
-              ))}
-            </div>
-          ) : (
-            <div className="py-12 text-center bg-muted/30 rounded-lg border border-dashed border-muted-foreground/20">
-              <MapPin className="h-12 w-12 text-muted-foreground/50 mx-auto mb-4" />
-              <h3 className="text-xl font-medium text-muted-foreground">
-                {getTranslation("packages.noPackages", language)}
-              </h3>
-              <p className="text-muted-foreground mt-2 max-w-md mx-auto">
-                {getTranslation("packages.tryDifferentFilter", language)}
-              </p>
-            </div>
-          )}
         </div>
       </Container>
     </>
