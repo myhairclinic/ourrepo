@@ -97,14 +97,14 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
   
   return (
     <div className="group h-full">
-      <div className="relative h-full bg-black/90 dark:bg-black rounded-xl overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.25)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.35)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.3)] dark:hover:shadow-[0_12px_40px_rgba(0,0,0,0.5)] border border-gray-800/40 transition-all duration-500 transform hover:translate-y-[-8px]">
+      <div className="relative h-full bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.01] border border-gray-100 dark:border-gray-700">
         {/* Package Type Ribbon - Top Left Corner, Angled */}
         {(pkg.packageType === 'luxury' || pkg.packageType === 'premium' || pkg.isAllInclusive) && (
           <div className="absolute top-0 left-0 z-20 w-32 h-32 overflow-hidden">
             <div className={`absolute top-0 left-0 transform -translate-x-1/2 translate-y-1/4 rotate-[-45deg] py-1.5 px-12 shadow-md text-white text-sm font-bold
-              ${pkg.packageType === 'luxury' ? 'bg-gradient-to-r from-purple-800 to-purple-600' : 
-                pkg.packageType === 'premium' ? 'bg-gradient-to-r from-blue-800 to-indigo-600' : 
-                'bg-gradient-to-r from-teal-700 to-emerald-600'}`}>
+              ${pkg.packageType === 'luxury' ? 'bg-gradient-to-r from-purple-500 to-pink-500' : 
+                pkg.packageType === 'premium' ? 'bg-gradient-to-r from-blue-500 to-indigo-500' : 
+                'bg-gradient-to-r from-teal-500 to-emerald-500'}`}>
               {pkg.packageType === 'luxury' 
                 ? getPackageTranslation("packages.luxury", language)
                 : pkg.packageType === 'premium'
@@ -115,109 +115,114 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
           </div>
         )}
         
-        {/* Main image with overlay */}
-        <div className="relative h-64 overflow-hidden">
+        {/* Main image with radiant overlay */}
+        <div className="relative h-60 overflow-hidden">
           <img
             src={getCountrySpecificImage(country) || pkg.imageUrl || '/images/package-placeholder.jpg'}
             alt={title}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 brightness-[0.85]"
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
           
-          {/* Image Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/70 to-black/20" />
+          {/* Image Gradient Overlay - Colorful & Vibrant */}
+          <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/40 to-transparent opacity-60 mix-blend-multiply" />
+          
+          {/* Pattern overlay */}
+          <div className="absolute inset-0 opacity-10 bg-[url('/images/pattern-dots.svg')] bg-center mix-blend-overlay"></div>
           
           {/* Country Flag Badge - Bottom Left on Image */}
-          <div className="absolute bottom-24 left-4 z-20 py-2 px-3 bg-black/70 backdrop-blur-sm rounded-full shadow-lg flex items-center gap-2 border border-gray-700/50">
+          <div className="absolute bottom-20 left-4 z-20 py-1.5 px-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full shadow-md flex items-center gap-2 border border-white/50 dark:border-gray-700/50">
             <span className="text-lg">{getCountryFlag(country)}</span>
-            <span className="font-medium text-sm text-white">{countryName}</span>
+            <span className="font-medium text-sm text-gray-800 dark:text-white">{countryName}</span>
           </div>
           
           {/* Featured Badge */}
           {pkg.isFeatured && (
-            <div className="absolute top-3 right-3 z-20 bg-gradient-to-r from-amber-600 to-orange-600 text-white text-xs py-1.5 px-3 rounded-full shadow-md flex items-center">
+            <div className="absolute top-3 right-3 z-20 bg-gradient-to-r from-orange-400 to-amber-500 text-white text-xs py-1.5 px-3 rounded-full shadow-md flex items-center">
               <Heart className="h-3.5 w-3.5 mr-1.5 fill-white" />
               {getPackageTranslation("packages.exclusive", language)}
             </div>
           )}
           
-          {/* Package Title Overlay - Large & Bold */}
-          <div className="absolute bottom-0 left-0 right-0 p-4 text-white z-20">
-            <h3 className="text-2xl font-bold mb-2 drop-shadow-lg leading-tight">{title}</h3>
+          {/* Package Title Overlay - Large & Bold with bright gradient */}
+          <div className="absolute bottom-0 left-0 right-0 p-4 z-20">
+            <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-lg py-2 px-3 shadow-lg border border-white/30 dark:border-gray-700/30">
+              <h3 className="text-lg font-bold leading-tight bg-gradient-to-r from-primary via-purple-500 to-indigo-500 bg-clip-text text-transparent">{title}</h3>
+            </div>
           </div>
           
-          {/* Duration Badge - Bottom Right on Image */}
-          <div className="absolute bottom-4 right-4 z-10 bg-black/60 backdrop-blur-sm text-white text-xs py-1.5 px-3.5 rounded-full shadow-sm flex items-center border border-gray-700/50">
-            <Clock className="h-3.5 w-3.5 mr-1.5" />
+          {/* Duration Badge - Top Right on Image */}
+          <div className="absolute top-3 right-3 z-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm text-gray-800 dark:text-white text-xs py-1.5 px-3 rounded-full shadow-md flex items-center border border-white/50 dark:border-gray-700/50">
+            <Clock className="h-3.5 w-3.5 mr-1.5 text-primary" />
             {pkg.durationDays} {getPackageTranslation("packages.days", language)}
           </div>
         </div>
         
-        <div className="relative p-5 bg-gradient-to-b from-gray-900 to-black">
+        <div className="relative p-5">
           {/* Main Description */}
           <div className="mb-5">
-            <p className="text-sm text-gray-300 line-clamp-2">{description}</p>
+            <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">{description}</p>
           </div>
           
-          {/* Divider with subtle styling */}
+          {/* Divider with colorful styling */}
           <div className="relative mb-5">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-800"></div>
+              <div className="w-full h-0.5 bg-gradient-to-r from-primary/20 via-primary/40 to-primary/20 rounded-full"></div>
             </div>
             <div className="relative flex justify-center">
-              <span className="bg-black px-4 text-sm text-gray-400 font-medium">
+              <span className="bg-white dark:bg-gray-800 px-4 text-sm font-medium text-primary">
                 {getPackageTranslation("packages.features", language)}
               </span>
             </div>
           </div>
           
-          {/* Features List - Vertical Layout */}
+          {/* Features List - Colorful icons */}
           <div className="space-y-4 mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/30 transition-colors duration-300 border border-primary/20">
-                <Building className="h-5 w-5 text-primary" />
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-100 to-blue-100 dark:from-cyan-900/20 dark:to-blue-900/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border border-blue-200 dark:border-blue-800/30 shadow-sm">
+                <Building className="h-5 w-5 text-blue-500" />
               </div>
-              <p className="text-sm text-gray-200">{getPackageTranslation("packages.luxuryAccommodation", language)}</p>
+              <p className="text-sm text-gray-700 dark:text-gray-300">{getPackageTranslation("packages.luxuryAccommodation", language)}</p>
             </div>
             
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/30 transition-colors duration-300 border border-primary/20">
-                <Plane className="h-5 w-5 text-primary" />
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border border-purple-200 dark:border-purple-800/30 shadow-sm">
+                <Plane className="h-5 w-5 text-purple-500" />
               </div>
-              <p className="text-sm text-gray-200">{getPackageTranslation("packages.airportTransfer", language)}</p>
+              <p className="text-sm text-gray-700 dark:text-gray-300">{getPackageTranslation("packages.airportTransfer", language)}</p>
             </div>
             
             {packageFeatures.length > 0 ? (
               // Show actual package features if available
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/30 transition-colors duration-300 border border-primary/20">
-                  <Check className="h-5 w-5 text-primary" />
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-100 to-teal-100 dark:from-green-900/20 dark:to-teal-900/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border border-green-200 dark:border-green-800/30 shadow-sm">
+                  <Check className="h-5 w-5 text-green-500" />
                 </div>
-                <p className="text-sm text-gray-200">{packageFeatures[0]}</p>
+                <p className="text-sm text-gray-700 dark:text-gray-300">{packageFeatures[0]}</p>
               </div>
             ) : (
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/30 transition-colors duration-300 border border-primary/20">
-                  <Globe className="h-5 w-5 text-primary" />
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/20 dark:to-orange-900/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border border-amber-200 dark:border-amber-800/30 shadow-sm">
+                  <Globe className="h-5 w-5 text-amber-500" />
                 </div>
-                <p className="text-sm text-gray-200">{getPackageTranslation("packages.features.citytour", language)}</p>
+                <p className="text-sm text-gray-700 dark:text-gray-300">{getPackageTranslation("packages.features.citytour", language)}</p>
               </div>
             )}
           </div>
           
-          {/* Action Button with Hover Effect */}
+          {/* Action Button with Colorful Gradient */}
           <div className="pt-1">
             <Button asChild 
-              className="w-full bg-primary hover:bg-primary/90 group relative overflow-hidden shadow-lg border-t border-primary/30"
+              className="w-full relative bg-gradient-to-r from-primary to-indigo-500 hover:from-primary/90 hover:to-indigo-500/90 group overflow-hidden shadow-md"
               variant="default"
             >
-              <Link href={addPrefix(`/packages/${pkg.slug}`)} className="py-6 flex items-center justify-center">
-                <span className="relative z-10 flex items-center gap-2 text-[15px] tracking-wide font-medium">
-                  <Search className="h-4 w-4 mr-1 opacity-70" />
+              <Link href={addPrefix(`/packages/${pkg.slug}`)} className="py-4 flex items-center justify-center">
+                <span className="relative z-10 flex items-center gap-1.5 text-[15px] font-medium">
+                  <Search className="h-4 w-4 mr-1" />
                   {getPackageTranslation("packages.viewDetails", language)}
                   <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
                 </span>
-                {/* Animated background on hover */}
-                <span className="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/70 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                {/* Shimmering effect */}
+                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-[20deg] animate-[shimmer_2.5s_ease-in-out_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundSize: '200% 100%' }}></span>
               </Link>
             </Button>
           </div>

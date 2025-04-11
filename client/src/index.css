@@ -4,6 +4,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 300% 0;
+  }
+}
+
 @layer utilities {
   /* Grid background pattern */
   .bg-grid-pattern {
