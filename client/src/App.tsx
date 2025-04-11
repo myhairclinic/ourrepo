@@ -154,6 +154,7 @@ function Router() {
       <Route path="/:lang/contact" component={ContactPage} />
       <Route path="/:lang/appointment" component={AppointmentPage} />
       <Route path="/:lang/appointment-tracker" component={AppointmentTracker} />
+      <Route path="/:lang/social" component={SocialMediaPage} />
       <Route path="/:lang/social-media" component={SocialMediaPage} />
       <Route path="/:lang/aftercare-guides" component={AftercareGuidesPage} />
       
@@ -208,6 +209,9 @@ function Router() {
       </Route>
       <Route path="/social-media">
         {() => { setLocation(addPrefix('/social-media')); return null; }}
+      </Route>
+      <Route path="/social">
+        {() => { setLocation(addPrefix('/social')); return null; }}
       </Route>
       
       {/* Fallback to 404 */}

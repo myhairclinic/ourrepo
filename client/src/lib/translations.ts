@@ -1523,6 +1523,12 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Что о нас говорят в социальных сетях?",
     [Language.Georgian]: "რას ამბობენ ჩვენზე სოციალური მედიის პლატფორმებზე?"
   },
+  "socialMedia.socialReviews": {
+    [Language.Turkish]: "Sosyal Medya Yorumları",
+    [Language.English]: "Social Media Reviews",
+    [Language.Russian]: "Отзывы в социальных сетях",
+    [Language.Georgian]: "სოციალური მედიის მიმოხილვები"
+  },
   "socialMedia.ctaTitle": {
     [Language.Turkish]: "Bize Ulaşın",
     [Language.English]: "Connect With Us",
