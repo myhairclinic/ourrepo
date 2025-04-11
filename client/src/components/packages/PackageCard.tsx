@@ -67,17 +67,47 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
   
   return (
     <Card className="h-full flex flex-col overflow-hidden group hover:shadow-md transition-shadow duration-300 border-border">
-      {/* Country Badge - Now moved above image as a prominent header with gradient */}
-      <div className="bg-gradient-to-r from-primary/90 to-primary/70 text-white px-4 py-2 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-xl">{getCountryFlag(country)}</span>
-          <span className="font-medium">{countryName}</span>
+      {/* Package Title and Country Badge */}
+      <div className="bg-gradient-to-r from-primary/90 to-primary/70 text-white px-4 py-3">
+        {/* Package Type and All-Inclusive Badges */}
+        <div className="flex gap-2 mb-1">
+          {pkg.packageType === 'luxury' && (
+            <div className="bg-purple-500 text-white text-xs py-0.5 px-2 rounded-sm flex items-center">
+              <Sparkles className="h-3 w-3 mr-1" />
+              {getPackageTranslation("packages.luxury", language)}
+            </div>
+          )}
+          
+          {pkg.packageType === 'premium' && (
+            <div className="bg-indigo-500 text-white text-xs py-0.5 px-2 rounded-sm flex items-center">
+              <Sparkles className="h-3 w-3 mr-1" />
+              {getPackageTranslation("packages.premium", language)}
+            </div>
+          )}
+          
+          {pkg.isAllInclusive && (
+            <div className="bg-teal-500 text-white text-xs py-0.5 px-2 rounded-sm flex items-center">
+              <Check className="h-3 w-3 mr-1" />
+              {getPackageTranslation("packages.allInclusive", language)}
+            </div>
+          )}
         </div>
         
-        {/* Duration badge */}
-        <div className="bg-white/20 text-white text-xs py-1 px-2.5 rounded-full flex items-center gap-1.5">
-          <Calendar className="h-3 w-3" />
-          {pkg.durationDays} {getPackageTranslation("packages.days", language)}
+        {/* Package Title - Added as a prominent heading */}
+        <h3 className="text-lg font-bold mb-1.5">{title}</h3>
+        
+        {/* Country and Duration Info */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="text-xl">{getCountryFlag(country)}</span>
+            <span className="font-medium">{countryName}</span>
+          </div>
+          
+          {/* Duration badge */}
+          <div className="bg-white/20 text-white text-xs py-1 px-2.5 rounded-full flex items-center gap-1.5">
+            <Calendar className="h-3 w-3" />
+            {pkg.durationDays} {getPackageTranslation("packages.days", language)}
+          </div>
         </div>
       </div>
       
@@ -85,7 +115,7 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
         <img
           src={pkg.imageUrl || '/images/package-placeholder.jpg'}
           alt={title}
-          className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-105"
         />
         
         {pkg.isFeatured && (
@@ -101,8 +131,7 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
       <CardHeader className="pb-2 pt-3">
         <div className="flex justify-between items-start">
           <div>
-            <CardTitle className="text-lg group-hover:text-primary transition-colors duration-200 line-clamp-1">{title}</CardTitle>
-            <CardDescription className="line-clamp-2 mt-1 text-sm">{description}</CardDescription>
+            <CardDescription className="line-clamp-2 text-sm">{description}</CardDescription>
           </div>
           
           {/* Rating */}
@@ -114,25 +143,7 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
       </CardHeader>
       
       <CardContent className="grow pb-2">
-        <div className="flex gap-3 flex-wrap mt-1">
-          {/* Premium badge */}
-          {pkg.packageType === 'premium' && (
-            <Badge variant="secondary" className="bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white border-none">
-              <Sparkles className="h-3 w-3 mr-1" />
-              {getPackageTranslation("packages.premium", language)}
-            </Badge>
-          )}
-          
-          {/* All-inclusive badge */}
-          {pkg.isAllInclusive && (
-            <Badge variant="secondary" className="bg-teal-500 hover:bg-teal-600 text-white border-none">
-              <Check className="h-3 w-3 mr-1" />
-              {getPackageTranslation("packages.allInclusive", language)}
-            </Badge>
-          )}
-        </div>
-        
-        <Separator className="my-3" />
+        <Separator className="mb-3 mt-1" />
         
         <div className="grid grid-cols-2 gap-x-4 gap-y-3 mt-3">
           <div className="flex items-start gap-2">

@@ -68,8 +68,8 @@ const PackageFilters: React.FC<PackageFiltersProps> = ({
   };
 
   return (
-    <div className="bg-card border rounded-lg p-3 shadow-sm">
-      <div className="flex items-center justify-between gap-2 mb-2">
+    <div className="bg-card border rounded-lg p-2.5 shadow-sm">
+      <div className="flex items-center justify-between gap-2 mb-1.5">
         <div className="flex items-center gap-1">
           <Filter className="h-3.5 w-3.5 text-primary" />
           <h3 className="font-medium text-sm">
@@ -77,7 +77,7 @@ const PackageFilters: React.FC<PackageFiltersProps> = ({
           </h3>
         </div>
         
-        {/* Reset filters button moved to top right */}
+        {/* Reset filters button */}
         <Button 
           variant="ghost" 
           size="sm"
@@ -87,29 +87,31 @@ const PackageFilters: React.FC<PackageFiltersProps> = ({
             onFeaturedChange(false);
             selectedFeatures.forEach(feature => onFeatureChange(feature));
           }}
-          className="h-7 px-2 text-xs"
+          className="h-6 px-2 text-xs"
         >
           {getPackageTranslation("packages.resetFilters", language)}
         </Button>
       </div>
 
-      {/* Country filter horizontal list instead of accordion */}
-      <div className="mb-3">
-        <p className="text-xs font-medium mb-1.5 text-muted-foreground">
-          {getPackageTranslation("packages.filterByCountry", language)}:
-        </p>
-        <div className="flex flex-wrap gap-1.5">
+      {/* Country filter - More compact flag-only buttons */}
+      <div className="mb-2">
+        <div className="flex items-center justify-between">
+          <p className="text-xs font-medium text-muted-foreground">
+            {getPackageTranslation("packages.filterByCountry", language)}:
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-1.5 mt-1">
           <Button
             variant={selectedCountry === null ? 'default' : 'outline'}
             size="sm"
             onClick={() => onCountryChange(null)}
             className={cn(
-              "rounded-full border border-border h-7 px-2 text-xs",
+              "rounded-full border border-border h-7 w-7 p-0 flex items-center justify-center",
               selectedCountry === null ? "bg-primary text-primary-foreground" : "bg-card hover:bg-primary/10"
             )}
+            title={getPackageTranslation("countries.all", language)}
           >
-            <Globe className="h-3 w-3 mr-1" />
-            {getPackageTranslation("countries.all", language)}
+            <Globe className="h-3.5 w-3.5" />
           </Button>
           
           {countries.map(country => (
@@ -119,25 +121,23 @@ const PackageFilters: React.FC<PackageFiltersProps> = ({
               size="sm"
               onClick={() => onCountryChange(country)}
               className={cn(
-                "rounded-full border border-border gap-1 h-7 px-2 text-xs",
+                "rounded-full border border-border h-7 w-7 p-0 flex items-center justify-center",
                 selectedCountry === country 
                   ? "bg-primary text-primary-foreground" 
                   : "bg-card hover:bg-primary/10"
               )}
+              title={getPackageTranslation(`countries.${country.toLowerCase()}`, language) || country}
             >
-              <span>{getCountryFlag(country)}</span>
-              <span className="max-w-[80px] truncate">
-                {getPackageTranslation(`countries.${country.toLowerCase()}`, language) || country}
-              </span>
+              <span className="text-lg">{getCountryFlag(country)}</span>
             </Button>
           ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-2">
         {/* Duration slider compact */}
-        <div className="space-y-1.5">
-          <p className="text-xs font-medium text-muted-foreground">
+        <div>
+          <p className="text-xs font-medium text-muted-foreground mb-1">
             {getPackageTranslation("packages.filterByDuration", language)}:
           </p>
           <div className="px-1">
@@ -156,11 +156,11 @@ const PackageFilters: React.FC<PackageFiltersProps> = ({
         </div>
 
         {/* Features compact */}
-        <div className="space-y-1.5">
-          <p className="text-xs font-medium text-muted-foreground">
+        <div>
+          <p className="text-xs font-medium text-muted-foreground mb-1">
             {getPackageTranslation("packages.filterByFeatures", language)}:
           </p>
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <div className="flex items-center space-x-1.5">
               <Checkbox 
                 id="featured" 
@@ -174,7 +174,7 @@ const PackageFilters: React.FC<PackageFiltersProps> = ({
               </Label>
             </div>
             
-            <div className="space-y-1.5 max-h-[70px] overflow-y-auto pr-1">
+            <div className="space-y-1 max-h-[60px] overflow-y-auto pr-1">
               {features.map(feature => (
                 <div key={feature} className="flex items-center space-x-1.5">
                   <Checkbox 
