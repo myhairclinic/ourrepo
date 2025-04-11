@@ -383,20 +383,20 @@ export function PackageCards() {
             isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
-          <Badge variant="outline" className="mb-4 px-5 py-1.5 text-sm font-medium rounded-full border-primary/30 bg-primary/5 shadow-sm">
+          <Badge variant="outline" className="mb-3 px-4 py-1 text-sm font-medium rounded-full border-primary/30 bg-primary/5 shadow-sm">
             {t("packages.home.tagline")}
           </Badge>
-          <h2 className="text-5xl md:text-6xl font-bold text-center mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80 leading-tight">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80 leading-tight">
             {t("packages.home.title")}
           </h2>
-          <p className="text-center text-foreground/70 max-w-2xl mx-auto text-lg font-light leading-relaxed">
+          <p className="text-center text-foreground/70 max-w-xl mx-auto text-base font-light leading-relaxed">
             {t("packages.home.subtitle")}
           </p>
           
-          <div className="flex justify-center gap-2 mt-6">
-            <div className="w-3 h-3 rounded-full bg-primary/30"></div>
-            <div className="w-3 h-3 rounded-full bg-primary/50"></div>
-            <div className="w-3 h-3 rounded-full bg-primary/70"></div>
+          <div className="flex justify-center gap-2 mt-4">
+            <div className="w-2 h-2 rounded-full bg-primary/30"></div>
+            <div className="w-2 h-2 rounded-full bg-primary/50"></div>
+            <div className="w-2 h-2 rounded-full bg-primary/70"></div>
           </div>
         </div>
 
