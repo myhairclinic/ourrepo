@@ -39,6 +39,7 @@ interface Package {
   durationDays: number;
   location: string;
   isAllInclusive: boolean;
+  countryOrigin: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -52,10 +53,55 @@ interface PackageCardProps {
   t: (key: string) => string;
 }
 
+// Utility functions
+function getCountryEmoji(countryCode: string): string {
+  switch (countryCode) {
+    case 'TR':
+      return '🇹🇷';
+    case 'RU':
+      return '🇷🇺';
+    case 'AZ':
+      return '🇦🇿';
+    case 'KZ':
+      return '🇰🇿';
+    case 'IR':
+      return '🇮🇷';
+    case 'EU':
+      return '🇪🇺';
+    default:
+      return '🌍';
+  }
+}
+
+function getCountryName(countryCode: string, t: (key: string) => string): string {
+  switch (countryCode) {
+    case 'TR':
+      return t("countries.turkey");
+    case 'RU':
+      return t("countries.russia");
+    case 'AZ':
+      return t("countries.azerbaijan");
+    case 'KZ':
+      return t("countries.kazakhstan");
+    case 'IR':
+      return t("countries.iran");
+    case 'EU':
+      return t("countries.europe");
+    default:
+      return t("countries.international");
+  }
+}
+
 function PackageCard({ package: pkg, getTitle, getDescription, addPrefix, t }: PackageCardProps) {
   const title = getTitle(pkg);
   const description = getDescription(pkg);
   const packageUrl = addPrefix(`/packages/${pkg.slug}`);
+  
+  // Get country info if countryOrigin exists
+  const countryInfo = pkg.countryOrigin ? {
+    flag: getCountryEmoji(pkg.countryOrigin),
+    name: getCountryName(pkg.countryOrigin, t)
+  } : { flag: '🌍', name: t("countries.international") };
   
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 h-full flex flex-col border border-border/30 group">
@@ -67,13 +113,13 @@ function PackageCard({ package: pkg, getTitle, getDescription, addPrefix, t }: P
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-50"></div>
         
-        {/* Badge */}
+        {/* Country Badge */}
         <div className="absolute top-4 left-4 z-10">
           <Badge 
             variant="secondary" 
-            className="bg-white/90 backdrop-blur-sm text-primary shadow-lg font-medium px-3 py-1"
+            className="bg-white/90 backdrop-blur-sm text-foreground shadow-lg font-medium px-3 py-1 flex items-center gap-1"
           >
-            {t("packages.home.badge")}
+            <span className="text-lg mr-1">{countryInfo.flag}</span> {countryInfo.name}
           </Badge>
         </div>
         
@@ -90,14 +136,16 @@ function PackageCard({ package: pkg, getTitle, getDescription, addPrefix, t }: P
         )}
         
         {/* Location Badge */}
-        <div className="absolute bottom-4 left-4 z-10">
-          <Badge 
-            variant="outline" 
-            className="bg-black/50 text-white border-white/20 shadow-md backdrop-blur-sm flex items-center gap-1"
-          >
-            <MapPin className="h-3 w-3 text-primary/90" /> {pkg.location}
-          </Badge>
-        </div>
+        {pkg.location && (
+          <div className="absolute bottom-4 left-4 z-10">
+            <Badge 
+              variant="outline" 
+              className="bg-black/50 text-white border-white/20 shadow-md backdrop-blur-sm flex items-center gap-1"
+            >
+              <MapPin className="h-3 w-3 text-primary/90" /> {pkg.location}
+            </Badge>
+          </div>
+        )}
       </div>
       
       <div className="p-6 flex-grow flex flex-col">
@@ -205,7 +253,7 @@ export function PackageCards() {
   }, []);
   
   const { data: packages, isLoading, error } = useQuery<Package[]>({
-    queryKey: ["/api/packages"],
+    queryKey: ["/api/packages/one-per-country"],
     refetchOnMount: true,
     refetchOnWindowFocus: true,
     staleTime: 1000 * 60, // 1 dakika
@@ -240,6 +288,26 @@ export function PackageCards() {
         return pkg.descriptionKA;
       default:
         return pkg.descriptionEN;
+    }
+  };
+  
+  // Helper function to get country flag and name
+  const getCountryInfo = (countryCode: string) => {
+    switch (countryCode) {
+      case 'TR':
+        return { flag: '🇹🇷', name: t("countries.turkey") };
+      case 'RU':
+        return { flag: '🇷🇺', name: t("countries.russia") };
+      case 'AZ':
+        return { flag: '🇦🇿', name: t("countries.azerbaijan") };
+      case 'KZ':
+        return { flag: '🇰🇿', name: t("countries.kazakhstan") };
+      case 'IR':
+        return { flag: '🇮🇷', name: t("countries.iran") };
+      case 'EU':
+        return { flag: '🇪🇺', name: t("countries.europe") };
+      default:
+        return { flag: '🌍', name: t("countries.international") };
     }
   };
   

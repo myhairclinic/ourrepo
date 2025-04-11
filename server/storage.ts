@@ -1482,6 +1482,42 @@ export class DatabaseStorage implements IStorage {
   async getPackages(): Promise<Package[]> {
     return await db.select().from(packages).orderBy(packages.order);
   }
+  
+  async getOnePackagePerCountry(): Promise<Package[]> {
+    // Desteklenen ülkeler
+    const countries = ['TR', 'RU', 'AZ', 'KZ', 'IR'];
+    const result: Package[] = [];
+    
+    // Her ülke için bir paket al
+    for (const country of countries) {
+      try {
+        const countryPackages = await db.select().from(packages)
+          .where(eq(packages.countryOrigin, country));
+        
+        // Eğer bu ülke için paketler varsa, bunlardan ilkini ekle
+        if (countryPackages.length > 0) {
+          // Öncelikle aktif ve öne çıkan paketleri tercih et
+          const featuredActivePackage = countryPackages.find(
+            pkg => pkg.isActive && pkg.isFeatured
+          );
+          
+          // Eğer aktif ve öne çıkan paket yoksa, sadece aktif paketlere bak
+          const activePackage = countryPackages.find(
+            pkg => pkg.isActive
+          );
+          
+          // Herhangi bir paket yoksa, listenin ilk elemanını ekle
+          const packageToAdd = featuredActivePackage || activePackage || countryPackages[0];
+          
+          result.push(packageToAdd);
+        }
+      } catch (error) {
+        console.error(`Error getting package for country ${country}:`, error);
+      }
+    }
+    
+    return result;
+  }
 
   async getPackageById(id: number): Promise<Package | undefined> {
     const [pkg] = await db.select().from(packages).where(eq(packages.id, id));

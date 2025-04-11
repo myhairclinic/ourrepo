@@ -135,6 +135,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  app.get("/api/packages/one-per-country", async (req, res) => {
+    try {
+      const packages = await storage.getOnePackagePerCountry();
+      res.json(packages);
+    } catch (error) {
+      console.error("Error fetching one package per country:", error);
+      res.status(500).json({ message: "Failed to fetch packages by country" });
+    }
+  });
+  
   app.get("/api/packages/featured", async (req, res) => {
     try {
       const packages = await storage.getFeaturedPackages();
