@@ -360,6 +360,69 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Все",
     [Language.Georgian]: "ყველა"
   },
+  
+  // Banner çevirileri
+  "home.banner1.title": {
+    [Language.Turkish]: "Ücretsiz Konsültasyon",
+    [Language.English]: "Free Consultation",
+    [Language.Russian]: "Бесплатная Консультация",
+    [Language.Georgian]: "უფასო კონსულტაცია"
+  },
+  "home.banner1.subtitle": {
+    [Language.Turkish]: "Saç ekimi uzmanlarımızla görüşün ve en uygun tedaviyi belirleyin",
+    [Language.English]: "Consult with our hair transplant experts and determine the most suitable treatment",
+    [Language.Russian]: "Проконсультируйтесь с нашими экспертами по трансплантации волос и определите наиболее подходящее лечение",
+    [Language.Georgian]: "გაიარეთ კონსულტაცია ჩვენს თმის გადანერგვის ექსპერტებთან და განსაზღვრეთ ყველაზე შესაფერისი მკურნალობა"
+  },
+  "home.banner1.cta": {
+    [Language.Turkish]: "Randevu Alın",
+    [Language.English]: "Book Appointment",
+    [Language.Russian]: "Записаться на прием",
+    [Language.Georgian]: "დაჯავშნეთ შეხვედრა"
+  },
+  "home.banner1.badge": {
+    [Language.Turkish]: "ÜCRETSİZ",
+    [Language.English]: "FREE",
+    [Language.Russian]: "БЕСПЛАТНО",
+    [Language.Georgian]: "უფასო"
+  },
+  "home.banner2.title": {
+    [Language.Turkish]: "Premium Hizmetler",
+    [Language.English]: "Premium Services",
+    [Language.Russian]: "Премиум Услуги",
+    [Language.Georgian]: "პრემიუმ სერვისები"
+  },
+  "home.banner2.subtitle": {
+    [Language.Turkish]: "En son teknolojiler ve uzman doktorlarla saç ekimi tedavileri",
+    [Language.English]: "Hair transplant treatments with the latest technologies and expert doctors",
+    [Language.Russian]: "Лечение трансплантации волос с использованием новейших технологий и врачей-экспертов",
+    [Language.Georgian]: "თმის გადანერგვის მკურნალობა უახლესი ტექნოლოგიებით და ექსპერტი ექიმებით"
+  },
+  "home.banner2.cta": {
+    [Language.Turkish]: "Hizmetleri Keşfedin",
+    [Language.English]: "Explore Services",
+    [Language.Russian]: "Изучить Услуги",
+    [Language.Georgian]: "სერვისების გაცნობა"
+  },
+  
+  "home.features.feature1": {
+    [Language.Turkish]: "Ücretsiz danışmanlık ve planlama",
+    [Language.English]: "Free consultation and planning",
+    [Language.Russian]: "Бесплатная консультация и планирование",
+    [Language.Georgian]: "უფასო კონსულტაცია და დაგეგმვა"
+  },
+  "home.features.feature2": {
+    [Language.Turkish]: "Son teknoloji ekipman ve teknikler",
+    [Language.English]: "State-of-the-art equipment and techniques",
+    [Language.Russian]: "Современное оборудование и методики",
+    [Language.Georgian]: "თანამედროვე აპარატურა და ტექნიკა"
+  },
+  "home.features.feature3": {
+    [Language.Turkish]: "Deneyimli ve uzman kadro",
+    [Language.English]: "Experienced and expert staff",
+    [Language.Russian]: "Опытный и квалифицированный персонал",
+    [Language.Georgian]: "გამოცდილი და ექსპერტი პერსონალი"
+  },
   "gallery.procedures": {
     [Language.Turkish]: "İşlemler",
     [Language.English]: "Procedures",

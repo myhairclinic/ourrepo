@@ -4,6 +4,7 @@ import { Language } from "@shared/types";
 import HeroSlider from "@/components/home/HeroSlider";
 import ServiceCards from "@/components/home/ServiceCards";
 import { PackageCards } from "@/components/home/PackageCards";
+import SliderWithBanners from "@/components/home/SliderWithBanners";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import BeforeAfterSlider from "@/components/home/BeforeAfterSlider";
 import Testimonials from "@/components/home/Testimonials";
@@ -44,6 +45,7 @@ export default function HomePage() {
         
         <HeroSlider />
         <ServiceCards />
+        <SliderWithBanners />
         <PackageCards />
         <WhyChooseUs />
         <BeforeAfterSlider />
