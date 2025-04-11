@@ -41,6 +41,7 @@ import ProductsManager from "@/pages/admin/ProductsManager";
 import ReviewsManager from "@/pages/admin/ReviewsManager";
 import FaqsManager from "@/pages/admin/FaqsManager";
 import AftercareGuidesManager from "@/pages/admin/AftercareGuidesManager";
+import BrowserSeedPage from "@/pages/BrowserSeedPage";
 
 // Admin route protection
 import { useAdmin } from "./hooks/use-admin";
@@ -74,8 +75,8 @@ function Router() {
   // If route doesn't have language prefix, redirect to prefixed route
   useEffect(() => {
     const handleInitialRoute = () => {
-      // Don't redirect admin routes
-      if (window.location.pathname.startsWith('/admin')) {
+      // Don't redirect admin routes or special tools
+      if (window.location.pathname.startsWith('/admin') || window.location.pathname.startsWith('/seed-blogs')) {
         return;
       }
       
@@ -129,6 +130,9 @@ function Router() {
       <Route path="/admin/aftercare-guides">
         <ProtectedAdminRoute component={AftercareGuidesManager} />
       </Route>
+      
+      {/* Special tool routes */}
+      <Route path="/seed-blogs" component={BrowserSeedPage} />
       
       {/* Public routes with language prefix */}
       <Route path="/:lang" component={HomePage} />
