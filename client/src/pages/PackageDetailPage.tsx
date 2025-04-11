@@ -143,10 +143,25 @@ export default function PackageDetailPage() {
     '/images/tbilisi-landmarks/narikala-fortress.jpg',
     '/images/tbilisi-landmarks/rustaveli-avenue.jpg',
     '/images/tbilisi-landmarks/peace-bridge.webp',
+    '/images/tbilisi-landmarks/tiflis-min-scaled.jpeg',
+    '/images/tbilisi-landmarks/tiflis-rustaveli-caddesi-gece.jpg',
+    '/images/tbilisi-landmarks/tiflis_chrononicle-2-1-scaled.jpeg',
+    '/images/tbilisi-landmarks/tifliste-gezilecek-yerler-baris-koprusu.webp',
   ];
   
-  // Combine original gallery with Tbilisi landmarks
-  galleryImages = [...galleryImages, ...tbilisiLandmarkImages];
+  // Add clinic procedure images to showcase real treatments
+  const clinicProcedureImages = [
+    '/images/clinic-procedures/IMG-20250325-WA0046.jpg',
+    '/images/clinic-procedures/IMG-20250325-WA0053.jpg',
+    '/images/clinic-procedures/IMG-20250325-WA0062.jpg',
+    '/images/clinic-procedures/IMG-20250325-WA0063.jpg',
+    '/images/clinic-procedures/IMG-20250325-WA0064.jpg',
+    '/images/clinic-procedures/IMG-20250325-WA0065.jpg',
+    '/images/clinic-procedures/IMG-20250325-WA0066.jpg',
+  ];
+  
+  // Combine original gallery with Tbilisi landmarks and clinic procedures
+  galleryImages = [...galleryImages, ...tbilisiLandmarkImages, ...clinicProcedureImages];
 
   return (
     <>
