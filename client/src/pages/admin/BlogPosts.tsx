@@ -1117,13 +1117,13 @@ export default function BlogPosts() {
                                           ? "bg-orange-200" 
                                           : "bg-green-200"
                                     }`}
-                                    indicatorClassName={`${
-                                      (completeness[post.id] || 0) < 30 
-                                        ? "bg-destructive" 
+                                    style={{
+                                      "--progress-bar-indicator-color": (completeness[post.id] || 0) < 30 
+                                        ? "hsl(var(--destructive))"
                                         : (completeness[post.id] || 0) < 70 
-                                          ? "bg-orange-500" 
-                                          : "bg-green-500"
-                                    }`}
+                                          ? "#f97316" 
+                                          : "#22c55e"
+                                    } as React.CSSProperties}
                                   />
                                 </div>
                               </TooltipTrigger>
