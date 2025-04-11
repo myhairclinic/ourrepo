@@ -224,59 +224,8 @@ export default function BlogPosts() {
       });
       setCategories(Array.from(uniqueCategories));
       
-      // Calculate completeness for each post
-      const newCompleteness: Record<number, number> = {};
-      
-      blogPosts.forEach(post => {
-        let fieldsToCheck = 0;
-        let filledFields = 0;
-        
-        // Check Turkish fields
-        if (post.titleTR) filledFields++;
-        fieldsToCheck++;
-        
-        if (post.contentTR) filledFields++;
-        fieldsToCheck++;
-        
-        // Check English fields
-        if (post.titleEN) filledFields++;
-        fieldsToCheck++;
-        
-        if (post.contentEN) filledFields++;
-        fieldsToCheck++;
-        
-        // Check Russian fields
-        if (post.titleRU) filledFields++;
-        fieldsToCheck++;
-        
-        if (post.contentRU) filledFields++;
-        fieldsToCheck++;
-        
-        // Check Georgian fields
-        if (post.titleKA) filledFields++;
-        fieldsToCheck++;
-        
-        if (post.contentKA) filledFields++;
-        fieldsToCheck++;
-        
-        // Check other important fields
-        if (post.imageUrl) filledFields++;
-        fieldsToCheck++;
-        
-        if (post.categoryTR) filledFields++;
-        fieldsToCheck++;
-        
-        if (post.authorTR) filledFields++;
-        fieldsToCheck++;
-        
-        if (post.metaDescriptionTR) filledFields++;
-        fieldsToCheck++;
-        
-        // Calculate percentage
-        const percentage = Math.round((filledFields / fieldsToCheck) * 100);
-        newCompleteness[post.id] = percentage;
-      });
-      
+      // Use the calculation function we created
+      const newCompleteness = calculateCompleteness(blogPosts);
       setCompleteness(newCompleteness);
     }
   }, [blogPosts]);
