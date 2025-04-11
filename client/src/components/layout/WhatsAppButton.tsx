@@ -47,7 +47,7 @@ export default function WhatsAppButton({ text, fixed = true }: WhatsAppButtonPro
     return (
       <div className="relative inline-block">
         <a
-          href={`https://wa.me/${CONTACT.WHATSAPP.replace(/[^0-9]/g, "")}`}
+          href={`https://wa.me/${CONTACT.WHATSAPP.replace(/[^0-9]/g, "")}?text=Merhaba%2C%20web%20sitesinden%20geliyorum.`}
           target="_blank"
           rel="noopener noreferrer"
           className={`${baseClasses} ${fixedClasses} flex items-center gap-2 px-5 py-3 rounded-lg font-medium`}
@@ -86,7 +86,7 @@ export default function WhatsAppButton({ text, fixed = true }: WhatsAppButtonPro
         >
           <div className="relative">
             <a
-              href={`https://wa.me/${CONTACT.WHATSAPP.replace(/[^0-9]/g, "")}`}
+              href={`https://wa.me/${CONTACT.WHATSAPP.replace(/[^0-9]/g, "")}?text=Merhaba%2C%20web%20sitesinden%20geliyorum.`}
               target="_blank"
               rel="noopener noreferrer"
               className={`${baseClasses} p-4 rounded-full flex items-center justify-center`}

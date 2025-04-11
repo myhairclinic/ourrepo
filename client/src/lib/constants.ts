@@ -36,7 +36,7 @@ export const SOCIAL = {
   FACEBOOK: "https://facebook.com/myhairclinic",
   INSTAGRAM: "https://instagram.com/myhairclinic",
   TIKTOK: "https://www.tiktok.com/@myhairtbilisi",
-  WHATSAPP: "https://wa.me/995555003044"
+  WHATSAPP: "https://wa.me/995555003044?text=Merhaba%2C%20web%20sitesinden%20geliyorum."
 };
 
 export const META = {
