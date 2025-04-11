@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAdmin } from "@/hooks/use-admin";
 import AdminLayout from "@/components/admin/AdminLayout";
@@ -50,12 +50,40 @@ import {
   Eye, 
   ImagePlus,
   Check,
-  X
+  X,
+  Search,
+  Filter,
+  SortAsc,
+  ChevronDown,
+  HelpCircle,
+  Clock,
+  Calendar,
+  RefreshCw,
+  Upload
 } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { 
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { 
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Progress } from "@/components/ui/progress";
 
 // Blog post types
 interface BlogPost {
@@ -131,9 +159,17 @@ export default function BlogPosts() {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isImageUploadOpen, setIsImageUploadOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [activeLanguage, setActiveLanguage] = useState<"TR" | "EN" | "RU" | "KA">("TR");
+  const [filterCategory, setFilterCategory] = useState<string>("all");
+  const [filterStatus, setFilterStatus] = useState<"all" | "published" | "draft">("all");
+  const [filterFeatured, setFilterFeatured] = useState<"all" | "featured">("all");
+  const [sortBy, setSortBy] = useState<"newest" | "oldest" | "title">("newest");
+  const [categories, setCategories] = useState<string[]>([]);
+  const [completeness, setCompleteness] = useState<Record<number, number>>({});
 
   // Form state for new blog post
   const [newPost, setNewPost] = useState<CreateBlogPostDto>({
@@ -178,17 +214,113 @@ export default function BlogPosts() {
     enabled: !!user,
   });
 
-  // Filter blog posts based on search term
-  const filteredPosts = blogPosts.filter((post) => {
-    const searchTermLower = searchTerm.toLowerCase();
-    return (
-      post.titleTR.toLowerCase().includes(searchTermLower) ||
-      post.titleEN.toLowerCase().includes(searchTermLower) ||
-      post.categoryTR.toLowerCase().includes(searchTermLower) ||
-      post.categoryEN.toLowerCase().includes(searchTermLower) ||
-      post.slug.toLowerCase().includes(searchTermLower)
-    );
-  });
+  // Extract categories and calculate completeness
+  useEffect(() => {
+    if (blogPosts.length > 0) {
+      // Extract unique categories
+      const uniqueCategories = new Set<string>();
+      blogPosts.forEach(post => {
+        if (post.categoryTR) uniqueCategories.add(post.categoryTR);
+      });
+      setCategories(Array.from(uniqueCategories));
+      
+      // Calculate completeness for each post
+      const newCompleteness: Record<number, number> = {};
+      
+      blogPosts.forEach(post => {
+        let fieldsToCheck = 0;
+        let filledFields = 0;
+        
+        // Check Turkish fields
+        if (post.titleTR) filledFields++;
+        fieldsToCheck++;
+        
+        if (post.contentTR) filledFields++;
+        fieldsToCheck++;
+        
+        // Check English fields
+        if (post.titleEN) filledFields++;
+        fieldsToCheck++;
+        
+        if (post.contentEN) filledFields++;
+        fieldsToCheck++;
+        
+        // Check Russian fields
+        if (post.titleRU) filledFields++;
+        fieldsToCheck++;
+        
+        if (post.contentRU) filledFields++;
+        fieldsToCheck++;
+        
+        // Check Georgian fields
+        if (post.titleKA) filledFields++;
+        fieldsToCheck++;
+        
+        if (post.contentKA) filledFields++;
+        fieldsToCheck++;
+        
+        // Check other important fields
+        if (post.imageUrl) filledFields++;
+        fieldsToCheck++;
+        
+        if (post.categoryTR) filledFields++;
+        fieldsToCheck++;
+        
+        if (post.authorTR) filledFields++;
+        fieldsToCheck++;
+        
+        if (post.metaDescriptionTR) filledFields++;
+        fieldsToCheck++;
+        
+        // Calculate percentage
+        const percentage = Math.round((filledFields / fieldsToCheck) * 100);
+        newCompleteness[post.id] = percentage;
+      });
+      
+      setCompleteness(newCompleteness);
+    }
+  }, [blogPosts]);
+
+  // Filter and sort blog posts
+  const filteredPosts = blogPosts
+    .filter((post) => {
+      // Apply search filter
+      const searchTermLower = searchTerm.toLowerCase();
+      const matchesSearch = searchTerm === "" || 
+        post.titleTR.toLowerCase().includes(searchTermLower) ||
+        post.titleEN.toLowerCase().includes(searchTermLower) ||
+        post.categoryTR.toLowerCase().includes(searchTermLower) ||
+        post.categoryEN.toLowerCase().includes(searchTermLower) ||
+        post.slug.toLowerCase().includes(searchTermLower);
+      
+      // Apply category filter
+      const matchesCategory = filterCategory === "all" || 
+        post.categoryTR === filterCategory;
+      
+      // Apply status filter
+      const matchesStatus = filterStatus === "all" || 
+        (filterStatus === "published" && post.isPublished) || 
+        (filterStatus === "draft" && !post.isPublished);
+      
+      // Apply featured filter
+      const matchesFeatured = filterFeatured === "all" || 
+        (filterFeatured === "featured" && post.isFeatured);
+      
+      return matchesSearch && matchesCategory && matchesStatus && matchesFeatured;
+    })
+    .sort((a, b) => {
+      // Apply sorting
+      switch (sortBy) {
+        case "newest":
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        case "oldest":
+          return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+        case "title":
+          return a.titleTR.localeCompare(b.titleTR);
+        default:
+          return 0;
+      }
+    });
 
   // Create new blog post
   const createMutation = useMutation({
@@ -415,14 +547,101 @@ export default function BlogPosts() {
     <AdminLayout title="Blog Yazıları">
       <div className="space-y-6">
         <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
-          <div className="flex-1">
-            <Input
-              placeholder="Blog yazısı ara..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="max-w-md"
-            />
+          <div className="flex flex-1 gap-2 flex-col sm:flex-row">
+            <div className="relative max-w-md">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Blog yazısı ara..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-8 max-w-md"
+              />
+            </div>
+            
+            <div className="flex gap-2 flex-wrap">
+              {/* Category Filter */}
+              <Select value={filterCategory} onValueChange={setFilterCategory}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Kategoriye göre" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Tüm Kategoriler</SelectItem>
+                  {categories.map((category) => (
+                    <SelectItem key={category} value={category}>
+                      {category}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              
+              {/* Status Filter */}
+              <Select value={filterStatus} onValueChange={value => setFilterStatus(value as any)}>
+                <SelectTrigger className="w-[150px]">
+                  <SelectValue placeholder="Duruma göre" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Tüm Durumlar</SelectItem>
+                  <SelectItem value="published">Yayında</SelectItem>
+                  <SelectItem value="draft">Taslak</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              {/* Featured Filter */}
+              <Select value={filterFeatured} onValueChange={value => setFilterFeatured(value as any)}>
+                <SelectTrigger className="w-[150px]">
+                  <SelectValue placeholder="Öne çıkan" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Tümü</SelectItem>
+                  <SelectItem value="featured">Öne Çıkanlar</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              {/* Sort By */}
+              <Select value={sortBy} onValueChange={value => setSortBy(value as any)}>
+                <SelectTrigger className="w-[150px]">
+                  <SelectValue placeholder="Sıralama" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="newest">
+                    <div className="flex items-center">
+                      <Calendar className="mr-2 h-4 w-4" />
+                      <span>En Yeniler</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="oldest">
+                    <div className="flex items-center">
+                      <Clock className="mr-2 h-4 w-4" />
+                      <span>En Eskiler</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="title">
+                    <div className="flex items-center">
+                      <SortAsc className="mr-2 h-4 w-4" />
+                      <span>Başlığa Göre</span>
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              
+              {/* Reset Filters Button */}
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  setSearchTerm("");
+                  setFilterCategory("all");
+                  setFilterStatus("all");
+                  setFilterFeatured("all");
+                  setSortBy("newest");
+                }}
+                size="icon"
+                className="h-10 w-10"
+              >
+                <RefreshCw className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
+          
           <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
             <DialogTrigger asChild>
               <Button>
@@ -791,111 +1010,142 @@ export default function BlogPosts() {
               </div>
             ) : (
               // List of blog posts
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[400px]">Başlık</TableHead>
-                    <TableHead>Kategori</TableHead>
-                    <TableHead>Durum</TableHead>
-                    <TableHead>Tarih</TableHead>
-                    <TableHead className="text-right">İşlemler</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredPosts.map((post) => (
-                    <TableRow key={post.id}>
-                      <TableCell className="font-medium">
-                        <div className="flex items-start gap-3">
-                          {post.imageUrl && (
-                            <div className="flex-shrink-0 h-10 w-10 rounded-md overflow-hidden">
-                              <img
-                                src={post.imageUrl}
-                                alt={post.titleTR}
-                                className="h-full w-full object-cover"
-                              />
-                            </div>
-                          )}
-                          <div>
-                            <div className="font-medium">{post.titleTR}</div>
-                            <div className="text-xs text-muted-foreground">{post.slug}</div>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                {filteredPosts.map((post) => (
+                  <Card key={post.id} className="overflow-hidden">
+                    <div className="relative">
+                      {/* Blog post image */}
+                      <div className="h-40 bg-muted relative overflow-hidden">
+                        {post.imageUrl ? (
+                          <img 
+                            src={post.imageUrl} 
+                            alt={post.titleTR} 
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center bg-muted">
+                            <ImagePlus className="h-10 w-10 text-muted-foreground opacity-20" />
                           </div>
+                        )}
+                        
+                        {/* Completeness indicator */}
+                        <div className="absolute bottom-0 inset-x-0">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <div className="w-full">
+                                  <Progress 
+                                    value={completeness[post.id] || 0} 
+                                    className="h-1 rounded-none" 
+                                  />
+                                </div>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <div className="text-xs">
+                                  %{completeness[post.id] || 0} içerik tamamlandı
+                                </div>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
                         </div>
-                      </TableCell>
-                      <TableCell>{post.categoryTR}</TableCell>
-                      <TableCell>
-                        <div className="flex flex-col gap-2">
-                          <Badge variant={post.isPublished ? "default" : "outline"} className="w-fit">
-                            {post.isPublished ? "Yayında" : "Taslak"}
-                          </Badge>
-                          {post.isFeatured && (
-                            <Badge variant="secondary" className="w-fit">
-                              Öne Çıkan
-                            </Badge>
+                      </div>
+                      
+                      {/* Status badges */}
+                      <div className="absolute top-2 right-2 flex space-x-1">
+                        <Badge variant={post.isPublished ? "default" : "outline"}>
+                          {post.isPublished ? "Yayında" : "Taslak"}
+                        </Badge>
+                        {post.isFeatured && (
+                          <Badge variant="secondary">Öne Çıkan</Badge>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <CardHeader className="pb-2">
+                      <div className="flex items-center justify-between">
+                        <Badge variant="outline" className="text-xs px-2 py-0">
+                          {post.categoryTR || "Kategorisiz"}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground">
+                          {formatDate(post.createdAt)}
+                        </span>
+                      </div>
+                      <CardTitle className="text-lg mt-1 line-clamp-2">{post.titleTR}</CardTitle>
+                      <CardDescription className="line-clamp-2">
+                        {post.contentTR.substring(0, 100)}...
+                      </CardDescription>
+                    </CardHeader>
+                    
+                    <CardFooter className="pt-0 flex justify-between items-center">
+                      <div className="text-xs text-muted-foreground truncate max-w-[180px]">
+                        {post.slug}
+                      </div>
+                      <div className="flex space-x-1">
+                        <Button 
+                          size="sm" 
+                          variant="ghost" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleEditPost(post)}
+                        >
+                          <FileEdit className="h-4 w-4" />
+                          <span className="sr-only">Düzenle</span>
+                        </Button>
+                        
+                        <Button 
+                          size="sm" 
+                          variant="ghost" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleTogglePublished(post)}
+                        >
+                          {post.isPublished ? (
+                            <X className="h-4 w-4" />
+                          ) : (
+                            <Check className="h-4 w-4" />
                           )}
-                        </div>
-                      </TableCell>
-                      <TableCell>{formatDate(post.createdAt)}</TableCell>
-                      <TableCell className="text-right">
+                          <span className="sr-only">
+                            {post.isPublished ? "Yayından Kaldır" : "Yayınla"}
+                          </span>
+                        </Button>
+                        
+                        <Button 
+                          size="sm" 
+                          variant="ghost" 
+                          className="h-8 w-8 p-0"
+                          onClick={() => handleToggleFeatured(post)}
+                        >
+                          {post.isFeatured ? (
+                            <X className="h-4 w-4" />
+                          ) : (
+                            <Check className="h-4 w-4" />
+                          )}
+                          <span className="sr-only">
+                            {post.isFeatured ? "Öne Çıkarmayı Kaldır" : "Öne Çıkar"}
+                          </span>
+                        </Button>
+                        
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon">
+                            <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
                               <MoreHorizontal className="h-4 w-4" />
-                              <span className="sr-only">Menüyü aç</span>
+                              <span className="sr-only">Diğer İşlemler</span>
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>İşlemler</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={() => handleEditPost(post)}>
-                              <FileEdit className="mr-2 h-4 w-4" />
-                              <span>Düzenle</span>
-                            </DropdownMenuItem>
                             <DropdownMenuItem>
                               <Eye className="mr-2 h-4 w-4" />
                               <span>Önizle</span>
                             </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={() => handleToggleFeatured(post)}>
-                              {post.isFeatured ? (
-                                <>
-                                  <X className="mr-2 h-4 w-4" />
-                                  <span>Öne Çıkarmayı Kaldır</span>
-                                </>
-                              ) : (
-                                <>
-                                  <Check className="mr-2 h-4 w-4" />
-                                  <span>Öne Çıkar</span>
-                                </>
-                              )}
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => handleTogglePublished(post)}>
-                              {post.isPublished ? (
-                                <>
-                                  <X className="mr-2 h-4 w-4" />
-                                  <span>Yayından Kaldır</span>
-                                </>
-                              ) : (
-                                <>
-                                  <Check className="mr-2 h-4 w-4" />
-                                  <span>Yayınla</span>
-                                </>
-                              )}
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                              className="text-red-600"
-                              onClick={() => handleDeleteDialog(post)}
-                            >
+                            <DropdownMenuItem onClick={() => handleDeleteDialog(post)}>
                               <Trash2 className="mr-2 h-4 w-4" />
                               <span>Sil</span>
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                      </div>
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
             )}
           </CardContent>
           {!isLoading && filteredPosts.length > 0 && (
