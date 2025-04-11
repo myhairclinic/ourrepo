@@ -35,8 +35,8 @@ export const CONTACT = {
 export const SOCIAL = {
   FACEBOOK: "https://facebook.com/myhairclinic",
   INSTAGRAM: "https://instagram.com/myhairclinic",
-  TWITTER: "https://twitter.com/myhairclinic",
-  YOUTUBE: "https://youtube.com/myhairclinic"
+  TIKTOK: "https://www.tiktok.com/@myhairtbilisi",
+  WHATSAPP: "https://wa.me/995555003044"
 };
 
 export const META = {
