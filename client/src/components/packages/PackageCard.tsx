@@ -74,7 +74,7 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
       'UA': '/images/packages/premium-package-ua.jpg',
       'AZ': '/images/packages/azerbaijan-package.jpg',
       'IR': '/images/packages/iran-package.jpg',
-      'KZ': '/images/packages/premium-package-kz.jpg',
+      'KZ': '/images/packages/kazakhstan-package.jpg',
     };
     
     return imageMap[code] || '';
