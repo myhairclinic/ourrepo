@@ -93,6 +93,7 @@ function getCountryName(countryCode: string, t: (key: string) => string): string
 }
 
 function getCountryImage(countryCode: string): string {
+  // Kullanıcı tarafından yüklenen local görseller
   switch (countryCode) {
     case 'TR':
       return '/images/countries/turkey.webp';
@@ -337,8 +338,15 @@ export function PackageCards() {
     }
   };
   
-  // Debug: Konsola paketleri yazdır
+  // Debug: Konsola paketleri ve ülke bilgilerini yazdır
   console.log("Paketler:", packages);
+  
+  // Ülke görselleri ve countryOrigin bilgilerini kontrol et
+  if (packages && packages.length > 0) {
+    packages.forEach(pkg => {
+      console.log(`Paket: ${pkg.titleTR}, Ülke: ${pkg.countryOrigin}, Görsel URL: ${getCountryImage(pkg.countryOrigin || '')}`);
+    });
+  }
   
   return (
     <section 
