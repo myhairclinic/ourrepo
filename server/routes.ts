@@ -412,6 +412,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Blog routes
+  app.get("/api/blog", getBlogPosts);
+  app.get("/api/blog/:slug", getBlogPostBySlug);
+  app.post("/api/blog", createBlogPost);
+  app.put("/api/blog/:id", updateBlogPost);
+  app.delete("/api/blog/:id", deleteBlogPost);
+
   // Seed data routes (public during development)
   app.post("/api/seed/services", seedServices);
   app.post("/api/seed/packages", seedPackages);
