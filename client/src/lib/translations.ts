@@ -394,6 +394,18 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Досуг и развлечения",
     [Language.Georgian]: "გასართობი აქტივობები"
   },
+  "packages.cityTours": {
+    [Language.Turkish]: "Şehir Turları",
+    [Language.English]: "City Tours",
+    [Language.Russian]: "Экскурсии по городу",
+    [Language.Georgian]: "ქალაქის ტურები"
+  },
+  "packages.traditionalCuisine": {
+    [Language.Turkish]: "Geleneksel Mutfak",
+    [Language.English]: "Traditional Cuisine",
+    [Language.Russian]: "Традиционная кухня",
+    [Language.Georgian]: "ტრადიციული სამზარეულო"
+  },
   "packages.itinerary": {
     [Language.Turkish]: "Seyahat Programı",
     [Language.English]: "Itinerary",
