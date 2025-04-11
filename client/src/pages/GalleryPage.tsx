@@ -15,10 +15,11 @@ import Container from '@/components/ui/container';
 
 type BeforeAfterItem = {
   id: number;
-  before: string;
-  after: string;
+  imageUrl: string;
   title: string;
+  description: string;
   month: number;
+  type: 'hair' | 'beard' | 'eyebrow';
 };
 
 type VideoItem = {
@@ -219,31 +220,91 @@ export default function GalleryPage() {
   const beforeAfterImages: BeforeAfterItem[] = [
     { 
       id: 1, 
-      before: '/images/clinic-gallery/IMG-20250325-WA0046.jpg', 
-      after: '/images/clinic-gallery/IMG-20250325-WA0066.jpg', 
+      imageUrl: '/images/before-after/IMG-20250325-WA0067.jpg', 
       title: t('gallery.malePatterBaldness'), 
-      month: 12 
+      description: t('gallery.fullHairTransformation'),
+      month: 12,
+      type: 'hair'
     },
     { 
       id: 2, 
-      before: '/images/clinic-gallery/IMG-20250325-WA0054.jpg', 
-      after: '/images/clinic-gallery/IMG-20250325-WA0059.jpg', 
+      imageUrl: '/images/before-after/IMG-20250325-WA0068.jpg', 
       title: t('gallery.recededHairline'), 
-      month: 8 
+      description: t('gallery.naturalHairlineRestoration'),
+      month: 10,
+      type: 'hair'
     },
     { 
       id: 3, 
-      before: '/images/clinic-gallery/IMG-20250325-WA0048.jpg', 
-      after: '/images/clinic-gallery/IMG-20250325-WA0050.jpg', 
-      title: t('gallery.crownThinning'), 
-      month: 10 
+      imageUrl: '/images/before-after/IMG-20250325-WA0069.jpg', 
+      title: t('gallery.advancedBaldness'), 
+      description: t('gallery.completeHairRestoration'),
+      month: 12,
+      type: 'hair'
     },
     { 
       id: 4, 
-      before: '/images/clinic-gallery/IMG-20250325-WA0051.jpg', 
-      after: '/images/clinic-gallery/IMG-20250325-WA0053.jpg', 
+      imageUrl: '/images/before-after/IMG-20250325-WA0070.jpg', 
       title: t('gallery.eyebrowTransplant'), 
-      month: 6 
+      description: t('gallery.naturalEyebrowEnhancement'),
+      month: 6,
+      type: 'eyebrow'
+    },
+    { 
+      id: 5, 
+      imageUrl: '/images/before-after/IMG-20250325-WA0071.jpg', 
+      title: t('gallery.youngPatientTransformation'), 
+      description: t('gallery.improvedHairDensity'),
+      month: 8,
+      type: 'hair'
+    },
+    { 
+      id: 6, 
+      imageUrl: '/images/before-after/IMG-20250325-WA0072.jpg', 
+      title: t('gallery.hairlinePlanning'), 
+      description: t('gallery.precisionHairlineDesign'),
+      month: 10,
+      type: 'hair'
+    },
+    { 
+      id: 7, 
+      imageUrl: '/images/before-after/IMG-20250325-WA0073.jpg', 
+      title: t('gallery.extensiveRestoration'), 
+      description: t('gallery.completeHairCoverage'),
+      month: 12,
+      type: 'hair'
+    },
+    { 
+      id: 8, 
+      imageUrl: '/images/before-after/IMG-20250325-WA0092.jpg', 
+      title: t('gallery.seniorPatientTransformation'), 
+      description: t('gallery.naturalRejuvenation'),
+      month: 10,
+      type: 'hair'
+    },
+    { 
+      id: 9, 
+      imageUrl: '/images/before-after/IMG-20250325-WA0093.jpg', 
+      title: t('gallery.hairTransplantProcedure'), 
+      description: t('gallery.professionalApplication'),
+      month: 8,
+      type: 'hair'
+    },
+    { 
+      id: 10, 
+      imageUrl: '/images/before-after/IMG-20250325-WA0095.jpg', 
+      title: t('gallery.advancedThinning'), 
+      description: t('gallery.dramaticImprovement'),
+      month: 12,
+      type: 'hair'
+    },
+    { 
+      id: 11, 
+      imageUrl: '/images/before-after/WhatsApp Görsel 2025-03-25 saat 22.05.29_4bed7d5d.jpg', 
+      title: t('gallery.youngMaleTransformation'), 
+      description: t('gallery.naturalHairlineAndDensity'),
+      month: 10,
+      type: 'hair'
     }
   ];
 
@@ -490,41 +551,62 @@ export default function GalleryPage() {
           </TabsContent>
 
           <TabsContent value="beforeAfter">
-            <div className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {beforeAfterImages.map((item) => (
-                <Card key={item.id} className="overflow-hidden">
-                  <div className="p-4 bg-muted">
-                    <h3 className="font-semibold">{item.title}</h3>
-                    <p className="text-sm text-muted-foreground">
-                      {t('gallery.resultAfter')} {item.month} {t('gallery.months')}
-                    </p>
-                  </div>
-                  <Separator />
-                  <CardContent className="p-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <AspectRatio ratio={4/3} className="bg-muted rounded-lg overflow-hidden">
-                          <img 
-                            src={item.before} 
-                            alt={`${item.title} - ${t('gallery.before')}`}
-                            className="object-cover w-full h-full"
-                          />
-                        </AspectRatio>
-                        <p className="text-center font-medium">{t('gallery.before')}</p>
-                      </div>
-                      <div className="space-y-2">
-                        <AspectRatio ratio={4/3} className="bg-muted rounded-lg overflow-hidden">
-                          <img 
-                            src={item.after} 
-                            alt={`${item.title} - ${t('gallery.after')}`}
-                            className="object-cover w-full h-full"
-                          />
-                        </AspectRatio>
-                        <p className="text-center font-medium">{t('gallery.after')}</p>
+                <Dialog key={item.id}>
+                  <DialogTrigger asChild>
+                    <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer group">
+                      <AspectRatio ratio={1/1} className="bg-muted">
+                        <img 
+                          src={item.imageUrl} 
+                          alt={item.title}
+                          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </AspectRatio>
+                      <CardContent className="p-4">
+                        <div className="flex flex-col gap-1">
+                          <h3 className="font-medium text-base">{item.title}</h3>
+                          <p className="text-xs text-muted-foreground">
+                            {t('gallery.resultAfter')} {item.month} {t('gallery.months')}
+                          </p>
+                          <Badge variant="outline" className="w-fit mt-1 text-xs capitalize">
+                            {item.type === 'hair' ? t('gallery.hairTransplant') : 
+                             item.type === 'beard' ? t('gallery.beardTransplant') : 
+                             t('gallery.eyebrowTransplant')}
+                          </Badge>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-4xl">
+                    <div className="flex flex-col gap-4">
+                      <AspectRatio ratio={16/9} className="bg-muted rounded-lg overflow-hidden">
+                        <img 
+                          src={item.imageUrl} 
+                          alt={item.title}
+                          className="object-contain w-full h-full"
+                        />
+                      </AspectRatio>
+                      <div>
+                        <h3 className="text-lg font-semibold mb-1">{item.title}</h3>
+                        <p className="text-muted-foreground text-sm mb-2">
+                          {item.description}
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <Badge className="capitalize">
+                            {item.type === 'hair' ? t('gallery.hairTransplant') : 
+                             item.type === 'beard' ? t('gallery.beardTransplant') : 
+                             t('gallery.eyebrowTransplant')}
+                          </Badge>
+                          <Badge variant="outline" className="flex items-center gap-1">
+                            <Clock className="h-3.5 w-3.5" />
+                            {item.month} {t('gallery.months')}
+                          </Badge>
+                        </div>
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
+                  </DialogContent>
+                </Dialog>
               ))}
             </div>
           </TabsContent>
