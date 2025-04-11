@@ -65,6 +65,20 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
     
     return flagMap[code] || '🏳️';
   };
+
+  // Helper function to get country-specific image
+  const getCountrySpecificImage = (code: string): string => {
+    const imageMap: Record<string, string> = {
+      'TR': '/images/packages/turkey-package.webp',
+      'RU': '/images/packages/russia-standard.jpg',
+      'UA': '/images/packages/premium-package-ua.jpg',
+      'AZ': '/images/packages/azerbaijan-package.jpg',
+      'IR': '/images/packages/iran-package.jpg',
+      'KZ': '/images/packages/premium-package-kz.jpg',
+    };
+    
+    return imageMap[code] || '';
+  };
   
   // Extract features from highlights if available
   const getPackageFeatures = (): string[] => {
@@ -129,7 +143,7 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
       
       <div className="relative overflow-hidden">
         <img
-          src={pkg.imageUrl || '/images/package-placeholder.jpg'}
+          src={getCountrySpecificImage(country) || pkg.imageUrl || '/images/package-placeholder.jpg'}
           alt={title}
           className="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-105"
         />
