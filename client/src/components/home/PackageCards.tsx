@@ -73,7 +73,7 @@ function PackageCard({ package: pkg, getTitle, getDescription, addPrefix, t }: P
             variant="secondary" 
             className="bg-white/90 backdrop-blur-sm text-primary shadow-lg font-medium px-3 py-1"
           >
-            {t("packages.badge")}
+            {t("packages.home.badge")}
           </Badge>
         </div>
         
@@ -84,7 +84,7 @@ function PackageCard({ package: pkg, getTitle, getDescription, addPrefix, t }: P
               variant="secondary" 
               className="bg-primary/90 text-white shadow-lg font-medium px-3 py-1 flex items-center gap-1"
             >
-              <Heart className="h-3 w-3" /> {t("packages.allInclusive")}
+              <Heart className="h-3 w-3" /> {t("packages.home.allInclusive")}
             </Badge>
           </div>
         )}
@@ -105,7 +105,7 @@ function PackageCard({ package: pkg, getTitle, getDescription, addPrefix, t }: P
         <div className="flex items-center gap-3 mb-4 text-sm text-muted-foreground">
           <span className="flex items-center gap-1">
             <Calendar className="h-4 w-4 text-primary/80" />
-            {pkg.durationDays} {t("packages.days")}
+            {pkg.durationDays} {t("packages.home.days")}
           </span>
           <span className="flex items-center gap-1">
             <Users className="h-4 w-4 text-primary/80" />
