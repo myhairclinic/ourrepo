@@ -36,8 +36,8 @@ export default function AppointmentButton({ text, fixed = true }: AppointmentBut
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
   
-  // Button with gradient background - using blue-green (teal) gradient as requested
-  const baseClasses = "bg-gradient-to-r from-blue-500 to-teal-500 text-white hover:from-blue-600 hover:to-teal-600 transition-all duration-300 shadow-lg";
+  // Button with gradient background - using blue gradient as requested
+  const baseClasses = "bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg";
   const fixedClasses = fixed ? "fixed bottom-6 left-6 z-50" : "";
   
   // Return inline button if text is provided
@@ -51,7 +51,7 @@ export default function AppointmentButton({ text, fixed = true }: AppointmentBut
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           style={{
-            boxShadow: "0 10px 25px -5px rgba(20, 184, 166, 0.5)"
+            boxShadow: "0 10px 25px -5px rgba(59, 130, 246, 0.5)"
           }}
         >
           <Calendar size={22} />
@@ -80,7 +80,7 @@ export default function AppointmentButton({ text, fixed = true }: AppointmentBut
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
               style={{
-                boxShadow: "0 10px 25px -5px rgba(20, 184, 166, 0.5)",
+                boxShadow: "0 10px 25px -5px rgba(59, 130, 246, 0.5)",
                 animation: "pulse 2s infinite"
               }}
             >
