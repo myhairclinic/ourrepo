@@ -22,6 +22,7 @@ import { seedBlogPosts } from "./controllers/seedBlogController";
 import { seedExtendedBlogPosts } from "./controllers/extendedBlogSeedController";
 import {
   getBlogPosts,
+  getPaginatedBlogPosts,
   getBlogPostBySlug,
   createBlogPost,
   updateBlogPost,
@@ -79,13 +80,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/services", createService);
   app.put("/api/services/:id", updateService);
   app.delete("/api/services/:id", deleteService);
-
-  // Blog routes
-  app.get("/api/blog", getBlogPosts);
-  app.get("/api/blog/:slug", getBlogPostBySlug);
-  app.post("/api/blog", createBlogPost);
-  app.put("/api/blog/:id", updateBlogPost);
-  app.delete("/api/blog/:id", deleteBlogPost);
 
   // Gallery routes
   app.get("/api/gallery", getGalleryItems);
@@ -416,6 +410,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Blog routes
   app.get("/api/blog", getBlogPosts);
+  app.get("/api/blog/paginated", getPaginatedBlogPosts);
   app.get("/api/blog/:slug", getBlogPostBySlug);
   app.post("/api/blog", createBlogPost);
   app.put("/api/blog/:id", updateBlogPost);

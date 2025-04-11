@@ -1203,6 +1203,96 @@ export class DatabaseStorage implements IStorage {
       return [];
     }
   }
+  
+  async getPaginatedBlogPosts(params: {
+    page: number;
+    limit: number;
+    category?: string;
+    tag?: string;
+    search?: string;
+    sort?: string;
+  }): Promise<{
+    posts: BlogPost[];
+    totalPosts: number;
+    totalPages: number;
+  }> {
+    try {
+      const { page, limit, category, tag, search, sort } = params;
+      
+      // Başlangıç sorgusu
+      let query = db.select().from(blogPosts);
+      
+      // Kategori filtresi
+      if (category) {
+        query = query.where(eq(blogPosts.category, category));
+      }
+      
+      // Etiket filtresi (veritabanında tam eşleşme arayamıyoruz, bu yüzden sonuçları JS tarafında filtreleriz)
+      let filteredPosts: BlogPost[] = [];
+      
+      // Sıralama
+      if (sort === 'oldest') {
+        query = query.orderBy(asc(blogPosts.createdAt));
+      } else if (sort === 'popular') {
+        query = query.orderBy(desc(blogPosts.viewCount));
+      } else {
+        // Default: en yeni (newest)
+        query = query.orderBy(desc(blogPosts.createdAt));
+      }
+      
+      // Tüm sonuçları al
+      const allPosts = await query;
+      
+      // Etiket ve arama filtresi JS tarafında yapılmalı
+      filteredPosts = allPosts;
+      
+      // Etiket filtresi
+      if (tag) {
+        filteredPosts = filteredPosts.filter(post => {
+          const tagArray = typeof post.tags === 'string' 
+            ? post.tags.split(',').map(t => t.trim()) 
+            : post.tags;
+          return Array.isArray(tagArray) && tagArray.some(t => t.toLowerCase() === tag.toLowerCase());
+        });
+      }
+      
+      // Arama filtresi
+      if (search) {
+        const searchLower = search.toLowerCase();
+        filteredPosts = filteredPosts.filter(post => {
+          const title = (post.titleTR + ' ' + post.titleEN + ' ' + post.titleRU + ' ' + post.titleKA).toLowerCase();
+          const summary = (post.summaryTR + ' ' + post.summaryEN + ' ' + post.summaryRU + ' ' + post.summaryKA).toLowerCase();
+          const content = (post.contentTR + ' ' + post.contentEN + ' ' + post.contentRU + ' ' + post.contentKA).toLowerCase();
+          
+          return title.includes(searchLower) || 
+                 summary.includes(searchLower) || 
+                 content.includes(searchLower) ||
+                 post.author.toLowerCase().includes(searchLower);
+        });
+      }
+      
+      // Toplam sayfa sayısını hesapla
+      const totalPosts = filteredPosts.length;
+      const totalPages = Math.ceil(totalPosts / limit);
+      
+      // Sayfalama
+      const startIndex = (page - 1) * limit;
+      const paginatedPosts = filteredPosts.slice(startIndex, startIndex + limit);
+      
+      return {
+        posts: paginatedPosts,
+        totalPosts,
+        totalPages
+      };
+    } catch (error) {
+      console.error("Error in getPaginatedBlogPosts:", error);
+      return {
+        posts: [],
+        totalPosts: 0,
+        totalPages: 0
+      };
+    }
+  }
 
   async getBlogPostById(id: number): Promise<BlogPost | undefined> {
     try {
