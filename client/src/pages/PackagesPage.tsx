@@ -258,7 +258,7 @@ const PackagesPage: React.FC = () => {
               return (
                 <div key={countryCode} className="group perspective-1000">
                   <div 
-                    className={`h-44 relative overflow-hidden rounded-2xl shadow-lg fade-in opacity-0 ${delayClass} ${animationClasses} transform-style-3d group-hover:scale-105 transition-transform duration-500`}
+                    className={`h-44 relative overflow-hidden rounded-2xl shadow-lg fade-in ${delayClass} ${animationClasses} transform-style-3d group-hover:scale-105 transition-transform duration-500`}
                   >
                     {/* Background with image */}
                     <div className={`absolute inset-0 ${bgImage} bg-cover bg-center`}></div>
