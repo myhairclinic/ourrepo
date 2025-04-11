@@ -48,12 +48,6 @@ export const packageTranslations: Record<string, LanguageMap> = {
     [Language.Russian]: "Пакеты не найдены",
     [Language.Georgian]: "პაკეტები ვერ მოიძებნა"
   },
-  "packages.packageCount": {
-    [Language.Turkish]: "paket",
-    [Language.English]: "packages",
-    [Language.Russian]: "пакетов",
-    [Language.Georgian]: "პაკეტები"
-  },
   "packages.emptyState": {
     [Language.Turkish]: "Seçili kriterlere uygun paket bulunamadı",
     [Language.English]: "No packages found matching your criteria",
