@@ -140,6 +140,11 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
           {/* Image Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
           
+          {/* Package Title Overlay - Large & Bold */}
+          <div className="absolute bottom-0 left-0 right-0 p-4 text-white z-20">
+            <h3 className="text-2xl font-bold mb-1 drop-shadow-md">{title}</h3>
+          </div>
+          
           {/* Duration Badge - Bottom Right on Image */}
           <div className="absolute bottom-3 right-3 z-10 bg-black/40 backdrop-blur-sm text-white text-xs py-1.5 px-3 rounded-full shadow-sm flex items-center">
             <Clock className="h-3.5 w-3.5 mr-1.5" />
@@ -148,9 +153,8 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
         </div>
         
         <div className="relative p-5">
-          {/* Main Title and Description */}
+          {/* Main Description */}
           <div className="mb-4">
-            <h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors duration-300">{title}</h3>
             <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">{description}</p>
           </div>
           
