@@ -22,7 +22,7 @@ export default function SeedProducts() {
       const data = await response.json();
       return data.count;
     },
-    enabled: !!user,
+    enabled: true, // Always enabled, not just for admin users
   });
 
   // Mutation for seeding Vithair products
