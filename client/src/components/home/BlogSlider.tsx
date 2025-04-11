@@ -21,7 +21,7 @@ export default function BlogSlider() {
     isLoading,
     error
   } = useQuery<Blog[]>({
-    queryKey: ["/api/blogs"],
+    queryKey: ["/api/blog"],
     staleTime: 60000 // 1 minute
   });
 
@@ -87,24 +87,25 @@ export default function BlogSlider() {
   };
 
   const getBlogCategory = (blog: Blog) => {
-    switch (language.toLowerCase()) {
-      case 'tr': return blog.categoryTR;
-      case 'en': return blog.categoryEN;
-      case 'ru': return blog.categoryRU;
-      case 'ka': return blog.categoryKA;
-      default: return blog.categoryEN;
-    }
+    return blog.categoryTR || "Saç Ekimi";
   };
 
   // Getting a short excerpt 
   const getExcerpt = (blog: Blog) => {
+    const summary = language.toLowerCase() === 'tr' ? blog.summaryTR : 
+                   language.toLowerCase() === 'en' ? blog.summaryEN :
+                   language.toLowerCase() === 'ru' ? blog.summaryRU : 
+                   language.toLowerCase() === 'ka' ? blog.summaryKA : blog.summaryEN;
+    
+    if (summary) return summary;
+    
     const content = language.toLowerCase() === 'tr' ? blog.contentTR : 
                    language.toLowerCase() === 'en' ? blog.contentEN :
                    language.toLowerCase() === 'ru' ? blog.contentRU : 
                    language.toLowerCase() === 'ka' ? blog.contentKA : blog.contentEN;
                    
     // Strip HTML tags and limit to 100 characters
-    const textContent = content.replace(/<[^>]+>/g, '');
+    const textContent = content?.replace(/<[^>]+>/g, '') || '';
     return textContent.length > 120 ? textContent.substring(0, 120) + '...' : textContent;
   };
 
