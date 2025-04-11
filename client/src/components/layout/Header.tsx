@@ -5,11 +5,14 @@ import { ALL_LANGUAGES } from "@/lib/languages";
 import { PUBLIC_PATHS } from "@/lib/constants";
 import { Globe, ChevronDown, Menu, X } from "lucide-react";
 
-// SVG Logo Component
+// Import logo
+import logoSvg from '@/assets/logo.svg';
+
+// Logo Component
 const MyHairLogo = () => (
   <div className="flex items-center">
     <img 
-      src="/images/logo.svg" 
+      src={logoSvg} 
       alt="MyHair Clinic Logo" 
       className="h-10 md:h-11 mr-2"
       style={{ filter: 'drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.1))' }}
@@ -159,7 +162,7 @@ export default function Header() {
         <div className="flex justify-between items-center p-4 border-b">
           <div className="flex items-center">
             <img 
-              src="/images/logo.svg" 
+              src={logoSvg} 
               alt="MyHair Clinic Logo" 
               className="h-8"
               style={{ filter: 'drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.1))' }}
