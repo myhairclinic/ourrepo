@@ -91,6 +91,13 @@ export const blogPosts = pgTable("blog_posts", {
   contentKA: text("content_ka").notNull(),
   imageUrl: text("image_url").notNull(),
   category: text("category").notNull(),
+  tags: text("tags"), // Virgülle ayrılmış etiketler
+  author: text("author").notNull().default("MyHair Clinic"),
+  authorTitle: text("author_title"),
+  authorAvatar: text("author_avatar"),
+  readingTime: integer("reading_time").notNull().default(5), // dakika cinsinden
+  viewCount: integer("view_count").notNull().default(0),
+  featuredOrder: integer("featured_order").default(0), // Öne çıkan blog gönderileri için sıralama 
   metaTitleTR: text("meta_title_tr"),
   metaTitleEN: text("meta_title_en"),
   metaTitleRU: text("meta_title_ru"),
@@ -100,6 +107,7 @@ export const blogPosts = pgTable("blog_posts", {
   metaDescriptionRU: text("meta_description_ru"),
   metaDescriptionKA: text("meta_description_ka"),
   isPublished: boolean("is_published").notNull().default(true),
+  isFeatured: boolean("is_featured").notNull().default(false), // Öne çıkan blog gönderisi mi?
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

@@ -543,6 +543,24 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Теги",
     [Language.Georgian]: "ტეგები"
   },
+  "blog.newest": {
+    [Language.Turkish]: "En Yeni",
+    [Language.English]: "Newest",
+    [Language.Russian]: "Новейшие",
+    [Language.Georgian]: "უახლესი"
+  },
+  "blog.oldest": {
+    [Language.Turkish]: "En Eski",
+    [Language.English]: "Oldest",
+    [Language.Russian]: "Старейшие",
+    [Language.Georgian]: "უძველესი"
+  },
+  "blog.mostPopular": {
+    [Language.Turkish]: "En Popüler",
+    [Language.English]: "Most Popular",
+    [Language.Russian]: "Самые популярные",
+    [Language.Georgian]: "ყველაზე პოპულარული"
+  },
   "blog.subscribeTitle": {
     [Language.Turkish]: "Blog Haberlerine Abone Olun",
     [Language.English]: "Subscribe to Blog Updates",

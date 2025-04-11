@@ -171,9 +171,9 @@ export default function BlogPage() {
   const filteredPosts = processedPosts();
   
   // Eşsiz kategorileri al
-  const categories = allBlogPosts 
-    ? [...new Set(allBlogPosts.map(post => post.category))]
-    : [];
+  const categoriesSet = new Set<string>();
+  allBlogPosts?.forEach(post => categoriesSet.add(post.category));
+  const categories = Array.from(categoriesSet);
   
   // Tarih formatı
   const formatDate = (date: string) => {
@@ -384,7 +384,7 @@ export default function BlogPage() {
                           <div className="relative h-52 overflow-hidden">
                             <img 
                               src={post.imageUrl} 
-                              alt={post[`title${language.toUpperCase()}`]} 
+                              alt={post[`title${language.toUpperCase()}` as keyof BlogPost] as string} 
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             />
                             <Badge className="absolute top-3 right-3 bg-primary/80 backdrop-blur-sm hover:bg-primary">
@@ -407,12 +407,12 @@ export default function BlogPage() {
                           
                           <Link href={addPrefix(`/blog/${post.slug}`)}>
                             <h3 className="text-xl font-semibold mb-3 leading-tight group-hover:text-primary transition-colors">
-                              {post[`title${language.toUpperCase()}` as keyof typeof post]}
+                              {post[`title${language.toUpperCase()}` as keyof BlogPost] as string}
                             </h3>
                           </Link>
                           
                           <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                            {post[`summary${language.toUpperCase()}` as keyof typeof post]}
+                            {post[`summary${language.toUpperCase()}` as keyof BlogPost] as string}
                           </p>
                         </CardContent>
                         
@@ -446,7 +446,78 @@ export default function BlogPage() {
               </TabsContent>
               
               <TabsContent value="popular" className="mt-0">
-                {/* İçerik "latest" tab ile aynı, sıralama processedPosts içinde yapılıyor */}
+                {/* Blog Posts Grid */}
+                {isLoading ? (
+                  <div className="flex justify-center items-center min-h-[400px]">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                  </div>
+                ) : filteredPosts && filteredPosts.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {filteredPosts.map((post) => (
+                      <Card key={post.id} className="overflow-hidden h-full group hover:shadow-md transition-shadow duration-300">
+                        <Link href={addPrefix(`/blog/${post.slug}`)}>
+                          <div className="relative h-52 overflow-hidden">
+                            <img 
+                              src={post.imageUrl} 
+                              alt={post[`title${language.toUpperCase()}` as keyof BlogPost] as string} 
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                            <Badge className="absolute top-3 right-3 bg-primary/80 backdrop-blur-sm hover:bg-primary">
+                              {getCategoryName(post.category)}
+                            </Badge>
+                          </div>
+                        </Link>
+                        
+                        <CardContent className="p-5">
+                          <div className="flex items-center text-xs text-muted-foreground gap-4 mb-3">
+                            <div className="flex items-center">
+                              <Calendar className="h-3 w-3 mr-1" />
+                              {formatDate(post.createdAt)}
+                            </div>
+                            <div className="flex items-center">
+                              <Clock className="h-3 w-3 mr-1" />
+                              {post.readingTime} {t('blog.minutes')}
+                            </div>
+                          </div>
+                          
+                          <Link href={addPrefix(`/blog/${post.slug}`)}>
+                            <h3 className="text-xl font-semibold mb-3 leading-tight group-hover:text-primary transition-colors">
+                              {post[`title${language.toUpperCase()}` as keyof BlogPost] as string}
+                            </h3>
+                          </Link>
+                          
+                          <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                            {post[`summary${language.toUpperCase()}` as keyof BlogPost] as string}
+                          </p>
+                        </CardContent>
+                        
+                        <CardFooter className="pt-0 px-5 pb-5 flex justify-between items-center">
+                          <div className="flex items-center gap-2">
+                            {post.authorAvatar && (
+                              <img 
+                                src={post.authorAvatar} 
+                                alt={post.author}
+                                className="w-8 h-8 rounded-full" 
+                              />
+                            )}
+                            <span className="text-sm font-medium">{post.author}</span>
+                          </div>
+                          
+                          <Link href={addPrefix(`/blog/${post.slug}`)}>
+                            <Button variant="ghost" size="sm" className="group/button flex items-center gap-1 text-primary hover:text-primary">
+                              {t('common.readMore')}
+                              <ArrowRight className="h-3.5 w-3.5 group-hover/button:translate-x-1 transition-transform" />
+                            </Button>
+                          </Link>
+                        </CardFooter>
+                      </Card>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12 border rounded-lg bg-muted/20">
+                    <p className="text-muted-foreground">{t('blog.noPosts')}</p>
+                  </div>
+                )}
               </TabsContent>
             </Tabs>
           </div>
