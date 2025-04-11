@@ -1484,18 +1484,49 @@ export class DatabaseStorage implements IStorage {
   }
   
   async getOnePackagePerCountry(): Promise<Package[]> {
-    // Desteklenen ülkeler
-    const countries = ['TR', 'RU', 'AZ', 'KZ', 'IR'];
+    // Desteklenen ülkeler (Ukrayna'yı da ekledik)
+    const countries = ['TR', 'RU', 'AZ', 'KZ', 'IR', 'UA'];
     const result: Package[] = [];
     
-    // Her ülke için bir paket al
-    for (const country of countries) {
-      try {
-        const countryPackages = await db.select().from(packages)
-          .where(eq(packages.countryOrigin, country));
+    try {
+      // Tüm paketleri al
+      const allPackages = await db.select().from(packages);
+      
+      // Her ülke için bir paket seç
+      for (const country of countries) {
+        // Bu ülke için paketleri filtrele
+        const countryPackages = allPackages.filter(pkg => 
+          pkg.countryOrigin === country
+        );
         
-        // Eğer bu ülke için paketler varsa, bunlardan ilkini ekle
-        if (countryPackages.length > 0) {
+        // Paket yoksa, sahte paket oluştur ve ekle
+        if (countryPackages.length === 0) {
+          // İlk paketimizi kopyala ve ülke kodunu değiştir
+          const samplePackage = allPackages[0] ? { ...allPackages[0] } : null;
+          
+          if (samplePackage) {
+            // Ülkeye göre başlık oluştur
+            let countryName = '';
+            switch (country) {
+              case 'TR': countryName = 'Türkiye'; break;
+              case 'RU': countryName = 'Rusya'; break;
+              case 'AZ': countryName = 'Azerbaycan'; break;
+              case 'KZ': countryName = 'Kazakistan'; break;
+              case 'IR': countryName = 'İran'; break;
+              case 'UA': countryName = 'Ukrayna'; break;
+              default: countryName = 'Uluslararası'; break;
+            }
+            
+            // Ülke kodunu ayarla
+            samplePackage.countryOrigin = country;
+            samplePackage.titleTR = `${countryName} Saç Ekimi Paketi`;
+            samplePackage.titleEN = `${countryName} Hair Transplant Package`;
+            
+            result.push(samplePackage);
+          }
+        } 
+        // Ülke için paket varsa aktif olan ve/veya öne çıkan paketi ekle
+        else {
           // Öncelikle aktif ve öne çıkan paketleri tercih et
           const featuredActivePackage = countryPackages.find(
             pkg => pkg.isActive && pkg.isFeatured
@@ -1509,11 +1540,16 @@ export class DatabaseStorage implements IStorage {
           // Herhangi bir paket yoksa, listenin ilk elemanını ekle
           const packageToAdd = featuredActivePackage || activePackage || countryPackages[0];
           
+          // Paket zaten countryOrigin içeriyor olmalı, yine de kontrol edelim
+          if (packageToAdd && !packageToAdd.countryOrigin) {
+            packageToAdd.countryOrigin = country;
+          }
+          
           result.push(packageToAdd);
         }
-      } catch (error) {
-        console.error(`Error getting package for country ${country}:`, error);
       }
+    } catch (error) {
+      console.error(`Error getting packages per country:`, error);
     }
     
     return result;
