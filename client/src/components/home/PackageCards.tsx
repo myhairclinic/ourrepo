@@ -378,25 +378,38 @@ export function PackageCards() {
       <div className="absolute bottom-24 left-8 w-24 h-24 border-2 border-primary/10 rounded-full opacity-30"></div>
       
       <div className="container mx-auto px-4 relative z-20">
-        <div 
-          className={`flex flex-col items-center mb-12 transition-all duration-1000 ${
-            isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-          }`}
-        >
-          <Badge variant="outline" className="mb-3 px-4 py-1 text-sm font-medium rounded-full border-primary/30 bg-primary/5 shadow-sm">
-            {t("packages.home.tagline")}
-          </Badge>
-          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80 leading-tight">
-            {t("packages.home.title")}
-          </h2>
-          <p className="text-center text-foreground/70 max-w-xl mx-auto text-base font-light leading-relaxed">
-            {t("packages.home.subtitle")}
-          </p>
+        <div className="flex justify-between items-center mb-12">
+          <div 
+            className={`flex flex-col items-start transition-all duration-1000 ${
+              isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            }`}
+          >
+            <Badge variant="outline" className="mb-3 px-4 py-1 text-sm font-medium rounded-full border-primary/30 bg-primary/5 shadow-sm">
+              {t("packages.home.tagline")}
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80 leading-tight">
+              {t("packages.home.title")}
+            </h2>
+            <p className="text-foreground/70 max-w-xl text-base font-light leading-relaxed">
+              {t("packages.home.subtitle")}
+            </p>
+            
+            <div className="flex gap-2 mt-4">
+              <div className="w-2 h-2 rounded-full bg-primary/30"></div>
+              <div className="w-2 h-2 rounded-full bg-primary/50"></div>
+              <div className="w-2 h-2 rounded-full bg-primary/70"></div>
+            </div>
+          </div>
           
-          <div className="flex justify-center gap-2 mt-4">
-            <div className="w-2 h-2 rounded-full bg-primary/30"></div>
-            <div className="w-2 h-2 rounded-full bg-primary/50"></div>
-            <div className="w-2 h-2 rounded-full bg-primary/70"></div>
+          {/* Tüm paketleri görüntüle butonu - sağ üste taşındı */}
+          <div className={`transition-all duration-1000 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+               style={{ transitionDelay: '200ms' }}>
+            <Link href={addPrefix("/packages")}>
+              <Button className="bg-white border border-primary/30 text-primary hover:bg-primary/5 transition-all px-6">
+                {t("common.viewAll")}
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
           </div>
         </div>
 
@@ -475,15 +488,7 @@ export function PackageCards() {
               </Button>
             </div>
             
-            {/* Tüm paketleri görüntüle butonu */}
-            <div className="mt-10 text-center">
-              <Link href={addPrefix("/packages")}>
-                <Button className="bg-white border border-primary/30 text-primary hover:bg-primary/5 transition-all px-6">
-                  {t("common.viewAll")}
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
+            {/* Alt butonu kaldırıldı - üstte artık */}
           </div>
         )}
         
