@@ -41,8 +41,8 @@ export default function Header() {
             <Link href={`/${language}/social-media`} className="text-neutral-700 hover:text-primary">
               Sosyal Medya
             </Link>
-            <Link href={`/${language}/about`} className="text-neutral-700 hover:text-primary">
-              Hakkımızda
+            <Link href={`/${language}/products`} className="text-neutral-700 hover:text-primary">
+              Ürünler
             </Link>
             <Link href={`/${language}/contact`} className="text-neutral-700 hover:text-primary">
               İletişim
@@ -115,8 +115,8 @@ export default function Header() {
               <Link href={`/${language}/social-media`} className="text-neutral-700 py-2 border-b">
                 Sosyal Medya
               </Link>
-              <Link href={`/${language}/about`} className="text-neutral-700 py-2 border-b">
-                Hakkımızda
+              <Link href={`/${language}/products`} className="text-neutral-700 py-2 border-b">
+                Ürünler
               </Link>
               <Link href={`/${language}/contact`} className="text-neutral-700 py-2 border-b">
                 İletişim

@@ -339,31 +339,36 @@ export default function BlogManager() {
             variant="outline" 
             onClick={async () => {
               try {
-                const response = await fetch('/api/seed/blog', { method: 'POST' });
+                toast({
+                  title: "İşlem başlatıldı",
+                  description: "Blog yazıları ekleme işlemi başlatıldı, bu işlem biraz zaman alabilir...",
+                });
+                
+                const response = await fetch('/api/seed/unique-blogs', { method: 'POST' });
                 const data = await response.json();
                 if (response.ok) {
                   queryClient.invalidateQueries({ queryKey: [API_ROUTES.BLOG] });
                   toast({
-                    title: "Örnek blog içerikleri eklendi",
+                    title: "Blog içerikleri eklendi",
                     description: `${data.count} adet blog içeriği başarıyla eklendi.`,
                   });
                 } else {
                   toast({
                     title: "Hata",
-                    description: data.message || "Örnek blog içerikleri eklenirken bir hata oluştu.",
+                    description: data.message || "Blog içerikleri eklenirken bir hata oluştu.",
                     variant: "destructive",
                   });
                 }
               } catch (error) {
                 toast({
                   title: "Hata",
-                  description: "Örnek blog içerikleri eklenirken bir hata oluştu.",
+                  description: "Blog içerikleri eklenirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
                   variant: "destructive",
                 });
               }
             }}
           >
-            Örnek İçerik Ekle
+            Blog İçeriklerini Ekle
           </Button>
         </div>
         
