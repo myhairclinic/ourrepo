@@ -249,12 +249,11 @@ const PackagesPage: React.FC = () => {
             </h2>
           </div>
           
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 mb-12">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-16">
             {['tr', 'ru', 'az', 'ua', 'ir', 'kz'].map((countryCode, index) => {
               // Count packages for this country
               const countryPackages = packages?.filter(pkg => pkg.countryOrigin === countryCode) || [];
               
-              const height = countryCode === 'tr' || countryCode === 'ru' ? 'h-36' : 'h-32';
               const delayClass = `delay-${(index + 1) * 100}`;
               
               // Get background image for countries
@@ -266,23 +265,47 @@ const PackagesPage: React.FC = () => {
               else if (countryCode === 'ir') bgImage = "bg-[url('/images/iran-resimleri.jpg')]";
               else if (countryCode === 'kz') bgImage = "bg-[url('/images/kazakistanin-ruhu-bu-topr-700.jpg')]";
               
+              // Animation classes based on row
+              const animationClasses = index < 3 ? "animate-float" : "animate-float animation-delay-2000";
+              
               return (
-                <div 
-                  key={countryCode} 
-                  className={`${height} relative group overflow-hidden rounded-xl shadow-md border border-blue-100 dark:border-blue-900/30 fade-in opacity-0 ${delayClass} ${bgImage} bg-cover bg-center`}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/60 to-purple-500/60 group-hover:opacity-70 opacity-50 transition-opacity duration-300"></div>
-                  <div className="absolute inset-0 backdrop-blur-[2px] group-hover:backdrop-blur-none transition-all duration-300"></div>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center z-10">
-                    <span className="text-4xl mb-2 drop-shadow-md">{getCountryFlag(countryCode)}</span>
-                    <h3 className="text-lg font-bold text-white drop-shadow-md">
-                      {getPackageTranslation(`countries.${countryCode}`, language)}
-                    </h3>
-                    <div className="text-sm mt-2 bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full text-white/90 font-medium border border-white/20">
-                      {countryPackages.length} {language === Language.Turkish ? 'paket' : 
-                      language === Language.English ? 'packages' : 
-                      language === Language.Russian ? 'пакетов' : 
-                      'პაკეტები'}
+                <div key={countryCode} className="group perspective-1000">
+                  <div 
+                    className={`h-44 relative overflow-hidden rounded-2xl shadow-lg fade-in opacity-0 ${delayClass} ${animationClasses} transform-style-3d group-hover:scale-105 transition-transform duration-500`}
+                  >
+                    {/* Background with image */}
+                    <div className={`absolute inset-0 ${bgImage} bg-cover bg-center`}></div>
+                    
+                    {/* Glass overlay with gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/60 via-purple-500/40 to-indigo-600/60 backdrop-blur-sm"></div>
+                    
+                    {/* Glowing border */}
+                    <div className="absolute inset-0 border-2 border-white/20 rounded-2xl"></div>
+                    
+                    {/* Glow effect on hover */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/30 via-violet-500/30 to-fuchsia-500/30 rounded-2xl blur-xl -m-2"></div>
+                    
+                    {/* Content */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-4 z-10">
+                      {/* Country flag */}
+                      <div className="mb-1 transform group-hover:scale-110 transition-transform duration-500 group-hover:-translate-y-1">
+                        <span className="text-5xl drop-shadow-lg">{getCountryFlag(countryCode)}</span>
+                      </div>
+                      
+                      {/* Country name */}
+                      <h3 className="text-xl font-bold text-white drop-shadow-md mt-2 group-hover:text-white/90 transition-colors">
+                        {getPackageTranslation(`countries.${countryCode}`, language)}
+                      </h3>
+                      
+                      {/* Package count */}
+                      <div className="mt-2 bg-black/40 backdrop-blur-sm px-4 py-1 rounded-full text-white/90 font-medium border border-white/20 shadow-lg transform transition-all duration-300 group-hover:translate-y-1">
+                        <span className="text-sm">
+                          {countryPackages.length} {language === Language.Turkish ? 'paket' : 
+                          language === Language.English ? 'packages' : 
+                          language === Language.Russian ? 'пакетов' : 
+                          'პაკეტები'}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>

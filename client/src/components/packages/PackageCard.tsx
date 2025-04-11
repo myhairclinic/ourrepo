@@ -1,42 +1,41 @@
 import React from "react";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/context/LanguageContext";
 import { Package } from "@shared/schema";
 import { Language } from "@shared/types";
 import { Link } from "wouter";
-import { MapPin, Calendar, Users, Briefcase, ArrowRight, Star, Sparkles, Check, Building, Plane, Trophy, Heart, Clock, Globe, Search } from "lucide-react";
+import { ArrowRight, Star, Check, Building, Plane, Heart, Clock, Globe, Search, Calendar, MapPin, Users, Trophy, Shield } from "lucide-react";
 import { getTranslation } from "@/lib/translations";
 import { getPackageTranslation } from "@/lib/packageTranslations";
-import { Separator } from "@/components/ui/separator";
 
 interface PackageCardProps {
   pkg: Package;
 }
 
+// Yeni ve güzel kart tasarım bileşeni
 const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
   const { language, addPrefix } = useLanguage();
   
   // Get the title and description based on language
-  const titleFieldMap: Record<string, string> = {
-    'TR': 'title_tr',
-    'EN': 'title_en',
-    'RU': 'title_ru',
-    'KA': 'title_ka'
+  const titleFieldMap: Record<Language, keyof Package> = {
+    [Language.Turkish]: 'titleTR',
+    [Language.English]: 'titleEN',
+    [Language.Russian]: 'titleRU',
+    [Language.Georgian]: 'titleKA',
   };
   
-  const titleField = titleFieldMap[language] as keyof Package;
-  const title = pkg[titleField] as string;
-  const descriptionFieldMap: Record<string, string> = {
-    'TR': 'description_tr',
-    'EN': 'description_en',
-    'RU': 'description_ru',
-    'KA': 'description_ka'
+  const descriptionFieldMap: Record<Language, keyof Package> = {
+    [Language.Turkish]: 'descriptionTR',
+    [Language.English]: 'descriptionEN',
+    [Language.Russian]: 'descriptionRU',
+    [Language.Georgian]: 'descriptionKA',
   };
   
-  const descriptionField = descriptionFieldMap[language] as keyof Package;
-  const description = pkg[descriptionField] as string;
+  const titleField = titleFieldMap[language];
+  const title = pkg[titleField] as string || '';
+  
+  const descriptionField = descriptionFieldMap[language];
+  const description = pkg[descriptionField] as string || '';
   const country = pkg.countryOrigin;
   
   // Get translated country name
@@ -50,13 +49,10 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
       'UA': '🇺🇦', // Ukrayna
       'AZ': '🇦🇿', // Azerbaycan
       'IR': '🇮🇷', // İran
-      'EU': '🇪🇺', // Avrupa Birliği
-      'SA': '🇸🇦', // Suudi Arabistan
-      'AE': '🇦🇪', // Birleşik Arap Emirlikleri
-      'IQ': '🇮🇶', // Irak
-      'AM': '🇦🇲', // Ermenistan
       'KZ': '🇰🇿', // Kazakistan
+      'AM': '🇦🇲', // Ermenistan
       'BY': '🇧🇾', // Belarus
+      'GE': '🇬🇪', // Gürcistan
       'MD': '🇲🇩', // Moldova
       'GR': '🇬🇷', // Yunanistan
       'BG': '🇧🇬', // Bulgaristan
@@ -86,7 +82,7 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
     
     try {
       const highlights = JSON.parse(pkg.highlights as string);
-      return highlights.slice(0, 4); // Get first 4 highlights
+      return highlights.slice(0, 3); // Get first 3 highlights
     } catch (e) {
       console.error("Error parsing highlights:", e);
       return [];
@@ -95,134 +91,176 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
   
   const packageFeatures = getPackageFeatures();
   
+  // Map package type to corresponding icon and color
+  const getTypeIcon = () => {
+    if (pkg.packageType === 'premium') {
+      return {
+        icon: <Trophy className="h-4 w-4" />,
+        text: getPackageTranslation("packages.premium", language),
+        color: "bg-gradient-to-r from-violet-500 to-purple-600 text-white"
+      };
+    } else if (pkg.isAllInclusive) {
+      return {
+        icon: <Shield className="h-4 w-4" />,
+        text: getPackageTranslation("packages.allInclusive", language),
+        color: "bg-gradient-to-r from-emerald-500 to-teal-600 text-white"
+      };
+    }
+    return {
+      icon: <Star className="h-4 w-4" />,
+      text: getPackageTranslation("packages.standard", language),
+      color: "bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 dark:from-gray-700 dark:to-gray-800 dark:text-gray-100"
+    };
+  };
+  
+  const typeInfo = getTypeIcon();
+  
+  // İlgi çekici içerik ikon seçimi
+  const getFeatureIcon = (index: number) => {
+    const icons = [
+      <Building className="h-5 w-5 text-fuchsia-500" />,
+      <Plane className="h-5 w-5 text-cyan-500" />,
+      <MapPin className="h-5 w-5 text-rose-500" />,
+      <Shield className="h-5 w-5 text-amber-500" />,
+      <Users className="h-5 w-5 text-indigo-500" />,
+      <Calendar className="h-5 w-5 text-emerald-500" />,
+    ];
+    return icons[index % icons.length];
+  };
+  
+  // Feature backgrounds for visual variety
+  const getFeatureBgClass = (index: number) => {
+    const bgClasses = [
+      "from-fuchsia-50 to-pink-50 border-fuchsia-200 dark:from-fuchsia-900/10 dark:to-pink-900/10 dark:border-fuchsia-800/30",
+      "from-cyan-50 to-blue-50 border-cyan-200 dark:from-cyan-900/10 dark:to-blue-900/10 dark:border-cyan-800/30",
+      "from-rose-50 to-red-50 border-rose-200 dark:from-rose-900/10 dark:to-red-900/10 dark:border-rose-800/30",
+      "from-amber-50 to-yellow-50 border-amber-200 dark:from-amber-900/10 dark:to-yellow-900/10 dark:border-amber-800/30",
+      "from-indigo-50 to-violet-50 border-indigo-200 dark:from-indigo-900/10 dark:to-violet-900/10 dark:border-indigo-800/30",
+      "from-emerald-50 to-green-50 border-emerald-200 dark:from-emerald-900/10 dark:to-green-900/10 dark:border-emerald-800/30",
+    ];
+    return bgClasses[index % bgClasses.length];
+  };
+  
   return (
-    <div className="group h-full">
-      <div className="relative h-full bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.01] border border-gray-100 dark:border-gray-700">
-        {/* Package Type Ribbon - Top Left Corner, Angled */}
-        {(pkg.packageType === 'premium' || pkg.isAllInclusive) && (
-          <div className="absolute top-0 left-0 z-20 w-32 h-32 overflow-hidden">
-            <div className={`absolute top-0 left-0 transform -translate-x-1/2 translate-y-1/4 rotate-[-45deg] py-1.5 px-12 shadow-md text-white text-sm font-bold
-              ${pkg.packageType === 'premium' ? 'bg-gradient-to-r from-blue-500 to-indigo-500' : 
-                'bg-gradient-to-r from-teal-500 to-emerald-500'}`}>
-              {pkg.packageType === 'premium'
-                ? getPackageTranslation("packages.premium", language)
-                : getPackageTranslation("packages.allInclusive", language)
-              }
-            </div>
+    <div className="group relative h-full">
+      {/* Pulsing effect behind the card */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-purple-400/5 to-blue-400/5 rounded-2xl -m-1 group-hover:blur-xl transition-all duration-500 opacity-0 group-hover:opacity-100"></div>
+      
+      {/* Main card */}
+      <div className="relative h-full bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg shadow-black/5 dark:shadow-black/30 hover:shadow-xl border border-slate-100 dark:border-slate-800 transition-all duration-500 transform group-hover:-translate-y-1 group-hover:scale-[1.02] z-10">
+        {/* Package Type Badge - Top Right */}
+        <div className={`absolute top-4 right-4 z-30 py-1 px-3 rounded-full text-xs font-semibold flex items-center gap-1.5 shadow-sm ${typeInfo.color}`}>
+          {typeInfo.icon}
+          {typeInfo.text}
+        </div>
+        
+        {/* Country banner on top */}
+        <div className="absolute top-0 left-0 right-0 z-30 bg-gradient-to-r from-primary via-indigo-500 to-violet-600 h-1.5"></div>
+        
+        {/* Featured star marker */}
+        {pkg.isFeatured && (
+          <div className="absolute top-0 left-0 z-30 w-0 h-0 border-t-[60px] border-l-[60px] border-t-amber-500 border-l-transparent border-r-transparent rotate-90">
+            <Star className="absolute text-white h-4 w-4 left-[-52px] top-[-48px] fill-white" />
           </div>
         )}
         
-        {/* Main image with radiant overlay */}
-        <div className="relative h-60 overflow-hidden">
+        {/* Main image with overlay */}
+        <div className="relative h-52 overflow-hidden">
           <img
             src={getCountrySpecificImage(country) || pkg.imageUrl || '/images/package-placeholder.jpg'}
             alt={title}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
           
-          {/* Image Gradient Overlay - Colorful & Vibrant */}
-          <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/40 to-transparent opacity-60 mix-blend-multiply" />
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
           
-          {/* Pattern overlay */}
-          <div className="absolute inset-0 opacity-10 bg-[url('/images/pattern-dots.svg')] bg-center mix-blend-overlay"></div>
-          
-          {/* Country Banner - Top of Image */}
-          <div className="absolute top-0 left-0 right-0 z-30 py-2 px-4 bg-gradient-to-r from-primary/90 to-indigo-500/90 backdrop-blur-sm shadow-md flex items-center gap-2 justify-center">
+          {/* Country flag badge */}
+          <div className="absolute top-4 left-4 z-20 py-1.5 px-3 bg-black/50 backdrop-blur-sm rounded-lg shadow-sm flex items-center gap-2">
             <span className="text-lg">{getCountryFlag(country)}</span>
-            <span className="font-semibold text-sm text-white uppercase tracking-wider">{countryName}</span>
+            <span className="font-bold text-sm text-white">{countryName}</span>
           </div>
           
-          {/* Featured Badge */}
-          {pkg.isFeatured && (
-            <div className="absolute top-12 right-3 z-20 bg-gradient-to-r from-orange-400 to-amber-500 text-white text-xs py-1.5 px-3 rounded-full shadow-md flex items-center">
-              <Heart className="h-3.5 w-3.5 mr-1.5 fill-white" />
-              {getPackageTranslation("packages.exclusive", language)}
-            </div>
-          )}
-          
-          {/* Package Title Overlay - Large & Bold with bright gradient */}
-          <div className="absolute bottom-0 left-0 right-0 p-4 z-20">
-            <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-md rounded-lg py-2 px-3 shadow-lg border border-white/30 dark:border-gray-700/30">
-              <h3 className="text-lg font-bold leading-tight bg-gradient-to-r from-primary via-purple-500 to-indigo-500 bg-clip-text text-transparent">{title}</h3>
-            </div>
-          </div>
-          
-          {/* Duration Badge - Bottom Right on Image */}
-          <div className="absolute bottom-4 right-4 z-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm text-gray-800 dark:text-white text-xs py-1.5 px-3 rounded-full shadow-md flex items-center border border-white/50 dark:border-gray-700/50">
-            <Clock className="h-3.5 w-3.5 mr-1.5 text-primary" />
+          {/* Duration badge */}
+          <div className="absolute bottom-4 right-4 z-20 bg-black/50 backdrop-blur-sm text-white text-xs py-1.5 px-3 rounded-lg shadow-sm flex items-center">
+            <Clock className="h-3.5 w-3.5 mr-1.5 text-amber-400" />
             {pkg.durationDays} {getPackageTranslation("packages.days", language)}
+          </div>
+          
+          {/* Title banner at bottom of image */}
+          <div className="absolute left-0 right-0 bottom-0 z-20 p-4">
+            <h3 className="text-lg sm:text-xl font-bold leading-tight text-white drop-shadow-md">
+              {title}
+            </h3>
           </div>
         </div>
         
-        <div className="relative p-5">
-          {/* Main Description */}
-          <div className="mb-5">
-            <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">{description}</p>
+        {/* Card content */}
+        <div className="p-5">
+          {/* Description */}
+          <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 mb-4">{description}</p>
+          
+          {/* Features section */}
+          <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
+            <span className="h-1 w-6 bg-primary/50 rounded-full"></span>
+            {language === Language.Turkish ? 'Paket Özellikleri' : 
+            language === Language.English ? 'Package Features' : 
+            language === Language.Russian ? 'Особенности пакета' :
+            'პაკეტის მახასიათებლები'}
+          </h4>
+          
+          {/* Features list */}
+          <div className="space-y-2.5 mb-5">
+            {/* Always show accommodation */}
+            <div className="flex items-center gap-2.5">
+              <div className={`flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br ${getFeatureBgClass(0)} flex items-center justify-center border`}>
+                {getFeatureIcon(0)}
+              </div>
+              <p className="text-xs text-gray-700 dark:text-gray-300">
+                {getPackageTranslation("packages.luxuryAccommodation", language)}
+              </p>
+            </div>
+            
+            {/* Always show transfer */}
+            <div className="flex items-center gap-2.5">
+              <div className={`flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br ${getFeatureBgClass(1)} flex items-center justify-center border`}>
+                {getFeatureIcon(1)}
+              </div>
+              <p className="text-xs text-gray-700 dark:text-gray-300">
+                {getPackageTranslation("packages.airportTransfer", language)}
+              </p>
+            </div>
+            
+            {/* Dynamic third feature */}
+            <div className="flex items-center gap-2.5">
+              <div className={`flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br ${getFeatureBgClass(2)} flex items-center justify-center border`}>
+                {getFeatureIcon(2)}
+              </div>
+              <p className="text-xs text-gray-700 dark:text-gray-300">
+                {packageFeatures.length > 0 
+                  ? packageFeatures[0] 
+                  : getPackageTranslation("packages.features.citytour", language)}
+              </p>
+            </div>
           </div>
           
-          {/* Divider with colorful styling */}
-          <div className="relative mb-5">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full h-0.5 bg-gradient-to-r from-primary/20 via-primary/40 to-primary/20 rounded-full"></div>
-            </div>
-            <div className="relative flex justify-center">
-              <span className="bg-white dark:bg-gray-800 px-4 text-sm font-medium text-primary">
-                {getPackageTranslation("packages.features", language)}
+          {/* View details button */}
+          <Button asChild 
+            className="w-full bg-gradient-to-r from-primary to-indigo-600 hover:from-primary/90 hover:to-indigo-600/90 group overflow-hidden"
+          >
+            <Link href={addPrefix(`/packages/${pkg.slug}`)} className="py-2 flex items-center justify-center">
+              <span className="flex items-center gap-1.5 text-[14px] font-medium relative z-10">
+                <Search className="h-3.5 w-3.5 mr-1" />
+                {language === Language.Turkish ? 'Detayları Görüntüle' : 
+                language === Language.English ? 'View Details' : 
+                language === Language.Russian ? 'Посмотреть детали' :
+                'დეტალების ნახვა'}
+                <ArrowRight className="h-3.5 w-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
               </span>
-            </div>
-          </div>
-          
-          {/* Features List - Colorful icons */}
-          <div className="space-y-4 mb-6">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-100 to-blue-100 dark:from-cyan-900/20 dark:to-blue-900/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border border-blue-200 dark:border-blue-800/30 shadow-sm">
-                <Building className="h-5 w-5 text-blue-500" />
-              </div>
-              <p className="text-sm text-gray-700 dark:text-gray-300">{getPackageTranslation("packages.luxuryAccommodation", language)}</p>
-            </div>
-            
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border border-purple-200 dark:border-purple-800/30 shadow-sm">
-                <Plane className="h-5 w-5 text-purple-500" />
-              </div>
-              <p className="text-sm text-gray-700 dark:text-gray-300">{getPackageTranslation("packages.airportTransfer", language)}</p>
-            </div>
-            
-            {packageFeatures.length > 0 ? (
-              // Show actual package features if available
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-100 to-teal-100 dark:from-green-900/20 dark:to-teal-900/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border border-green-200 dark:border-green-800/30 shadow-sm">
-                  <Check className="h-5 w-5 text-green-500" />
-                </div>
-                <p className="text-sm text-gray-700 dark:text-gray-300">{packageFeatures[0]}</p>
-              </div>
-            ) : (
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/20 dark:to-orange-900/20 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 border border-amber-200 dark:border-amber-800/30 shadow-sm">
-                  <Globe className="h-5 w-5 text-amber-500" />
-                </div>
-                <p className="text-sm text-gray-700 dark:text-gray-300">{getPackageTranslation("packages.features.citytour", language)}</p>
-              </div>
-            )}
-          </div>
-          
-          {/* Action Button with Colorful Gradient */}
-          <div className="pt-1">
-            <Button asChild 
-              className="w-full relative bg-gradient-to-r from-primary to-indigo-500 hover:from-primary/90 hover:to-indigo-500/90 group overflow-hidden shadow-md"
-              variant="default"
-            >
-              <Link href={addPrefix(`/packages/${pkg.slug}`)} className="py-4 flex items-center justify-center">
-                <span className="relative z-10 flex items-center gap-1.5 text-[15px] font-medium">
-                  <Search className="h-4 w-4 mr-1" />
-                  {getPackageTranslation("packages.viewDetails", language)}
-                  <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </span>
-                {/* Shimmering effect */}
-                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-[20deg] animate-[shimmer_2.5s_ease-in-out_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundSize: '200% 100%' }}></span>
-              </Link>
-            </Button>
-          </div>
+              {/* Shimmering effect */}
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-20 animate-[shimmer_2.5s_ease-in-out_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundSize: '200% 100%' }}></span>
+            </Link>
+          </Button>
         </div>
       </div>
     </div>
