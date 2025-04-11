@@ -4,11 +4,11 @@ import { Language } from "@shared/types";
 import HeroSlider from "@/components/home/HeroSlider";
 import ServiceCards from "@/components/home/ServiceCards";
 import { PackageCards } from "@/components/home/PackageCards";
-import SliderWithBanners from "@/components/home/SliderWithBanners";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import BeforeAfterSlider from "@/components/home/BeforeAfterSlider";
 import Testimonials from "@/components/home/Testimonials";
 import { useTranslation } from "@/lib/translations";
+import SliderWithBanners from "@/components/home/SliderWithBanners";
 
 export default function HomePage() {
   const { language } = useLanguage();
@@ -43,9 +43,9 @@ export default function HomePage() {
           <p>Pakete başlangıç fiyatı: {packagePrice}</p>
         </div>
         
+        <SliderWithBanners />
         <HeroSlider />
         <ServiceCards />
-        <SliderWithBanners />
         <PackageCards />
         <WhyChooseUs />
         <BeforeAfterSlider />
