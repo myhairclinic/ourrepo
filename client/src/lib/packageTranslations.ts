@@ -7,16 +7,16 @@ type LanguageMap = Record<Language, string>;
 export const packageTranslations: Record<string, LanguageMap> = {
   // Page Sections
   "packages.pageTitle": {
-    [Language.Turkish]: "Seyahat Paketleri",
-    [Language.English]: "Travel Packages",
-    [Language.Russian]: "Туристические Пакеты",
-    [Language.Georgian]: "სამოგზაურო პაკეტები"
+    [Language.Turkish]: "Tedavi ve Seyahat Paketleri",
+    [Language.English]: "Treatment and Travel Packages",
+    [Language.Russian]: "Пакеты Лечения и Путешествий",
+    [Language.Georgian]: "მკურნალობისა და მოგზაურობის პაკეტები"
   },
   "packages.pageDescription": {
-    [Language.Turkish]: "Saç ekimi ve tatil bir arada - Gürcistan'da konforlu seyahat paketleri",
-    [Language.English]: "Hair transplantation and vacation in one - Comfortable travel packages in Georgia",
-    [Language.Russian]: "Трансплантация волос и отдых вместе - Комфортные туристические пакеты в Грузии",
-    [Language.Georgian]: "თმის გადანერგვა და დასვენება ერთად - კომფორტული სამოგზაურო პაკეტები საქართველოში"
+    [Language.Turkish]: "Her ülkeden hastalarımız için özel hazırlanmış konforlu seyahat ve saç ekimi paketleri",
+    [Language.English]: "Comfortable travel and hair transplantation packages specially prepared for our patients from all countries",
+    [Language.Russian]: "Комфортные пакеты путешествий и трансплантации волос, специально подготовленные для наших пациентов из всех стран",
+    [Language.Georgian]: "კომფორტული მოგზაურობისა და თმის გადანერგვის პაკეტები, სპეციალურად მომზადებული ჩვენი პაციენტებისათვის ყველა ქვეყნიდან"
   },
   "packages.byCountry": {
     [Language.Turkish]: "Ülkelere Göre Paketler",
