@@ -13,7 +13,8 @@ import {
   CardFooter, 
   CardHeader, 
   CardTitle, 
-  CardDescription 
+  CardDescription,
+  CardBackground 
 } from "@/components/ui/card";
 import { 
   Tabs, 
@@ -57,8 +58,15 @@ import {
   SortAsc,
   SortDesc,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Heart,
+  MessageCircle,
+  TrendingUp,
+  Bookmark,
+  Eye
 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // Örnek blog etiketleri
 const POPULAR_TAGS = [

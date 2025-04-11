@@ -76,4 +76,30 @@ const CardFooter = React.forwardRef<
 ))
 CardFooter.displayName = "CardFooter"
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+interface CardBackgroundProps extends React.HTMLAttributes<HTMLDivElement> {
+  src: string
+}
+
+const CardBackground = React.forwardRef<
+  HTMLDivElement,
+  CardBackgroundProps
+>(({ className, src, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      "absolute inset-0 rounded-lg overflow-hidden z-0",
+      className
+    )}
+    {...props}
+  >
+    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-black/20 z-10" />
+    <img 
+      src={src} 
+      alt=""
+      className="w-full h-full object-cover"
+    />
+  </div>
+))
+CardBackground.displayName = "CardBackground"
+
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, CardBackground }
