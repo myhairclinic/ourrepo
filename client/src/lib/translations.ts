@@ -223,6 +223,66 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Пересадка бровей",
     [Language.Georgian]: "წარბების გადანერგვა"
   },
+  "gallery.graftExtraction": {
+    [Language.Turkish]: "Greft Çıkarma",
+    [Language.English]: "Graft Extraction",
+    [Language.Russian]: "Экстракция графтов",
+    [Language.Georgian]: "გრაფტის ექსტრაქცია"
+  },
+  "gallery.recipientSiteCreation": {
+    [Language.Turkish]: "Alıcı Bölge Hazırlama",
+    [Language.English]: "Recipient Site Creation",
+    [Language.Russian]: "Создание зоны пересадки",
+    [Language.Georgian]: "რეციპიენტის ადგილის შექმნა"
+  },
+  "gallery.implantationProcess": {
+    [Language.Turkish]: "Ekim İşlemi",
+    [Language.English]: "Implantation Process",
+    [Language.Russian]: "Процесс имплантации",
+    [Language.Georgian]: "იმპლანტაციის პროცესი"
+  },
+  "gallery.precisionTools": {
+    [Language.Turkish]: "Hassas Ekipmanlar",
+    [Language.English]: "Precision Tools",
+    [Language.Russian]: "Прецизионные инструменты",
+    [Language.Georgian]: "პრეციზიული ხელსაწყოები"
+  },
+  "gallery.operationRoom": {
+    [Language.Turkish]: "Operasyon Odası",
+    [Language.English]: "Operation Room",
+    [Language.Russian]: "Операционная комната",
+    [Language.Georgian]: "საოპერაციო ოთახი"
+  },
+  "gallery.consultationRoom": {
+    [Language.Turkish]: "Danışma Odası",
+    [Language.English]: "Consultation Room",
+    [Language.Russian]: "Консультационная комната",
+    [Language.Georgian]: "საკონსულტაციო ოთახი"
+  },
+  "gallery.advancedEquipment": {
+    [Language.Turkish]: "İleri Teknoloji Ekipmanlar",
+    [Language.English]: "Advanced Equipment",
+    [Language.Russian]: "Современное оборудование",
+    [Language.Georgian]: "თანამედროვე აღჭურვილობა"
+  },
+  "gallery.sterilizationArea": {
+    [Language.Turkish]: "Sterilizasyon Alanı",
+    [Language.English]: "Sterilization Area",
+    [Language.Russian]: "Зона стерилизации",
+    [Language.Georgian]: "სტერილიზაციის ზონა"
+  },
+  "gallery.surgicalTeam": {
+    [Language.Turkish]: "Cerrahi Ekip",
+    [Language.English]: "Surgical Team",
+    [Language.Russian]: "Хирургическая команда",
+    [Language.Georgian]: "ქირურგიული გუნდი"
+  },
+  "gallery.technicalStaff": {
+    [Language.Turkish]: "Teknik Ekip",
+    [Language.English]: "Technical Staff",
+    [Language.Russian]: "Технический персонал",
+    [Language.Georgian]: "ტექნიკური პერსონალი"
+  },
   // Eksik çeviriler
   "services.exclusive": {
     [Language.Turkish]: "Özel Hizmet",

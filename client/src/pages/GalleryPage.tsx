@@ -46,83 +46,90 @@ export default function GalleryPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const progressInterval = useRef<NodeJS.Timeout | null>(null);
 
-  // Örnek resimler
+  // Klinik görüntüleri
   const clinicImages: ClinicImage[] = [
-    { id: 1, url: '/images/clinic-procedures/IMG-20250325-WA0046.jpg', title: t('gallery.hairTransplantProcedure'), category: 'procedure' },
-    { id: 2, url: '/images/clinic-procedures/IMG-20250325-WA0053.jpg', title: t('gallery.hairAnalysis'), category: 'procedure' },
-    { id: 3, url: '/images/clinic-procedures/IMG-20250325-WA0062.jpg', title: t('gallery.postOperativeCare'), category: 'procedure' },
-    { id: 4, url: '/images/clinic-procedures/IMG-20250325-WA0063.jpg', title: t('gallery.consultationProcess'), category: 'procedure' },
-    { id: 5, url: '/images/clinic-procedures/IMG-20250325-WA0064.jpg', title: t('gallery.donorAreaPreparation'), category: 'procedure' },
-    { id: 6, url: '/images/clinic-procedures/IMG-20250325-WA0065.jpg', title: t('gallery.hairTransplantTechnique'), category: 'procedure' },
-    { id: 7, url: '/images/clinic-procedures/IMG-20250325-WA0066.jpg', title: t('gallery.microscopicView'), category: 'procedure' },
-    { id: 8, url: '/images/tbilisi-landmarks/colorful-houses.jpg', title: t('gallery.clinicExterior'), category: 'facility' },
-    { id: 9, url: '/images/tbilisi-landmarks/peace-bridge.webp', title: t('gallery.receptionArea'), category: 'facility' },
-    { id: 10, url: '/images/tbilisi-landmarks/night-panorama.webp', title: t('gallery.surgeryRoom'), category: 'facility' },
-    { id: 11, url: '/images/tbilisi-landmarks/trinity-cathedral.jpg', title: t('gallery.recoveryRoom'), category: 'facility' },
-    { id: 12, url: '/images/services/hair-transplant.jpg', title: t('gallery.headSurgeon'), category: 'team' },
-    { id: 13, url: '/images/services/eyebrow-transplant.jpg', title: t('gallery.medicalTeam'), category: 'team' },
-    { id: 14, url: '/images/services/beard-transplant.jpg', title: t('gallery.supportStaff'), category: 'team' }
+    // Prosedür görselleri
+    { id: 1, url: '/images/clinic-gallery/IMG-20250325-WA0046.jpg', title: t('gallery.hairTransplantProcedure'), category: 'procedure' },
+    { id: 2, url: '/images/clinic-gallery/IMG-20250325-WA0047.jpg', title: t('gallery.hairAnalysis'), category: 'procedure' },
+    { id: 3, url: '/images/clinic-gallery/IMG-20250325-WA0048.jpg', title: t('gallery.donorAreaPreparation'), category: 'procedure' },
+    { id: 4, url: '/images/clinic-gallery/IMG-20250325-WA0049.jpg', title: t('gallery.graftExtraction'), category: 'procedure' },
+    { id: 5, url: '/images/clinic-gallery/IMG-20250325-WA0050.jpg', title: t('gallery.hairTransplantTechnique'), category: 'procedure' },
+    { id: 6, url: '/images/clinic-gallery/IMG-20250325-WA0051.jpg', title: t('gallery.recipientSiteCreation'), category: 'procedure' },
+    { id: 7, url: '/images/clinic-gallery/IMG-20250325-WA0053.jpg', title: t('gallery.implantationProcess'), category: 'procedure' },
+    { id: 8, url: '/images/clinic-gallery/IMG-20250325-WA0054.jpg', title: t('gallery.precisionTools'), category: 'procedure' },
+    
+    // Tesis görselleri
+    { id: 9, url: '/images/clinic-gallery/IMG-20250325-WA0055.jpg', title: t('gallery.operationRoom'), category: 'facility' },
+    { id: 10, url: '/images/clinic-gallery/IMG-20250325-WA0056.jpg', title: t('gallery.consultationRoom'), category: 'facility' },
+    { id: 11, url: '/images/clinic-gallery/IMG-20250325-WA0057.jpg', title: t('gallery.advancedEquipment'), category: 'facility' },
+    { id: 12, url: '/images/clinic-gallery/IMG-20250325-WA0058.jpg', title: t('gallery.sterilizationArea'), category: 'facility' },
+    
+    // Ekip görselleri
+    { id: 13, url: '/images/clinic-gallery/IMG-20250325-WA0059.jpg', title: t('gallery.medicalTeam'), category: 'team' },
+    { id: 14, url: '/images/clinic-gallery/IMG-20250325-WA0060.jpg', title: t('gallery.surgicalTeam'), category: 'team' },
+    { id: 15, url: '/images/clinic-gallery/IMG-20250325-WA0061.jpg', title: t('gallery.technicalStaff'), category: 'team' },
+    { id: 16, url: '/images/clinic-gallery/IMG-20250325-WA0062.jpg', title: t('gallery.supportStaff'), category: 'team' }
   ];
 
-  // Örnek videolar
+  // Videolar
   const videos: VideoItem[] = [
     { 
       id: 1, 
       url: '/images/videos/VID-20250325-WA0010.mp4', 
-      thumbnail: '/images/clinic-procedures/IMG-20250325-WA0046.jpg', 
+      thumbnail: '/images/clinic-gallery/IMG-20250325-WA0046.jpg', 
       title: t('gallery.hairTransplantProcess'), 
       duration: '1:30' 
     },
     { 
       id: 2, 
       url: '/images/videos/VID-20250325-WA0010.mp4', 
-      thumbnail: '/images/clinic-procedures/IMG-20250325-WA0053.jpg', 
+      thumbnail: '/images/clinic-gallery/IMG-20250325-WA0053.jpg', 
       title: t('gallery.patientTestimonial'), 
       duration: '2:15' 
     },
     { 
       id: 3, 
       url: '/images/videos/VID-20250325-WA0010.mp4', 
-      thumbnail: '/images/clinic-procedures/IMG-20250325-WA0062.jpg', 
+      thumbnail: '/images/clinic-gallery/IMG-20250325-WA0062.jpg', 
       title: t('gallery.clinicTour'), 
       duration: '3:40' 
     },
     { 
       id: 4, 
       url: '/images/videos/VID-20250325-WA0010.mp4', 
-      thumbnail: '/images/clinic-procedures/IMG-20250325-WA0063.jpg', 
+      thumbnail: '/images/clinic-gallery/IMG-20250325-WA0063.jpg', 
       title: t('gallery.doctorInterview'), 
       duration: '4:20' 
     }
   ];
 
-  // Örnek öncesi/sonrası görseller
+  // Öncesi/sonrası görseller
   const beforeAfterImages: BeforeAfterItem[] = [
     { 
       id: 1, 
-      before: '/images/clinic-procedures/IMG-20250325-WA0046.jpg', 
-      after: '/images/clinic-procedures/IMG-20250325-WA0066.jpg', 
+      before: '/images/clinic-gallery/IMG-20250325-WA0046.jpg', 
+      after: '/images/clinic-gallery/IMG-20250325-WA0066.jpg', 
       title: t('gallery.malePatterBaldness'), 
       month: 12 
     },
     { 
       id: 2, 
-      before: '/images/clinic-procedures/IMG-20250325-WA0053.jpg', 
-      after: '/images/clinic-procedures/IMG-20250325-WA0065.jpg', 
+      before: '/images/clinic-gallery/IMG-20250325-WA0054.jpg', 
+      after: '/images/clinic-gallery/IMG-20250325-WA0059.jpg', 
       title: t('gallery.recededHairline'), 
       month: 8 
     },
     { 
       id: 3, 
-      before: '/images/clinic-procedures/IMG-20250325-WA0062.jpg', 
-      after: '/images/clinic-procedures/IMG-20250325-WA0064.jpg', 
+      before: '/images/clinic-gallery/IMG-20250325-WA0048.jpg', 
+      after: '/images/clinic-gallery/IMG-20250325-WA0050.jpg', 
       title: t('gallery.crownThinning'), 
       month: 10 
     },
     { 
       id: 4, 
-      before: '/images/clinic-procedures/IMG-20250325-WA0063.jpg', 
-      after: '/images/clinic-procedures/IMG-20250325-WA0066.jpg', 
+      before: '/images/clinic-gallery/IMG-20250325-WA0051.jpg', 
+      after: '/images/clinic-gallery/IMG-20250325-WA0053.jpg', 
       title: t('gallery.eyebrowTransplant'), 
       month: 6 
     }
