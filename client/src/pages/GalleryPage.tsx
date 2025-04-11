@@ -82,133 +82,133 @@ export default function GalleryPage() {
     },
     { 
       id: 2, 
-      url: '/images/videos/VID-20250325-WA0005.mp4', 
+      url: '/videos/VID-20250325-WA0005.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0053.jpg', 
       title: t('gallery.patientTestimonial'), 
       duration: '1:03' 
     },
     { 
       id: 3, 
-      url: '/images/videos/VID-20250325-WA0006.mp4', 
+      url: '/videos/VID-20250325-WA0006.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0062.jpg', 
       title: t('gallery.clinicTour'), 
       duration: '1:15' 
     },
     { 
       id: 4, 
-      url: '/images/videos/VID-20250325-WA0007.mp4', 
+      url: '/videos/VID-20250325-WA0007.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0059.jpg', 
       title: t('gallery.doctorInterview'), 
       duration: '0:59' 
     },
     { 
       id: 5, 
-      url: '/images/videos/VID-20250325-WA0008.mp4', 
+      url: '/videos/VID-20250325-WA0008.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0055.jpg', 
       title: t('gallery.consultationSession'), 
       duration: '0:50' 
     },
     { 
       id: 6, 
-      url: '/images/videos/VID-20250325-WA0009.mp4', 
+      url: '/videos/VID-20250325-WA0009.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0048.jpg', 
       title: t('gallery.operationOverview'), 
       duration: '0:55' 
     },
     { 
       id: 7, 
-      url: '/images/videos/VID-20250325-WA0010.mp4', 
+      url: '/videos/VID-20250325-WA0010.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0050.jpg', 
       title: t('gallery.hairTransplantResults'), 
       duration: '1:30' 
     },
     { 
       id: 8, 
-      url: '/images/videos/VID-20250325-WA0011.mp4', 
+      url: '/videos/VID-20250325-WA0011.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0051.jpg', 
       title: t('gallery.patientJourney'), 
       duration: '0:48' 
     },
     { 
       id: 9, 
-      url: '/images/videos/VID-20250325-WA0012.mp4', 
+      url: '/videos/VID-20250325-WA0012.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0057.jpg', 
       title: t('gallery.testimonialVideo'), 
       duration: '2:15' 
     },
     { 
       id: 10, 
-      url: '/images/videos/VID-20250325-WA0013.mp4', 
+      url: '/videos/VID-20250325-WA0013.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0047.jpg', 
       title: t('gallery.treatmentExplained'), 
       duration: '1:25' 
     },
     { 
       id: 11, 
-      url: '/images/videos/VID-20250325-WA0014.mp4', 
+      url: '/videos/VID-20250325-WA0014.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0056.jpg', 
       title: t('gallery.facilityTour'), 
       duration: '1:20' 
     },
     { 
       id: 12, 
-      url: '/images/videos/VID-20250325-WA0015.mp4', 
+      url: '/videos/VID-20250325-WA0015.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0058.jpg', 
       title: t('gallery.hairTransplantProcess'), 
       duration: '1:45' 
     },
     { 
       id: 13, 
-      url: '/images/videos/VID-20250325-WA0016.mp4', 
+      url: '/videos/VID-20250325-WA0016.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0061.jpg', 
       title: t('gallery.patientTestimonial'), 
       duration: '1:12' 
     },
     { 
       id: 14, 
-      url: '/images/videos/VID-20250325-WA0017.mp4', 
+      url: '/videos/VID-20250325-WA0017.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0060.jpg', 
       title: t('gallery.clinicTour'), 
       duration: '0:35' 
     },
     { 
       id: 15, 
-      url: '/images/videos/VID-20250325-WA0018.mp4', 
+      url: '/videos/VID-20250325-WA0018.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0049.jpg', 
       title: t('gallery.doctorInterview'), 
       duration: '1:55' 
     },
     { 
       id: 16, 
-      url: '/images/videos/VID-20250325-WA0019.mp4', 
+      url: '/videos/VID-20250325-WA0019.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0054.jpg', 
       title: t('gallery.operationOverview'), 
       duration: '3:15' 
     },
     { 
       id: 17, 
-      url: '/images/videos/VID-20250325-WA0022.mp4', 
+      url: '/videos/VID-20250325-WA0022.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0062.jpg', 
       title: t('gallery.testimonialVideo'), 
       duration: '1:48' 
     },
     { 
       id: 18, 
-      url: '/images/videos/VID-20250325-WA0023.mp4', 
+      url: '/videos/VID-20250325-WA0023.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0063.jpg', 
       title: t('gallery.patientJourney'), 
       duration: '2:35' 
     },
     { 
       id: 19, 
-      url: '/images/videos/VID-20250325-WA0031.mp4', 
+      url: '/videos/VID-20250325-WA0031.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0046.jpg', 
       title: t('gallery.facilityTour'), 
       duration: '0:40' 
     },
     { 
       id: 20, 
-      url: '/images/videos/VID-20250325-WA0032.mp4', 
+      url: '/videos/VID-20250325-WA0032.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0050.jpg', 
       title: t('gallery.treatmentExplained'), 
       duration: '0:30' 
