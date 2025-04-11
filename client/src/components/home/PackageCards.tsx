@@ -359,7 +359,7 @@ export function PackageCards() {
   return (
     <section 
       ref={sectionRef}
-      className="relative py-28 overflow-hidden bg-gradient-to-b from-primary/5 to-white"
+      className="relative py-20 overflow-hidden bg-gradient-to-b from-primary/5 to-white"
     >
       {/* Modern arka plan desenleri */}
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
@@ -488,7 +488,7 @@ export function PackageCards() {
         )}
         
         {/* Modern dekoratif unsurlar */}
-        <div className="mx-auto max-w-md mt-20 flex justify-center transition-all duration-1000 opacity-80"
+        <div className="mx-auto max-w-md mt-10 flex justify-center transition-all duration-1000 opacity-80"
              style={{ transitionDelay: '600ms' }}>
           <div className="h-px w-full bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
         </div>

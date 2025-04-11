@@ -424,7 +424,7 @@ export default function ServiceCards() {
         )}
         
         {/* Modern dekoratif unsurlar (tüm hizmetleri gör butonu kaldırıldı) */}
-        <div className="mx-auto max-w-md mt-20 flex justify-center transition-all duration-1000 opacity-80"
+        <div className="mx-auto max-w-md mt-10 flex justify-center transition-all duration-1000 opacity-80"
              style={{ transitionDelay: '600ms' }}>
           <div className="h-px w-full bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
         </div>
