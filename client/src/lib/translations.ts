@@ -1680,17 +1680,35 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Россия",
     [Language.Georgian]: "რუსეთი"
   },
+  "countries.ukraine": {
+    [Language.Turkish]: "Ukrayna",
+    [Language.English]: "Ukraine",
+    [Language.Russian]: "Украина",
+    [Language.Georgian]: "უკრაინა"
+  },
   "countries.ua": {
     [Language.Turkish]: "Ukrayna",
     [Language.English]: "Ukraine",
     [Language.Russian]: "Украина",
     [Language.Georgian]: "უკრაინა"
   },
+  "countries.azerbaijan": {
+    [Language.Turkish]: "Azerbaycan",
+    [Language.English]: "Azerbaijan",
+    [Language.Russian]: "Азербайджан",
+    [Language.Georgian]: "აზერბაიჯანი"
+  },
   "countries.az": {
     [Language.Turkish]: "Azerbaycan",
     [Language.English]: "Azerbaijan",
     [Language.Russian]: "Азербайджан",
     [Language.Georgian]: "აზერბაიჯანი"
+  },
+  "countries.iran": {
+    [Language.Turkish]: "İran",
+    [Language.English]: "Iran",
+    [Language.Russian]: "Иран",
+    [Language.Georgian]: "ირანი"
   },
   "countries.ir": {
     [Language.Turkish]: "İran",
@@ -1727,6 +1745,12 @@ export const translations: Record<string, LanguageMap> = {
     [Language.English]: "Armenia",
     [Language.Russian]: "Армения",
     [Language.Georgian]: "სომხეთი"
+  },
+  "countries.kazakhstan": {
+    [Language.Turkish]: "Kazakistan",
+    [Language.English]: "Kazakhstan",
+    [Language.Russian]: "Казахстан",
+    [Language.Georgian]: "ყაზახეთი"
   },
   "countries.kz": {
     [Language.Turkish]: "Kazakistan",
