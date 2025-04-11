@@ -106,6 +106,8 @@ function getCountryImage(countryCode: string): string {
       return '/images/countries/iran.jpg';
     case 'GE': // Georgia
       return '/images/countries/georgia.jpg';
+    case 'UA': // Ukraine
+      return '/images/countries/ukraine.jpg';
     default:
       return '/images/packages/default-package.jpg';
   }
