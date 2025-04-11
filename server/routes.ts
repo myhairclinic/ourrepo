@@ -22,6 +22,7 @@ import { seedBlogPosts } from "./controllers/seedBlogController";
 import { seedExtendedBlogPosts } from "./controllers/extendedBlogSeedController";
 import { seedUniqueBlogPosts } from "./controllers/uniqueBlogSeedController";
 import { seedBlogDirectly } from "./controllers/seedBlogsDirectController";
+import * as adminControllers from "./controllers/adminControllers";
 import {
   getBlogPosts,
   getPaginatedBlogPosts,
@@ -412,6 +413,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Blog routes
   app.get("/api/blog", getBlogPosts);
+  app.get("/api/blog/count", adminControllers.getBlogPostsCount);
   app.get("/api/blog/paginated", getPaginatedBlogPosts);
   app.get("/api/blog/:slug", getBlogPostBySlug);
   app.post("/api/blog", createBlogPost);
@@ -425,6 +427,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/seed/extended-blog", seedExtendedBlogPosts);
   app.post("/api/seed/unique-blog", seedUniqueBlogPosts);
   app.post("/api/seed/blog-direct", seedBlogDirectly);
+  
+  // Admin Dashboard API Routes
+  app.get("/api/services/count", adminControllers.getServicesCount);
+  app.get("/api/packages/count", adminControllers.getPackagesCount);
+  app.get("/api/products/count", adminControllers.getProductsCount);
+  app.get("/api/appointments/count", adminControllers.getAppointmentsCount);
+  app.get("/api/messages/count", adminControllers.getMessagesCount);
+  app.get("/api/reviews/count", adminControllers.getReviewsCount);
+  app.get("/api/faqs/count", adminControllers.getFaqsCount);
+  app.get("/api/aftercare-guides/count", adminControllers.getAftercareGuidesCount);
+  app.get("/api/admin/analytics", adminControllers.getAnalyticsData);
+  app.get("/api/admin/activity", adminControllers.getRecentActivity);
   app.get("/api/seed-packages", (req, res) => res.redirect("/"));
   app.post("/api/seed-packages", seedPackages);
   // Route for adding only new country packages (Azerbaijan and Kazakhstan)
