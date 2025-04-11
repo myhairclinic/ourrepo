@@ -67,6 +67,9 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
+// Define package types
+export type PackageType = 'standard' | 'premium' | 'luxury' | 'budget';
+
 // Extend the package schema
 const formSchema = insertPackageSchema.extend({
   price: z.coerce.number().min(0),
@@ -271,6 +274,8 @@ export default function PackagesManager() {
       price: pkg.price,
       order: pkg.order,
       isActive: pkg.isActive,
+      packageType: (pkg.packageType as 'standard' | 'premium' | 'luxury' | 'budget') || 'standard',
+      isAllInclusive: pkg.isAllInclusive || false,
     });
     setIsDialogOpen(true);
   };
@@ -307,6 +312,8 @@ export default function PackagesManager() {
       price: 0,
       order: 0,
       isActive: true,
+      packageType: "standard",
+      isAllInclusive: false,
     });
     setIsDialogOpen(true);
   };
@@ -674,6 +681,83 @@ export default function PackagesManager() {
                       <FormDescription>
                         Lower numbers appear first
                       </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormField
+                  control={form.control}
+                  name="packageType"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Package Type</FormLabel>
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select package type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="standard">
+                            <div className="flex items-center gap-2">
+                              <PackageCheck className="h-4 w-4 text-muted-foreground" />
+                              <span>Standard Package</span>
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="premium">
+                            <div className="flex items-center gap-2">
+                              <Sparkles className="h-4 w-4 text-purple-500" />
+                              <span>Premium Package</span>
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="luxury">
+                            <div className="flex items-center gap-2">
+                              <Building className="h-4 w-4 text-amber-500" />
+                              <span>Luxury Package</span>
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="budget">
+                            <div className="flex items-center gap-2">
+                              <Check className="h-4 w-4 text-teal-500" />
+                              <span>Budget Package</span>
+                            </div>
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        Select the type of package to display appropriate badges
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="isAllInclusive"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Package Options</FormLabel>
+                      <div className="flex items-center space-x-2 mt-2">
+                        <FormControl>
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                        <div>
+                          <div className="font-medium leading-none">All-Inclusive</div>
+                          <div className="text-sm text-muted-foreground">
+                            Toggle for "All-Inclusive" packages
+                          </div>
+                        </div>
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
