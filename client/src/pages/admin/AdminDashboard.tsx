@@ -30,7 +30,7 @@ export default function AdminDashboard() {
       const data = await response.json();
       return data.count;
     },
-    enabled: !!admin,
+    enabled: !!user,
   });
   
   const { data: appointmentsCount = 0, isLoading: isLoadingAppointments } = useQuery<number>({
@@ -41,7 +41,7 @@ export default function AdminDashboard() {
       const data = await response.json();
       return data.count;
     },
-    enabled: !!admin,
+    enabled: !!user,
   });
   
   const { data: blogPostsCount = 0, isLoading: isLoadingBlogPosts } = useQuery<number>({
