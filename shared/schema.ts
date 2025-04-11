@@ -226,7 +226,7 @@ export const packages = pgTable("packages", {
   order: integer("order").notNull().default(0),
   isActive: boolean("is_active").notNull().default(true),
   isFeatured: boolean("is_featured").notNull().default(false), // öne çıkan paket mi?
-  packageType: text("package_type").default("standard"), // premium, standard, luxury, budget
+  packageType: text("package_type", { enum: ["standard", "premium", "luxury", "budget"] }).default("standard"),
   isAllInclusive: boolean("is_all_inclusive").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -352,6 +352,9 @@ export const updateClinicInfoSchema = createInsertSchema(clinicInfo).omit({
   id: true,
   updatedAt: true,
 });
+
+// Package Type
+export type PackageType = "standard" | "premium" | "luxury" | "budget";
 
 // Type exports
 export type User = typeof users.$inferSelect;

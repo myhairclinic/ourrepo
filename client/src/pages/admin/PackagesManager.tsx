@@ -67,8 +67,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
-// Define package types
-export type PackageType = 'standard' | 'premium' | 'luxury' | 'budget';
+import { PackageType } from "@shared/schema";
 
 // Extend the package schema
 const formSchema = insertPackageSchema.extend({
@@ -257,6 +256,9 @@ export default function PackagesManager() {
 
   const handleEdit = (pkg: Package) => {
     setSelectedPackage(pkg);
+    // Use the package's packageType or default to 'standard' if not defined
+    const pkgType = pkg.packageType as PackageType || 'standard';
+    
     form.reset({
       titleTR: pkg.titleTR,
       titleEN: pkg.titleEN,
@@ -274,7 +276,7 @@ export default function PackagesManager() {
       price: pkg.price,
       order: pkg.order,
       isActive: pkg.isActive,
-      packageType: (pkg.packageType as 'standard' | 'premium' | 'luxury' | 'budget') || 'standard',
+      packageType: pkgType,
       isAllInclusive: pkg.isAllInclusive || false,
     });
     setIsDialogOpen(true);
