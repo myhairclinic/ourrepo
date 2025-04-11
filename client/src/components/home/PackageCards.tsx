@@ -92,6 +92,25 @@ function getCountryName(countryCode: string, t: (key: string) => string): string
   }
 }
 
+function getCountryImage(countryCode: string): string {
+  switch (countryCode) {
+    case 'TR':
+      return '/images/countries/turkey.webp';
+    case 'RU':
+      return '/images/countries/russia.jpg';
+    case 'AZ':
+      return '/images/countries/azerbaijan.jpg';
+    case 'KZ':
+      return '/images/countries/kazakhstan.jpg';
+    case 'IR':
+      return '/images/countries/iran.jpg';
+    case 'GE': // Georgia
+      return '/images/countries/georgia.jpg';
+    default:
+      return '/images/packages/default-package.jpg';
+  }
+}
+
 function PackageCard({ package: pkg, getTitle, getDescription, addPrefix, t }: PackageCardProps) {
   const title = getTitle(pkg);
   const description = getDescription(pkg);
@@ -100,14 +119,19 @@ function PackageCard({ package: pkg, getTitle, getDescription, addPrefix, t }: P
   // Get country info if countryOrigin exists
   const countryInfo = pkg.countryOrigin ? {
     flag: getCountryEmoji(pkg.countryOrigin),
-    name: getCountryName(pkg.countryOrigin, t)
-  } : { flag: '🌍', name: t("countries.international") };
+    name: getCountryName(pkg.countryOrigin, t),
+    image: getCountryImage(pkg.countryOrigin)
+  } : { 
+    flag: '🌍', 
+    name: t("countries.international"),
+    image: '/images/packages/default-package.jpg'
+  };
   
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 h-full flex flex-col border border-border/30 group">
       <div className="relative overflow-hidden aspect-[16/9]">
         <img 
-          src={pkg.imageUrl} 
+          src={countryInfo.image} 
           alt={title} 
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
