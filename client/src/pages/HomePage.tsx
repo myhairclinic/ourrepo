@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import { Language } from "@shared/types";
 import HeroSlider from "@/components/home/HeroSlider";
 import ServiceCards from "@/components/home/ServiceCards";
-import PackageCards from "@/components/home/PackageCards";
+import { PackageCards } from "@/components/home/PackageCards";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
 import BeforeAfterSlider from "@/components/home/BeforeAfterSlider";
 import Testimonials from "@/components/home/Testimonials";
@@ -44,6 +44,7 @@ export default function HomePage() {
         
         <HeroSlider />
         <ServiceCards />
+        <PackageCards />
         <WhyChooseUs />
         <BeforeAfterSlider />
         <Testimonials />
