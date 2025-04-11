@@ -5,8 +5,6 @@ import HeroSlider from "@/components/home/HeroSlider";
 import ServiceCards from "@/components/home/ServiceCards";
 import { PackageCards } from "@/components/home/PackageCards";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
-import BeforeAfterSlider from "@/components/home/BeforeAfterSlider";
-import Testimonials from "@/components/home/Testimonials";
 import { useTranslation } from "@/lib/translations";
 import MainSlider from "@/components/home/MainSlider";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
@@ -49,8 +47,6 @@ export default function HomePage() {
         <WhyChooseUs />
         <ServiceCards />
         <PackageCards />
-        <BeforeAfterSlider />
-        <Testimonials />
         
         {/* Fixed buttons */}
         <WhatsAppButton />
