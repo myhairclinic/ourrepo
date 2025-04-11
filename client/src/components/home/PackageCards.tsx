@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
-import { useInView } from "react-intersection-observer";
 import { useTranslation } from "@/hooks/use-translation";
-import { useLanguage, Language } from "@/hooks/use-language";
+import { useLanguage } from "@/hooks/use-language";
+import { Language } from "@shared/types";
 import useEmblaCarousel from "embla-carousel-react";
 import { 
   ChevronLeft, 
