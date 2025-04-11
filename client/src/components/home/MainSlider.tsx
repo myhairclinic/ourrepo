@@ -18,6 +18,7 @@ import tbilisiImage from "@assets/tbilisi.jpg";
 import tiflisNatureImage from "@assets/tiflis-gezi-rehberi-tiflis-gezilecek-yerler-gürcistan-gezi-rehberi-gürcistan-gezilecek-yerler-2.webp";
 import prpTreatmentImage from "@assets/ChatGPT Image 11 Nis 2025 03_09_54.png";
 import hairTreatmentImage from "@assets/ChatGPT Image 11 Nis 2025 03_04_57.png";
+import operationRoomImage from "@assets/IMG-20250325-WA0050.jpg";
 
 interface SlideType {
   id: number;
@@ -59,7 +60,7 @@ export default function MainSlider() {
   const slides: SlideType[] = [
     {
       id: 1,
-      imageUrl: tbilisiImage,
+      imageUrl: operationRoomImage,
       titleTR: "MyHair Tbilisi",
       titleEN: "MyHair Tbilisi",
       titleRU: "MyHair Тбилиси",
