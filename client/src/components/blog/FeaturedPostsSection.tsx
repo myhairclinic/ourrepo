@@ -1,5 +1,6 @@
-import { FeaturedPostCard } from "./FeaturedPostCard";
 import { useTranslation } from "@/hooks/use-translation";
+import { FeaturedPostCard } from "./FeaturedPostCard";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface BlogPost {
   id: number;
@@ -32,40 +33,44 @@ interface FeaturedPostsSectionProps {
   featuredPosts: BlogPost[];
   getCategoryName: (category: string) => string;
   formatDate: (date: string) => string;
-  isLoading?: boolean;
+  isLoading: boolean;
 }
 
 export function FeaturedPostsSection({
   featuredPosts,
   getCategoryName,
   formatDate,
-  isLoading = false
+  isLoading
 }: FeaturedPostsSectionProps) {
   const { t } = useTranslation();
-
-  if (isLoading) {
-    return (
-      <div className="mb-10">
-        <h2 className="text-2xl font-bold mb-6">{t('blog.featuredPosts')}</h2>
-        <div className="h-[320px] rounded-lg bg-muted animate-pulse" />
-      </div>
-    );
-  }
-
-  if (featuredPosts.length === 0) {
-    return null;
-  }
-
+  
   return (
-    <div className="mb-10">
-      <h2 className="text-2xl font-bold mb-6">{t('blog.featuredPosts')}</h2>
-      {featuredPosts.length > 0 && (
-        <FeaturedPostCard 
-          post={featuredPosts[0]}
-          getCategoryName={getCategoryName}
-          formatDate={formatDate}
-        />
-      )}
-    </div>
+    <section className="mb-12">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold tracking-tight">{t('blog.featuredPosts')}</h2>
+      </div>
+      
+      {isLoading ? (
+        <div className="grid grid-cols-1 gap-6">
+          <div className="flex flex-col space-y-3">
+            <Skeleton className="h-96 w-full rounded-xl" />
+            <Skeleton className="h-8 w-1/2" />
+            <Skeleton className="h-4 w-1/3" />
+            <Skeleton className="h-24 w-full" />
+          </div>
+        </div>
+      ) : featuredPosts.length > 0 ? (
+        <div className="grid grid-cols-1 gap-6">
+          {featuredPosts.map(post => (
+            <FeaturedPostCard
+              key={post.id}
+              post={post}
+              formatDate={formatDate}
+              getCategoryName={getCategoryName}
+            />
+          ))}
+        </div>
+      ) : null}
+    </section>
   );
 }

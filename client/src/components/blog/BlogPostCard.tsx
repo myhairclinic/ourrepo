@@ -1,19 +1,17 @@
 import { Link } from "wouter";
-import { useLanguage } from "@/hooks/use-language";
 import { useTranslation } from "@/hooks/use-translation";
-import { Card, CardContent, CardFooter, CardBackground } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useLanguage } from "@/hooks/use-language";
 import { 
-  ArrowRight, 
-  Clock, 
-  Heart, 
-  Bookmark, 
-  Eye, 
-  TrendingUp,
-  Calendar
-} from "lucide-react";
+  Card, 
+  CardBackground,
+  CardContent, 
+  CardFooter, 
+  CardHeader, 
+  CardTitle 
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Clock, Calendar, Eye } from "lucide-react";
 
 interface BlogPost {
   id: number;
@@ -44,93 +42,79 @@ interface BlogPost {
 
 interface BlogPostCardProps {
   post: BlogPost;
-  getCategoryName: (category: string) => string;
   formatDate: (date: string) => string;
+  getCategoryName: (category: string) => string;
 }
 
-export function BlogPostCard({ post, getCategoryName, formatDate }: BlogPostCardProps) {
-  const { language, addPrefix } = useLanguage();
+export function BlogPostCard({ post, formatDate, getCategoryName }: BlogPostCardProps) {
   const { t } = useTranslation();
-
+  const { language, addPrefix } = useLanguage();
+  
+  // Title and summary based on language
+  const title = post[`title${language.toUpperCase() as 'TR' | 'EN' | 'RU' | 'KA'}`] || post.titleEN;
+  const summary = post[`summary${language.toUpperCase() as 'TR' | 'EN' | 'RU' | 'KA'}`] || post.summaryEN;
+  
+  // Get initials for avatar fallback
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map(part => part[0])
+      .join('')
+      .toUpperCase();
+  };
+  
   return (
-    <Card className="overflow-hidden h-full group transition-all duration-300 hover:shadow-lg border-2 hover:border-primary/20 relative">
-      <Link href={addPrefix(`/blog/${post.slug}`)}>
-        <div className="relative h-56 overflow-hidden">
-          <CardBackground src={post.imageUrl} />
-          <div className="absolute inset-0 z-10 p-6 flex flex-col justify-between">
-            <div className="flex justify-between">
-              <Badge className="bg-primary/90 hover:bg-primary text-white backdrop-blur-sm border-0">
-                {getCategoryName(post.category)}
-              </Badge>
-              <Badge variant="outline" className="bg-black/50 text-white backdrop-blur-sm border-0">
-                <Clock className="h-3 w-3 mr-1" />
-                <span>{post.readingTime} {post.readingTime === 1 ? t('blog.minute') : t('blog.minutes')}</span>
-              </Badge>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold text-white drop-shadow-md line-clamp-2 mb-2">
-                {post[`title${language.toUpperCase()}` as keyof BlogPost] as string}
-              </h3>
-              <p className="text-white/90 text-sm line-clamp-2 drop-shadow-md">
-                {post[`summary${language.toUpperCase()}` as keyof BlogPost] as string}
-              </p>
-            </div>
-          </div>
-        </div>
-      </Link>
+    <Card className="group overflow-hidden rounded-xl transition-all duration-200 hover:shadow-md h-full flex flex-col">
+      <div className="absolute inset-0 z-20">
+        <Link href={addPrefix(`/blog/${post.slug}`)}>
+          <span className="sr-only">{title}</span>
+          <span className="absolute inset-0"></span>
+        </Link>
+      </div>
       
-      <CardContent className="p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Avatar className="h-8 w-8 border border-border">
-              {post.authorAvatar ? (
-                <AvatarImage src={post.authorAvatar} alt={post.author} />
-              ) : (
-                <AvatarFallback className="bg-primary/10 text-primary">
-                  {post.author.substring(0, 1)}
-                </AvatarFallback>
-              )}
-            </Avatar>
-            <div>
-              <p className="text-sm font-medium">{post.author}</p>
-              <p className="text-xs text-muted-foreground">{formatDate(post.createdAt)}</p>
-            </div>
+      <div className="relative h-48">
+        <CardBackground src={post.imageUrl || '/images/blog/default-blog.jpg'} />
+        <CardHeader className="relative z-10 text-white">
+          <div className="flex justify-between items-start">
+            <Badge 
+              variant="secondary" 
+              className="bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white"
+            >
+              {getCategoryName(post.category)}
+            </Badge>
           </div>
-          
-          <div className="flex space-x-1">
-            <Button size="icon" variant="ghost" className="h-8 w-8">
-              <Eye className="h-4 w-4 text-muted-foreground" />
-              <span className="sr-only">Views</span>
-            </Button>
-            <Button size="icon" variant="ghost" className="h-8 w-8">
-              <Heart className="h-4 w-4 text-muted-foreground" />
-              <span className="sr-only">Like</span>
-            </Button>
-            <Button size="icon" variant="ghost" className="h-8 w-8">
-              <Bookmark className="h-4 w-4 text-muted-foreground" />
-              <span className="sr-only">Bookmark</span>
-            </Button>
-          </div>
-        </div>
+          <CardTitle className="text-white drop-shadow-md mt-auto">{title}</CardTitle>
+        </CardHeader>
+      </div>
+      
+      <CardContent className="flex-grow pt-4">
+        <p className="text-muted-foreground line-clamp-3 text-sm">{summary}</p>
       </CardContent>
       
-      <CardFooter className="p-4 pt-0 flex items-center justify-between">
-        <div className="flex items-center">
-          <TrendingUp className="h-4 w-4 text-primary mr-1" />
-          <span className="text-xs font-medium">{post.viewCount || 0} {t('blog.views')}</span>
+      <CardFooter className="flex justify-between items-center border-t pt-4 text-xs text-muted-foreground">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center">
+            <Calendar className="h-3 w-3 mr-1" />
+            <span>{formatDate(post.createdAt)}</span>
+          </div>
+          
+          <div className="flex items-center ml-2">
+            <Clock className="h-3 w-3 mr-1" />
+            <span>{post.readingTime} {t('blog.minutes')}</span>
+          </div>
         </div>
-        <Button 
-          variant="default" 
-          size="sm"
-          className="group/button flex items-center gap-1"
-          asChild
-        >
-          <Link href={addPrefix(`/blog/${post.slug}`)}>
-            {t('common.readMore')}
-            <ArrowRight className="h-3.5 w-3.5 group-hover/button:translate-x-1 transition-transform" />
-          </Link>
-        </Button>
+        
+        <div className="flex items-center">
+          <Eye className="h-3 w-3 mr-1" />
+          <span>{post.viewCount} {t('blog.views')}</span>
+        </div>
       </CardFooter>
+      
+      <div className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity z-30">
+        <span className="text-xs bg-primary text-primary-foreground px-2 py-1 rounded-md">
+          {t('common.readMore')} →
+        </span>
+      </div>
     </Card>
   );
 }

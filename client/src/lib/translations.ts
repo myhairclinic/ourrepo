@@ -878,6 +878,60 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Подписаться",
     [Language.Georgian]: "გამოწერა"
   },
+  "blog.featuredPosts": {
+    [Language.Turkish]: "Öne Çıkan Yazılar",
+    [Language.English]: "Featured Posts",
+    [Language.Russian]: "Избранные статьи",
+    [Language.Georgian]: "გამორჩეული სტატიები"
+  },
+  "blog.search": {
+    [Language.Turkish]: "Ara",
+    [Language.English]: "Search",
+    [Language.Russian]: "Поиск",
+    [Language.Georgian]: "ძიება"
+  },
+  "blog.searchPlaceholder": {
+    [Language.Turkish]: "Blog yazılarında ara...",
+    [Language.English]: "Search blog posts...",
+    [Language.Russian]: "Поиск в блоге...",
+    [Language.Georgian]: "ბლოგის პოსტების ძიება..."
+  },
+  "blog.popularTags": {
+    [Language.Turkish]: "Popüler Etiketler",
+    [Language.English]: "Popular Tags",
+    [Language.Russian]: "Популярные теги",
+    [Language.Georgian]: "პოპულარული თეგები"
+  },
+  "blog.featuredAuthors": {
+    [Language.Turkish]: "Öne Çıkan Yazarlar",
+    [Language.English]: "Featured Authors",
+    [Language.Russian]: "Избранные авторы",
+    [Language.Georgian]: "გამორჩეული ავტორები"
+  },
+  "blog.subscribeNewsletter": {
+    [Language.Turkish]: "Bültenimize Abone Olun",
+    [Language.English]: "Subscribe to Our Newsletter",
+    [Language.Russian]: "Подпишитесь на нашу рассылку",
+    [Language.Georgian]: "გამოიწერეთ ჩვენი საინფორმაციო ბიულეტენი"
+  },
+  "blog.emailPlaceholder": {
+    [Language.Turkish]: "E-posta adresiniz",
+    [Language.English]: "Your email address",
+    [Language.Russian]: "Ваш адрес электронной почты",
+    [Language.Georgian]: "თქვენი ელ.ფოსტის მისამართი"
+  },
+  "blog.views": {
+    [Language.Turkish]: "görüntülenme",
+    [Language.English]: "views",
+    [Language.Russian]: "просмотры",
+    [Language.Georgian]: "ნახვები"
+  },
+  "common.readMore": {
+    [Language.Turkish]: "Devamını Oku",
+    [Language.English]: "Read More",
+    [Language.Russian]: "Читать далее",
+    [Language.Georgian]: "მეტის წაკითხვა"
+  },
   
   // Common
   "common.home": {
