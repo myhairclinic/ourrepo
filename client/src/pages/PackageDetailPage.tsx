@@ -130,38 +130,25 @@ export default function PackageDetailPage() {
   // Base gallery images from package data
   let galleryImages = parseJsonString(packageData.galleryImages, []);
   
-  // Add Tbilisi landmark images to every package's gallery
+  // Select only a few key Tbilisi landmark images for each package to avoid overcrowding
   const tbilisiLandmarkImages = [
     '/images/tbilisi-landmarks/colorful-houses.jpg',
-    '/images/tbilisi-landmarks/liberty-monument.jpg',
     '/images/tbilisi-landmarks/night-panorama.webp',
     '/images/tbilisi-landmarks/city-castle-night.webp',
-    '/images/tbilisi-landmarks/souvenir-shop.webp',
-    '/images/tbilisi-landmarks/old-bath-district.jpg',
     '/images/tbilisi-landmarks/trinity-cathedral.jpg',
-    '/images/tbilisi-landmarks/ananuri-castle.webp',
     '/images/tbilisi-landmarks/narikala-fortress.jpg',
-    '/images/tbilisi-landmarks/rustaveli-avenue.jpg',
     '/images/tbilisi-landmarks/peace-bridge.webp',
-    '/images/tbilisi-landmarks/tiflis-min-scaled.jpeg',
-    '/images/tbilisi-landmarks/tiflis-rustaveli-caddesi-gece.jpg',
-    '/images/tbilisi-landmarks/tiflis_chrononicle-2-1-scaled.jpeg',
-    '/images/tbilisi-landmarks/tifliste-gezilecek-yerler-baris-koprusu.webp',
   ];
   
-  // Add clinic procedure images to showcase real treatments
+  // Select only a subset of clinic procedure images to showcase real treatments
   const clinicProcedureImages = [
     '/images/clinic-procedures/IMG-20250325-WA0046.jpg',
     '/images/clinic-procedures/IMG-20250325-WA0053.jpg',
     '/images/clinic-procedures/IMG-20250325-WA0062.jpg',
-    '/images/clinic-procedures/IMG-20250325-WA0063.jpg',
-    '/images/clinic-procedures/IMG-20250325-WA0064.jpg',
-    '/images/clinic-procedures/IMG-20250325-WA0065.jpg',
-    '/images/clinic-procedures/IMG-20250325-WA0066.jpg',
   ];
   
-  // Combine original gallery with Tbilisi landmarks and clinic procedures
-  galleryImages = [...galleryImages, ...tbilisiLandmarkImages, ...clinicProcedureImages];
+  // Create an optimized gallery with fewer but higher quality images
+  galleryImages = [...galleryImages.filter(img => img && img.trim() !== ''), ...tbilisiLandmarkImages, ...clinicProcedureImages];
 
   return (
     <>
