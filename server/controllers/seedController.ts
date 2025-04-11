@@ -1,6 +1,17 @@
 import { Request, Response } from "express";
 import { storage } from "../storage";
-import { slugify } from "../utils/helpers";
+
+// Basit bir slugify fonksiyonu
+function slugify(text: string): string {
+  return text
+    .toString()
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+}
 
 // Seed services data
 export const seedServices = async (req: Request, res: Response) => {
