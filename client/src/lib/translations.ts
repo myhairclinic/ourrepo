@@ -238,6 +238,342 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Изображения галереи для этого пакета еще не добавлены.",
     [Language.Georgian]: "ამ პაკეტისთვის გალერეის სურათები ჯერ არ არის დამატებული."
   },
+  "packages.exclusive": {
+    [Language.Turkish]: "Özel Paket",
+    [Language.English]: "Exclusive Package",
+    [Language.Russian]: "Эксклюзивный Пакет",
+    [Language.Georgian]: "ექსკლუზიური პაკეტი"
+  },
+  "packages.allInclusive": {
+    [Language.Turkish]: "Her Şey Dahil Paket",
+    [Language.English]: "All-Inclusive Package",
+    [Language.Russian]: "Пакет «Все включено»",
+    [Language.Georgian]: "ყველაფერი ჩართული პაკეტი"
+  },
+  "packages.limitedTimeOffer": {
+    [Language.Turkish]: "Sınırlı Süreli Fırsat",
+    [Language.English]: "Limited Time Offer",
+    [Language.Russian]: "Предложение ограничено по времени",
+    [Language.Georgian]: "დროში შეზღუდული შეთავაზება"
+  },
+  "packages.whyChoose": {
+    [Language.Turkish]: "Neden Bu Paketi Seçmelisiniz?",
+    [Language.English]: "Why Choose This Package?",
+    [Language.Russian]: "Почему стоит выбрать этот пакет?",
+    [Language.Georgian]: "რატომ უნდა აირჩიოთ ეს პაკეტი?"
+  },
+  "packages.medicalExcellence": {
+    [Language.Turkish]: "Tıbbi Mükemmellik",
+    [Language.English]: "Medical Excellence",
+    [Language.Russian]: "Медицинское совершенство",
+    [Language.Georgian]: "სამედიცინო უპირატესობა"
+  },
+  "packages.medicalExcellenceDesc": {
+    [Language.Turkish]: "En yeni teknikler ve deneyimli uzmanlarla üstün sonuçlar.",
+    [Language.English]: "Superior results with latest techniques and experienced specialists.",
+    [Language.Russian]: "Превосходные результаты с новейшими методиками и опытными специалистами.",
+    [Language.Georgian]: "უმაღლესი შედეგები უახლესი ტექნიკით და გამოცდილი სპეციალისტებით."
+  },
+  "packages.personalizedCare": {
+    [Language.Turkish]: "Kişiselleştirilmiş Bakım",
+    [Language.English]: "Personalized Care",
+    [Language.Russian]: "Персонализированный уход",
+    [Language.Georgian]: "პერსონალიზებული მოვლა"
+  },
+  "packages.personalizedCareDesc": {
+    [Language.Turkish]: "Size özel tedavi planı ve bireysel danışmanlık desteği.",
+    [Language.English]: "Tailored treatment plan and individual consultation support.",
+    [Language.Russian]: "Индивидуальный план лечения и персональные консультации.",
+    [Language.Georgian]: "მორგებული მკურნალობის გეგმა და ინდივიდუალური საკონსულტაციო მხარდაჭერა."
+  },
+  "packages.internationalSupport": {
+    [Language.Turkish]: "Uluslararası Destek",
+    [Language.English]: "International Support",
+    [Language.Russian]: "Международная поддержка",
+    [Language.Georgian]: "საერთაშორისო მხარდაჭერა"
+  },
+  "packages.internationalSupportDesc": {
+    [Language.Turkish]: "Çok dilli personel ve ülkenize özel hizmetler.",
+    [Language.English]: "Multilingual staff and country-specific services.",
+    [Language.Russian]: "Многоязычный персонал и услуги для вашей страны.",
+    [Language.Georgian]: "მრავალენოვანი პერსონალი და ქვეყნისთვის სპეციფიკური მომსახურება."
+  },
+  "packages.comfortableExperience": {
+    [Language.Turkish]: "Konforlu Deneyim",
+    [Language.English]: "Comfortable Experience",
+    [Language.Russian]: "Комфортный опыт",
+    [Language.Georgian]: "კომფორტული გამოცდილება"
+  },
+  "packages.comfortableExperienceDesc": {
+    [Language.Turkish]: "Konaklama ve ulaşım dahil sorunsuz yolculuk.",
+    [Language.English]: "Hassle-free journey including accommodation and transportation.",
+    [Language.Russian]: "Беспроблемное путешествие, включая проживание и транспорт.",
+    [Language.Georgian]: "უპრობლემო მოგზაურობა, მათ შორის საცხოვრებელი და ტრანსპორტირება."
+  },
+  "packages.readyToBook": {
+    [Language.Turkish]: "Rezervasyon Yapmaya Hazır mısınız?",
+    [Language.English]: "Ready to Book?",
+    [Language.Russian]: "Готовы забронировать?",
+    [Language.Georgian]: "მზად ხართ დასაჯავშნად?"
+  },
+  "packages.contactUsNow": {
+    [Language.Turkish]: "Daha fazla bilgi için hemen bizimle iletişime geçin ve Tiflis'teki saç ekimi yolculuğunuzu başlatın.",
+    [Language.English]: "Contact us now for more information and start your hair transplant journey in Tbilisi.",
+    [Language.Russian]: "Свяжитесь с нами сейчас для получения дополнительной информации и начните свой путь по трансплантации волос в Тбилиси.",
+    [Language.Georgian]: "დაგვიკავშირდით ახლავე დამატებითი ინფორმაციისთვის და დაიწყეთ თქვენი თმის გადანერგვის მოგზაურობა თბილისში."
+  },
+  "packages.contactNow": {
+    [Language.Turkish]: "Şimdi İletişime Geç",
+    [Language.English]: "Contact Now",
+    [Language.Russian]: "Связаться сейчас",
+    [Language.Georgian]: "დაკავშირება ახლავე"
+  },
+  "packages.completePackage": {
+    [Language.Turkish]: "Eksiksiz Paket Deneyimi",
+    [Language.English]: "Complete Package Experience",
+    [Language.Russian]: "Полный пакетный опыт",
+    [Language.Georgian]: "სრული პაკეტის გამოცდილება"
+  },
+  "packages.experienceDesc": {
+    [Language.Turkish]: "Tüm seyahat detayları planlanmış, tedavi ve tatil bir arada - tek bir pakette.",
+    [Language.English]: "All travel details planned, treatment and holiday combined - in one package.",
+    [Language.Russian]: "Все детали путешествия спланированы, лечение и отдых объединены в одном пакете.",
+    [Language.Georgian]: "ყველა სამოგზაურო დეტალი დაგეგმილია, მკურნალობა და დასვენება ერთად - ერთ პაკეტში."
+  },
+  "packages.luxuryAccommodation": {
+    [Language.Turkish]: "Lüks Konaklama",
+    [Language.English]: "Luxury Accommodation",
+    [Language.Russian]: "Люкс-размещение",
+    [Language.Georgian]: "ლუქს საცხოვრებელი"
+  },
+  "packages.centralLocation": {
+    [Language.Turkish]: "Merkezi Konum",
+    [Language.English]: "Central Location",
+    [Language.Russian]: "Центральное расположение",
+    [Language.Georgian]: "ცენტრალური მდებარეობა"
+  },
+  "packages.freeWifi": {
+    [Language.Turkish]: "Ücretsiz WiFi",
+    [Language.English]: "Free WiFi",
+    [Language.Russian]: "Бесплатный WiFi",
+    [Language.Georgian]: "უფასო WiFi"
+  },
+  "packages.breakfast": {
+    [Language.Turkish]: "Kahvaltı Dahil",
+    [Language.English]: "Breakfast Included",
+    [Language.Russian]: "Завтрак включен",
+    [Language.Georgian]: "საუზმე ჩართულია"
+  },
+  "packages.conciergeService": {
+    [Language.Turkish]: "Concierge Hizmeti",
+    [Language.English]: "Concierge Service",
+    [Language.Russian]: "Консьерж-сервис",
+    [Language.Georgian]: "კონსიერჟის მომსახურება"
+  },
+  "packages.airportTransfer": {
+    [Language.Turkish]: "Havalimanı Transferi",
+    [Language.English]: "Airport Transfer",
+    [Language.Russian]: "Трансфер из аэропорта",
+    [Language.Georgian]: "აეროპორტის ტრანსფერი"
+  },
+  "packages.clinicTransfer": {
+    [Language.Turkish]: "Klinik Transferleri",
+    [Language.English]: "Clinic Transfers",
+    [Language.Russian]: "Трансфер в клинику",
+    [Language.Georgian]: "კლინიკის ტრანსფერები"
+  },
+  "packages.cityTour": {
+    [Language.Turkish]: "Şehir Turu",
+    [Language.English]: "City Tour",
+    [Language.Russian]: "Экскурсия по городу",
+    [Language.Georgian]: "ქალაქის ტური"
+  },
+  "packages.leisureActivities": {
+    [Language.Turkish]: "Boş Zaman Aktiviteleri",
+    [Language.English]: "Leisure Activities",
+    [Language.Russian]: "Досуг и развлечения",
+    [Language.Georgian]: "გასართობი აქტივობები"
+  },
+  "packages.itinerary": {
+    [Language.Turkish]: "Seyahat Programı",
+    [Language.English]: "Itinerary",
+    [Language.Russian]: "Маршрут",
+    [Language.Georgian]: "მარშრუტი"
+  },
+  "packages.arrivalDay": {
+    [Language.Turkish]: "1. Gün: Varış",
+    [Language.English]: "Day 1: Arrival",
+    [Language.Russian]: "День 1: Прибытие",
+    [Language.Georgian]: "დღე 1: ჩამოსვლა"
+  },
+  "packages.arrivalDayDesc": {
+    [Language.Turkish]: "Havalimanından özel transfer, otele yerleşme ve hoş geldin toplantısı.",
+    [Language.English]: "Private transfer from airport, hotel check-in and welcome meeting.",
+    [Language.Russian]: "Частный трансфер из аэропорта, заселение в отель и приветственная встреча.",
+    [Language.Georgian]: "პირადი ტრანსფერი აეროპორტიდან, სასტუმროში შესვლა და მისალმების შეხვედრა."
+  },
+  "packages.consultationDay": {
+    [Language.Turkish]: "2. Gün: Konsültasyon",
+    [Language.English]: "Day 2: Consultation",
+    [Language.Russian]: "День 2: Консультация",
+    [Language.Georgian]: "დღე 2: კონსულტაცია"
+  },
+  "packages.consultationDayDesc": {
+    [Language.Turkish]: "Klinik ziyareti, doktor konsültasyonu ve tedavi planlaması.",
+    [Language.English]: "Clinic visit, doctor consultation and treatment planning.",
+    [Language.Russian]: "Посещение клиники, консультация с врачом и планирование лечения.",
+    [Language.Georgian]: "კლინიკის ვიზიტი, ექიმის კონსულტაცია და მკურნალობის დაგეგმვა."
+  },
+  "packages.procedureDay": {
+    [Language.Turkish]: "3. Gün: İşlem",
+    [Language.English]: "Day 3: Procedure",
+    [Language.Russian]: "День 3: Процедура",
+    [Language.Georgian]: "დღე 3: პროცედურა"
+  },
+  "packages.procedureDayDesc": {
+    [Language.Turkish]: "Saç ekimi işlemi ve ilk bakım talimatları.",
+    [Language.English]: "Hair transplant procedure and initial care instructions.",
+    [Language.Russian]: "Процедура трансплантации волос и начальные инструкции по уходу.",
+    [Language.Georgian]: "თმის გადანერგვის პროცედურა და საწყისი მოვლის ინსტრუქციები."
+  },
+  "packages.departureDay": {
+    [Language.Turkish]: "4. Gün: Ayrılış",
+    [Language.English]: "Day 4: Departure",
+    [Language.Russian]: "День 4: Отъезд",
+    [Language.Georgian]: "დღე 4: გამგზავრება"
+  },
+  "packages.departureDayDesc": {
+    [Language.Turkish]: "Son kontrol, bakım ürünleri ve havalimanına transfer.",
+    [Language.English]: "Final check-up, aftercare products and transfer to airport.",
+    [Language.Russian]: "Финальный осмотр, средства послеоперационного ухода и трансфер в аэропорт.",
+    [Language.Georgian]: "საბოლოო შემოწმება, მოვლის პროდუქტები და ტრანსფერი აეროპორტში."
+  },
+  "packages.visualExperience": {
+    [Language.Turkish]: "Görsel Deneyim",
+    [Language.English]: "Visual Experience",
+    [Language.Russian]: "Визуальный Опыт",
+    [Language.Georgian]: "ვიზუალური გამოცდილება"
+  },
+  "packages.visualExperienceDesc": {
+    [Language.Turkish]: "Konaklama, klinik ve Tiflis şehrinden fotoğraflar.",
+    [Language.English]: "Photos from accommodation, clinic and Tbilisi city.",
+    [Language.Russian]: "Фотографии размещения, клиники и города Тбилиси.",
+    [Language.Georgian]: "ფოტოები საცხოვრებლიდან, კლინიკიდან და თბილისის ქალაქიდან."
+  },
+  "packages.tbilisiOldTown": {
+    [Language.Turkish]: "Tiflis Eski Şehir",
+    [Language.English]: "Tbilisi Old Town",
+    [Language.Russian]: "Старый Тбилиси",
+    [Language.Georgian]: "ძველი თბილისი"
+  },
+  "packages.clinicExterior": {
+    [Language.Turkish]: "Klinik Dış Görünüm",
+    [Language.English]: "Clinic Exterior",
+    [Language.Russian]: "Внешний вид клиники",
+    [Language.Georgian]: "კლინიკის ექსტერიერი"
+  },
+  "packages.clickToExpand": {
+    [Language.Turkish]: "Büyütmek için tıklayın",
+    [Language.English]: "Click to expand",
+    [Language.Russian]: "Нажмите, чтобы увеличить",
+    [Language.Georgian]: "დააჭირეთ გასაფართოებლად"
+  },
+  "packages.comingSoon": {
+    [Language.Turkish]: "Yakında",
+    [Language.English]: "Coming Soon",
+    [Language.Russian]: "Скоро",
+    [Language.Georgian]: "მალე"
+  },
+  "packages.virtualTour": {
+    [Language.Turkish]: "Sanal Tur",
+    [Language.English]: "Virtual Tour",
+    [Language.Russian]: "Виртуальный тур",
+    [Language.Georgian]: "ვირტუალური ტური"
+  },
+  "packages.virtualTourDesc": {
+    [Language.Turkish]: "Kliniğimizi ve konaklama imkanlarını 360° sanal tur ile keşfedin.",
+    [Language.English]: "Explore our clinic and accommodation facilities with a 360° virtual tour.",
+    [Language.Russian]: "Исследуйте нашу клинику и места размещения с помощью виртуального тура на 360°.",
+    [Language.Georgian]: "გაეცანით ჩვენს კლინიკას და საცხოვრებელ ობიექტებს 360° ვირტუალური ტურით."
+  },
+  "packages.startVirtualTour": {
+    [Language.Turkish]: "Sanal Turu Başlat",
+    [Language.English]: "Start Virtual Tour",
+    [Language.Russian]: "Начать виртуальный тур",
+    [Language.Georgian]: "დაიწყეთ ვირტუალური ტური"
+  },
+  "packages.travelMedical": {
+    [Language.Turkish]: "Sağlık Turizmi",
+    [Language.English]: "Medical Tourism",
+    [Language.Russian]: "Медицинский туризм",
+    [Language.Georgian]: "სამედიცინო ტურიზმი"
+  },
+  "packages.fromCountry": {
+    [Language.Turkish]: "Kaynak Ülke",
+    [Language.English]: "From Country",
+    [Language.Russian]: "Из страны",
+    [Language.Georgian]: "ქვეყნიდან"
+  },
+  "packages.duration": {
+    [Language.Turkish]: "Süre",
+    [Language.English]: "Duration",
+    [Language.Russian]: "Продолжительность",
+    [Language.Georgian]: "ხანგრძლივობა"
+  },
+  "packages.groupSize": {
+    [Language.Turkish]: "Grup Boyutu",
+    [Language.English]: "Group Size",
+    [Language.Russian]: "Размер группы",
+    [Language.Georgian]: "ჯგუფის ზომა"
+  },
+  "packages.individual": {
+    [Language.Turkish]: "Bireysel Paket",
+    [Language.English]: "Individual Package",
+    [Language.Russian]: "Индивидуальный пакет",
+    [Language.Georgian]: "ინდივიდუალური პაკეტი"
+  },
+  "packages.privateTransportation": {
+    [Language.Turkish]: "Özel Ulaşım",
+    [Language.English]: "Private Transportation",
+    [Language.Russian]: "Частный транспорт",
+    [Language.Georgian]: "კერძო ტრანსპორტირება"
+  },
+  "packages.tourismActivities": {
+    [Language.Turkish]: "Turizm Aktiviteleri",
+    [Language.English]: "Tourism Activities",
+    [Language.Russian]: "Туристические мероприятия",
+    [Language.Georgian]: "ტურისტული აქტივობები"
+  },
+  "packages.translationServices": {
+    [Language.Turkish]: "Çeviri Hizmetleri",
+    [Language.English]: "Translation Services",
+    [Language.Russian]: "Услуги перевода",
+    [Language.Georgian]: "თარგმნის მომსახურება"
+  },
+  "packages.aftercareProducts": {
+    [Language.Turkish]: "Bakım Ürünleri",
+    [Language.English]: "Aftercare Products",
+    [Language.Russian]: "Продукты для ухода",
+    [Language.Georgian]: "მოვლის პროდუქტები"
+  },
+  "packages.satisfaction": {
+    [Language.Turkish]: "Memnuniyet Garantisi",
+    [Language.English]: "Satisfaction Guarantee",
+    [Language.Russian]: "Гарантия удовлетворения",
+    [Language.Georgian]: "კმაყოფილების გარანტია"
+  },
+  "packages.satisfactionDesc": {
+    [Language.Turkish]: "Tedavi sonuçlarınızdan memnun kalmamanız durumunda, ücretsiz kontrol ve bakım hizmeti sunuyoruz.",
+    [Language.English]: "If you are not satisfied with your treatment results, we offer free check-up and care services.",
+    [Language.Russian]: "Если вы не удовлетворены результатами лечения, мы предлагаем бесплатный осмотр и услуги по уходу.",
+    [Language.Georgian]: "თუ თქვენ არ ხართ კმაყოფილი თქვენი მკურნალობის შედეგებით, ჩვენ გთავაზობთ უფასო შემოწმებას და მოვლის სერვისებს."
+  },
+  "packages.noCommitment": {
+    [Language.Turkish]: "Hiçbir taahhüt yok, sadece bilgi isteyin",
+    [Language.English]: "No commitment, just ask for info",
+    [Language.Russian]: "Никаких обязательств, просто запросите информацию",
+    [Language.Georgian]: "არანაირი ვალდებულება, უბრალოდ მოითხოვეთ ინფორმაცია"
+  },
   "countries.tr": {
     [Language.Turkish]: "Türkiye",
     [Language.English]: "Turkey",
