@@ -7,6 +7,111 @@ import { eq } from "drizzle-orm";
 export const getAllBlogPosts = async (req: Request, res: Response) => {
   try {
     const posts = await db.select().from(blogPosts).orderBy(blogPosts.createdAt);
+    
+    // Eğer veri yoksa, örnek blog yazıları oluştur ve döndür
+    if (posts.length === 0) {
+      const samplePosts = [
+        {
+          id: 1,
+          slug: "sac-ekimi-hakkinda-dogru-bilinen-yanlislar",
+          titleTR: "Saç Ekimi Hakkında Doğru Bilinen Yanlışlar",
+          titleEN: "Common Myths About Hair Transplantation",
+          titleRU: "Распространенные мифы о трансплантации волос",
+          titleKA: "საერთო მითები თმის გადანერგვის შესახებ",
+          summaryTR: "Saç ekimi hakkında yaygın olan yanlış bilgiler ve gerçekler. Bu makalede en sık duyulan mitleri çürütüyoruz.",
+          summaryEN: "Common misconceptions and facts about hair transplantation. In this article, we debunk the most frequently heard myths.",
+          summaryRU: "Распространенные заблуждения и факты о трансплантации волос. В этой статье мы опровергаем наиболее часто слышимые мифы.",
+          summaryKA: "გავრცელებული შეცდომები და ფაქტები თმის გადანერგვის შესახებ. ამ სტატიაში ჩვენ ვამსხვრევთ ყველაზე ხშირად გაგონილ მითებს.",
+          contentTR: "Saç ekimi hakkında doğru bilinen yanlışlar ve gerçekler",
+          contentEN: "Common myths about hair transplantation and facts",
+          contentRU: "Распространенные мифы о трансплантации волос и факты",
+          contentKA: "გავრცელებული მითები თმის გადანერგვის შესახებ და ფაქტები",
+          imageUrl: "/images/blog/hair-transplant-myths.jpg",
+          category: "Saç Ekimi",
+          tags: "saç ekimi, mitler, yanlış bilinenler",
+          author: "MyHair Clinic",
+          isFeatured: true,
+          isPublished: true,
+          metaTitleTR: "Saç Ekimi Hakkında Doğru Bilinen Yanlışlar | MyHair Clinic",
+          metaTitleEN: "Common Myths About Hair Transplantation | MyHair Clinic",
+          metaTitleRU: "Распространенные мифы о трансплантации волос | MyHair Clinic",
+          metaTitleKA: "საერთო მითები თმის გადანერგვის შესახებ | MyHair Clinic",
+          metaDescriptionTR: "Saç ekimi hakkında yaygın mitleri ve gerçekleri öğrenin. Doğru bildiğiniz yanlışlardan kurtulun.",
+          metaDescriptionEN: "Learn about common myths and facts about hair transplantation. Get rid of misconceptions you thought were true.",
+          metaDescriptionRU: "Узнайте о распространенных мифах и фактах о трансплантации волос. Избавьтесь от заблуждений, которые вы считали правдой.",
+          metaDescriptionKA: "შეისწავლეთ გავრცელებული მითები და ფაქტები თმის გადანერგვის შესახებ. მოიშორეთ შეცდომები, რომელთაც თქვენ სიმართლედ მიიჩნევდით.",
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          id: 2,
+          slug: "sac-dokulmesi-nedenleri-ve-cozumleri",
+          titleTR: "Saç Dökülmesi Nedenleri ve Çözümleri",
+          titleEN: "Hair Loss Causes and Solutions",
+          titleRU: "Причины выпадения волос и решения",
+          titleKA: "თმის ცვენის მიზეზები და გადაწყვეტილებები",
+          summaryTR: "Saç dökülmesinin yaygın nedenleri ve etkili çözümler hakkında kapsamlı bir rehber.",
+          summaryEN: "A comprehensive guide about common causes of hair loss and effective solutions.",
+          summaryRU: "Исчерпывающее руководство о распространенных причинах выпадения волос и эффективных решениях.",
+          summaryKA: "ამომწურავი სახელმძღვანელო თმის ცვენის გავრცელებულ მიზეზებზე და ეფექტურ გადაწყვეტილებებზე.",
+          contentTR: "Saç dökülmesi nedenleri ve çözümleri hakkında detaylı bilgi",
+          contentEN: "Detailed information about hair loss causes and solutions",
+          contentRU: "Подробная информация о причинах выпадения волос и решениях",
+          contentKA: "დეტალური ინფორმაცია თმის ცვენის მიზეზების და გადაწყვეტილებების შესახებ",
+          imageUrl: "/images/blog/hair-loss-causes.jpg",
+          category: "Saç Bakımı",
+          tags: "saç dökülmesi, saç bakımı, kellik",
+          author: "MyHair Clinic",
+          isFeatured: true,
+          isPublished: true,
+          metaTitleTR: "Saç Dökülmesi Nedenleri ve Çözümleri | MyHair Clinic",
+          metaTitleEN: "Hair Loss Causes and Solutions | MyHair Clinic",
+          metaTitleRU: "Причины выпадения волос и решения | MyHair Clinic",
+          metaTitleKA: "თმის ცვენის მიზეზები და გადაწყვეტილებები | MyHair Clinic",
+          metaDescriptionTR: "Saç dökülmesinin nedenleri, türleri ve etkili tedavi yöntemleri hakkında kapsamlı bilgi edinin.",
+          metaDescriptionEN: "Get comprehensive information about the causes, types, and effective treatment methods for hair loss.",
+          metaDescriptionRU: "Получите исчерпывающую информацию о причинах, типах и эффективных методах лечения выпадения волос.",
+          metaDescriptionKA: "მიიღეთ ამომწურავი ინფორმაცია თმის ცვენის მიზეზების, ტიპების და ეფექტური მკურნალობის მეთოდების შესახებ.",
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        {
+          id: 3,
+          slug: "sac-ekimi-sonrasi-bakim",
+          titleTR: "Saç Ekimi Sonrası Bakım: İlk Hafta Neler Yapmalısınız?",
+          titleEN: "Post-Hair Transplant Care: What Should You Do in the First Week?",
+          titleRU: "Уход после пересадки волос: что вы должны делать в первую неделю?",
+          titleKA: "თმის გადანერგვის შემდგომი მოვლა: რა უნდა გააკეთოთ პირველ კვირაში?",
+          summaryTR: "Saç ekimi sonrası ilk haftada dikkat edilmesi gerekenler ve önerilen bakım adımları.",
+          summaryEN: "Things to consider in the first week after hair transplantation and recommended care steps.",
+          summaryRU: "Что нужно учитывать в первую неделю после трансплантации волос и рекомендуемые шаги по уходу.",
+          summaryKA: "რა უნდა გაითვალისწინოთ თმის გადანერგვის შემდეგ პირველ კვირაში და რეკომენდებული მოვლის ნაბიჯები.",
+          contentTR: "Saç ekimi sonrası ilk haftada bakım önerileri",
+          contentEN: "Care recommendations in the first week after hair transplantation",
+          contentRU: "Рекомендации по уходу в первую неделю после трансплантации волос",
+          contentKA: "მოვლის რეკომენდაციები თმის გადანერგვის შემდეგ პირველ კვირაში",
+          imageUrl: "/images/blog/post-transplant-care.jpg",
+          category: "Saç Ekimi",
+          tags: "saç ekimi sonrası, bakım, tedavi",
+          author: "MyHair Clinic",
+          isFeatured: false,
+          isPublished: true,
+          metaTitleTR: "Saç Ekimi Sonrası Bakım: İlk Hafta Neler Yapmalısınız? | MyHair Clinic",
+          metaTitleEN: "Post-Hair Transplant Care: What Should You Do in the First Week? | MyHair Clinic",
+          metaTitleRU: "Уход после пересадки волос: что вы должны делать в первую неделю? | MyHair Clinic",
+          metaTitleKA: "თმის გადანერგვის შემდგომი მოვლა: რა უნდა გააკეთოთ პირველ კვირაში? | MyHair Clinic",
+          metaDescriptionTR: "Saç ekimi sonrası ilk haftada dikkat edilmesi gerekenler ve doğru bakım adımları hakkında uzman önerileri.",
+          metaDescriptionEN: "Expert recommendations on what to consider in the first week after hair transplantation and the right care steps.",
+          metaDescriptionRU: "Рекомендации экспертов о том, что следует учитывать в первую неделю после трансплантации волос, и правильные шаги по уходу.",
+          metaDescriptionKA: "ექსპერტთა რეკომენდაციები იმის შესახებ, თუ რა უნდა გაითვალისწინოთ თმის გადანერგვის შემდეგ პირველ კვირაში და სწორი მოვლის ნაბიჯები.",
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }
+      ];
+      
+      return res.status(200).json(samplePosts);
+    }
+    
     return res.status(200).json(posts);
   } catch (error) {
     console.error("Error fetching blog posts:", error);
