@@ -1,124 +1,143 @@
-import { useState } from 'react';
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Loader2, CheckCircle, XCircle, AlertCircle } from "lucide-react";
-import { apiRequest } from "@/lib/queryClient";
+import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "@/hooks/use-toast";
+import { useAdmin } from "@/hooks/use-admin";
+import { API_ROUTES } from "@/lib/constants";
 import AdminLayout from "@/components/admin/AdminLayout";
-import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Loader2, Package, Upload } from "lucide-react";
 
 export default function SeedProducts() {
+  const { user } = useAdmin();
+  const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
-  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const [result, setResult] = useState<any>(null);
 
-  const handleSeedProducts = async () => {
-    setIsLoading(true);
-    setStatus('idle');
-    setResult(null);
-
-    try {
-      const response = await apiRequest('POST', '/api/seed/vithair-products');
+  // Fetch existing products count
+  const { data: productsCount = 0 } = useQuery<number>({
+    queryKey: ["admin", "productsCount"],
+    queryFn: async () => {
+      const response = await fetch(`${API_ROUTES.PRODUCTS}/count`);
+      if (!response.ok) return 0;
       const data = await response.json();
-      
-      setResult(data);
-      setStatus('success');
-    } catch (error) {
-      console.error('Error seeding products:', error);
-      setResult(error);
-      setStatus('error');
-    } finally {
-      setIsLoading(false);
+      return data.count;
+    },
+    enabled: !!user,
+  });
+
+  // Mutation for seeding Vithair products
+  const seedVithairMutation = useMutation({
+    mutationFn: async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch('/api/seed/vithair-products', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Ürünler yüklenirken bir hata oluştu');
+        }
+        
+        const result = await response.json();
+        return result;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    onSuccess: () => {
+      toast({
+        title: "Başarılı",
+        description: "Vithair ürünleri başarıyla yüklendi",
+        variant: "default",
+      });
+      // Invalidate related queries to refresh products data
+      queryClient.invalidateQueries({ queryKey: [API_ROUTES.PRODUCTS] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "productsCount"] });
+    },
+    onError: (error) => {
+      toast({
+        title: "Hata",
+        description: `Ürünler yüklenirken bir hata oluştu: ${error.message}`,
+        variant: "destructive",
+      });
     }
+  });
+
+  const handleSeedVithairProducts = () => {
+    seedVithairMutation.mutate();
   };
 
   return (
-    <AdminLayout title="Vithair Ürünlerini Ekle">
-      <div className="p-6">
-        <h1 className="text-2xl font-bold mb-6">Vithair Ürünleri Ekleme Aracı</h1>
-        
-        <Card className="mb-6">
+    <AdminLayout title="Ürün Yönetimi">
+      <div className="space-y-6">
+        <Card>
           <CardHeader>
-            <CardTitle>Vithair Ürünlerini Ekle</CardTitle>
+            <CardTitle className="text-xl">Ürün Yükleme</CardTitle>
             <CardDescription>
-              Bu işlem vithair.com.tr sitesindeki ürünleri örnek olarak sisteme ekleyecektir. 
-              Mevcut ürünler silinir ve yenileri eklenir.
+              Bu sayfada Vithair ürünlerini sisteme yükleyebilirsiniz.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="mb-4">
-              Ekleme işlemi şu ürünleri içerir:
-            </p>
-            <ul className="list-disc pl-8 mb-4 space-y-1">
-              <li>Vie Saç Dökülmesine Karşı Şampuan</li>
-              <li>Vie Saç Hacim Şampuanı</li>
-              <li>Vie Keratin Saç Maskesi</li>
-              <li>Vie Saç Büyüme Serumu</li>
-              <li>Vie Sakal Büyüme Yağı</li>
-              <li>Vie Saç Derisi Terapi Losyonu</li>
-              <li>Vie Argan Saç Yağı</li>
-              <li>Vie Saç Onarıcı Saç Kremi</li>
-            </ul>
-          </CardContent>
-          <CardFooter>
-            <Button 
-              onClick={handleSeedProducts} 
-              disabled={isLoading}
-              className="w-full md:w-auto"
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  İşleniyor...
-                </>
-              ) : (
-                'Ürünleri Ekle'
-              )}
-            </Button>
-          </CardFooter>
-        </Card>
-
-        {status === 'success' && (
-          <Alert className="bg-green-50 border-green-500">
-            <CheckCircle className="h-5 w-5 text-green-600" />
-            <AlertTitle className="text-green-800">İşlem başarılı!</AlertTitle>
-            <AlertDescription className="text-green-700">
-              {result.message}
-            </AlertDescription>
-          </Alert>
-        )}
-
-        {status === 'error' && (
-          <Alert className="bg-red-50 border-red-500">
-            <XCircle className="h-5 w-5 text-red-600" />
-            <AlertTitle className="text-red-800">Hata oluştu!</AlertTitle>
-            <AlertDescription className="text-red-700">
-              Ürünler eklenirken bir hata meydana geldi. Lütfen tekrar deneyin veya sistem yöneticisine başvurun.
-            </AlertDescription>
-          </Alert>
-        )}
-
-        {result && status === 'success' && result.products && (
-          <div className="mt-6">
-            <h2 className="text-xl font-semibold mb-4">Eklenen Ürünler</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {result.products.map((product: any) => (
-                <Card key={product.id} className="overflow-hidden">
-                  <CardHeader className="p-4 pb-2">
-                    <CardTitle className="text-lg">{product.nameTR}</CardTitle>
-                    <CardDescription className="line-clamp-2">
-                      {product.descriptionTR}
+            <div className="flex flex-col space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card className="overflow-hidden">
+                  <CardHeader className="bg-primary/5 pb-4">
+                    <div className="flex justify-between items-center">
+                      <CardTitle className="text-lg">Vithair Ürünleri</CardTitle>
+                      <Package className="h-5 w-5 text-primary" />
+                    </div>
+                    <CardDescription>
+                      Vithair şampuan, bakım ve saç ürünleri
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="p-4 pt-0">
-                    <p className="text-sm text-muted-foreground">Ürün ID: {product.id}</p>
-                    <p className="text-sm text-muted-foreground">Slug: {product.slug}</p>
+                  <CardContent className="pt-6">
+                    <div className="flex flex-col space-y-4 items-center">
+                      <div className="text-center">
+                        <p className="text-md font-medium">Mevcut Ürün Sayısı: <span className="font-bold">{productsCount}</span></p>
+                        {productsCount > 0 && (
+                          <p className="text-sm text-muted-foreground mt-1">
+                            Ürünler zaten yüklenmiş görünüyor.
+                          </p>
+                        )}
+                      </div>
+                      <Button 
+                        onClick={handleSeedVithairProducts} 
+                        className="w-full"
+                        disabled={isLoading}
+                      >
+                        {isLoading ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Ürünler Yükleniyor...
+                          </>
+                        ) : (
+                          <>
+                            <Upload className="mr-2 h-4 w-4" />
+                            Ürünleri Yükle
+                          </>
+                        )}
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
-              ))}
+
+                <div className="bg-primary/5 rounded-lg p-6 flex flex-col justify-center">
+                  <h3 className="text-lg font-medium mb-4">Ürünler Hakkında Bilgi</h3>
+                  <ul className="list-disc pl-5 space-y-2 text-sm text-muted-foreground">
+                    <li>Vithair ürünleri, saç bakımı için özel olarak formüle edilmiş ürünlerdir.</li>
+                    <li>Ürünler arasında şampuanlar, saç maskeleri, saç büyüme serum ve yağları bulunmaktadır.</li>
+                    <li>Tüm ürünler Türkçe, İngilizce, Rusça ve Gürcüce dillerinde açıklamalara sahiptir.</li>
+                    <li>Bu özellik ile tüm ürünleri tek bir tıklama ile sisteme yükleyebilirsiniz.</li>
+                    <li>Ürünleri tekrar yüklemek önceki ürünleri silip yeniden ekleyecektir.</li>
+                  </ul>
+                </div>
+              </div>
             </div>
-          </div>
-        )}
+          </CardContent>
+        </Card>
       </div>
     </AdminLayout>
   );

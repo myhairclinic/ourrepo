@@ -80,6 +80,7 @@ export const ADMIN_PATHS = {
   TESTIMONIALS: "testimonials",
   FAQS: "faqs",
   PRODUCTS: "products",
+  SEED_PRODUCTS: "seed-products",
   AFTERCARE_GUIDES: "aftercare-guides",
   APPOINTMENTS: "appointments",
   MESSAGES: "messages",

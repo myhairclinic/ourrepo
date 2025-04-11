@@ -38,6 +38,7 @@ import GalleryManager from "@/pages/admin/GalleryManager";
 import AppointmentsManager from "@/pages/admin/AppointmentsManager";
 import PackagesManager from "@/pages/admin/PackagesManager";
 import ProductsManager from "@/pages/admin/ProductsManager";
+import SeedProducts from "@/pages/admin/SeedProducts";
 import ReviewsManager from "@/pages/admin/ReviewsManager";
 import FaqsManager from "@/pages/admin/FaqsManager";
 import AftercareGuidesManager from "@/pages/admin/AftercareGuidesManager";
