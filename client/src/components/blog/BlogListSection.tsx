@@ -108,9 +108,19 @@ export function BlogListSection({
         onValueChange={setActiveTab}
         className="w-full"
       >
-        <TabsList className="grid w-full grid-cols-2 max-w-[400px]">
-          <TabsTrigger value="latest">{t('blog.newest')}</TabsTrigger>
-          <TabsTrigger value="popular">{t('blog.mostPopular')}</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 max-w-[400px] bg-muted/50 p-1 rounded-lg shadow-sm">
+          <TabsTrigger 
+            value="latest" 
+            className="data-[state=active]:bg-background data-[state=active]:shadow-sm rounded-md transition-all"
+          >
+            {t('blog.newest')}
+          </TabsTrigger>
+          <TabsTrigger 
+            value="popular" 
+            className="data-[state=active]:bg-background data-[state=active]:shadow-sm rounded-md transition-all"
+          >
+            {t('blog.mostPopular')}
+          </TabsTrigger>
         </TabsList>
       </Tabs>
       
@@ -134,13 +144,14 @@ export function BlogListSection({
       
       {/* Sayfalama kontrolleri */}
       {totalPages > 1 && !isLoading && (
-        <div className="flex items-center justify-center gap-1 pt-8">
+        <div className="flex items-center justify-center gap-2 pt-10">
           <Button
             variant="outline"
             size="icon"
             onClick={goToPrevPage}
             disabled={currentPage === 1}
             aria-label="Previous page"
+            className="rounded-full h-9 w-9 hover:bg-muted/80 hover:text-primary transition-colors"
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
@@ -153,6 +164,7 @@ export function BlogListSection({
                   variant="ghost"
                   size="icon"
                   disabled
+                  className="rounded-full h-9 w-9"
                 >
                   ...
                 </Button>
@@ -167,6 +179,11 @@ export function BlogListSection({
                 onClick={() => goToPage(page)}
                 aria-label={`Page ${page}`}
                 aria-current={currentPage === page ? "page" : undefined}
+                className={`rounded-full h-9 w-9 ${
+                  currentPage === page 
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90" 
+                    : "hover:bg-muted/80 hover:text-primary transition-colors"
+                }`}
               >
                 {page}
               </Button>
@@ -179,6 +196,7 @@ export function BlogListSection({
             onClick={goToNextPage}
             disabled={currentPage === totalPages}
             aria-label="Next page"
+            className="rounded-full h-9 w-9 hover:bg-muted/80 hover:text-primary transition-colors"
           >
             <ChevronRight className="h-4 w-4" />
           </Button>

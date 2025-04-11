@@ -66,9 +66,9 @@ export function BlogPostCard({ post, formatDate, getCategoryName }: BlogPostCard
   const blogUrl = addPrefix(`/blog/${post.slug}`);
   
   return (
-    <Card className="group overflow-hidden transition-all duration-200 hover:shadow-md">
+    <Card className="group overflow-hidden transition-all duration-300 hover:shadow-lg border border-border/50 hover:border-primary/20 bg-card/50 hover:bg-card">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-0">
-        <div className="relative md:col-span-4 aspect-[16/9] md:aspect-auto">
+        <div className="relative md:col-span-5 aspect-[16/9] md:aspect-auto overflow-hidden">
           <div className="absolute inset-0 z-20">
             <Link href={blogUrl}>
               <span className="sr-only">{title}</span>
@@ -78,49 +78,57 @@ export function BlogPostCard({ post, formatDate, getCategoryName }: BlogPostCard
           <img 
             src={post.imageUrl || '/images/blog/default-blog.jpg'} 
             alt={title}
-            className="object-cover w-full h-full" 
+            className="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500" 
           />
           <div className="absolute top-4 left-4 z-10">
-            <Badge variant="secondary" className="bg-white/80 hover:bg-white/90 text-primary">
+            <Badge variant="secondary" className="bg-primary text-primary-foreground shadow-md hover:bg-primary/90">
               {getCategoryName(post.category)}
             </Badge>
           </div>
         </div>
         
-        <div className="md:col-span-8 p-6">
+        <div className="md:col-span-7 p-6">
           <CardHeader className="p-0 pb-4">
-            <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
-              <span className="flex items-center">
+            <div className="mb-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+              <span className="flex items-center bg-muted/50 px-2 py-1 rounded-full">
                 <Calendar className="h-3 w-3 mr-1" />
                 {formatDate(post.createdAt)}
               </span>
-              <span className="flex items-center">
+              <span className="flex items-center bg-muted/50 px-2 py-1 rounded-full">
                 <Clock className="h-3 w-3 mr-1" />
                 {post.readingTime} {t('blog.minutes')}
               </span>
-              <span className="flex items-center">
+              <span className="flex items-center bg-muted/50 px-2 py-1 rounded-full">
                 <Eye className="h-3 w-3 mr-1" />
                 {post.viewCount} {t('blog.views')}
               </span>
             </div>
-            <CardTitle className="text-xl">
+            <CardTitle className="text-xl font-bold">
               <Link href={blogUrl}>
-                <span className="hover:text-primary transition-colors">{title}</span>
+                <span className="hover:text-primary transition-colors line-clamp-2">{title}</span>
               </Link>
             </CardTitle>
           </CardHeader>
           
-          <CardContent className="p-0 pb-4">
-            <p className="text-muted-foreground line-clamp-3">{summary}</p>
+          <CardContent className="p-0 pb-5">
+            <p className="text-muted-foreground line-clamp-3 text-sm leading-relaxed">{summary}</p>
+            
+            <div className="mt-3 flex flex-wrap gap-2">
+              {post.tags.slice(0, 2).map((tag) => (
+                <Badge key={tag} variant="outline" className="text-xs bg-background">
+                  {tag}
+                </Badge>
+              ))}
+            </div>
           </CardContent>
           
           <CardFooter className="p-0 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Avatar className="h-8 w-8">
+              <Avatar className="h-8 w-8 ring-2 ring-background">
                 {post.authorAvatar ? (
                   <AvatarImage src={post.authorAvatar} alt={post.author} />
                 ) : null}
-                <AvatarFallback>{getInitials(post.author)}</AvatarFallback>
+                <AvatarFallback className="bg-primary/10 text-primary">{getInitials(post.author)}</AvatarFallback>
               </Avatar>
               <div>
                 <p className="text-sm font-medium leading-none">{post.author}</p>
@@ -131,11 +139,11 @@ export function BlogPostCard({ post, formatDate, getCategoryName }: BlogPostCard
             <Link href={blogUrl}>
               <Button
                 size="sm"
-                variant="ghost"
-                className="gap-1 text-primary group-hover:bg-primary/5"
+                variant="secondary"
+                className="gap-1 shadow-sm group-hover:bg-primary group-hover:text-primary-foreground"
               >
                 {t('common.readMore')}
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
           </CardFooter>

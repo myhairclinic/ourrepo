@@ -932,6 +932,18 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "просмотры",
     [Language.Georgian]: "ნახვები"
   },
+  "blog.newsletter": {
+    [Language.Turkish]: "Bültenimize Abone Olun",
+    [Language.English]: "Subscribe to Our Newsletter",
+    [Language.Russian]: "Подпишитесь на нашу рассылку",
+    [Language.Georgian]: "გამოიწერეთ ჩვენი საინფორმაციო ბიულეტენი"
+  },
+  "blog.newsletterDescription": {
+    [Language.Turkish]: "Saç sağlığı ipuçları ve klinik haberlerimiz için bültenimize abone olun",
+    [Language.English]: "Subscribe to our newsletter for hair health tips and clinic news",
+    [Language.Russian]: "Подпишитесь на нашу рассылку, чтобы получать советы по здоровью волос и новости клиники",
+    [Language.Georgian]: "გამოიწერეთ ჩვენი საინფორმაციო ბიულეტენი თმის ჯანმრთელობის რჩევებისა და კლინიკის სიახლეებისთვის"
+  },
   "common.readMore": {
     [Language.Turkish]: "Devamını Oku",
     [Language.English]: "Read More",
