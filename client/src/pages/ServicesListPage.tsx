@@ -333,10 +333,10 @@ export default function ServicesListPage() {
             </div>
             
             <h3 className="text-2xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
-              {t("services.needHelp")}
+              Yardıma mı İhtiyacınız Var?
             </h3>
             <p className="text-muted-foreground mb-6 text-lg">
-              {t("services.contactUs")}
+              Saç ekimi hakkında herhangi bir sorunuz varsa veya randevu almak istiyorsanız bizimle iletişime geçin.
             </p>
             <Link href={addPrefix("/contact")}>
               <Button className="px-8 py-6 text-base bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary shadow-lg hover:shadow-xl transition-all">
@@ -347,8 +347,28 @@ export default function ServicesListPage() {
         </div>
       </main>
       
+      {/* Decorative elements */}
+      <div className="fixed top-0 right-0 -z-10 overflow-hidden opacity-40">
+        <div className="animate-blob animation-delay-2000">
+          <div className="absolute top-0 -right-4 w-72 h-72 bg-primary/10 rounded-full blur-xl"></div>
+        </div>
+        <div className="animate-blob animation-delay-4000">
+          <div className="absolute top-40 -right-10 w-72 h-72 bg-primary/10 rounded-full blur-xl"></div>
+        </div>
+      </div>
+      
+      <div className="fixed bottom-0 left-0 -z-10 overflow-hidden opacity-40">
+        <div className="animate-blob">
+          <div className="absolute bottom-0 -left-4 w-72 h-72 bg-primary/10 rounded-full blur-xl"></div>
+        </div>
+        <div className="animate-blob animation-delay-2000">
+          <div className="absolute bottom-40 -left-10 w-72 h-72 bg-primary/10 rounded-full blur-xl"></div>
+        </div>
+      </div>
+      
       {/* Global CSS animations */}
-      <style jsx global>{`
+      <style dangerouslySetInnerHTML={{
+        __html: `
         @keyframes blob {
           0%, 100% {
             transform: scale(1) translate(0px, 0px);
@@ -388,7 +408,8 @@ export default function ServicesListPage() {
         .animation-delay-4000 {
           animation-delay: 4s;
         }
-      `}</style>
+        `
+      }} />
     </>
   );
 }
