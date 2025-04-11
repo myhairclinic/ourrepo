@@ -22,6 +22,7 @@ import { seedBlogPosts } from "./controllers/seedBlogController";
 import { seedExtendedBlogPosts } from "./controllers/extendedBlogSeedController";
 import { seedUniqueBlogPosts } from "./controllers/uniqueBlogSeedController";
 import { seedBlogDirectly } from "./controllers/seedBlogsDirectController";
+import { seedVithairProducts } from "./controllers/seedVithairProductsController";
 import * as adminControllers from "./controllers/adminControllers";
 import {
   getBlogPosts,
@@ -443,6 +444,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/seed/extended-blog", seedExtendedBlogPosts);
   app.post("/api/seed/unique-blog", seedUniqueBlogPosts);
   app.post("/api/seed/blog-direct", seedBlogDirectly);
+  app.post("/api/seed/vithair-products", seedVithairProducts);
   
   // Admin Dashboard API Routes
   app.get("/api/services/count", adminControllers.getServicesCount);

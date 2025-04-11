@@ -43,7 +43,7 @@ export default function ProductsPage() {
           <SectionTitle 
             title={t('products.title')}
             description={t('products.description')}
-            centered
+            center
           />
           
           {/* Featured Services as Products */}
