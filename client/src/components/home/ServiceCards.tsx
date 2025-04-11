@@ -306,7 +306,7 @@ export default function ServiceCards() {
       
       <div className="container mx-auto px-4 relative z-20">
         <div 
-          className={`flex flex-col items-center mb-20 transition-all duration-1000 ${
+          className={`flex flex-col items-center mb-12 transition-all duration-1000 ${
             isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}
         >
