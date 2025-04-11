@@ -111,7 +111,6 @@ const PackagesPage: React.FC = () => {
       <PageHeader 
         title={getPackageTranslation("packages.pageTitle", language)}
         description={getPackageTranslation("packages.pageDescription", language)}
-        imageUrl="/images/tbilisi-panorama.jpg"
       />
       
       {/* Colorful overlay with wave pattern after header */}

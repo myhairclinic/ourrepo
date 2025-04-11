@@ -15,7 +15,10 @@ export default function PageHeader({
   className,
 }: PageHeaderProps) {
   // Check if it's the packages page to apply special styling
-  const isPackagesPage = title.includes("Seyahat Paketleri") || title.includes("Travel Packages") || title.includes("Туристические Пакеты");
+  const isPackagesPage = title.includes("Seyahat Paketleri") || 
+                        title.includes("Travel Packages") || 
+                        title.includes("Пакеты Лечения") || 
+                        title.includes("მკურნალობისა");
   
   return (
     <div
