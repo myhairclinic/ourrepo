@@ -176,6 +176,86 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Georgian]: "პირველ კვირაში უნდა იყოთ ფრთხილად დაწოლისას, თავი აარიდოთ მარილისა და ალკოჰოლის მოხმარებას, არ მოწიოთ, დაიცვათ თავი პირდაპირი მზის სინათლისგან და გამოიყენოთ ექიმის მიერ რეკომენდებული მოვლის პროდუქტები."
   },
   
+  // Home Page Location Section
+  "home.location.title": {
+    [Language.Turkish]: "Kliniğimiz", 
+    [Language.English]: "Our Clinic",
+    [Language.Russian]: "Наша клиника",
+    [Language.Georgian]: "ჩვენი კლინიკა"
+  },
+  "home.location.description": {
+    [Language.Turkish]: "Tiflis'in merkezi konumunda modern tesisimiz", 
+    [Language.English]: "Our modern facility in central Tbilisi",
+    [Language.Russian]: "Наше современное учреждение в центре Тбилиси",
+    [Language.Georgian]: "ჩვენი თანამედროვე დაწესებულება თბილისის ცენტრში"
+  },
+  "home.location.contactInfo": {
+    [Language.Turkish]: "İletişim Bilgileri", 
+    [Language.English]: "Contact Information",
+    [Language.Russian]: "Контактная информация",
+    [Language.Georgian]: "საკონტაქტო ინფორმაცია"
+  },
+  "home.location.address": {
+    [Language.Turkish]: "Adres",
+    [Language.English]: "Address",
+    [Language.Russian]: "Адрес", 
+    [Language.Georgian]: "მისამართი"
+  },
+  "home.location.phone": {
+    [Language.Turkish]: "Telefon",
+    [Language.English]: "Phone",
+    [Language.Russian]: "Телефон",
+    [Language.Georgian]: "ტელეფონი"
+  },
+  "home.location.email": {
+    [Language.Turkish]: "E-posta",
+    [Language.English]: "Email",
+    [Language.Russian]: "Эл. почта",
+    [Language.Georgian]: "ელ.ფოსტა"
+  },
+  "home.location.workingHours": {
+    [Language.Turkish]: "Çalışma Saatleri",
+    [Language.English]: "Working Hours",
+    [Language.Russian]: "Часы работы",
+    [Language.Georgian]: "სამუშაო საათები"
+  },
+  "home.location.weekdaysLabel": {
+    [Language.Turkish]: "Pazartesi-Cuma",
+    [Language.English]: "Monday-Friday",
+    [Language.Russian]: "Понедельник-Пятница",
+    [Language.Georgian]: "ორშაბათი-პარასკევი"
+  },
+  "home.location.weekdays": {
+    [Language.Turkish]: "09:00 - 18:00",
+    [Language.English]: "09:00 - 18:00",
+    [Language.Russian]: "09:00 - 18:00",
+    [Language.Georgian]: "09:00 - 18:00"
+  },
+  "home.location.saturdayLabel": {
+    [Language.Turkish]: "Cumartesi",
+    [Language.English]: "Saturday",
+    [Language.Russian]: "Суббота",
+    [Language.Georgian]: "შაბათი"
+  },
+  "home.location.saturday": {
+    [Language.Turkish]: "10:00 - 16:00",
+    [Language.English]: "10:00 - 16:00",
+    [Language.Russian]: "10:00 - 16:00",
+    [Language.Georgian]: "10:00 - 16:00"
+  },
+  "home.location.sundayLabel": {
+    [Language.Turkish]: "Pazar",
+    [Language.English]: "Sunday",
+    [Language.Russian]: "Воскресенье",
+    [Language.Georgian]: "კვირა"
+  },
+  "home.location.sunday": {
+    [Language.Turkish]: "Kapalı",
+    [Language.English]: "Closed",
+    [Language.Russian]: "Закрыто",
+    [Language.Georgian]: "დახურულია"
+  },
+  
   // Gallery Page
   "gallery.pageTitle": {
     [Language.Turkish]: "Galeri",
@@ -2522,9 +2602,9 @@ export function getTranslation(
     }
     
     // Standard key-based lookup
-    if (translations[key]) {
+    if (translations[key as string]) {
       // Get the translated text
-      let translatedText = translations[key][language] || translations[key][Language.English] || key;
+      let translatedText = translations[key as string][language] || translations[key as string][Language.English] || key;
       
       // Apply replacements if any
       if (replacements) {
