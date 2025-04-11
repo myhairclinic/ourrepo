@@ -55,6 +55,18 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Отправить",
     [Language.Georgian]: "გაგზავნა"
   },
+  "common.followUs": {
+    [Language.Turkish]: "Bizi Takip Edin",
+    [Language.English]: "Follow Us",
+    [Language.Russian]: "Подписывайтесь на нас",
+    [Language.Georgian]: "გამოგვყევით"
+  },
+  "common.socialMediaDesc": {
+    [Language.Turkish]: "Sosyal medya hesaplarımızdan son gelişmeleri takip edin ve bizimle iletişimde kalın.",
+    [Language.English]: "Follow our social media accounts for latest updates and stay in touch with us.",
+    [Language.Russian]: "Следите за последними обновлениями в наших социальных сетях и оставайтесь на связи с нами.",
+    [Language.Georgian]: "გამოიწერეთ ჩვენი სოციალური მედიის ანგარიშები უახლესი განახლებებისთვის და დარჩით კავშირზე ჩვენთან."
+  },
   // Contact Page
   "contact.whatsappMessage": {
     [Language.Turkish]: "Web sitesinden geldim",
@@ -1644,11 +1656,23 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Страна происхождения",
     [Language.Georgian]: "წარმოშობის ქვეყანა"
   },
+  "countries.turkey": {
+    [Language.Turkish]: "Türkiye",
+    [Language.English]: "Turkey",
+    [Language.Russian]: "Турция",
+    [Language.Georgian]: "თურქეთი"
+  },
   "countries.tr": {
     [Language.Turkish]: "Türkiye",
     [Language.English]: "Turkey",
     [Language.Russian]: "Турция",
     [Language.Georgian]: "თურქეთი"
+  },
+  "countries.russia": {
+    [Language.Turkish]: "Rusya",
+    [Language.English]: "Russia",
+    [Language.Russian]: "Россия",
+    [Language.Georgian]: "რუსეთი"
   },
   "countries.ru": {
     [Language.Turkish]: "Rusya",

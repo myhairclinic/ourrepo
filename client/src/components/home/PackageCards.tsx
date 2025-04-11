@@ -497,6 +497,55 @@ export function PackageCards() {
              style={{ transitionDelay: '600ms' }}>
           <div className="h-px w-full bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
         </div>
+        
+        {/* Sosyal medya alanı */}
+        <div className={`mt-16 mb-8 text-center transition-all duration-1000 ${
+          isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        }`}
+             style={{ transitionDelay: '700ms' }}>
+          <h3 className="text-xl font-semibold mb-3 text-foreground/90">
+            {t("common.followUs")}
+          </h3>
+          <p className="text-foreground/60 text-base font-light mb-6 max-w-md mx-auto">
+            {t("common.socialMediaDesc")}
+          </p>
+          
+          <div className="flex justify-center gap-6">
+            <a href="https://instagram.com/myhairtbilisi" target="_blank" rel="noopener noreferrer" 
+               className="flex items-center justify-center h-12 w-12 rounded-full bg-white shadow-md hover:shadow-lg transition-all transform hover:scale-110 border border-primary/10">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-primary">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+            
+            <a href="https://facebook.com/myhairtbilisi" target="_blank" rel="noopener noreferrer" 
+               className="flex items-center justify-center h-12 w-12 rounded-full bg-white shadow-md hover:shadow-lg transition-all transform hover:scale-110 border border-primary/10">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-primary">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+              </svg>
+            </a>
+            
+            <a href="https://tiktok.com/@myhairtbilisi" target="_blank" rel="noopener noreferrer" 
+               className="flex items-center justify-center h-12 w-12 rounded-full bg-white shadow-md hover:shadow-lg transition-all transform hover:scale-110 border border-primary/10">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-primary">
+                <path d="M9 12a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"></path>
+                <path d="M15 8a4 4 0 1 0 0 8"></path>
+                <path d="M15 5c-.18-.19-.36-.36-.53-.53a3.8 3.8 0 0 1-1.13-2.15A3.5 3.5 0 0 1 13.5 1"></path>
+                <path d="M14.5 23c.28-.1.54-.22.78-.38.76-.5 1.16-1.35 1.21-2.73.003-1.14.003-2.04 0-2.7"></path>
+                <path d="M16.5 8.5c1.92.13 3.41 1.23 5.3 3.27-1.4 2.34-4.35 8.9-7.8 9.97 0 0 0-6.3.03-10.82"></path>
+              </svg>
+            </a>
+            
+            <a href="https://wa.me/995555003044" target="_blank" rel="noopener noreferrer" 
+               className="flex items-center justify-center h-12 w-12 rounded-full bg-white shadow-md hover:shadow-lg transition-all transform hover:scale-110 border border-primary/10">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-primary">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );
