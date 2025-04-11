@@ -458,6 +458,116 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "100% гарантия удовлетворения",
     [Language.Georgian]: "100% კმაყოფილების გარანტია"
   },
+  // Blog sayfası çevirileri
+  "blog.title": {
+    [Language.Turkish]: "Saç Ekimi Blogu | Uzman Makaleler ve Başarı Hikayeleri",
+    [Language.English]: "Hair Transplant Blog | Expert Articles and Success Stories",
+    [Language.Russian]: "Блог о трансплантации волос | Экспертные статьи и истории успеха",
+    [Language.Georgian]: "თმის გადანერგვის ბლოგი | ექსპერტული სტატიები და წარმატების ისტორიები"
+  },
+  "blog.description": {
+    [Language.Turkish]: "Saç ekimi, saç dökülmesi tedavileri ve saç bakımı hakkında uzman makaleler ve gerçek başarı hikayeleri.",
+    [Language.English]: "Expert articles and real success stories about hair transplantation, hair loss treatments, and hair care.",
+    [Language.Russian]: "Экспертные статьи и реальные истории успеха о трансплантации волос, лечении выпадения волос и уходе за волосами.",
+    [Language.Georgian]: "ექსპერტული სტატიები და რეალური წარმატების ისტორიები თმის გადანერგვის, თმის ცვენის მკურნალობისა და თმის მოვლის შესახებ."
+  },
+  "blog.allCategories": {
+    [Language.Turkish]: "Tüm Kategoriler",
+    [Language.English]: "All Categories",
+    [Language.Russian]: "Все категории",
+    [Language.Georgian]: "ყველა კატეგორია"
+  },
+  "blog.noPosts": {
+    [Language.Turkish]: "Henüz blog yazısı bulunmamaktadır.",
+    [Language.English]: "No blog posts available yet.",
+    [Language.Russian]: "Записей в блоге пока нет.",
+    [Language.Georgian]: "ბლოგის პოსტები ჯერ არ არის ხელმისაწვდომი."
+  },
+  "blog.popularPosts": {
+    [Language.Turkish]: "Popüler Yazılar",
+    [Language.English]: "Popular Posts",
+    [Language.Russian]: "Популярные статьи",
+    [Language.Georgian]: "პოპულარული პოსტები"
+  },
+  "blog.recentPosts": {
+    [Language.Turkish]: "Son Yazılar",
+    [Language.English]: "Recent Posts",
+    [Language.Russian]: "Последние статьи",
+    [Language.Georgian]: "ბოლო პოსტები"
+  },
+  "blog.searchPosts": {
+    [Language.Turkish]: "Blog Yazılarında Ara",
+    [Language.English]: "Search Blog Posts",
+    [Language.Russian]: "Поиск в блоге",
+    [Language.Georgian]: "ბლოგის პოსტების ძიება"
+  },
+  "blog.readingTime": {
+    [Language.Turkish]: "Okuma Süresi",
+    [Language.English]: "Reading Time",
+    [Language.Russian]: "Время чтения",
+    [Language.Georgian]: "კითხვის დრო"
+  },
+  "blog.minutes": {
+    [Language.Turkish]: "dakika",
+    [Language.English]: "minutes",
+    [Language.Russian]: "минут",
+    [Language.Georgian]: "წუთი"
+  },
+  "blog.relatedArticles": {
+    [Language.Turkish]: "İlgili Makaleler",
+    [Language.English]: "Related Articles",
+    [Language.Russian]: "Похожие статьи",
+    [Language.Georgian]: "დაკავშირებული სტატიები"
+  },
+  "blog.shareThis": {
+    [Language.Turkish]: "Paylaş",
+    [Language.English]: "Share This",
+    [Language.Russian]: "Поделиться",
+    [Language.Georgian]: "გაზიარება"
+  },
+  "blog.authorInfo": {
+    [Language.Turkish]: "Yazar Hakkında",
+    [Language.English]: "About the Author",
+    [Language.Russian]: "Об авторе",
+    [Language.Georgian]: "ავტორის შესახებ"
+  },
+  "blog.categoriesTitle": {
+    [Language.Turkish]: "Kategoriler",
+    [Language.English]: "Categories",
+    [Language.Russian]: "Категории",
+    [Language.Georgian]: "კატეგორიები"
+  },
+  "blog.tagsTitle": {
+    [Language.Turkish]: "Etiketler",
+    [Language.English]: "Tags",
+    [Language.Russian]: "Теги",
+    [Language.Georgian]: "ტეგები"
+  },
+  "blog.subscribeTitle": {
+    [Language.Turkish]: "Blog Haberlerine Abone Olun",
+    [Language.English]: "Subscribe to Blog Updates",
+    [Language.Russian]: "Подпишитесь на обновления блога",
+    [Language.Georgian]: "გამოიწერეთ ბლოგის განახლებები"
+  },
+  "blog.subscribeDescription": {
+    [Language.Turkish]: "En son saç ekimi makaleleri ve haberlerini e-posta adresinize alın.",
+    [Language.English]: "Get the latest hair transplant articles and news delivered to your inbox.",
+    [Language.Russian]: "Получайте последние статьи и новости о трансплантации волос на свою электронную почту.",
+    [Language.Georgian]: "მიიღეთ უახლესი თმის გადანერგვის სტატიები და სიახლეები თქვენს ინბოქსში."
+  },
+  "blog.emailAddress": {
+    [Language.Turkish]: "E-posta Adresiniz",
+    [Language.English]: "Your Email Address",
+    [Language.Russian]: "Ваш электронный адрес",
+    [Language.Georgian]: "თქვენი ელ-ფოსტის მისამართი"
+  },
+  "blog.subscribe": {
+    [Language.Turkish]: "Abone Ol",
+    [Language.English]: "Subscribe",
+    [Language.Russian]: "Подписаться",
+    [Language.Georgian]: "გამოწერა"
+  },
+  
   // Common
   "common.home": {
     [Language.Turkish]: "Ana Sayfa",
