@@ -1754,6 +1754,56 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Наши услуги по трансплантации волос и эстетике",
     [Language.Georgian]: "ჩვენი თმის გადანერგვისა და ესთეტიკური სერვისები"
   },
+  
+  // Paketler Bölümü
+  "packages.title": {
+    [Language.Turkish]: "Özel Paketlerimiz",
+    [Language.English]: "Our Special Packages",
+    [Language.Russian]: "Наши специальные пакеты",
+    [Language.Georgian]: "ჩვენი სპეციალური პაკეტები"
+  },
+  "packages.subtitle": {
+    [Language.Turkish]: "Konaklamadan ulaşıma ve tedavinize kadar her şeyi içeren özel paketlerimiz ile Tiflis'teki saç ekimi deneyiminizi sorunsuz hale getiriyoruz.",
+    [Language.English]: "We make your hair transplant experience in Tbilisi seamless with our special packages that include everything from accommodation to transportation and your treatment.",
+    [Language.Russian]: "Мы делаем вашу процедуру трансплантации волос в Тбилиси беспроблемной с нашими специальными пакетами, которые включают все: от проживания до транспорта и лечения.",
+    [Language.Georgian]: "ჩვენ ვხდით თქვენს თმის გადანერგვის გამოცდილებას თბილისში უპრობლემოს ჩვენი სპეციალური პაკეტებით, რომლებიც მოიცავს ყველაფერს, დაწყებული საცხოვრებლით, ტრანსპორტირებით და მკურნალობით."
+  },
+  "packages.tagline": {
+    [Language.Turkish]: "Her şey dahil paketler",
+    [Language.English]: "All-inclusive packages",
+    [Language.Russian]: "Пакеты \"все включено\"",
+    [Language.Georgian]: "ყველაფრის ჩათვლით პაკეტები"
+  },
+  "packages.badge": {
+    [Language.Turkish]: "Paket",
+    [Language.English]: "Package",
+    [Language.Russian]: "Пакет",
+    [Language.Georgian]: "პაკეტი"
+  },
+  "packages.allInclusive": {
+    [Language.Turkish]: "Her Şey Dahil",
+    [Language.English]: "All Inclusive",
+    [Language.Russian]: "Все включено",
+    [Language.Georgian]: "ყველაფერი ჩათვლით"
+  },
+  "packages.days": {
+    [Language.Turkish]: "Gün",
+    [Language.English]: "Days",
+    [Language.Russian]: "Дней",
+    [Language.Georgian]: "დღეები"
+  },
+  "packages.forPerson": {
+    [Language.Turkish]: "Kişi Başına",
+    [Language.English]: "Per Person",
+    [Language.Russian]: "На человека",
+    [Language.Georgian]: "ერთ პირზე"
+  },
+  "packages.details": {
+    [Language.Turkish]: "Detayları Görüntüle",
+    [Language.English]: "View Details",
+    [Language.Russian]: "Посмотреть детали",
+    [Language.Georgian]: "დეტალების ნახვა"
+  },
   "services.bookAppointment": {
     [Language.Turkish]: "Randevu Al",
     [Language.English]: "Book Appointment",
