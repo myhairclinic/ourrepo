@@ -55,7 +55,9 @@ import {
   ArrowRight,
   Filter,
   SortAsc,
-  SortDesc
+  SortDesc,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 
 // Örnek blog etiketleri
@@ -117,6 +119,8 @@ export default function BlogPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeSort, setActiveSort] = useState<'date-desc' | 'date-asc' | 'popular'>('date-desc');
   const [activeTab, setActiveTab] = useState('latest');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   
   // URL'den kategori parametresi varsa seçili kategoriyi ayarla
   useEffect(() => {
@@ -126,10 +130,6 @@ export default function BlogPage() {
       setSelectedCategory(category);
     }
   }, [location]);
-  
-  // Paginated blog posts state
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   
   // Sayfalama sorgusu
   const { 
@@ -180,7 +180,7 @@ export default function BlogPage() {
   
   // API'dan gelen veriler  
   const blogPosts = paginatedData?.posts || [];
-  const totalPostsCount = paginatedData?.totalPosts || 0;
+  const totalPostCount = paginatedData?.totalPosts || 0;
   
   // Sayfalama bilgilerini güncelle
   useEffect(() => {
@@ -212,10 +212,8 @@ export default function BlogPage() {
   
   // Eşsiz kategorileri al
   const categoriesSet = new Set<string>();
-  categoriesData?.forEach(post => categoriesSet.add(post.category));
+  categoriesData?.forEach((post) => categoriesSet.add(post.category));
   const categories = Array.from(categoriesSet);
-  
-
   
   // Tarih formatı
   const formatDate = (date: string) => {
@@ -276,6 +274,66 @@ export default function BlogPage() {
       default:
         return category;
     }
+  };
+  
+  // Sayfalama fonksiyonları
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+  
+  const goToPrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+  
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+  
+  // Generate pagination array
+  const getPaginationArray = () => {
+    const paginationArray = [];
+    const maxPagesToShow = 5; // Max sayfa sayısı görüntüsü
+    
+    if (totalPages <= maxPagesToShow) {
+      // Toplam sayfa sayısı az ise tüm sayfaları göster
+      for (let i = 1; i <= totalPages; i++) {
+        paginationArray.push(i);
+      }
+    } else {
+      // Sayfa sayısı çok ise akıllı sayfalama gösterimi
+      if (currentPage <= 3) {
+        // İlk sayfalar
+        for (let i = 1; i <= 4; i++) {
+          paginationArray.push(i);
+        }
+        paginationArray.push('...');
+        paginationArray.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        // Son sayfalar
+        paginationArray.push(1);
+        paginationArray.push('...');
+        for (let i = totalPages - 3; i <= totalPages; i++) {
+          paginationArray.push(i);
+        }
+      } else {
+        // Orta sayfalar
+        paginationArray.push(1);
+        paginationArray.push('...');
+        paginationArray.push(currentPage - 1);
+        paginationArray.push(currentPage);
+        paginationArray.push(currentPage + 1);
+        paginationArray.push('...');
+        paginationArray.push(totalPages);
+      }
+    }
+    
+    return paginationArray;
   };
   
   return (
@@ -411,75 +469,117 @@ export default function BlogPage() {
                 </TabsTrigger>
               </TabsList>
               
-              {/* İçerik tüm tablar için aynı, sadece sıralama değişiyor */}
               <TabsContent value="latest" className="mt-0">
                 {/* Blog Posts Grid */}
                 {isLoading ? (
                   <div className="flex justify-center items-center min-h-[400px]">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
                   </div>
-                ) : filteredPosts && filteredPosts.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {filteredPosts.map((post) => (
-                      <Card key={post.id} className="overflow-hidden h-full group hover:shadow-md transition-shadow duration-300">
-                        <Link href={addPrefix(`/blog/${post.slug}`)}>
-                          <div className="relative h-52 overflow-hidden">
-                            <img 
-                              src={post.imageUrl} 
-                              alt={post[`title${language.toUpperCase()}` as keyof BlogPost] as string} 
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            />
-                            <Badge className="absolute top-3 right-3 bg-primary/80 backdrop-blur-sm hover:bg-primary">
-                              {getCategoryName(post.category)}
-                            </Badge>
-                          </div>
-                        </Link>
-                        
-                        <CardContent className="p-5">
-                          <div className="flex items-center text-xs text-muted-foreground gap-4 mb-3">
-                            <div className="flex items-center">
-                              <Calendar className="h-3 w-3 mr-1" />
-                              {formatDate(post.createdAt)}
-                            </div>
-                            <div className="flex items-center">
-                              <Clock className="h-3 w-3 mr-1" />
-                              {post.readingTime} {t('blog.minutes')}
-                            </div>
-                          </div>
-                          
+                ) : blogPosts && blogPosts.length > 0 ? (
+                  <>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {blogPosts.map((post) => (
+                        <Card key={post.id} className="overflow-hidden h-full group hover:shadow-md transition-shadow duration-300">
                           <Link href={addPrefix(`/blog/${post.slug}`)}>
-                            <h3 className="text-xl font-semibold mb-3 leading-tight group-hover:text-primary transition-colors">
-                              {post[`title${language.toUpperCase()}` as keyof BlogPost] as string}
-                            </h3>
-                          </Link>
-                          
-                          <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                            {post[`summary${language.toUpperCase()}` as keyof BlogPost] as string}
-                          </p>
-                        </CardContent>
-                        
-                        <CardFooter className="pt-0 px-5 pb-5 flex justify-between items-center">
-                          <div className="flex items-center gap-2">
-                            {post.authorAvatar && (
+                            <div className="relative h-52 overflow-hidden">
                               <img 
-                                src={post.authorAvatar} 
-                                alt={post.author}
-                                className="w-8 h-8 rounded-full" 
+                                src={post.imageUrl} 
+                                alt={post[`title${language.toUpperCase()}` as keyof BlogPost] as string} 
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                               />
-                            )}
-                            <span className="text-sm font-medium">{post.author}</span>
-                          </div>
-                          
-                          <Link href={addPrefix(`/blog/${post.slug}`)}>
-                            <Button variant="ghost" size="sm" className="group/button flex items-center gap-1 text-primary hover:text-primary">
-                              {t('common.readMore')}
-                              <ArrowRight className="h-3.5 w-3.5 group-hover/button:translate-x-1 transition-transform" />
-                            </Button>
+                              <Badge className="absolute top-3 right-3 bg-primary/80 backdrop-blur-sm hover:bg-primary">
+                                {getCategoryName(post.category)}
+                              </Badge>
+                            </div>
                           </Link>
-                        </CardFooter>
-                      </Card>
-                    ))}
-                  </div>
+                          
+                          <CardContent className="p-5">
+                            <div className="flex items-center text-xs text-muted-foreground gap-4 mb-3">
+                              <div className="flex items-center">
+                                <Calendar className="h-3 w-3 mr-1" />
+                                {formatDate(post.createdAt)}
+                              </div>
+                              <div className="flex items-center">
+                                <Clock className="h-3 w-3 mr-1" />
+                                {post.readingTime} {t('blog.minutes')}
+                              </div>
+                            </div>
+                            
+                            <Link href={addPrefix(`/blog/${post.slug}`)}>
+                              <h3 className="text-xl font-semibold mb-3 leading-tight group-hover:text-primary transition-colors">
+                                {post[`title${language.toUpperCase()}` as keyof BlogPost] as string}
+                              </h3>
+                            </Link>
+                            
+                            <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                              {post[`summary${language.toUpperCase()}` as keyof BlogPost] as string}
+                            </p>
+                          </CardContent>
+                          
+                          <CardFooter className="pt-0 px-5 pb-5 flex justify-between items-center">
+                            <div className="flex items-center gap-2">
+                              {post.authorAvatar && (
+                                <img 
+                                  src={post.authorAvatar} 
+                                  alt={post.author}
+                                  className="w-8 h-8 rounded-full" 
+                                />
+                              )}
+                              <span className="text-sm font-medium">{post.author}</span>
+                            </div>
+                            
+                            <Link href={addPrefix(`/blog/${post.slug}`)}>
+                              <Button variant="ghost" size="sm" className="group/button flex items-center gap-1 text-primary hover:text-primary">
+                                {t('common.readMore')}
+                                <ArrowRight className="h-3.5 w-3.5 group-hover/button:translate-x-1 transition-transform" />
+                              </Button>
+                            </Link>
+                          </CardFooter>
+                        </Card>
+                      ))}
+                    </div>
+                    
+                    {/* Pagination */}
+                    {totalPages > 1 && (
+                      <div className="flex justify-center items-center mt-10 gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={goToPrevPage}
+                          disabled={currentPage === 1}
+                          className="flex items-center px-2.5 h-8"
+                        >
+                          <ChevronLeft className="h-4 w-4" />
+                        </Button>
+                        
+                        {getPaginationArray().map((page, index) => (
+                          page === '...' ? (
+                            <span key={`ellipsis-${index}`} className="px-2">...</span>
+                          ) : (
+                            <Button
+                              key={`page-${page}`}
+                              variant={currentPage === page ? "default" : "outline"}
+                              size="sm"
+                              onClick={() => goToPage(page as number)}
+                              className="w-8 h-8 p-0"
+                            >
+                              {page}
+                            </Button>
+                          )
+                        ))}
+                        
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={goToNextPage}
+                          disabled={currentPage === totalPages}
+                          className="flex items-center px-2.5 h-8"
+                        >
+                          <ChevronRight className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
+                  </>
                 ) : (
                   <div className="text-center py-12 border rounded-lg bg-muted/20">
                     <p className="text-muted-foreground">{t('blog.noPosts')}</p>
@@ -488,73 +588,116 @@ export default function BlogPage() {
               </TabsContent>
               
               <TabsContent value="popular" className="mt-0">
-                {/* Blog Posts Grid */}
+                {/* Blog Posts Grid - aynı içerik, sadece sıralama farklı */}
                 {isLoading ? (
                   <div className="flex justify-center items-center min-h-[400px]">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
                   </div>
-                ) : filteredPosts && filteredPosts.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {filteredPosts.map((post) => (
-                      <Card key={post.id} className="overflow-hidden h-full group hover:shadow-md transition-shadow duration-300">
-                        <Link href={addPrefix(`/blog/${post.slug}`)}>
-                          <div className="relative h-52 overflow-hidden">
-                            <img 
-                              src={post.imageUrl} 
-                              alt={post[`title${language.toUpperCase()}` as keyof BlogPost] as string} 
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            />
-                            <Badge className="absolute top-3 right-3 bg-primary/80 backdrop-blur-sm hover:bg-primary">
-                              {getCategoryName(post.category)}
-                            </Badge>
-                          </div>
-                        </Link>
-                        
-                        <CardContent className="p-5">
-                          <div className="flex items-center text-xs text-muted-foreground gap-4 mb-3">
-                            <div className="flex items-center">
-                              <Calendar className="h-3 w-3 mr-1" />
-                              {formatDate(post.createdAt)}
-                            </div>
-                            <div className="flex items-center">
-                              <Clock className="h-3 w-3 mr-1" />
-                              {post.readingTime} {t('blog.minutes')}
-                            </div>
-                          </div>
-                          
+                ) : blogPosts && blogPosts.length > 0 ? (
+                  <>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {blogPosts.map((post) => (
+                        <Card key={post.id} className="overflow-hidden h-full group hover:shadow-md transition-shadow duration-300">
                           <Link href={addPrefix(`/blog/${post.slug}`)}>
-                            <h3 className="text-xl font-semibold mb-3 leading-tight group-hover:text-primary transition-colors">
-                              {post[`title${language.toUpperCase()}` as keyof BlogPost] as string}
-                            </h3>
-                          </Link>
-                          
-                          <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                            {post[`summary${language.toUpperCase()}` as keyof BlogPost] as string}
-                          </p>
-                        </CardContent>
-                        
-                        <CardFooter className="pt-0 px-5 pb-5 flex justify-between items-center">
-                          <div className="flex items-center gap-2">
-                            {post.authorAvatar && (
+                            <div className="relative h-52 overflow-hidden">
                               <img 
-                                src={post.authorAvatar} 
-                                alt={post.author}
-                                className="w-8 h-8 rounded-full" 
+                                src={post.imageUrl} 
+                                alt={post[`title${language.toUpperCase()}` as keyof BlogPost] as string} 
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                               />
-                            )}
-                            <span className="text-sm font-medium">{post.author}</span>
-                          </div>
-                          
-                          <Link href={addPrefix(`/blog/${post.slug}`)}>
-                            <Button variant="ghost" size="sm" className="group/button flex items-center gap-1 text-primary hover:text-primary">
-                              {t('common.readMore')}
-                              <ArrowRight className="h-3.5 w-3.5 group-hover/button:translate-x-1 transition-transform" />
-                            </Button>
+                              <Badge className="absolute top-3 right-3 bg-primary/80 backdrop-blur-sm hover:bg-primary">
+                                {getCategoryName(post.category)}
+                              </Badge>
+                            </div>
                           </Link>
-                        </CardFooter>
-                      </Card>
-                    ))}
-                  </div>
+                          
+                          <CardContent className="p-5">
+                            <div className="flex items-center text-xs text-muted-foreground gap-4 mb-3">
+                              <div className="flex items-center">
+                                <Calendar className="h-3 w-3 mr-1" />
+                                {formatDate(post.createdAt)}
+                              </div>
+                              <div className="flex items-center">
+                                <Clock className="h-3 w-3 mr-1" />
+                                {post.readingTime} {t('blog.minutes')}
+                              </div>
+                            </div>
+                            
+                            <Link href={addPrefix(`/blog/${post.slug}`)}>
+                              <h3 className="text-xl font-semibold mb-3 leading-tight group-hover:text-primary transition-colors">
+                                {post[`title${language.toUpperCase()}` as keyof BlogPost] as string}
+                              </h3>
+                            </Link>
+                            
+                            <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+                              {post[`summary${language.toUpperCase()}` as keyof BlogPost] as string}
+                            </p>
+                          </CardContent>
+                          
+                          <CardFooter className="pt-0 px-5 pb-5 flex justify-between items-center">
+                            <div className="flex items-center gap-2">
+                              {post.authorAvatar && (
+                                <img 
+                                  src={post.authorAvatar} 
+                                  alt={post.author}
+                                  className="w-8 h-8 rounded-full" 
+                                />
+                              )}
+                              <span className="text-sm font-medium">{post.author}</span>
+                            </div>
+                            
+                            <Link href={addPrefix(`/blog/${post.slug}`)}>
+                              <Button variant="ghost" size="sm" className="group/button flex items-center gap-1 text-primary hover:text-primary">
+                                {t('common.readMore')}
+                                <ArrowRight className="h-3.5 w-3.5 group-hover/button:translate-x-1 transition-transform" />
+                              </Button>
+                            </Link>
+                          </CardFooter>
+                        </Card>
+                      ))}
+                    </div>
+                    
+                    {/* Pagination */}
+                    {totalPages > 1 && (
+                      <div className="flex justify-center items-center mt-10 gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={goToPrevPage}
+                          disabled={currentPage === 1}
+                          className="flex items-center px-2.5 h-8"
+                        >
+                          <ChevronLeft className="h-4 w-4" />
+                        </Button>
+                        
+                        {getPaginationArray().map((page, index) => (
+                          page === '...' ? (
+                            <span key={`ellipsis-${index}`} className="px-2">...</span>
+                          ) : (
+                            <Button
+                              key={`page-${page}`}
+                              variant={currentPage === page ? "default" : "outline"}
+                              size="sm"
+                              onClick={() => goToPage(page as number)}
+                              className="w-8 h-8 p-0"
+                            >
+                              {page}
+                            </Button>
+                          )
+                        ))}
+                        
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={goToNextPage}
+                          disabled={currentPage === totalPages}
+                          className="flex items-center px-2.5 h-8"
+                        >
+                          <ChevronRight className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
+                  </>
                 ) : (
                   <div className="text-center py-12 border rounded-lg bg-muted/20">
                     <p className="text-muted-foreground">{t('blog.noPosts')}</p>
@@ -564,106 +707,103 @@ export default function BlogPage() {
             </Tabs>
           </div>
           
-          {/* Yan panel (Sidebar) */}
-          <div className="lg:col-span-4 space-y-8">
-            {/* Abone ol kutusu */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle>{t('blog.subscribeTitle')}</CardTitle>
-                <CardDescription>{t('blog.subscribeDescription')}</CardDescription>
-              </CardHeader>
-              <CardContent className="pb-3 space-y-3">
-                <Input placeholder={t('blog.emailAddress')} type="email" />
-                <Button className="w-full">{t('blog.subscribe')}</Button>
-              </CardContent>
-            </Card>
-            
-            {/* Kategoriler */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle>{t('blog.categoriesTitle')}</CardTitle>
-              </CardHeader>
-              <CardContent className="pb-3">
-                <div className="space-y-2">
-                  {categories.map((category) => (
-                    <div key={category} className="flex justify-between items-center pb-2 border-b border-muted last:border-0">
-                      <Button 
-                        variant="link" 
-                        className="p-0 justify-start h-auto text-base font-normal hover:underline hover:text-primary"
-                        onClick={() => setSelectedCategory(category)}
-                      >
-                        {getCategoryName(category)}
-                      </Button>
-                      <Badge variant="outline">
-                        {allBlogPosts?.filter(post => post.category === category).length || 0}
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-            
-            {/* Popüler etiketler */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle>{t('blog.tagsTitle')}</CardTitle>
-              </CardHeader>
-              <CardContent className="pb-3">
-                <div className="flex flex-wrap gap-2">
-                  {POPULAR_TAGS.map((tag, index) => (
-                    <Badge key={index} variant="secondary" className="cursor-pointer">
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-            
-            {/* Öne çıkan yazarlar */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle>{t('blog.authorInfo')}</CardTitle>
-              </CardHeader>
-              <CardContent className="pb-3 space-y-4">
-                {FEATURED_AUTHORS.map((author) => (
-                  <div key={author.id} className="flex items-start gap-3">
-                    <img 
-                      src={author.avatar} 
-                      alt={author.name}
-                      className="w-14 h-14 rounded-full object-cover" 
-                    />
+          {/* Sidebar */}
+          <div className="lg:col-span-4">
+            {/* Recent Posts */}
+            <div className="mb-8">
+              <h3 className="text-lg font-semibold mb-4">{t('blog.recentPosts')}</h3>
+              
+              <div className="space-y-4">
+                {blogPosts.slice(0, 5).map((post) => (
+                  <div key={post.id} className="flex items-start gap-3">
+                    <Link href={addPrefix(`/blog/${post.slug}`)}>
+                      <div className="w-16 h-16 rounded-md overflow-hidden shrink-0">
+                        <img 
+                          src={post.imageUrl} 
+                          alt={post[`title${language.toUpperCase()}` as keyof BlogPost] as string}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </Link>
+                    
                     <div>
-                      <h4 className="font-semibold">{author.name}</h4>
-                      <p className="text-sm text-muted-foreground mb-1">{author.title}</p>
-                      <p className="text-xs">{author.bio}</p>
+                      <Link href={addPrefix(`/blog/${post.slug}`)}>
+                        <h4 className="text-sm font-medium leading-tight line-clamp-2 hover:text-primary transition-colors">
+                          {post[`title${language.toUpperCase()}` as keyof BlogPost] as string}
+                        </h4>
+                      </Link>
+                      <div className="text-xs text-muted-foreground mt-1 flex items-center">
+                        <Calendar className="h-3 w-3 mr-1 inline" />
+                        {formatDate(post.createdAt)}
+                      </div>
                     </div>
                   </div>
                 ))}
-              </CardContent>
-            </Card>
+              </div>
+            </div>
             
-            {/* Sosyal medya paylaşım */}
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle>{t('blog.shareThis')}</CardTitle>
-              </CardHeader>
-              <CardContent className="pb-3">
-                <div className="flex gap-3">
-                  <Button variant="outline" size="icon" className="rounded-full">
-                    <Facebook className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="icon" className="rounded-full">
-                    <Twitter className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="icon" className="rounded-full">
-                    <Linkedin className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="icon" className="rounded-full">
-                    <Mail className="h-4 w-4" />
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Categories Cloud */}
+            <div className="mb-8">
+              <h3 className="text-lg font-semibold mb-4">{t('blog.categoriesTitle')}</h3>
+              
+              <div className="flex flex-wrap gap-2">
+                {categories.map((category) => (
+                  <div
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`flex items-center gap-1 px-3 py-1.5 text-sm cursor-pointer rounded-full border transition-colors ${
+                      selectedCategory === category 
+                        ? "bg-primary text-primary-foreground border-primary" 
+                        : "hover:bg-muted hover:border-muted-foreground/20"
+                    }`}
+                  >
+                    {getCategoryName(category)}
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Tags Cloud */}
+            <div className="mb-8">
+              <h3 className="text-lg font-semibold mb-4">{t('blog.tagsTitle')}</h3>
+              
+              <div className="flex flex-wrap gap-2">
+                {POPULAR_TAGS.map((tag) => (
+                  <span 
+                    key={tag}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-full border hover:bg-muted transition-colors cursor-pointer"
+                  >
+                    <Tag className="h-3 w-3" />
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+            
+            {/* Featured Authors */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">{t('blog.featuredAuthors')}</h3>
+              
+              <div className="space-y-4">
+                {FEATURED_AUTHORS.map((author) => (
+                  <Card key={author.id} className="overflow-hidden">
+                    <CardContent className="p-4 flex items-center gap-4">
+                      <img 
+                        src={author.avatar} 
+                        alt={author.name}
+                        className="w-16 h-16 rounded-full border-2 border-primary/20" 
+                      />
+                      
+                      <div>
+                        <h4 className="font-semibold text-base">{author.name}</h4>
+                        <p className="text-xs text-primary">{author.title}</p>
+                        <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{author.bio}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </Container>
