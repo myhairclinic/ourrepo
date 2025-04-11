@@ -1,16 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="380" height="120" viewBox="0 0 380 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- MY HAIR text -->
-  <text x="20" y="70" font-family="Arial, sans-serif" font-weight="bold" font-size="58" fill="#0064b0">MY</text>
-  <text x="155" y="70" font-family="Arial, sans-serif" font-weight="bold" font-size="58" fill="#0064b0">HAIR</text>
+  <!-- MY HAIR text (blue) -->
+  <g fill="#0064b0">
+    <path d="M30 70 L45 30 L55 30 L70 70 L60 70 L57 60 L43 60 L40 70 Z M45 50 L55 50 L50 35 Z" />
+    <path d="M75 30 L85 30 L85 70 L75 70 Z" />
+    
+    <path d="M155 30 L165 30 L165 60 L190 30 L205 30 L180 55 L205 70 L190 70 L170 55 L165 60 L165 70 L155 70 Z" />
+    <path d="M210 30 L240 30 L240 40 L220 40 L220 45 L235 45 L235 55 L220 55 L220 60 L240 60 L240 70 L210 70 Z" />
+    <path d="M245 30 L255 30 L255 70 L245 70 Z" />
+    <path d="M260 30 L270 30 L290 55 L290 30 L300 30 L300 70 L290 70 L270 45 L270 70 L260 70 Z" />
+  </g>
   
-  <!-- Transplantation Center text -->
-  <text x="60" y="100" font-family="Arial, sans-serif" font-size="28" fill="#8b6f58">Transplantation Center</text>
-  
-  <!-- Hair strand icon in the middle -->
-  <path d="M140,30 Q120,55 125,75 T130,115 M130,30 Q110,55 115,75 T120,115 M120,30 Q100,55 105,75 T110,115" 
+  <!-- Transplantation Center text (brown) -->
+  <path d="M60 100 L67 80 L73 80 L80 100 L74 100 L73 96 L67 96 L66 100 Z M68 92 L72 92 L70 85 Z" fill="#8b6f58" />
+  <path d="M81 80 L87 80 L87 95 L94 80 L100 80 L93 93 L100 100 L94 100 L88 93 L87 94 L87 100 L81 100 Z" fill="#8b6f58" />
+  <path d="M101 80 L120 80 L120 85 L107 85 L107 87 L117 87 L117 92 L107 92 L107 94 L120 94 L120 100 L101 100 Z" fill="#8b6f58" />
+  <path d="M121 80 L127 80 L127 95 L135 80 L141 80 L132 95 L141 100 L135 100 L127 95 L127 100 L121 100 Z" fill="#8b6f58" />
+  <path d="M142 80 L159 80 L159 85 L148 85 L148 87 L157 87 L157 92 L148 92 L148 100 L142 100 Z" fill="#8b6f58" />
+  <path d="M160 80 L166 80 L166 85 L171 85 L171 80 L177 80 L177 100 L171 100 L171 91 L166 91 L166 100 L160 100 Z" fill="#8b6f58" />
+  <path d="M178 80 L184 80 L184 95 L192 80 L198 80 L190 95 L198 100 L192 100 L184 95 L184 100 L178 100 Z" fill="#8b6f58" />
+  <path d="M199 80 L205 80 L205 100 L199 100 Z" fill="#8b6f58" />
+  <path d="M206 80 L217 80 C221 80 223 83 223 85 C223 87.5 221 90 217 90 L212 90 L212 100 L206 100 Z M212 85 L212 86 L215 86 C216 86 217 85.5 217 85.5 C217 85.5 216 85 215 85 Z" fill="#8b6f58" />
+  <path d="M224 80 L241 80 L241 85 L230 85 L230 87 L239 87 L239 92 L230 92 L230 94 L241 94 L241 100 L224 100 Z" fill="#8b6f58" />
+  <path d="M242 80 L248 80 L248 95 L256 80 L262 80 L253 95 L262 100 L256 100 L248 95 L248 100 L242 100 Z" fill="#8b6f58" />
+  <path d="M263 80 L269 80 L269 100 L263 100 Z" fill="#8b6f58" />
+  <path d="M270 80 L286 80 C290 80 292 83 292 85 C292 87 290.5 88 289 88.5 C290.5 89 292 90 292 92 C292 95 289 100 284 100 L270 100 Z M276 84 L276 88 L282 88 C283 88 286 87.5 286 86 C286 84.5 283 84 282 84 Z M276 92 L276 96 L282 96 C283 96 286 95.5 286 94 C286 92.5 283 92 282 92 Z" fill="#8b6f58" />
+  <path d="M293 80 L308 80 C312 80 314 83 314 85 C314 87.5 312 90 308 90 L299 90 L299 100 L293 100 Z M299 85 L299 86 L306 86 C307 86 308 85.5 308 85.5 C308 85.5 307 85 306 85 Z" fill="#8b6f58" />
+
+  <!-- Hair strand in the middle -->
+  <path d="M120 30 C 117 50, 125 70, 123 110 M 125 30 C 122 50, 130 70, 128 110 M 130 30 C 127 50, 135 70, 133 110" 
         stroke="#ffa500" fill="none" stroke-width="3" />
   
   <!-- Glow effect around the hair strand -->
-  <circle cx="125" cy="60" r="30" fill="#ffa500" opacity="0.15" />
+  <circle cx="125" cy="60" r="25" fill="#ffa500" opacity="0.15" />
 </svg>
