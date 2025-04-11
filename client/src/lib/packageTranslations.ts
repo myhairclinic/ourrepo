@@ -7,16 +7,16 @@ type LanguageMap = Record<Language, string>;
 export const packageTranslations: Record<string, LanguageMap> = {
   // Page Sections
   "packages.pageTitle": {
-    [Language.Turkish]: "Tedavi ve Seyahat Paketleri",
-    [Language.English]: "Treatment and Travel Packages",
-    [Language.Russian]: "Пакеты Лечения и Путешествий",
-    [Language.Georgian]: "მკურნალობისა და მოგზაურობის პაკეტები"
+    [Language.Turkish]: "MyHair Clinic Özel Tedavi ve Seyahat Paketleri",
+    [Language.English]: "MyHair Clinic Premium Treatment and Travel Packages",
+    [Language.Russian]: "Премиум Пакеты Лечения и Путешествий в MyHair Clinic",
+    [Language.Georgian]: "MyHair Clinic-ის პრემიუმ მკურნალობისა და მოგზაურობის პაკეტები"
   },
   "packages.pageDescription": {
-    [Language.Turkish]: "Her ülkeden hastalarımız için özel hazırlanmış konforlu seyahat ve saç ekimi paketleri",
-    [Language.English]: "Comfortable travel and hair transplantation packages specially prepared for our patients from all countries",
-    [Language.Russian]: "Комфортные пакеты путешествий и трансплантации волос, специально подготовленные для наших пациентов из всех стран",
-    [Language.Georgian]: "კომფორტული მოგზაურობისა და თმის გადანერგვის პაკეტები, სპეციალურად მომზადებული ჩვენი პაციენტებისათვის ყველა ქვეყნიდან"
+    [Language.Turkish]: "Tüm ülkelerden misafirlerimiz için özenle hazırlanmış lüks seyahat ve profesyonel saç ekimi paketleri",
+    [Language.English]: "Luxury travel and professional hair transplantation packages meticulously prepared for our guests from all countries",
+    [Language.Russian]: "Роскошные пакеты путешествий и профессиональной трансплантации волос, тщательно подготовленные для наших гостей из всех стран",
+    [Language.Georgian]: "ლუქსი მოგზაურობისა და პროფესიონალური თმის გადანერგვის პაკეტები, გულმოდგინედ მომზადებული ჩვენი სტუმრებისთვის ყველა ქვეყნიდან"
   },
   "packages.byCountry": {
     [Language.Turkish]: "Ülkelere Göre Paketler",
