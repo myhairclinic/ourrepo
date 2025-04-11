@@ -86,15 +86,17 @@ function getCountryName(countryCode: string, t: (key: string) => string): string
     case 'TR':
       return t("countries.turkey");
     case 'RU':
-      return t("countries.russia");
+      return t("countries.ru");
     case 'AZ':
-      return t("countries.azerbaijan");
+      return t("countries.az");
     case 'KZ':
-      return t("countries.kazakhstan");
+      return t("countries.kz");
     case 'IR':
-      return t("countries.iran");
+      return t("countries.ir");
+    case 'UA':
+      return t("countries.ua");
     case 'EU':
-      return t("countries.europe");
+      return t("countries.eu");
     default:
       return t("countries.international");
   }
@@ -332,15 +334,17 @@ export function PackageCards() {
       case 'TR':
         return { flag: '🇹🇷', name: t("countries.turkey") };
       case 'RU':
-        return { flag: '🇷🇺', name: t("countries.russia") };
+        return { flag: '🇷🇺', name: t("countries.ru") };
       case 'AZ':
-        return { flag: '🇦🇿', name: t("countries.azerbaijan") };
+        return { flag: '🇦🇿', name: t("countries.az") };
       case 'KZ':
-        return { flag: '🇰🇿', name: t("countries.kazakhstan") };
+        return { flag: '🇰🇿', name: t("countries.kz") };
       case 'IR':
-        return { flag: '🇮🇷', name: t("countries.iran") };
+        return { flag: '🇮🇷', name: t("countries.ir") };
+      case 'UA':
+        return { flag: '🇺🇦', name: t("countries.ua") };
       case 'EU':
-        return { flag: '🇪🇺', name: t("countries.europe") };
+        return { flag: '🇪🇺', name: t("countries.eu") };
       default:
         return { flag: '🌍', name: t("countries.international") };
     }
