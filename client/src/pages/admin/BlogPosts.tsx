@@ -1110,13 +1110,34 @@ export default function BlogPosts() {
                                 <div className="w-full">
                                   <Progress 
                                     value={completeness[post.id] || 0} 
-                                    className="h-1 rounded-none" 
+                                    className={`h-1 rounded-none ${
+                                      (completeness[post.id] || 0) < 30 
+                                        ? "bg-destructive/20" 
+                                        : (completeness[post.id] || 0) < 70 
+                                          ? "bg-orange-200" 
+                                          : "bg-green-200"
+                                    }`}
+                                    indicatorClassName={`${
+                                      (completeness[post.id] || 0) < 30 
+                                        ? "bg-destructive" 
+                                        : (completeness[post.id] || 0) < 70 
+                                          ? "bg-orange-500" 
+                                          : "bg-green-500"
+                                    }`}
                                   />
                                 </div>
                               </TooltipTrigger>
                               <TooltipContent>
                                 <div className="text-xs">
-                                  %{completeness[post.id] || 0} içerik tamamlandı
+                                  <span className={`font-semibold ${
+                                    (completeness[post.id] || 0) < 30 
+                                      ? "text-destructive" 
+                                      : (completeness[post.id] || 0) < 70 
+                                        ? "text-orange-500" 
+                                        : "text-green-500"
+                                  }`}>
+                                    %{completeness[post.id] || 0}
+                                  </span> içerik tamamlandı
                                 </div>
                               </TooltipContent>
                             </Tooltip>
