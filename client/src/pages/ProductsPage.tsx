@@ -6,7 +6,7 @@ import { Link } from "wouter";
 import { API_ROUTES, META } from "@/lib/constants";
 import SectionTitle from "@/components/shared/SectionTitle";
 import { Language } from "@shared/types";
-import { Product } from "@shared/schema";
+import { Product, Service } from "@shared/schema";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -17,14 +17,17 @@ export default function ProductsPage() {
   const { t } = useTranslation(language);
   
   // Fetch products
-  const { data: products = [], isLoading } = useQuery({
+  const { data: products = [], isLoading } = useQuery<Product[]>({
     queryKey: [API_ROUTES.PRODUCTS],
   });
 
   // Fetch services as products
-  const { data: services = [], isLoading: isLoadingServices } = useQuery({
+  const { data: services = [], isLoading: isLoadingServices } = useQuery<Service[]>({
     queryKey: [API_ROUTES.SERVICES],
   });
+  
+  // Type safe language handling
+  const lang = language as Language;
   
   return (
     <>
@@ -68,7 +71,7 @@ export default function ProductsPage() {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {services.map((service: any) => (
+                {services.map((service) => (
                   <Card key={service.id} className="group overflow-hidden transition-all duration-300 hover:shadow-lg">
                     <div className="relative overflow-hidden h-64">
                       <img 

@@ -137,6 +137,7 @@ function Router() {
       
       {/* Special tool routes */}
       <Route path="/seed-blogs" component={BrowserSeedPage} />
+      <Route path="/seed-vithair-products" component={SeedProducts} />
       
       {/* Public routes with language prefix */}
       <Route path="/:lang" component={HomePage} />
