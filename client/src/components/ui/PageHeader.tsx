@@ -6,6 +6,7 @@ interface PageHeaderProps {
   description?: string;
   imageUrl?: string;
   className?: string;
+  isSpecialPage?: boolean;
 }
 
 export default function PageHeader({
@@ -13,9 +14,11 @@ export default function PageHeader({
   description,
   imageUrl,
   className,
+  isSpecialPage = false,
 }: PageHeaderProps) {
   // Check if it's the packages page to apply special styling
-  const isPackagesPage = title.includes("MyHair Clinic Özel Tedavi ve Seyahat Paketleri") || 
+  const isPackagesPage = isSpecialPage || 
+                        title.includes("MyHair Clinic Özel Tedavi ve Seyahat Paketleri") || 
                         title.includes("MyHair Clinic Premium Treatment and Travel Packages") || 
                         title.includes("Премиум Пакеты Лечения и Путешествий в MyHair Clinic") || 
                         title.includes("MyHair Clinic-ის პრემიუმ მკურნალობისა და მოგზაურობის პაკეტები");

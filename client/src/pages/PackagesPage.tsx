@@ -111,6 +111,7 @@ const PackagesPage: React.FC = () => {
       <PageHeader 
         title={getPackageTranslation("packages.pageTitle", language)}
         description={getPackageTranslation("packages.pageDescription", language)}
+        isSpecialPage={true}
       />
       
       {/* Colorful overlay with wave pattern after header */}
