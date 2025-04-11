@@ -19,6 +19,24 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Свяжитесь с клиникой MyHair",
     [Language.Georgian]: "დაუკავშირდით MyHair კლინიკას"
   },
+  "contact.title": {
+    [Language.Turkish]: "Bizimle İletişime Geçin",
+    [Language.English]: "Contact Us",
+    [Language.Russian]: "Свяжитесь с нами",
+    [Language.Georgian]: "დაგვიკავშირდით"
+  },
+  "contact.description": {
+    [Language.Turkish]: "Saç ekimi ve tedavileri hakkında bilgi almak veya randevu oluşturmak için bizimle iletişime geçin.",
+    [Language.English]: "Contact us to get information about hair transplantation and treatments or to schedule an appointment.",
+    [Language.Russian]: "Свяжитесь с нами, чтобы получить информацию о трансплантации волос и методах лечения или записаться на прием.",
+    [Language.Georgian]: "დაგვიკავშირდით თმის გადანერგვისა და მკურნალობის შესახებ ინფორმაციის მისაღებად ან ვიზიტის დასაგეგმად."
+  },
+  "contact.getInTouch": {
+    [Language.Turkish]: "Bize Ulaşın",
+    [Language.English]: "Get in Touch",
+    [Language.Russian]: "Связаться с нами",
+    [Language.Georgian]: "დაგვიკავშირდით"
+  },
   "contact.success": {
     [Language.Turkish]: "Mesajınız gönderildi",
     [Language.English]: "Your message has been sent",
