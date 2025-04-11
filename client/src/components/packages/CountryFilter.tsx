@@ -36,15 +36,22 @@ const CountryFilter: React.FC<CountryFilterProps> = ({
     if (code === 'ALL') return '🌎';
     
     const flagMap: Record<string, string> = {
-      'TR': '🇹🇷',
-      'RU': '🇷🇺',
-      'UA': '🇺🇦',
-      'AZ': '🇦🇿',
-      'IR': '🇮🇷',
-      'EU': '🇪🇺',
-      'SA': '🇸🇦',
-      'AE': '🇦🇪',
-      'IQ': '🇮🇶',
+      'TR': '🇹🇷', // Türkiye
+      'RU': '🇷🇺', // Rusya
+      'UA': '🇺🇦', // Ukrayna
+      'AZ': '🇦🇿', // Azerbaycan
+      'IR': '🇮🇷', // İran
+      'EU': '🇪🇺', // Avrupa Birliği
+      'SA': '🇸🇦', // Suudi Arabistan
+      'AE': '🇦🇪', // Birleşik Arap Emirlikleri
+      'IQ': '🇮🇶', // Irak
+      'AM': '🇦🇲', // Ermenistan
+      'KZ': '🇰🇿', // Kazakistan
+      'BY': '🇧🇾', // Belarus
+      'MD': '🇲🇩', // Moldova
+      'GR': '🇬🇷', // Yunanistan
+      'BG': '🇧🇬', // Bulgaristan
+      'RO': '🇷🇴', // Romanya
     };
     
     return flagMap[code] || '🏳️';

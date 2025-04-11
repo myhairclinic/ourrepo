@@ -736,6 +736,48 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Ирак",
     [Language.Georgian]: "ერაყი"
   },
+  "countries.am": {
+    [Language.Turkish]: "Ermenistan",
+    [Language.English]: "Armenia",
+    [Language.Russian]: "Армения",
+    [Language.Georgian]: "სომხეთი"
+  },
+  "countries.kz": {
+    [Language.Turkish]: "Kazakistan",
+    [Language.English]: "Kazakhstan",
+    [Language.Russian]: "Казахстан",
+    [Language.Georgian]: "ყაზახეთი"
+  },
+  "countries.by": {
+    [Language.Turkish]: "Belarus",
+    [Language.English]: "Belarus",
+    [Language.Russian]: "Беларусь",
+    [Language.Georgian]: "ბელარუსი"
+  },
+  "countries.md": {
+    [Language.Turkish]: "Moldova",
+    [Language.English]: "Moldova",
+    [Language.Russian]: "Молдова",
+    [Language.Georgian]: "მოლდოვა"
+  },
+  "countries.gr": {
+    [Language.Turkish]: "Yunanistan",
+    [Language.English]: "Greece",
+    [Language.Russian]: "Греция",
+    [Language.Georgian]: "საბერძნეთი"
+  },
+  "countries.bg": {
+    [Language.Turkish]: "Bulgaristan",
+    [Language.English]: "Bulgaria",
+    [Language.Russian]: "Болгария",
+    [Language.Georgian]: "ბულგარეთი"
+  },
+  "countries.ro": {
+    [Language.Turkish]: "Romanya",
+    [Language.English]: "Romania",
+    [Language.Russian]: "Румыния",
+    [Language.Georgian]: "რუმინეთი"
+  },
   "countries.all": {
     [Language.Turkish]: "Tüm Ülkeler",
     [Language.English]: "All Countries",
