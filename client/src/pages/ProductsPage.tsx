@@ -182,7 +182,7 @@ export default function ProductsPage() {
                       <div className="relative overflow-hidden h-48">
                         <img 
                           src={product.imageUrl} 
-                          alt={product[`name${language}`]} 
+                          alt={product[`name${lang}`]} 
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                         {product.isNew && (
