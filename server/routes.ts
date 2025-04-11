@@ -26,11 +26,23 @@ import * as adminControllers from "./controllers/adminControllers";
 import {
   getBlogPosts,
   getPaginatedBlogPosts,
+  getBlogPostBySlug as getLegacyBlogPostBySlug,
+  createBlogPost as createLegacyBlogPost,
+  updateBlogPost as updateLegacyBlogPost,
+  deleteBlogPost as deleteLegacyBlogPost
+} from "./controllers/blogController";
+
+import { 
+  getAllBlogPosts, 
+  getBlogPostById, 
   getBlogPostBySlug,
   createBlogPost,
   updateBlogPost,
-  deleteBlogPost
-} from "./controllers/blogController";
+  deleteBlogPost,
+  toggleFeatured,
+  togglePublished,
+  getBlogPostsCount 
+} from "./controllers/blogControllers";
 import {
   getGalleryItems,
   getGalleryItemsByType,
@@ -412,13 +424,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Blog routes
-  app.get("/api/blog", getBlogPosts);
-  app.get("/api/blog/count", adminControllers.getBlogPostsCount);
+  app.get("/api/blog", getAllBlogPosts);
+  app.get("/api/blog/count", getBlogPostsCount);
   app.get("/api/blog/paginated", getPaginatedBlogPosts);
   app.get("/api/blog/:slug", getBlogPostBySlug);
   app.post("/api/blog", createBlogPost);
   app.put("/api/blog/:id", updateBlogPost);
   app.delete("/api/blog/:id", deleteBlogPost);
+  
+  // Blog admin features
+  app.patch("/api/blog/:id/feature", toggleFeatured);
+  app.patch("/api/blog/:id/publish", togglePublished);
 
   // Seed data routes (public during development)
   app.post("/api/seed/services", seedServices);

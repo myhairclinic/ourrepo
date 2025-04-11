@@ -33,7 +33,7 @@ import AdminLoginPage from "@/pages/admin/AdminLoginPage";
 import AdminRegisterPage from "@/pages/admin/AdminRegisterPage";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import ServicesManager from "@/pages/admin/ServicesManager";
-import BlogManager from "@/pages/admin/BlogManager";
+import BlogPosts from "@/pages/admin/BlogPosts";
 import GalleryManager from "@/pages/admin/GalleryManager";
 import AppointmentsManager from "@/pages/admin/AppointmentsManager";
 import PackagesManager from "@/pages/admin/PackagesManager";
@@ -107,7 +107,7 @@ function Router() {
         <ProtectedAdminRoute component={ServicesManager} />
       </Route>
       <Route path="/admin/blog">
-        <ProtectedAdminRoute component={BlogManager} />
+        <ProtectedAdminRoute component={BlogPosts} />
       </Route>
       <Route path="/admin/gallery">
         <ProtectedAdminRoute component={GalleryManager} />
