@@ -52,7 +52,7 @@ export default function AdminDashboard() {
       const data = await response.json();
       return data.count;
     },
-    enabled: !!admin,
+    enabled: !!user,
   });
   
   const { data: messagesCount = 0, isLoading: isLoadingMessages } = useQuery<number>({
@@ -63,7 +63,7 @@ export default function AdminDashboard() {
       const data = await response.json();
       return data.count;
     },
-    enabled: !!admin,
+    enabled: !!user,
   });
   
   const { data: packagesCount = 0, isLoading: isLoadingPackages } = useQuery<number>({
@@ -74,7 +74,7 @@ export default function AdminDashboard() {
       const data = await response.json();
       return data.count;
     },
-    enabled: !!admin,
+    enabled: !!user,
   });
   
   const { data: productsCount = 0, isLoading: isLoadingProducts } = useQuery<number>({
@@ -85,7 +85,7 @@ export default function AdminDashboard() {
       const data = await response.json();
       return data.count;
     },
-    enabled: !!admin,
+    enabled: !!user,
   });
   
   const { data: reviewsCount = 0, isLoading: isLoadingReviews } = useQuery<number>({
@@ -96,7 +96,7 @@ export default function AdminDashboard() {
       const data = await response.json();
       return data.count;
     },
-    enabled: !!admin,
+    enabled: !!user,
   });
 
   // This would typically come from API, using mock data for now
