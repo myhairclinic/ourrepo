@@ -5,6 +5,49 @@ type LanguageMap = Record<Language, string>;
 
 // Additional translations for package filters and features
 export const packageTranslations: Record<string, LanguageMap> = {
+  // Page Sections
+  "packages.pageTitle": {
+    [Language.Turkish]: "Seyahat Paketleri",
+    [Language.English]: "Travel Packages",
+    [Language.Russian]: "Туристические Пакеты",
+    [Language.Georgian]: "სამოგზაურო პაკეტები"
+  },
+  "packages.pageDescription": {
+    [Language.Turkish]: "Saç ekimi ve tatil bir arada - Gürcistan'da konforlu seyahat paketleri",
+    [Language.English]: "Hair transplantation and vacation in one - Comfortable travel packages in Georgia",
+    [Language.Russian]: "Трансплантация волос и отдых вместе - Комфортные туристические пакеты в Грузии",
+    [Language.Georgian]: "თმის გადანერგვა და დასვენება ერთად - კომფორტული სამოგზაურო პაკეტები საქართველოში"
+  },
+  "packages.byCountry": {
+    [Language.Turkish]: "Ülkelere Göre Paketler",
+    [Language.English]: "Packages by Country",
+    [Language.Russian]: "Пакеты по странам",
+    [Language.Georgian]: "პაკეტები ქვეყნების მიხედვით"
+  },
+  "packages.packageFeatures": {
+    [Language.Turkish]: "Paket Özellikleri",
+    [Language.English]: "Package Features",
+    [Language.Russian]: "Особенности пакета",
+    [Language.Georgian]: "პაკეტის მახასიათებლები"
+  },
+  "packages.viewDetails": {
+    [Language.Turkish]: "Detayları Görüntüle",
+    [Language.English]: "View Details",
+    [Language.Russian]: "Посмотреть детали",
+    [Language.Georgian]: "დეტალების ნახვა"
+  },
+  "packages.noResults": {
+    [Language.Turkish]: "Hiçbir paket bulunamadı",
+    [Language.English]: "No packages found",
+    [Language.Russian]: "Пакеты не найдены",
+    [Language.Georgian]: "პაკეტები ვერ მოიძებნა"
+  },
+  "packages.packageCount": {
+    [Language.Turkish]: "paket",
+    [Language.English]: "packages",
+    [Language.Russian]: "пакетов",
+    [Language.Georgian]: "პაკეტები"
+  },
   // Countries
   "countries.all": {
     [Language.Turkish]: "Tüm Ülkeler",

@@ -203,10 +203,7 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
           {/* Features section */}
           <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
             <span className="h-1 w-6 bg-primary/50 rounded-full"></span>
-            {language === Language.Turkish ? 'Paket Özellikleri' : 
-            language === Language.English ? 'Package Features' : 
-            language === Language.Russian ? 'Особенности пакета' :
-            'პაკეტის მახასიათებლები'}
+            {getPackageTranslation("packages.packageFeatures", language)}
           </h4>
           
           {/* Features list */}
@@ -251,10 +248,7 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
             <Link href={addPrefix(`/packages/${pkg.slug}`)} className="py-2 flex items-center justify-center">
               <span className="flex items-center gap-1.5 text-[14px] font-medium relative z-10">
                 <Search className="h-3.5 w-3.5 mr-1" />
-                {language === Language.Turkish ? 'Detayları Görüntüle' : 
-                language === Language.English ? 'View Details' : 
-                language === Language.Russian ? 'Посмотреть детали' :
-                'დეტალების ნახვა'}
+                {getPackageTranslation("packages.viewDetails", language)}
                 <ArrowRight className="h-3.5 w-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
               </span>
               {/* Shimmering effect */}

@@ -109,18 +109,8 @@ const PackagesPage: React.FC = () => {
   return (
     <>
       <PageHeader 
-        title={
-          language === Language.Turkish ? 'Seyahat Paketleri' : 
-          language === Language.English ? 'Travel Packages' : 
-          language === Language.Russian ? 'Туристические Пакеты' : 
-          'სამოგზაურო პაკეტები'
-        }
-        description={
-          language === Language.Turkish ? 'Saç ekimi ve tatil bir arada - Gürcistan\'da konforlu seyahat paketleri' : 
-          language === Language.English ? 'Hair transplantation and vacation in one - Comfortable travel packages in Georgia' : 
-          language === Language.Russian ? 'Трансплантация волос и отдых вместе - Комфортные туристические пакеты в Грузии' : 
-          'თმის გადანერგვა და დასვენება ერთად - კომფორტული სამოგზაურო პაკეტები საქართველოში'
-        }
+        title={getPackageTranslation("packages.pageTitle", language)}
+        description={getPackageTranslation("packages.pageDescription", language)}
         imageUrl="/images/tbilisi-panorama.jpg"
       />
       
@@ -242,10 +232,7 @@ const PackagesPage: React.FC = () => {
               <Globe className="h-5 w-5 text-blue-500" />
             </div>
             <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">
-              {language === Language.Turkish ? 'Ülkelere Göre Paketler' : 
-              language === Language.English ? 'Packages by Country' : 
-              language === Language.Russian ? 'Пакеты по странам' : 
-              'პაკეტები ქვეყნების მიხედვით'}
+              {getPackageTranslation("packages.byCountry", language)}
             </h2>
           </div>
           
@@ -300,10 +287,7 @@ const PackagesPage: React.FC = () => {
                       {/* Package count */}
                       <div className="mt-2 bg-black/40 backdrop-blur-sm px-4 py-1 rounded-full text-white/90 font-medium border border-white/20 shadow-lg transform transition-all duration-300 group-hover:translate-y-1">
                         <span className="text-sm">
-                          {countryPackages.length} {language === Language.Turkish ? 'paket' : 
-                          language === Language.English ? 'packages' : 
-                          language === Language.Russian ? 'пакетов' : 
-                          'პაკეტები'}
+                          {countryPackages.length} {getPackageTranslation("packages.packageCount", language)}
                         </span>
                       </div>
                     </div>
