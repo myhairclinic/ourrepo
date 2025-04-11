@@ -574,6 +574,114 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Никаких обязательств, просто запросите информацию",
     [Language.Georgian]: "არანაირი ვალდებულება, უბრალოდ მოითხოვეთ ინფორმაცია"
   },
+  "packages.viewDetails": {
+    [Language.Turkish]: "Detayları Gör",
+    [Language.English]: "View Details",
+    [Language.Russian]: "Посмотреть детали",
+    [Language.Georgian]: "დეტალების ნახვა"
+  },
+  "packages.completeExperience": {
+    [Language.Turkish]: "Saç Ekimi için Eksiksiz Seyahat Deneyimi",
+    [Language.English]: "Complete Travel Experience for Hair Transplantation",
+    [Language.Russian]: "Полный опыт путешествия для трансплантации волос",
+    [Language.Georgian]: "სრული სამოგზაურო გამოცდილება თმის გადანერგვისთვის"
+  },
+  "packages.completeExperienceDesc": {
+    [Language.Turkish]: "Tiflis'teki saç ekimi tedaviniz için tüm seyahat ihtiyaçlarınız tek pakette. Profesyonel tıbbi hizmet ve konforlu bir tatil deneyimini bir arada sunuyoruz.",
+    [Language.English]: "All your travel needs for your hair transplant treatment in Tbilisi in one package. We offer professional medical service and a comfortable holiday experience together.",
+    [Language.Russian]: "Все ваши потребности в путешествии для лечения по трансплантации волос в Тбилиси в одном пакете. Мы предлагаем профессиональное медицинское обслуживание и комфортный отдых вместе.",
+    [Language.Georgian]: "თქვენი მოგზაურობის ყველა საჭიროება თმის გადანერგვის მკურნალობისთვის თბილისში ერთ პაკეტში. ჩვენ გთავაზობთ პროფესიონალურ სამედიცინო მომსახურებას და კომფორტულ დასვენებას ერთად."
+  },
+  "packages.tourism": {
+    [Language.Turkish]: "Tiflis Turizmi",
+    [Language.English]: "Tbilisi Tourism",
+    [Language.Russian]: "Туризм в Тбилиси",
+    [Language.Georgian]: "თბილისის ტურიზმი"
+  },
+  "packages.tourismDesc": {
+    [Language.Turkish]: "Tedaviniz sırasında Tiflis'in kültürel güzelliklerini keşfedin. Şehir turları ve yerel deneyimler içerir.",
+    [Language.English]: "Discover the cultural beauties of Tbilisi during your treatment. Includes city tours and local experiences.",
+    [Language.Russian]: "Откройте для себя культурные красоты Тбилиси во время лечения. Включает городские туры и местный опыт.",
+    [Language.Georgian]: "აღმოაჩინეთ თბილისის კულტურული სილამაზეები თქვენი მკურნალობის დროს. მოიცავს ქალაქის ტურებს და ადგილობრივ გამოცდილებას."
+  },
+  "packages.accommodationDesc": {
+    [Language.Turkish]: "Şehir merkezinde en iyi otellerde konaklayın. Tüm paketlerimiz yüksek kaliteli konaklama içerir.",
+    [Language.English]: "Stay at the best hotels in the city center. All our packages include high-quality accommodation.",
+    [Language.Russian]: "Остановитесь в лучших отелях в центре города. Все наши пакеты включают проживание высокого качества.",
+    [Language.Georgian]: "დარჩით საუკეთესო სასტუმროებში ქალაქის ცენტრში. ჩვენი ყველა პაკეტი მოიცავს მაღალი ხარისხის საცხოვრებელს."
+  },
+  "packages.whyOurPackages": {
+    [Language.Turkish]: "Neden Paketlerimizi Seçmelisiniz?",
+    [Language.English]: "Why Choose Our Packages?",
+    [Language.Russian]: "Почему стоит выбрать наши пакеты?",
+    [Language.Georgian]: "რატომ უნდა აირჩიოთ ჩვენი პაკეტები?"
+  },
+  "packages.saveTime": {
+    [Language.Turkish]: "Zaman Kazanın",
+    [Language.English]: "Save Time",
+    [Language.Russian]: "Экономьте время",
+    [Language.Georgian]: "დაზოგეთ დრო"
+  },
+  "packages.saveTimeDesc": {
+    [Language.Turkish]: "Tüm planlama ve organizasyon işlerini biz hallediyoruz, sadece gelip tedavi ve tatil deneyiminizin tadını çıkarın.",
+    [Language.English]: "We handle all planning and organization work, just come and enjoy your treatment and holiday experience.",
+    [Language.Russian]: "Мы берем на себя всю работу по планированию и организации, просто приезжайте и наслаждайтесь лечением и отдыхом.",
+    [Language.Georgian]: "ჩვენ ვასრულებთ ყველა დაგეგმვისა და ორგანიზაციის სამუშაოს, უბრალოდ მოდით და ისიამოვნეთ თქვენი მკურნალობით და დასვენებით."
+  },
+  "packages.expertTeam": {
+    [Language.Turkish]: "Uzman Ekip",
+    [Language.English]: "Expert Team",
+    [Language.Russian]: "Команда экспертов",
+    [Language.Georgian]: "ექსპერტთა გუნდი"
+  },
+  "packages.expertTeamDesc": {
+    [Language.Turkish]: "Deneyimli doktorlar, çok dilli rehberler ve özel asistanlar - her adımda yanınızdayız.",
+    [Language.English]: "Experienced doctors, multilingual guides, and personal assistants - we are with you every step of the way.",
+    [Language.Russian]: "Опытные врачи, многоязычные гиды и личные помощники - мы с вами на каждом этапе пути.",
+    [Language.Georgian]: "გამოცდილი ექიმები, მრავალენოვანი გიდები და პირადი ასისტენტები - ჩვენ თქვენთან ერთად ვართ ყოველ ნაბიჯზე."
+  },
+  "packages.bestLocations": {
+    [Language.Turkish]: "En İyi Konumlar",
+    [Language.English]: "Best Locations",
+    [Language.Russian]: "Лучшие локации",
+    [Language.Georgian]: "საუკეთესო ადგილმდებარეობები"
+  },
+  "packages.bestLocationsDesc": {
+    [Language.Turkish]: "Tiflis'in en iyi bölgelerinde konaklama ve şehrin tüm önemli noktalarına kolay erişim.",
+    [Language.English]: "Accommodation in the best areas of Tbilisi and easy access to all important points of the city.",
+    [Language.Russian]: "Размещение в лучших районах Тбилиси и легкий доступ ко всем важным точкам города.",
+    [Language.Georgian]: "საცხოვრებელი თბილისის საუკეთესო უბნებში და ადვილი წვდომა ქალაქის ყველა მნიშვნელოვან წერტილზე."
+  },
+  "packages.seamlessTransport": {
+    [Language.Turkish]: "Sorunsuz Ulaşım",
+    [Language.English]: "Seamless Transportation",
+    [Language.Russian]: "Беспроблемный транспорт",
+    [Language.Georgian]: "უპრობლემო ტრანსპორტირება"
+  },
+  "packages.seamlessTransportDesc": {
+    [Language.Turkish]: "Havalimanı transferleri, klinik ziyaretleri ve şehir içi ulaşım - tüm ulaşım ihtiyaçlarınız karşılanır.",
+    [Language.English]: "Airport transfers, clinic visits, and city transportation - all your transportation needs are met.",
+    [Language.Russian]: "Трансферы из аэропорта, посещения клиники и городской транспорт - все ваши транспортные потребности удовлетворены.",
+    [Language.Georgian]: "აეროპორტის ტრანსფერები, კლინიკის ვიზიტები და ქალაქის ტრანსპორტი - თქვენი ყველა სატრანსპორტო საჭიროება დაკმაყოფილებულია."
+  },
+  "packages.availablePackages": {
+    [Language.Turkish]: "Mevcut Paketler",
+    [Language.English]: "Available Packages",
+    [Language.Russian]: "Доступные пакеты",
+    [Language.Georgian]: "ხელმისაწვდომი პაკეტები"
+  },
+  "packages.tryDifferentFilter": {
+    [Language.Turkish]: "Farklı bir filtre deneyebilir veya tüm paketlerimizi görmek için 'Tümü' seçeneğini kullanabilirsiniz.",
+    [Language.English]: "You can try a different filter or use the 'All' option to see all our packages.",
+    [Language.Russian]: "Вы можете попробовать другой фильтр или использовать опцию 'Все', чтобы увидеть все наши пакеты.",
+    [Language.Georgian]: "შეგიძლიათ სცადოთ სხვა ფილტრი ან გამოიყენოთ ვარიანტი 'ყველა', რომ ნახოთ ჩვენი ყველა პაკეტი."
+  },
+  "packages.originCountry": {
+    [Language.Turkish]: "Kaynak Ülke",
+    [Language.English]: "Origin Country",
+    [Language.Russian]: "Страна происхождения",
+    [Language.Georgian]: "წარმოშობის ქვეყანა"
+  },
   "countries.tr": {
     [Language.Turkish]: "Türkiye",
     [Language.English]: "Turkey",
