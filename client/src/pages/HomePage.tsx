@@ -9,6 +9,8 @@ import BeforeAfterSlider from "@/components/home/BeforeAfterSlider";
 import Testimonials from "@/components/home/Testimonials";
 import { useTranslation } from "@/lib/translations";
 import MainSlider from "@/components/home/MainSlider";
+import WhatsAppButton from "@/components/layout/WhatsAppButton";
+import AppointmentButton from "@/components/layout/AppointmentButton";
 
 export default function HomePage() {
   const { language } = useLanguage();
@@ -49,6 +51,10 @@ export default function HomePage() {
         <WhyChooseUs />
         <BeforeAfterSlider />
         <Testimonials />
+        
+        {/* Fixed buttons */}
+        <WhatsAppButton />
+        <AppointmentButton />
       </main>
     </>
   );
