@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { getQueryFn } from '@/lib/queryClient';
 import { useLanguage } from '@/context/LanguageContext';
 import { Package } from '@shared/schema';
 import { Language } from '@shared/types';
@@ -7,6 +8,7 @@ import Container from '@/components/ui/container';
 import PageHeader from '@/components/ui/PageHeader';
 import { Loader2, Plane, MapPin, Clock, LucideHotel, Users, HeartPulse, Sparkles } from 'lucide-react';
 import PackageCard from '@/components/packages/PackageCard';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { getTranslation } from "@/lib/translations";
@@ -26,8 +28,10 @@ const PackagesPage: React.FC = () => {
       return res.json();
     },
   });
+  
 
-  // Get one package per country - keep only the most recently added package for each country
+  
+  // First get one package per country - keep only the most recently added package for each country
   const uniqueCountryPackages = packages?.reduce((acc, pkg) => {
     // Get existing package for this country, if any
     const existingPkg = acc.find(p => p.countryOrigin === pkg.countryOrigin);
@@ -45,6 +49,74 @@ const PackagesPage: React.FC = () => {
     // Keep the existing package
     return acc;
   }, [] as Package[]) || [];
+  
+  // Then apply filters to the already-unique packages
+  const filteredPackages = uniqueCountryPackages.filter(pkg => {
+    // Country filter
+    if (selectedCountry && pkg.countryOrigin !== selectedCountry) {
+      return false;
+    }
+    
+    // Duration filter
+    if (pkg.durationDays < selectedDuration[0] || pkg.durationDays > selectedDuration[1]) {
+      return false;
+    }
+    
+    // Featured filter
+    if (isFeaturedOnly && !pkg.isFeatured) {
+      return false;
+    }
+    
+    // Feature filter (only if features are selected)
+    if (selectedFeatures.length > 0 && pkg.highlights) {
+      try {
+        const highlights = JSON.parse(pkg.highlights as string);
+        // Check if any selected feature is in the highlights
+        const hasSelectedFeature = selectedFeatures.some(feature => {
+          const featureKeywords = getFeatureKeywords(feature);
+          return highlights.some((highlight: string) => 
+            featureKeywords.some(keyword => 
+              highlight.toLowerCase().includes(keyword.toLowerCase())
+            )
+          );
+        });
+        
+        if (!hasSelectedFeature) {
+          return false;
+        }
+      } catch (e) {
+        console.error("Error parsing highlights:", e);
+      }
+    }
+    
+    return true;
+  });
+  
+  // Helper to get keywords for features in different languages
+  const getFeatureKeywords = (feature: string): string[] => {
+    switch(feature) {
+      case 'vip':
+        return ['VIP', 'Vip', 'vip'];
+      case 'massage':
+        return ['Masaj', 'Massage', 'массаж', 'მასაჟი'];
+      case 'translator':
+        return ['Tercüman', 'Translator', 'переводчик', 'თარჯიმანი'];
+      case 'citytour':
+        return ['Şehir Turu', 'City Tour', 'Экскурсия', 'ქალაქის ტური'];
+      case 'spa':
+        return ['Spa', 'СПА', 'სპა'];
+      case 'premium':
+        return ['Premium', 'Премиум', 'პრემიუმი'];
+      case 'wine':
+        return ['Şarap', 'Wine', 'Вино', 'ღვინო'];
+      case 'border':
+        return ['Sınır', 'Border', 'граница', 'საზღვარი'];
+      case 'airport':
+        return ['Havalimanı', 'Airport', 'Аэропорт', 'აეროპორტი'];
+      default:
+        return [feature];
+    }
+  };
   
   if (isLoading) {
     return (
