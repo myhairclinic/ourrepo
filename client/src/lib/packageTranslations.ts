@@ -394,6 +394,18 @@ export const packageTranslations: Record<string, LanguageMap> = {
     [Language.Russian]: "Личный уход",
     [Language.Georgian]: "პირადი მოვლა"
   },
+  "packages.cityTours": {
+    [Language.Turkish]: "Şehir Turları",
+    [Language.English]: "City Tours",
+    [Language.Russian]: "Городские экскурсии",
+    [Language.Georgian]: "ქალაქის ტურები"
+  },
+  "packages.traditionalCuisine": {
+    [Language.Turkish]: "Geleneksel Mutfak",
+    [Language.English]: "Traditional Cuisine",
+    [Language.Russian]: "Традиционная кухня",
+    [Language.Georgian]: "ტრადიციული სამზარეულო"
+  },
   "packages.freeConsultation": {
     [Language.Turkish]: "Ücretsiz Konsültasyon",
     [Language.English]: "Free Consultation",
