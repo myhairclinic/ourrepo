@@ -7,7 +7,8 @@ import { useToast } from "@/hooks/use-toast";
 import { 
   UserPlus, Edit, Trash2, Search, ChevronDown, 
   ChevronLeft, ChevronRight, FileText, Folder,
-  Upload, Clock, Calendar, RotateCcw, CheckCircle
+  Upload, Clock, Calendar, RotateCcw, CheckCircle,
+  ListFilter, LayoutGrid, Users, ClipboardList, BadgeCheck
 } from "lucide-react";
 
 import {
@@ -104,8 +105,8 @@ type TreatmentFormValues = z.infer<typeof treatmentFormSchema>;
 const PatientManagement = () => {
   const [activeTab, setActiveTab] = useState("all-patients");
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [sourceFilter, setSourceFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [sourceFilter, setSourceFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedPatient, setSelectedPatient] = useState<any>(null);
   const [isNewPatientDialogOpen, setIsNewPatientDialogOpen] = useState(false);
@@ -113,6 +114,7 @@ const PatientManagement = () => {
   const [isNewTreatmentDialogOpen, setIsNewTreatmentDialogOpen] = useState(false);
   const [isDeleteConfirmDialogOpen, setIsDeleteConfirmDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<{ type: string; id: number } | null>(null);
+  const [viewMode, setViewMode] = useState<"list" | "grid">("list"); // Görünüm modu: liste veya grid
   
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -576,9 +578,9 @@ const PatientManagement = () => {
       (patient.email && patient.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
       patient.phone.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesStatus = !statusFilter || patient.status === statusFilter;
+    const matchesStatus = statusFilter === "all" || patient.status === statusFilter;
     
-    const matchesSource = !sourceFilter || 
+    const matchesSource = sourceFilter === "all" || 
       (sourceFilter === "appointment" && patient.notes && patient.notes.includes("Otomatik oluşturuldu. Randevu ID:")) ||
       (sourceFilter === "manual" && (!patient.notes || !patient.notes.includes("Otomatik oluşturuldu. Randevu ID:")));
     
@@ -606,40 +608,61 @@ const PatientManagement = () => {
         <TabsContent value="all-patients">
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-              <div className="flex flex-col sm:flex-row gap-2">
-                <div className="relative">
+              <div className="flex flex-col sm:flex-row gap-2 items-center">
+                <div className="relative flex-grow">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                   <Input
                     placeholder="Hasta ara..."
-                    className="pl-10 w-full sm:w-64"
+                    className="pl-10 w-full"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                 </div>
                 
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="w-full sm:w-40">
-                    <SelectValue placeholder="Durum" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Tümü</SelectItem>
-                    <SelectItem value="active">Aktif</SelectItem>
-                    <SelectItem value="inactive">Pasif</SelectItem>
-                    <SelectItem value="pending">Beklemede</SelectItem>
-                    <SelectItem value="completed">Tamamlandı</SelectItem>
-                  </SelectContent>
-                </Select>
-                
-                <Select value={sourceFilter} onValueChange={setSourceFilter}>
-                  <SelectTrigger className="w-full sm:w-52">
-                    <SelectValue placeholder="Kaynak" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Tüm Kaynaklar</SelectItem>
-                    <SelectItem value="appointment">Randevudan Oluşturulan</SelectItem>
-                    <SelectItem value="manual">Manuel Eklenen</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger className="w-full sm:w-40">
+                      <SelectValue placeholder="Durum" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Tümü</SelectItem>
+                      <SelectItem value="active">Aktif</SelectItem>
+                      <SelectItem value="inactive">Pasif</SelectItem>
+                      <SelectItem value="pending">Beklemede</SelectItem>
+                      <SelectItem value="completed">Tamamlandı</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <Select value={sourceFilter} onValueChange={setSourceFilter}>
+                    <SelectTrigger className="w-full sm:w-52">
+                      <SelectValue placeholder="Kaynak" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Tüm Kaynaklar</SelectItem>
+                      <SelectItem value="appointment">Randevudan Oluşturulan</SelectItem>
+                      <SelectItem value="manual">Manuel Eklenen</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <div className="flex items-center gap-2 border border-input rounded-md h-10 px-3 ml-2">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className={`h-8 w-8 ${viewMode === 'list' ? 'bg-muted' : ''}`}
+                      onClick={() => setViewMode('list')}
+                    >
+                      <ListFilter className="h-4 w-4" />
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className={`h-8 w-8 ${viewMode === 'grid' ? 'bg-muted' : ''}`}
+                      onClick={() => setViewMode('grid')}
+                    >
+                      <LayoutGrid className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
               </div>
               
               <Button 
@@ -682,9 +705,11 @@ const PatientManagement = () => {
                 <p className="mt-2 text-gray-500">Yeni hasta ekleyebilir veya filtreleri değiştirebilirsiniz.</p>
               </div>
             ) : (
-              <div className="bg-white overflow-hidden">
-                <div className="overflow-x-auto">
-                  <table className="min-w-full divide-y divide-gray-200">
+              <>
+                {viewMode === "list" ? (
+                  <div className="bg-white overflow-hidden rounded-lg shadow-sm">
+                    <div className="overflow-x-auto">
+                      <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -849,6 +874,8 @@ const PatientManagement = () => {
                   </div>
                 )}
               </div>
+                ) : null}
+              </>
             )}
           </div>
         </TabsContent>
