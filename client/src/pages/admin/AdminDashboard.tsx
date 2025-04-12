@@ -104,6 +104,9 @@ const AdminDashboard = () => {
       message: "",
       preferredDate: "",
       status: "pending",
+      appointmentTime: "",
+      notificationSent: false,
+      notificationScheduled: false,
     }
   });
   
@@ -1772,7 +1775,7 @@ const AdminDashboard = () => {
                             </div>
                             <div className="absolute bottom-2 left-2">
                               <span className="px-2 py-1 text-xs bg-primary text-white rounded-full">
-                                {packageItem.countryCode || "Genel"}
+                                {packageItem.countryOrigin || "Genel"}
                               </span>
                             </div>
                           </div>
