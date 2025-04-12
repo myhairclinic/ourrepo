@@ -682,88 +682,179 @@ const AdminDashboard = () => {
           
           {activeSection === "appointments" && (
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 mb-6">Randevu Yönetimi</h1>
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-                  <div className="relative w-full md:w-64">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input 
-                      type="text" 
-                      placeholder="Randevu ara..." 
-                      className="pl-10 pr-4 py-2 w-full rounded-lg border focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-                    />
+              <div className="flex items-center justify-between mb-6">
+                <h1 className="text-2xl font-bold text-gray-900">Randevu Yönetimi</h1>
+                <div className="flex items-center">
+                  <span className="text-xs px-2.5 py-1 bg-blue-100 text-blue-800 rounded-full mr-2">
+                    Son 24 saat: 3 yeni
+                  </span>
+                  <span className="text-xs px-2.5 py-1 bg-green-100 text-green-800 rounded-full">
+                    Bu hafta: 12 randevu
+                  </span>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div className="bg-white p-4 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-all duration-300 overflow-hidden relative group">
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/10 rounded-bl-[100%] transform transition-transform duration-500 group-hover:scale-125 origin-top-right"></div>
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0 p-3 rounded-lg shadow-sm bg-gradient-to-r from-blue-500 to-blue-600">
+                      <Calendar className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="ml-4 z-10">
+                      <h2 className="text-sm font-medium text-gray-500">Bekleyen Randevular</h2>
+                      <p className="text-2xl font-bold text-gray-900">{appointments?.filter(a => a.status === "pending").length || 0}</p>
+                    </div>
                   </div>
-                  
-                  <div className="flex flex-col md:flex-row gap-4">
-                    <select className="p-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                </div>
+                
+                <div className="bg-white p-4 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-all duration-300 overflow-hidden relative group">
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-green-500/10 rounded-bl-[100%] transform transition-transform duration-500 group-hover:scale-125 origin-top-right"></div>
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0 p-3 rounded-lg shadow-sm bg-gradient-to-r from-green-500 to-green-600">
+                      <CheckCircle className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="ml-4 z-10">
+                      <h2 className="text-sm font-medium text-gray-500">Onaylanmış Randevular</h2>
+                      <p className="text-2xl font-bold text-gray-900">{appointments?.filter(a => a.status === "confirmed").length || 0}</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-white p-4 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-all duration-300 overflow-hidden relative group">
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-red-500/10 rounded-bl-[100%] transform transition-transform duration-500 group-hover:scale-125 origin-top-right"></div>
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0 p-3 rounded-lg shadow-sm bg-gradient-to-r from-red-500 to-red-600">
+                      <XCircle className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="ml-4 z-10">
+                      <h2 className="text-sm font-medium text-gray-500">İptal Edilen Randevular</h2>
+                      <p className="text-2xl font-bold text-gray-900">{appointments?.filter(a => a.status === "cancelled").length || 0}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 mb-6">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                  <div className="flex items-center gap-3 flex-wrap md:flex-nowrap">
+                    <div className="relative w-full md:w-64">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      <input 
+                        type="text" 
+                        placeholder="Randevu ara..." 
+                        className="pl-10 pr-4 py-2.5 w-full rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent outline-none shadow-sm"
+                      />
+                    </div>
+                    
+                    <select className="p-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none shadow-sm bg-white">
                       <option value="">Tüm Durumlar</option>
                       <option value="pending">Bekleyen</option>
                       <option value="confirmed">Onaylanmış</option>
                       <option value="cancelled">İptal Edilmiş</option>
                     </select>
                     
-                    <button className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors">
-                      Yeni Randevu
-                    </button>
+                    <select className="p-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none shadow-sm bg-white">
+                      <option value="">Tüm Hizmetler</option>
+                      {services?.map(service => (
+                        <option key={service.id} value={service.id}>{service.titleTR}</option>
+                      ))}
+                    </select>
                   </div>
+                  
+                  <button className="px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 shadow-sm flex items-center">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Yeni Randevu
+                  </button>
                 </div>
                 
                 <div className="overflow-x-auto">
                   <table className="min-w-full divide-y divide-gray-200">
-                    <thead>
+                    <thead className="bg-gray-50">
                       <tr>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ad Soyad</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">İletişim</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hizmet</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tarih</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Durum</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">İşlemler</th>
+                        <th className="px-4 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ad Soyad</th>
+                        <th className="px-4 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">İletişim</th>
+                        <th className="px-4 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hizmet</th>
+                        <th className="px-4 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tarih</th>
+                        <th className="px-4 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Durum</th>
+                        <th className="px-4 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">İşlemler</th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                       {appointments && appointments.length > 0 ? (
                         appointments.map((appointment, index) => (
-                          <tr key={appointment.id || index}>
-                            <td className="px-4 py-3 whitespace-nowrap">
-                              <div className="text-sm font-medium text-gray-900">{appointment.name}</div>
+                          <tr key={appointment.id || index} className="hover:bg-gray-50 transition-colors">
+                            <td className="px-4 py-4 whitespace-nowrap">
+                              <div className="flex items-center">
+                                <div className="flex-shrink-0 h-9 w-9 rounded-full bg-blue-100 flex items-center justify-center">
+                                  <span className="text-blue-600 font-medium">{appointment.name.charAt(0).toUpperCase()}</span>
+                                </div>
+                                <div className="ml-3">
+                                  <div className="text-sm font-medium text-gray-900">{appointment.name}</div>
+                                  <div className="text-xs text-gray-500">{new Date(appointment.createdAt).toLocaleDateString('tr-TR', { year: 'numeric', month: 'short', day: 'numeric' })}</div>
+                                </div>
+                              </div>
                             </td>
-                            <td className="px-4 py-3 whitespace-nowrap">
-                              <div className="text-sm text-gray-900">{appointment.email}</div>
-                              <div className="text-xs text-gray-500">{appointment.phone}</div>
+                            <td className="px-4 py-4 whitespace-nowrap">
+                              <div className="flex flex-col">
+                                <div className="text-sm text-gray-900 flex items-center">
+                                  <Mail className="w-3.5 h-3.5 mr-1.5 text-gray-400" />
+                                  {appointment.email}
+                                </div>
+                                <div className="text-sm text-gray-500 flex items-center mt-1">
+                                  <Phone className="w-3.5 h-3.5 mr-1.5 text-gray-400" />
+                                  {appointment.phone || "Belirtilmemiş"}
+                                </div>
+                              </div>
                             </td>
-                            <td className="px-4 py-3 whitespace-nowrap">
-                              <div className="text-sm text-gray-900">Hizmet #{appointment.serviceId}</div>
+                            <td className="px-4 py-4 whitespace-nowrap">
+                              <div className="text-sm font-medium text-gray-900">
+                                {services?.find(s => s.id === appointment.serviceId)?.titleTR || `Hizmet #${appointment.serviceId}`}
+                              </div>
                             </td>
-                            <td className="px-4 py-3 whitespace-nowrap">
-                              <div className="text-sm text-gray-900">{new Date(appointment.createdAt).toLocaleDateString()}</div>
-                              <div className="text-xs text-gray-500">{appointment.preferredDate || "Belirtilmemiş"}</div>
+                            <td className="px-4 py-4 whitespace-nowrap">
+                              <div className="text-sm text-gray-900">{appointment.preferredDate || "Belirtilmemiş"}</div>
+                              {appointment.preferredDate && (
+                                <div className="text-xs text-gray-500 mt-1">
+                                  {(() => {
+                                    const daysLeft = Math.floor((new Date(appointment.preferredDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+                                    return daysLeft > 0 ? `${daysLeft} gün sonra` : daysLeft === 0 ? "Bugün" : "Geçmiş";
+                                  })()}
+                                </div>
+                              )}
                             </td>
-                            <td className="px-4 py-3 whitespace-nowrap">
-                              <span className={`px-2 py-1 text-xs rounded-full ${
+                            <td className="px-4 py-4 whitespace-nowrap">
+                              <span className={`px-2.5 py-1 text-xs font-medium rounded-full flex items-center w-fit ${
                                 appointment.status === "pending" ? "bg-yellow-100 text-yellow-800" : 
                                 appointment.status === "confirmed" ? "bg-green-100 text-green-800" :
                                 appointment.status === "cancelled" ? "bg-red-100 text-red-800" :
                                 "bg-gray-100 text-gray-800"
                               }`}>
-                                {appointment.status}
+                                <span className={`inline-block w-1.5 h-1.5 rounded-full mr-1.5 ${
+                                  appointment.status === "pending" ? "bg-yellow-500" : 
+                                  appointment.status === "confirmed" ? "bg-green-500" :
+                                  appointment.status === "cancelled" ? "bg-red-500" :
+                                  "bg-gray-500"
+                                }`}></span>
+                                {appointment.status === "pending" ? "Bekliyor" : 
+                                appointment.status === "confirmed" ? "Onaylandı" : 
+                                appointment.status === "cancelled" ? "İptal Edildi" : 
+                                appointment.status}
                               </span>
                             </td>
-                            <td className="px-4 py-3 whitespace-nowrap">
-                              <div className="flex space-x-2">
-                                <button className="p-1 text-blue-500 hover:text-blue-700">
-                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                                  </svg>
+                            <td className="px-4 py-4 whitespace-nowrap">
+                              <div className="flex space-x-1">
+                                <button className="p-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors duration-200 tooltip" title="Düzenle">
+                                  <Edit2 className="h-4 w-4" />
                                 </button>
-                                <button className="p-1 text-green-500 hover:text-green-700">
-                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                  </svg>
+                                <button className="p-1.5 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 transition-colors duration-200 tooltip" title="Onayla">
+                                  <Check className="h-4 w-4" />
                                 </button>
-                                <button className="p-1 text-red-500 hover:text-red-700">
-                                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                                  </svg>
+                                <button className="p-1.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors duration-200 tooltip" title="İptal Et">
+                                  <X className="h-4 w-4" />
+                                </button>
+                                <button className="p-1.5 bg-purple-50 text-purple-600 rounded-lg hover:bg-purple-100 transition-colors duration-200 tooltip" title="Bildirim Gönder">
+                                  <Bell className="h-4 w-4" />
                                 </button>
                               </div>
                             </td>
@@ -771,8 +862,12 @@ const AdminDashboard = () => {
                         ))
                       ) : (
                         <tr>
-                          <td colSpan={6} className="px-4 py-3 text-center text-sm text-gray-500">
-                            Henüz randevu bulunmamaktadır.
+                          <td colSpan={6} className="px-4 py-5 text-center text-gray-500">
+                            <div className="flex flex-col items-center justify-center py-6">
+                              <Calendar className="w-12 h-12 text-gray-300 mb-2" />
+                              <p className="text-base font-medium">Henüz randevu bulunmamaktadır.</p>
+                              <p className="text-sm mt-1">Yeni bir randevu eklemek için "Yeni Randevu" butonuna tıklayın.</p>
+                            </div>
                           </td>
                         </tr>
                       )}
@@ -780,15 +875,29 @@ const AdminDashboard = () => {
                   </table>
                 </div>
                 
-                <div className="mt-4 flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row justify-between items-center mt-6 space-y-4 sm:space-y-0">
                   <div className="text-sm text-gray-600">
-                    Toplam {appointments?.length || 0} randevu
+                    Toplam <span className="font-medium">{appointments?.length || 0}</span> randevu
                   </div>
                   
-                  <div className="flex space-x-2">
-                    <button className="px-3 py-1 border rounded-md text-sm">Önceki</button>
-                    <button className="px-3 py-1 bg-primary text-white rounded-md text-sm">1</button>
-                    <button className="px-3 py-1 border rounded-md text-sm">Sonraki</button>
+                  <div className="flex justify-center">
+                    <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                      <button className="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                        <ChevronLeft className="h-4 w-4" />
+                      </button>
+                      <button className="relative inline-flex items-center px-4 py-2 border border-primary bg-primary text-sm font-medium text-white">
+                        1
+                      </button>
+                      <button className="relative inline-flex items-center px-4 py-2 border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        2
+                      </button>
+                      <button className="relative inline-flex items-center px-4 py-2 border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        3
+                      </button>
+                      <button className="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                        <ChevronRight className="h-4 w-4" />
+                      </button>
+                    </nav>
                   </div>
                 </div>
               </div>
