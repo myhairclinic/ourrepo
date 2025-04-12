@@ -273,6 +273,12 @@ class TelegramBotService {
         return false;
       }
       
+      // TELEGRAM_BOT_TOKEN çevresel değişkeni kontrolü ekleyelim
+      if (!process.env.TELEGRAM_BOT_TOKEN) {
+        console.error('TELEGRAM_BOT_TOKEN çevresel değişkeni ayarlanmamış. Bot API isteği yapılamaz.');
+        return false;
+      }
+      
       // Kullanıcı adını düzenleyelim (@ işareti ekleyelim)
       let formattedUsername = username;
       if (!username.startsWith('@')) {
@@ -317,7 +323,7 @@ class TelegramBotService {
           return false;
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error in sendMessageToOperator for @${username}:`, error);
       return false;
     }
@@ -699,15 +705,21 @@ E-posta: ${appointment.email}
         return false;
       }
       
+      // TELEGRAM_BOT_TOKEN çevresel değişkeni kontrolü ekleyelim
+      if (!process.env.TELEGRAM_BOT_TOKEN) {
+        console.error('TELEGRAM_BOT_TOKEN çevresel değişkeni ayarlanmamış. Bot API isteği yapılamaz.');
+        return false;
+      }
+      
       console.log(`Sending message directly to chat ID: ${chatId}`);
       await this.bot.sendMessage(chatId.toString(), message, { parse_mode: 'Markdown' });
       console.log(`Successfully sent message to chat ID: ${chatId}`);
       return true;
-    } catch (error) {
+    } catch (error: any) {
       console.error(`Error sending message to chat ID ${chatId}:`, error);
       
       // Daha detaylı hata mesajları
-      if (error.message) {
+      if (error && error.message) {
         if (error.message.includes('chat not found')) {
           console.warn(`This usually happens when the user with chat ID ${chatId} has not started a conversation with the bot. They need to send /start to the bot first.`);
         } else if (error.message.includes('bot was blocked by the user')) {

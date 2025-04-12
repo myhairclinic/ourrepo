@@ -24,6 +24,16 @@ app.use((req, res, next) => {
   const path = req.path;
   let capturedJsonResponse: Record<string, any> | undefined = undefined;
 
+  // Telegram API istek bilgilerini görüntüle
+  if (path.includes('/telegram')) {
+    console.log('Telegram API isteği:', {
+      method: req.method,
+      path: req.path,
+      body: req.body,
+      headers: req.headers,
+    });
+  }
+
   const originalResJson = res.json;
   res.json = function (bodyJson, ...args) {
     capturedJsonResponse = bodyJson;
