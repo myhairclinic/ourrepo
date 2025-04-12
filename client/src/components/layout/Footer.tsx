@@ -52,7 +52,7 @@ export default function Footer() {
                 <img 
                   src="/images/logo.png" 
                   alt="MyHair Clinic Logo" 
-                  className="h-16 object-contain"
+                  className="h-10 object-contain"
                 />
               </Link>
               <div className="h-1 w-16 bg-blue-500 rounded-full"></div>
