@@ -92,12 +92,16 @@ export default function Header() {
           <div className="flex justify-between items-center">
             {/* Logo */}
             <Link href={addPrefix("/")} className="flex items-center">
-              <img 
-                src="/images/logo.png" 
-                alt="MyHair Clinic" 
-                className="h-16"
-                style={{ filter: 'drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.1))' }}
-              />
+              <div className="w-48 h-full flex items-center justify-start">
+                <img 
+                  src="/images/logo.png" 
+                  alt="MyHair Clinic" 
+                  className="max-h-20 w-auto object-contain"
+                  style={{ 
+                    filter: 'drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.1))',
+                  }}
+                />
+              </div>
             </Link>
 
             {/* Desktop Navigation */}
@@ -186,11 +190,11 @@ export default function Header() {
         isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
       } md:hidden`}>
         <div className="flex justify-between items-center p-4 border-b">
-          <div className="flex items-center">
+          <div className="w-36 h-full flex items-center justify-start">
             <img 
               src="/images/logo.png" 
               alt="MyHair Clinic" 
-              className="h-10"
+              className="max-h-12 w-auto object-contain"
               style={{ filter: 'drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.1))' }}
             />
           </div>
