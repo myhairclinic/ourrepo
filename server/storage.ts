@@ -86,7 +86,6 @@ export interface IStorage {
   updateProduct(id: number, product: Partial<InsertProduct>): Promise<Product | undefined>;
   deleteProduct(id: number): Promise<boolean>;
   clearProducts(): Promise<boolean>;
-  clearProducts(): Promise<void>;
 
   // Package operations
   getPackages(): Promise<Package[]>;
@@ -168,8 +167,9 @@ export interface IStorage {
 }
 
 export class MemStorage implements IStorage {
-  async clearProducts(): Promise<void> {
+  async clearProducts(): Promise<boolean> {
     this.products.clear();
+    return true;
   }
   private users: Map<number, User>;
   private services: Map<number, Service>;
@@ -1483,8 +1483,9 @@ export class DatabaseStorage implements IStorage {
     return true;
   }
   
-  async clearProducts(): Promise<void> {
+  async clearProducts(): Promise<boolean> {
     await db.delete(products);
+    return true;
   }
 
   // Package operations
