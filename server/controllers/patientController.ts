@@ -135,7 +135,7 @@ export const updatePatientDocument = async (req: Request, res: Response) => {
     }
 
     const validatedData = insertPatientDocumentSchema.partial().parse(req.body);
-    const document = await storage.getPatientDocumentById(documentId);
+    const document = await storage.getDocumentById(documentId);
     
     if (!document) {
       return res.status(404).json({ message: "Döküman bulunamadı" });
@@ -157,7 +157,7 @@ export const deletePatientDocument = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Geçersiz döküman ID" });
     }
 
-    const document = await storage.getPatientDocumentById(documentId);
+    const document = await storage.getDocumentById(documentId);
     if (!document) {
       return res.status(404).json({ message: "Döküman bulunamadı" });
     }
@@ -178,7 +178,7 @@ export const getPatientTreatmentRecords = async (req: Request, res: Response) =>
       return res.status(400).json({ message: "Geçersiz hasta ID" });
     }
 
-    const records = await storage.getPatientTreatmentRecords(patientId);
+    const records = await storage.getTreatmentRecords(patientId);
     res.status(200).json(records);
   } catch (error) {
     console.error(`Hasta ID ${req.params.patientId} için tedavi kayıtları getirilirken hata oluştu:`, error);
