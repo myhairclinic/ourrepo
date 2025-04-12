@@ -1551,7 +1551,7 @@ const AdminDashboard = () => {
                 <div className="bg-gradient-to-r from-green-500 to-green-600 p-6 rounded-xl shadow-md text-white flex items-center justify-between">
                   <div>
                     <p className="text-green-100 text-sm font-medium mb-1">Aktif Hizmetler</p>
-                    <h3 className="text-3xl font-bold">{services?.filter(s => s.isActive).length || 0}</h3>
+                    <h3 className="text-3xl font-bold">{services?.filter((s: any) => s.isActive).length || 0}</h3>
                   </div>
                   <div className="bg-white/20 p-3 rounded-lg">
                     <CheckCircle className="w-6 h-6 text-white" />
@@ -1561,7 +1561,7 @@ const AdminDashboard = () => {
                 <div className="bg-gradient-to-r from-amber-500 to-amber-600 p-6 rounded-xl shadow-md text-white flex items-center justify-between">
                   <div>
                     <p className="text-amber-100 text-sm font-medium mb-1">Son Güncelleme</p>
-                    <h3 className="text-lg font-bold">{services?.length ? new Date(Math.max(...services.map(s => new Date(s.updatedAt).getTime()))).toLocaleDateString() : "-"}</h3>
+                    <h3 className="text-lg font-bold">{services?.length ? new Date(Math.max(...services.map((s: any) => new Date(s.updatedAt).getTime()))).toLocaleDateString() : "-"}</h3>
                   </div>
                   <div className="bg-white/20 p-3 rounded-lg">
                     <Clock className="w-6 h-6 text-white" />
@@ -1623,7 +1623,7 @@ const AdminDashboard = () => {
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
                         {services && services.length > 0 ? (
-                          services.map((service, index) => (
+                          services.map((service: any, index: number) => (
                             <tr key={service.id || index} className="hover:bg-gray-50 transition-colors">
                               <td className="px-5 py-4 whitespace-nowrap">
                                 <div className="flex items-center">
@@ -1752,7 +1752,7 @@ const AdminDashboard = () => {
                 <div className="p-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {packages && packages.length > 0 ? (
-                      packages.map((packageItem, index) => (
+                      packages.map((packageItem: any, index: number) => (
                         <div key={packageItem.id || index} className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                           <div className="relative h-48 bg-gray-200">
                             {packageItem.imageUrl && (
