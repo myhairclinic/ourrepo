@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { useAdmin } from "@/hooks/use-admin";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Settings, Users, Package, MessageCircle, Calendar, FileText, Image, Star, HelpCircle, BookOpen, Package2, BarChart, ArrowLeft, LogOut, ShoppingBag, Heart, Globe, Search, ChevronDown, Bell, User, Menu, X, PlusCircle, Trash2, Edit, Download, Upload, Eye, HardDrive, List, LayoutGrid, LayoutList, Shield, Send, ChevronLeft, ChevronRight, CheckCircle, XCircle, Clock, Pencil, Activity, Layers, Plus, Edit2, Mail, Phone, Check } from "lucide-react";
+import { Loader2, Settings, Users, Package, MessageCircle, Calendar, FileText, Image, Star, HelpCircle, BookOpen, Package2, BarChart, ArrowLeft, LogOut, ShoppingBag, Heart, Globe, Search, ChevronDown, Bell, User, Menu, X, PlusCircle, Trash2, Edit, Download, Upload, Eye, HardDrive, List, LayoutGrid, LayoutList, Shield, Send, ChevronLeft, ChevronRight, CheckCircle, XCircle, Clock, Pencil, Activity, Layers, Plus, Edit2, Mail, Phone, Check, AlertCircle, Info } from "lucide-react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -68,6 +68,9 @@ const appointmentFormSchema = z.object({
   phone: z.string().min(6, { message: "Geçerli bir telefon numarası giriniz." }),
   serviceId: z.string({ required_error: "Lütfen bir hizmet seçiniz." }),
   preferredDate: z.string().optional(),
+  appointmentTime: z.string().optional(),
+  notificationSent: z.boolean().optional(),
+  notificationScheduled: z.boolean().optional(),
   message: z.string().optional(),
   status: z.enum(["pending", "confirmed", "cancelled", "completed"]).default("pending"),
 });
@@ -81,6 +84,9 @@ const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState("dashboard");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAppointmentDialogOpen, setIsAppointmentDialogOpen] = useState(false);
+  const [isTimeSelectionDialogOpen, setIsTimeSelectionDialogOpen] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState<any>(null);
+  const [selectedAppointmentTime, setSelectedAppointmentTime] = useState("");
   const [stats, setStats] = useState({
     appointments: 0,
     products: 0,
@@ -243,6 +249,74 @@ const AdminDashboard = () => {
         description: `Randevu durumu güncellenirken bir hata oluştu. Lütfen tekrar deneyin.`,
         variant: "destructive",
       });
+    }
+  };
+  
+  // Saat seçimiyle birlikte randevu onaylama fonksiyonu
+  const confirmAppointmentWithTime = async (id: number, appointmentTime: string) => {
+    try {
+      // Randevu saatini ve durumunu güncelleyen API isteği
+      const res = await fetch(`/api/appointments/${id}/confirm`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          appointmentTime,
+          status: "confirmed",
+          notificationScheduled: true,
+        }),
+      });
+      
+      if (!res.ok) {
+        throw new Error(`Randevu onaylanırken bir hata oluştu: ${res.statusText}`);
+      }
+      
+      // Telegram bildirimi gönder
+      await sendTelegramNotification(id);
+      
+      // Modalı kapat ve state'i temizle
+      setIsTimeSelectionDialogOpen(false);
+      setSelectedAppointment(null);
+      setSelectedAppointmentTime("");
+      
+      // Randevular listesini yenile
+      refetchAppointments();
+      
+      // Başarı mesajı göster
+      toast({
+        title: "Randevu Onaylandı",
+        description: `Randevu saat ${appointmentTime} olarak onaylandı ve bildirim gönderildi. Randevudan 1 saat önce otomatik hatırlatma yapılacak.`,
+        variant: "default",
+      });
+      
+    } catch (error) {
+      console.error('Randevu onaylama hatası:', error);
+      
+      // Hata mesajı göster
+      toast({
+        title: "Hata",
+        description: `Randevu onaylanırken bir hata oluştu. Lütfen tekrar deneyin.`,
+        variant: "destructive",
+      });
+    }
+  };
+  
+  // Telegram bildirimi gönderme fonksiyonu
+  const sendTelegramNotification = async (appointmentId: number) => {
+    try {
+      const res = await fetch(`/api/telegram/send-notification/${appointmentId}`, {
+        method: 'POST'
+      });
+      
+      if (!res.ok) {
+        throw new Error(`Bildirim gönderilirken bir hata oluştu: ${res.statusText}`);
+      }
+      
+      return true;
+    } catch (error) {
+      console.error('Telegram bildirimi gönderme hatası:', error);
+      throw error;
     }
   };
   
@@ -1052,6 +1126,97 @@ const AdminDashboard = () => {
                 </DialogContent>
               </Dialog>
               
+              {/* Randevu saat seçim modalı */}
+              <Dialog open={isTimeSelectionDialogOpen} onOpenChange={setIsTimeSelectionDialogOpen}>
+                <DialogContent className="sm:max-w-[450px]">
+                  <DialogHeader>
+                    <DialogTitle>Randevu Saati Seçimi</DialogTitle>
+                    <DialogDescription>
+                      {selectedAppointment ? `${selectedAppointment.name} için randevu saati seçin` : "Randevu saati seçin"}
+                    </DialogDescription>
+                  </DialogHeader>
+                  
+                  <div className="py-4">
+                    <div className="mb-4">
+                      <h3 className="text-sm font-medium mb-2 text-gray-700">Tarih</h3>
+                      <div className="flex items-center gap-2 p-3 bg-blue-50 rounded-lg border border-blue-100">
+                        <Calendar className="h-5 w-5 text-blue-500" />
+                        <span className="text-sm">
+                          {selectedAppointment?.preferredDate 
+                            ? new Date(selectedAppointment.preferredDate).toLocaleDateString('tr-TR', {
+                                day: 'numeric',
+                                month: 'long',
+                                year: 'numeric',
+                                weekday: 'long'
+                              })
+                            : "Tarih seçilmedi"
+                          }
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <h3 className="text-sm font-medium mb-3 text-gray-700">Saati Seçin</h3>
+                    <div className="grid grid-cols-4 gap-2 mb-4">
+                      {["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", 
+                        "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00"].map((time) => (
+                        <button 
+                          key={time}
+                          onClick={() => setSelectedAppointmentTime(time)}
+                          className={`py-2 px-1 text-center rounded-md text-sm border transition-colors ${
+                            selectedAppointmentTime === time 
+                              ? 'bg-primary text-white border-primary' 
+                              : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-50'
+                          }`}
+                        >
+                          {time}
+                        </button>
+                      ))}
+                    </div>
+                    
+                    <div className="mt-6 flex flex-col space-y-2">
+                      <div className="flex items-center gap-2 text-sm text-amber-600">
+                        <AlertCircle className="h-4 w-4" />
+                        <p>Randevu onaylandıktan sonra hasta ve personelinize Telegram üzerinden bildirim gönderilecektir.</p>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-gray-500">
+                        <Info className="h-4 w-4" />
+                        <p>Randevudan 1 saat önce hatırlatma otomatik olarak gönderilecektir.</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <DialogFooter className="flex justify-end gap-2">
+                    <Button 
+                      variant="outline" 
+                      onClick={() => {
+                        setIsTimeSelectionDialogOpen(false);
+                        setSelectedAppointment(null);
+                        setSelectedAppointmentTime("");
+                      }}
+                    >
+                      İptal
+                    </Button>
+                    <Button 
+                      onClick={() => {
+                        if (selectedAppointment && selectedAppointmentTime) {
+                          // Randevuyu onayla ve saat bilgisini güncelle
+                          confirmAppointmentWithTime(selectedAppointment.id, selectedAppointmentTime);
+                        } else {
+                          toast({
+                            title: "Hata",
+                            description: "Lütfen bir saat seçin",
+                            variant: "destructive",
+                          });
+                        }
+                      }}
+                      disabled={!selectedAppointmentTime}
+                    >
+                      Randevuyu Onayla
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+              
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div className="bg-white p-4 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-all duration-300 overflow-hidden relative group">
                   <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/10 rounded-bl-[100%] transform transition-transform duration-500 group-hover:scale-125 origin-top-right"></div>
@@ -1237,10 +1402,9 @@ const AdminDashboard = () => {
                                 </button>
                                 <button 
                                   onClick={() => {
-                                    const confirmAction = window.confirm(`${appointment.name} adlı kişinin randevusunu onaylamak istediğinizden emin misiniz?`);
-                                    if (confirmAction) {
-                                      updateAppointmentStatus(appointment.id, "confirmed");
-                                    }
+                                    // Randevu onaylamak için saat seçim modalını açıyoruz
+                                    setSelectedAppointment(appointment);
+                                    setIsTimeSelectionDialogOpen(true);
                                   }}
                                   disabled={appointment.status === "confirmed"}
                                   className={`p-1.5 ${appointment.status === "confirmed" ? "bg-gray-50 text-gray-400 cursor-not-allowed" : "bg-green-50 text-green-600 hover:bg-green-100 cursor-pointer"} rounded-lg transition-colors duration-200 tooltip`} 
