@@ -117,7 +117,7 @@ const predefinedMessageSchema = z.object({
 // Telegram bot yönetim bileşeni
 export default function TelegramBotManagement() {
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState("contacts");
+  const [activeTab, setActiveTab] = useState("staff");
   const [selectedContact, setSelectedContact] = useState<any>(null);
   const [messageText, setMessageText] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -125,6 +125,8 @@ export default function TelegramBotManagement() {
   const [selectedPredefinedMessage, setSelectedPredefinedMessage] = useState<any>(null);
   const [editingPredefinedMessage, setEditingPredefinedMessage] = useState<any>(null);
   const [isPredefinedMessageDialogOpen, setIsPredefinedMessageDialogOpen] = useState(false);
+  const [isOperatorDialogOpen, setIsOperatorDialogOpen] = useState(false);
+  const [editingOperator, setEditingOperator] = useState<any>(null);
   
   // Kişileri getir
   const { 
@@ -636,7 +638,10 @@ export default function TelegramBotManagement() {
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <h3 className="text-lg font-medium">Telegram Operatörleri</h3>
-                  <Button size="sm">
+                  <Button size="sm" onClick={() => {
+                    setEditingOperator(null);
+                    setIsOperatorDialogOpen(true);
+                  }}>
                     <UserPlus className="h-4 w-4 mr-2" />
                     Personel Ekle
                   </Button>
@@ -664,8 +669,28 @@ export default function TelegramBotManagement() {
                           </TableCell>
                           <TableCell>
                             <div className="flex space-x-2">
-                              <Button variant="outline" size="sm">Düzenle</Button>
-                              <Button variant="destructive" size="sm">Kaldır</Button>
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                onClick={() => {
+                                  setEditingOperator(operator);
+                                  setIsOperatorDialogOpen(true);
+                                }}
+                              >
+                                Düzenle
+                              </Button>
+                              <Button 
+                                variant="destructive" 
+                                size="sm" 
+                                onClick={() => {
+                                  // Operatörü sil
+                                  const newOperators = botSettings.operators.filter((op: any) => op.id !== operator.id);
+                                  const updatedSettings = { ...botSettings, operators: newOperators };
+                                  updateBotSettingsMutation.mutate(updatedSettings);
+                                }}
+                              >
+                                Kaldır
+                              </Button>
                             </div>
                           </TableCell>
                         </TableRow>
@@ -674,7 +699,15 @@ export default function TelegramBotManagement() {
                       <TableRow>
                         <TableCell colSpan={4} className="text-center py-8">
                           <p className="text-muted-foreground">Henüz operatör eklenmemiş.</p>
-                          <Button variant="outline" size="sm" className="mt-4">
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="mt-4"
+                            onClick={() => {
+                              setEditingOperator(null);
+                              setIsOperatorDialogOpen(true);
+                            }}
+                          >
                             <UserPlus className="h-4 w-4 mr-2" />
                             İlk Operatörü Ekle
                           </Button>
