@@ -263,40 +263,52 @@ class TelegramBotService {
   // Operatöre kullanıcı adı ile mesaj gönder
   async sendMessageToOperator(username: string, message: string) {
     try {
-      if (!this.bot) {
+      if (!this._isInitialized || !this.bot) {
         console.error(`Bot is not initialized, cannot send message to @${username}`);
         return false;
       }
       
-      console.log(`Getting chat ID for @${username}...`);
+      if (!username) {
+        console.error('Invalid username: Username cannot be empty');
+        return false;
+      }
+      
+      // Kullanıcı adını düzenleyelim (@ işareti ekleyelim)
+      let formattedUsername = username;
+      if (!username.startsWith('@')) {
+        formattedUsername = `@${username}`;
+      }
+      
+      console.log(`Getting chat ID for ${formattedUsername}...`);
       try {
         // Kullanıcı adına göre chat ID getir
-        const chat = await this.bot.getChat(`@${username}`);
-        console.log(`Got chat for @${username}:`, chat?.id ? 'Chat ID found' : 'No chat ID found');
+        const chat = await this.bot.getChat(formattedUsername);
+        console.log(`Got chat for ${formattedUsername}:`, chat?.id ? 'Chat ID found' : 'No chat ID found');
         
         if (chat && chat.id) {
-          console.log(`Sending message to @${username} with chat ID: ${chat.id}`);
+          console.log(`Sending message to ${formattedUsername} with chat ID: ${chat.id}`);
           await this.bot.sendMessage(chat.id.toString(), message, { parse_mode: 'Markdown' });
-          console.log(`Successfully sent message to @${username}`);
+          console.log(`Successfully sent message to ${formattedUsername}`);
           return true;
         } else {
-          console.warn(`No chat ID found for @${username}`);
+          console.warn(`No chat ID found for ${formattedUsername}`);
           return false;
         }
       } catch (chatError: any) {
         // Eğer kullanıcı bulunamazsa veya bota mesaj atmamışsa direkt kullanıcı adıyla deneyelim
-        console.log(`Error getting chat for @${username}:`, chatError?.message || 'Unknown error');
+        console.log(`Error getting chat for ${formattedUsername}:`, chatError?.message || 'Unknown error');
         
         if (chatError?.message?.includes('chat not found')) {
-          console.warn(`User @${username} has not started a conversation with the bot yet. They need to send /start command to the bot first.`);
+          console.warn(`User ${formattedUsername} has not started a conversation with the bot yet. They need to send /start command to @MyHairClinicBot first.`);
         }
         
         try {
-          await this.bot.sendMessage(`@${username}`, message, { parse_mode: 'Markdown' });
-          console.log(`Successfully sent direct message to @${username}`);
+          // Son çare olarak direkt kullanıcı adına göndermeyi deneyelim
+          await this.bot.sendMessage(formattedUsername, message, { parse_mode: 'Markdown' });
+          console.log(`Successfully sent direct message to ${formattedUsername}`);
           return true;
         } catch (directError: any) {
-          console.error(`Failed to send direct message to @${username}:`, directError?.message || 'Unknown error');
+          console.error(`Failed to send direct message to ${formattedUsername}:`, directError?.message || 'Unknown error');
           
           if (directError?.message?.includes('chat not found')) {
             console.warn(`OPERATOR NOTIFICATION FAILED: User @${username} must first start a conversation with the bot by sending /start command to @MyHairClinicBot`);
@@ -677,8 +689,13 @@ E-posta: ${appointment.email}
   // Chat ID ile direkt mesaj gönder
   async sendMessageByChatId(chatId: number, message: string) {
     try {
-      if (!this.bot) {
+      if (!this._isInitialized || !this.bot) {
         console.error(`Bot is not initialized, cannot send message to chat ID ${chatId}`);
+        return false;
+      }
+      
+      if (!chatId) {
+        console.error('Invalid chat ID: Chat ID cannot be empty or zero.');
         return false;
       }
       
@@ -688,9 +705,18 @@ E-posta: ${appointment.email}
       return true;
     } catch (error) {
       console.error(`Error sending message to chat ID ${chatId}:`, error);
-      if (error.message && error.message.includes('chat not found')) {
-        console.warn(`This usually happens when the user with chat ID ${chatId} has not started a conversation with the bot. They need to send /start to the bot first.`);
+      
+      // Daha detaylı hata mesajları
+      if (error.message) {
+        if (error.message.includes('chat not found')) {
+          console.warn(`This usually happens when the user with chat ID ${chatId} has not started a conversation with the bot. They need to send /start to the bot first.`);
+        } else if (error.message.includes('bot was blocked by the user')) {
+          console.warn(`The user with chat ID ${chatId} has blocked the bot. They need to unblock the bot before messages can be sent.`);
+        } else if (error.message.includes('ETELEGRAM')) {
+          console.warn(`Telegram API error: ${error.message}. Please check if the TELEGRAM_BOT_TOKEN is valid and the bot is properly set up.`);
+        }
       }
+      
       return false;
     }
   }
@@ -708,8 +734,13 @@ E-posta: ${appointment.email}
   // Operatörlere bildirim gönder - dışarıdan erişilebilir
   async sendOperatorNotification(message: string): Promise<boolean> {
     try {
+      if (!message || message.trim() === '') {
+        console.error('Invalid message: Message cannot be empty');
+        return false;
+      }
+      
       if (!this._isInitialized || !this.bot) {
-        console.warn('Bot is not initialized, cannot send notification');
+        console.warn('Bot is not initialized, cannot send notification. Check if the Telegram bot service is active.');
         return false;
       }
       
@@ -717,31 +748,41 @@ E-posta: ${appointment.email}
       // Bot ayarlarını al ve operatör listesini getir
       const [botSettings] = await db.select().from(botSettingsTable);
       const operators = botSettings?.operators || [];
-      console.log('Found operators:', JSON.stringify(operators));
+      console.log(`Found ${operators.length} operators in settings.`);
       
       if (!operators.length) {
-        console.warn('No operators found in settings! Add operators to bot settings.');
+        console.warn('No operators found in settings! Please add operators in the bot settings panel.');
+        return false;
+      }
+      
+      const activeOperators = operators.filter(op => op.isActive && op.telegramUsername);
+      if (activeOperators.length === 0) {
+        console.warn('No active operators found with valid Telegram usernames. Please configure operators in bot settings.');
         return false;
       }
       
       let success = false;
       let failedOperators = [];
+      let successfulOperators = [];
       
       // Tüm aktif operatörlere mesajı gönder
-      for (const operator of operators) {
-        if (operator.isActive && operator.telegramUsername) {
-          console.log(`Sending message to operator: ${operator.telegramUsername}`);
-          const result = await this.sendMessageToOperator(operator.telegramUsername, message);
-          console.log(`Result of sending to ${operator.telegramUsername}:`, result);
-          
-          if (result) {
-            success = true;
-          } else {
-            failedOperators.push(operator.telegramUsername);
-          }
+      for (const operator of activeOperators) {
+        console.log(`Attempting to send message to operator: ${operator.name} (${operator.telegramUsername})`);
+        const result = await this.sendMessageToOperator(operator.telegramUsername, message);
+        
+        if (result) {
+          console.log(`✓ Successfully sent message to ${operator.telegramUsername}`);
+          success = true;
+          successfulOperators.push(operator.telegramUsername);
         } else {
-          console.log(`Skipping inactive or missing username operator:`, operator);
+          console.warn(`✗ Failed to send message to ${operator.telegramUsername}`);
+          failedOperators.push(operator.telegramUsername);
         }
+      }
+      
+      // Özet bilgileri logla
+      if (successfulOperators.length > 0) {
+        console.log(`Successfully sent messages to ${successfulOperators.length} operators: ${successfulOperators.join(', ')}`);
       }
       
       if (failedOperators.length > 0) {

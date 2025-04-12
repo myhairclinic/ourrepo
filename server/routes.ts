@@ -610,36 +610,61 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { type, chatId } = req.body;
       
-      if (!chatId) {
+      if (!chatId || chatId.trim() === '') {
         return res.status(400).json({ 
           success: false, 
           message: "ChatId veya kullanıcı adı belirtilmemiş" 
         });
       }
       
+      const now = new Date();
+      const formattedDate = now.toLocaleString("tr-TR", { 
+        year: 'numeric', 
+        month: '2-digit', 
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      
+      const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+      const formattedTime = oneHourLater.toLocaleTimeString("tr-TR", {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      
       let message = "Bu bir test bildirim mesajıdır.";
+      let messageTitle = '';
       
       // Bildirimin türüne göre farklı mesaj içeriği oluştur
       if (type === "new_appointment") {
-        message = "🔔 Yeni Randevu Bildirimi (TEST)\n\n" +
+        messageTitle = '🔔 Yeni Randevu Bildirimi';
+        message = `*${messageTitle} (TEST)*\n\n` +
+          "👤 *Hasta Bilgileri*\n" +
           "İsim: Test Müşteri\n" +
-          "Hizmet: Saç Ekimi\n" +
-          "Tarih: " + new Date().toLocaleString("tr-TR") + "\n" +
           "Telefon: +90 555 123 4567\n" +
           "E-posta: test@example.com\n\n" +
-          "Bu bir test mesajıdır, gerçek bir randevu değildir.";
-      } else if (type === "appointment_reminder") {
-        message = "⏰ Randevu Hatırlatması (TEST)\n\n" +
-          "Randevunuz 1 saat içinde başlayacak!\n" +
-          "İsim: Test Müşteri\n" +
+          "💇 *Randevu Detayları*\n" +
           "Hizmet: Saç Ekimi\n" +
-          "Saat: " + new Date(Date.now() + 60 * 60 * 1000).toLocaleTimeString("tr-TR") + "\n\n" +
-          "Bu bir test mesajıdır, gerçek bir randevu değildir.";
+          "Tarih: " + formattedDate + "\n\n" +
+          "📋 Ek Bilgiler: Saç analizi için gelecek\n\n" +
+          "_Bu bir test mesajıdır, gerçek bir randevu değildir._";
+      } else if (type === "appointment_reminder") {
+        messageTitle = '⏰ Randevu Hatırlatması';
+        message = `*${messageTitle} (TEST)*\n\n` +
+          "Aşağıdaki randevunuz 1 saat içinde başlayacak!\n\n" +
+          "👤 *Hasta Bilgileri*\n" +
+          "İsim: Test Müşteri\n" +
+          "Telefon: +90 555 123 4567\n\n" +
+          "💇 *Randevu Detayları*\n" +
+          "Hizmet: Saç Ekimi\n" +
+          "Saat: " + formattedTime + "\n\n" +
+          "_Bu bir test mesajıdır, gerçek bir randevu değildir._";
       }
       
       // @ işareti içeriyorsa kullanıcı adı olarak kabul et
       let result;
       if (chatId.startsWith('@')) {
+        console.log(`Test bildirimi gönderiliyor: ${messageTitle} -> kullanıcı: ${chatId}`);
         result = await telegramBotService.sendMessageToOperator(chatId.substring(1), message);
       } else {
         // Chat ID olarak kabul et
@@ -650,22 +675,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
             message: "Geçersiz chat ID formatı. Sayı olmalı veya @ ile başlayan kullanıcı adı olmalı." 
           });
         }
+        console.log(`Test bildirimi gönderiliyor: ${messageTitle} -> chat ID: ${chatIdNumber}`);
         result = await telegramBotService.sendMessageByChatId(chatIdNumber, message);
       }
       
       if (result) {
-        res.json({ success: true, message: "Test bildirimi başarıyla gönderildi" });
+        console.log(`Test bildirimi başarıyla gönderildi: ${type}`);
+        res.json({ 
+          success: true, 
+          message: "Test bildirimi başarıyla gönderildi",
+          type: type
+        });
       } else {
+        console.warn(`Test bildirimi gönderilemedi: ${type} - Chat ID: ${chatId}`);
         res.status(500).json({ 
           success: false, 
           message: "Bildirim gönderilemedi. Kullanıcı botu başlatmış mı kontrol edin (/start komutu)." 
         });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Test bildirimi gönderme hatası:", error);
       res.status(500).json({ 
         success: false, 
-        message: `Test bildirimi gönderilirken hata oluştu: ${error.message}` 
+        message: `Test bildirimi gönderilirken hata oluştu: ${error?.message || "Bilinmeyen hata"}` 
       });
     }
   });
