@@ -217,6 +217,7 @@ export const packages = pgTable("packages", {
   contentRU: text("content_ru").notNull(),
   contentKA: text("content_ka").notNull(),
   countryOrigin: text("country_origin").notNull(), // ülke kodu: TR, AZ, UA, RU, IR, EU, etc.
+  country: text("country"), // Ülke başına bir paket gösterme için ülke kodu
   accommodationTR: text("accommodation_tr").notNull(),
   accommodationEN: text("accommodation_en").notNull(),
   accommodationRU: text("accommodation_ru").notNull(),

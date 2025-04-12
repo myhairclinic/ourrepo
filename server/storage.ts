@@ -1569,6 +1569,24 @@ export class DatabaseStorage implements IStorage {
     const [pkg] = await db.select().from(packages).where(eq(packages.id, id));
     return pkg;
   }
+  
+  async getOnePackagePerCountry(): Promise<Package[]> {
+    // PostgreSQL'de DISTINCT ON kullanarak her ülke için bir paket al
+    // Bu SQL'in DrizzleORM eşdeğeri yok, bu nedenle raw SQL kullanıyoruz
+    const result = await db.execute(
+      sql`SELECT DISTINCT ON (country) * 
+          FROM ${packages} 
+          WHERE country IS NOT NULL 
+          ORDER BY country, "updatedAt" DESC`
+    );
+    return result.rows as Package[];
+  }
+  
+  async getFeaturedPackages(): Promise<Package[]> {
+    return await db.select()
+      .from(packages)
+      .where(eq(packages.isFeatured, true));
+  }
 
   async getPackageBySlug(slug: string): Promise<Package | undefined> {
     const [pkg] = await db.select().from(packages).where(eq(packages.slug, slug));
