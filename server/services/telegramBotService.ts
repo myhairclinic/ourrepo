@@ -5,14 +5,22 @@ import {
   telegramMessages as messages, 
   telegramPredefinedMessages as predefinedMessages, 
   telegramBotSettings as botSettingsTable,
-  appointments
+  appointments,
+  services
 } from '@shared/schema';
 import { eq, desc, and, gt, lte } from 'drizzle-orm';
+import { Appointment } from '@shared/schema';
 
 // Telegram Bot işlemleri için servis
 class TelegramBotService {
   private bot: TelegramBot | null = null;
-  private isInitialized = false;
+  
+  // isInitialized özelliğini dışarıdan erişilebilir yap
+  get isInitialized(): boolean {
+    return this._isInitialized;
+  }
+  
+  private _isInitialized = false;
 
   // Bot başlatma fonksiyonu
   async initialize() {
@@ -33,7 +41,7 @@ class TelegramBotService {
       if (isActive) {
         this.bot = new TelegramBot(token, { polling: true });
         this.setupEventHandlers();
-        this.isInitialized = true;
+        this._isInitialized = true;
         console.log('Telegram bot initialized successfully');
       } else {
         console.log('Telegram bot is disabled in settings');
@@ -50,7 +58,7 @@ class TelegramBotService {
     try {
       await this.bot.stopPolling();
       this.bot = null;
-      this.isInitialized = false;
+      this._isInitialized = false;
       console.log('Telegram bot stopped successfully');
     } catch (error) {
       console.error('Error stopping Telegram bot:', error);
@@ -617,6 +625,44 @@ E-posta: ${appointment.email}
     } catch (error) {
       console.error('Error updating bot settings:', error);
       return { success: false, error: 'Bot settings could not be updated' };
+    }
+  }
+  
+  // Servis adını dışarıdan erişilebilir yap
+  async getServiceNamePublic(serviceId: number): Promise<string> {
+    return this.getServiceName(serviceId);
+  }
+  
+  // Formatlı randevu mesajı oluştur - dışarıdan erişilebilir
+  formatAppointmentMessage(appointment: any, serviceName: string, date: Date): string {
+    return this.formatNewAppointmentMessage(appointment, serviceName, date);
+  }
+  
+  // Operatörlere bildirim gönder - dışarıdan erişilebilir
+  async sendOperatorNotification(message: string): Promise<boolean> {
+    try {
+      if (!this._isInitialized || !this.bot) {
+        console.warn('Bot is not initialized, cannot send notification');
+        return false;
+      }
+      
+      // Bot ayarlarını al ve operatör listesini getir
+      const [botSettings] = await db.select().from(botSettingsTable);
+      const operators = botSettings?.operators || [];
+      
+      let success = false;
+      // Tüm aktif operatörlere mesajı gönder
+      for (const operator of operators) {
+        if (operator.isActive && operator.telegramUsername) {
+          const result = await this.sendMessageToOperator(operator.telegramUsername, message);
+          if (result) success = true;
+        }
+      }
+      
+      return success;
+    } catch (error) {
+      console.error('Error sending notification to operators:', error);
+      return false;
     }
   }
 }

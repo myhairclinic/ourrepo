@@ -35,10 +35,10 @@ export const notifyNewAppointment = (appointment: Appointment): void => {
     }
     
     // Yeni randevu bildirimi için TelegramBotService'i kullan
-    telegramBotService.getServiceName(serviceId)
+    telegramBotService.getServiceNamePublic(serviceId)
       .then(serviceName => {
         console.log(`Service name found: ${serviceName}`);
-        return telegramBotService.formatNewAppointmentMessage(appointment, serviceName, appointmentDate);
+        return telegramBotService.formatAppointmentMessage(appointment, serviceName, appointmentDate);
       })
       .then(formattedMessage => {
         console.log("Formatted message created, sending to operators");
