@@ -1573,20 +1573,20 @@ export class DatabaseStorage implements IStorage {
   async getOnePackagePerCountry(): Promise<Package[]> {
     // Her ülke için bir paket alıyoruz
     // Önce tüm benzersiz ülkeleri bulalım
-    const countries = await db.select({ country: packages.country })
+    const countries = await db.select({ countryOrigin: packages.countryOrigin })
       .from(packages)
       .where(eq(packages.isActive, true))
-      .groupBy(packages.country);
+      .groupBy(packages.countryOrigin);
     
     // Her ülke için en son güncellenen paketi alalım
     const result: Package[] = [];
     
-    for (const { country } of countries) {
-      if (!country) continue; // null ise atla
+    for (const { countryOrigin } of countries) {
+      if (!countryOrigin) continue; // null ise atla
       
       const [pkg] = await db.select()
         .from(packages)
-        .where(eq(packages.country, country))
+        .where(eq(packages.countryOrigin, countryOrigin))
         .where(eq(packages.isActive, true))
         .orderBy(desc(packages.updatedAt))
         .limit(1);
@@ -1594,6 +1594,13 @@ export class DatabaseStorage implements IStorage {
       if (pkg) {
         result.push(pkg);
       }
+    }
+    
+    console.log(`One package per country found: ${result.length}`);
+    if (result.length > 0) {
+      result.forEach(pkg => {
+        console.log(`Package for ${pkg.countryOrigin}: ${pkg.titleTR}`);
+      });
     }
     
     return result;
