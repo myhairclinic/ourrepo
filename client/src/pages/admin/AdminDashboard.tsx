@@ -11,6 +11,8 @@ import {
   ServiceDistributionChart 
 } from "@/components/admin/DashboardCharts";
 import AdminRoleManagement from "@/components/admin/AdminRoleManagement";
+import GalleryManagement from "@/components/admin/GalleryManagement";
+import ReviewsManagement from "@/components/admin/ReviewsManagement";
 
 import {
   DropdownMenu,
@@ -1025,7 +1027,19 @@ const AdminDashboard = () => {
             </div>
           )}
           
-          {activeSection !== "dashboard" && activeSection !== "appointments" && activeSection !== "services" && activeSection !== "packages" && activeSection !== "blog" && activeSection !== "users" && (
+          {activeSection === "gallery" && (
+            <div>
+              <GalleryManagement />
+            </div>
+          )}
+          
+          {activeSection === "reviews" && (
+            <div>
+              <ReviewsManagement />
+            </div>
+          )}
+          
+          {activeSection !== "dashboard" && activeSection !== "appointments" && activeSection !== "services" && activeSection !== "packages" && activeSection !== "blog" && activeSection !== "users" && activeSection !== "gallery" && activeSection !== "reviews" && (
             <div>
               <h1 className="text-2xl font-bold text-gray-900 mb-6">{sidebarItems.find(item => item.id === activeSection)?.label || "İçerik"} Yönetimi</h1>
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
