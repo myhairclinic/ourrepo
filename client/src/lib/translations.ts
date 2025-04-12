@@ -1338,10 +1338,10 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Georgian]: "მთავარი"
   },
   "common.services": {
-    [Language.Turkish]: "Hizmetler",
-    [Language.English]: "Services",
-    [Language.Russian]: "Услуги",
-    [Language.Georgian]: "მომსახურება"
+    [Language.Turkish]: "Hizmetlerimiz",
+    [Language.English]: "Our Services",
+    [Language.Russian]: "Наши Услуги",
+    [Language.Georgian]: "ჩვენი მომსახურება"
   },
   "common.packages": {
     [Language.Turkish]: "Paketler",
@@ -3226,6 +3226,42 @@ export const translations: Record<string, LanguageMap> = {
     [Language.English]: "View Details",
     [Language.Russian]: "Посмотреть Детали",
     [Language.Georgian]: "დეტალების ნახვა"
+  },
+  "products.featuredTitle": {
+    [Language.Turkish]: "Öne Çıkan Ürünler",
+    [Language.English]: "Featured Products",
+    [Language.Russian]: "Рекомендуемые Продукты",
+    [Language.Georgian]: "გამორჩეული პროდუქტები"
+  },
+  "products.featuredDescription": {
+    [Language.Turkish]: "Saç ekimi sonrası en iyi sonuçlar için özel olarak formüle edilmiş ürünler",
+    [Language.English]: "Specially formulated products for the best results after hair transplantation",
+    [Language.Russian]: "Специально разработанные продукты для достижения наилучших результатов после трансплантации волос",
+    [Language.Georgian]: "სპეციალურად ფორმულირებული პროდუქტები თმის გადანერგვის შემდეგ საუკეთესო შედეგებისთვის"
+  },
+  "common.viewAllProducts": {
+    [Language.Turkish]: "Tüm Ürünleri Gör",
+    [Language.English]: "View All Products",
+    [Language.Russian]: "Посмотреть Все Продукты",
+    [Language.Georgian]: "ყველა პროდუქტის ნახვა"
+  },
+  "common.viewDetails": {
+    [Language.Turkish]: "Detayları Gör",
+    [Language.English]: "View Details",
+    [Language.Russian]: "Посмотреть Детали",
+    [Language.Georgian]: "დეტალების ნახვა"
+  },
+  "errors.failedToLoadProducts": {
+    [Language.Turkish]: "Ürünler yüklenirken bir hata oluştu",
+    [Language.English]: "Failed to load products",
+    [Language.Russian]: "Не удалось загрузить продукты",
+    [Language.Georgian]: "პროდუქტების ჩატვირთვა ვერ მოხერხდა"
+  },
+  "products.noProductsAvailable": {
+    [Language.Turkish]: "Şu anda ürün bulunmamaktadır",
+    [Language.English]: "No products available at the moment",
+    [Language.Russian]: "В настоящее время нет доступных продуктов",
+    [Language.Georgian]: "ამ მომენტისთვის პროდუქტები არ არის ხელმისაწვდომი"
   },
   "common.hours": {
     [Language.Turkish]: "Saat",
