@@ -69,6 +69,7 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
+  fetchVithairProducts,
   getPackages,
   getPackageById,
   createPackage,
@@ -123,6 +124,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/products", createProduct);
   app.put("/api/products/:id", updateProduct);
   app.delete("/api/products/:id", deleteProduct);
+  
+  // Vithair ürünlerini çekme endpoint'i
+  app.post("/api/products/fetch-vithair", fetchVithairProducts);
 
   // Package routes
   app.get("/api/packages", async (req, res) => {

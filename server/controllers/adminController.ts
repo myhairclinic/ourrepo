@@ -46,6 +46,42 @@ export const getProducts = async (req: Request, res: Response) => {
   }
 };
 
+// Vithair ürünlerini çek ve veritabanına ekle
+export const fetchVithairProducts = async (req: Request, res: Response) => {
+  try {
+    // Vithair scraper servisi ile ürünleri çek
+    const { scrapeVithairProducts } = await import("../services/vithair-scraper");
+    const vithairProducts = await scrapeVithairProducts();
+    
+    // Mevcut ürünleri temizle
+    await storage.clearProducts();
+    
+    // Yeni ürünleri ekle
+    const addedProducts = [];
+    for (const product of vithairProducts) {
+      try {
+        const addedProduct = await storage.createProduct(product);
+        addedProducts.push(addedProduct);
+      } catch (error) {
+        console.error(`Error adding product ${product.nameTR}:`, error);
+      }
+    }
+    
+    res.status(200).json({
+      success: true,
+      message: `${addedProducts.length} Vithair ürünü başarıyla eklendi`,
+      products: addedProducts
+    });
+  } catch (error) {
+    console.error("Error fetching products from Vithair:", error);
+    res.status(500).json({ 
+      success: false,
+      message: "Vithair ürünleri çekilirken hata oluştu",
+      error: error.message
+    });
+  }
+};
+
 export const getProductBySlug = async (req: Request, res: Response) => {
   try {
     const product = await storage.getProductBySlug(req.params.slug);
