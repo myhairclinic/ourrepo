@@ -47,8 +47,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Klinik Bilgileri */}
           <div className="space-y-6">
-            <div>
-              <h3 className="text-xl font-bold text-white mb-2">MyHair Clinic</h3>
+            <div className="flex flex-col items-start">
+              <Link href={addPrefix("/")} className="mb-4">
+                <img 
+                  src="/images/logo.png" 
+                  alt="MyHair Clinic Logo" 
+                  className="h-16 object-contain"
+                />
+              </Link>
               <div className="h-1 w-16 bg-blue-500 rounded-full"></div>
             </div>
             
