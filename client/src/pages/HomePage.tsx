@@ -3,6 +3,7 @@ import { Language } from "@shared/types";
 import HeroSlider from "@/components/home/HeroSlider";
 import ServiceCards from "@/components/home/ServiceCards";
 import { PackageCards } from "@/components/home/PackageCards";
+import { FeaturedPackageCards } from "@/components/home/FeaturedPackageCards";
 import { useTranslation } from "@/lib/translations";
 import MainSlider from "@/components/home/MainSlider";
 import PatientJourney from "@/components/home/PatientJourney";
@@ -55,6 +56,7 @@ export default function HomePage() {
         <PatientJourney />
         <ServiceCards />
         <PackageCards />
+        <FeaturedPackageCards />
         <FeaturedProducts />
         <BlogSlider />
         
