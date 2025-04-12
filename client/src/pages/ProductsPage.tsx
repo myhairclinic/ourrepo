@@ -195,10 +195,9 @@ export default function ProductsPage() {
                     </div>
                   </CardContent>
                   
-                  <CardFooter className="p-5 pt-2 flex justify-between items-center">
-                    <p className="font-bold text-lg text-primary">${product.price}</p>
+                  <CardFooter className="p-5 pt-2 flex justify-center items-center">
                     <Link href={addPrefix(`/products/${product.slug}`)} className="">
-                      <Button variant="outline" size="sm" className="gap-2">
+                      <Button className="gap-2">
                         {t('common.moreInfo')}
                         <ArrowRight size={14} />
                       </Button>
