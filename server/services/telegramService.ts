@@ -1,6 +1,183 @@
 import { Appointment } from '@shared/schema';
 import { telegramBotService } from './telegramBotService';
 
+// Test bildirimleri için Telegram servisi
+export const telegramService = {
+  // Yeni randevu test bildirimi gönder
+  async sendNewAppointmentTestNotification(chatId: string): Promise<{success: boolean, error?: string}> {
+    try {
+      console.log(`Sending new appointment test notification to ${chatId}`);
+      
+      if (!telegramBotService.isInitialized) {
+        await telegramBotService.initialize();
+      }
+      
+      // Test verisi oluştur
+      const testAppointment = {
+        id: 9999,
+        name: "Test Müşteri",
+        email: "test@example.com",
+        phone: "+90 555 123 4567",
+        message: "Bu bir test mesajıdır",
+        preferredDate: new Date().toISOString(),
+        serviceId: 1,
+        status: "new"
+      };
+      
+      const serviceName = "Saç Ekimi (Test)";
+      const appointmentDate = new Date();
+      
+      // Mesajı oluştur
+      const message = telegramBotService.formatAppointmentMessage(
+        testAppointment as any, 
+        serviceName, 
+        appointmentDate
+      );
+      
+      // Mesajı gönder - sayısal chatId veya kullanıcı adı için doğru fonksiyonu kullan
+      let result;
+      if (chatId.startsWith('@')) {
+        // Kullanıcı adına gönder
+        result = await telegramBotService.sendMessageToOperator(chatId, message);
+      } else {
+        // Chat ID'ye gönder
+        result = await telegramBotService.sendMessageByChatId(parseInt(chatId), message);
+      }
+      
+      if (result) {
+        return { success: true };
+      } else {
+        return { 
+          success: false, 
+          error: "Bildirim gönderilemedi. Kullanıcının botu başlatıp başlatmadığını kontrol edin." 
+        };
+      }
+    } catch (error: any) {
+      console.error("Error sending new appointment test notification:", error);
+      return { 
+        success: false, 
+        error: error.message || "Test bildirimi gönderilirken bir hata oluştu" 
+      };
+    }
+  },
+  
+  // Randevu hatırlatma test bildirimi gönder
+  async sendAppointmentReminderTestNotification(chatId: string): Promise<{success: boolean, error?: string}> {
+    try {
+      console.log(`Sending appointment reminder test notification to ${chatId}`);
+      
+      if (!telegramBotService.isInitialized) {
+        await telegramBotService.initialize();
+      }
+      
+      // Test randevusu
+      const testAppointment = {
+        id: 9999,
+        name: "Test Müşteri",
+        phone: "+90 555 123 4567",
+        preferredDate: new Date(Date.now() + 60 * 60 * 1000).toISOString(), // 1 saat sonrası
+        serviceId: 1
+      };
+      
+      const serviceName = "Saç Ekimi (Test)";
+      const appointmentDate = new Date(Date.now() + 60 * 60 * 1000);
+      
+      // Hatırlatma mesajını oluştur
+      const message = telegramBotService.formatAppointmentReminderMessage(
+        testAppointment as any,
+        serviceName,
+        appointmentDate
+      );
+      
+      // Mesajı gönder
+      let result;
+      if (chatId.startsWith('@')) {
+        // Kullanıcı adına gönder
+        result = await telegramBotService.sendMessageToOperator(chatId, message);
+      } else {
+        // Chat ID'ye gönder
+        result = await telegramBotService.sendMessageByChatId(parseInt(chatId), message);
+      }
+      
+      if (result) {
+        return { success: true };
+      } else {
+        return { 
+          success: false, 
+          error: "Bildirim gönderilemedi. Kullanıcının botu başlatıp başlatmadığını kontrol edin." 
+        };
+      }
+    } catch (error: any) {
+      console.error("Error sending appointment reminder test notification:", error);
+      return { 
+        success: false, 
+        error: error.message || "Test bildirimi gönderilirken bir hata oluştu" 
+      };
+    }
+  },
+  
+  // Günlük özet test bildirimi gönder
+  async sendDailySummaryTestNotification(chatId: string): Promise<{success: boolean, error?: string}> {
+    try {
+      console.log(`Sending daily summary test notification to ${chatId}`);
+      
+      if (!telegramBotService.isInitialized) {
+        await telegramBotService.initialize();
+      }
+      
+      // Günlük özet mesajı
+      const today = new Date();
+      const dayStr = today.toLocaleDateString('tr-TR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      
+      const message = `📊 *GÜNLÜK RANDEVU ÖZETİ*
+      
+📆 *Tarih:* ${dayStr}
+
+*Bugünkü Randevular:*
+09:30 - Test Müşteri 1 (Saç Ekimi)
+11:00 - Test Müşteri 2 (Kaş Ekimi) 
+14:30 - Test Müşteri 3 (PRP Tedavisi)
+
+*Yarınki Randevular:*
+10:00 - Test Müşteri 4 (Saç Ekimi)
+15:45 - Test Müşteri 5 (Sakal Ekimi)
+
+*İstatistikler:*
+- Bugün: 3 randevu
+- Yarın: 2 randevu
+- Bu hafta: 12 randevu
+- Bu ay: 45 randevu
+
+Bu bir test bildirimdir. Gerçek veriler değildir.`;
+      
+      // Mesajı gönder
+      let result;
+      if (chatId.startsWith('@')) {
+        // Kullanıcı adına gönder
+        result = await telegramBotService.sendMessageToOperator(chatId, message);
+      } else {
+        // Chat ID'ye gönder
+        result = await telegramBotService.sendMessageByChatId(parseInt(chatId), message);
+      }
+      
+      if (result) {
+        return { success: true };
+      } else {
+        return { 
+          success: false, 
+          error: "Bildirim gönderilemedi. Kullanıcının botu başlatıp başlatmadığını kontrol edin." 
+        };
+      }
+    } catch (error: any) {
+      console.error("Error sending daily summary test notification:", error);
+      return { 
+        success: false, 
+        error: error.message || "Test bildirimi gönderilirken bir hata oluştu" 
+      };
+    }
+  }
+};
+
 // Format the appointment status in Turkish
 const getStatusText = (status: string): string => {
   switch (status) {
