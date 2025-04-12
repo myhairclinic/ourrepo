@@ -1571,34 +1571,42 @@ export class DatabaseStorage implements IStorage {
   }
   
   async getOnePackagePerCountry(): Promise<Package[]> {
-    // Doğrudan veritabanından farklı ülke orijinli tek paket alalım
-    // Bu SQL sorgusunu taklit eden alternatif bir yaklaşım kullanıyoruz
-    const countryList = ['TR', 'RU', 'AZ', 'KZ', 'UA', 'IR'];
-    const result: Package[] = [];
-    
-    // Her ülke için en son güncellenmiş bir paket alalım
-    for (const countryCode of countryList) {
-      const [pkg] = await db.select()
-        .from(packages)
-        .where(eq(packages.countryOrigin, countryCode))
-        .where(eq(packages.isActive, true))
-        .orderBy(desc(packages.updatedAt))
-        .limit(1);
-        
-      if (pkg) {
-        console.log(`Found package for ${countryCode}: ${pkg.titleTR}`);
-        result.push(pkg);
+    try {
+      // Bu SQL sorgusunu taklit ederiz:
+      // SELECT DISTINCT ON (country_origin) * FROM packages
+      // WHERE is_active = true 
+      // ORDER BY country_origin, updated_at DESC
+      
+      // Her ülke için bir paket almak istiyoruz
+      const countryList = ['TR', 'RU', 'AZ', 'KZ', 'UA', 'IR'];
+      const result: Package[] = [];
+      
+      // Her ülke için paketleri getirelim
+      for (const countryCode of countryList) {
+        // Bu SQL sorgusunun JS dengi
+        const countryPackages = await db.select()
+          .from(packages)
+          .where(eq(packages.countryOrigin, countryCode))
+          .where(eq(packages.isActive, true))
+          .orderBy(desc(packages.updatedAt));
+          
+        // Her ülke için en son güncellenmiş paketi alalım
+        if (countryPackages.length > 0) {
+          const latestPackage = countryPackages[0];
+          console.log(`Package found for country ${countryCode}: ${latestPackage.titleTR}`);
+          result.push(latestPackage);
+        }
       }
+      
+      // Toplam paket sayısını logla
+      console.log(`Total packages found (one per country): ${result.length}`);
+      
+      // Her ülkeden bir tane paket döndürürüz
+      return result;
+    } catch (error) {
+      console.error("Error in getOnePackagePerCountry:", error);
+      return [];
     }
-    
-    console.log(`One package per country found: ${result.length}`);
-    
-    // Sonuçları kontrol edelim - böylece hangi ülkelerin temsil edildiğini görebiliriz
-    for (const pkg of result) {
-      console.log(`Package for ${pkg.countryOrigin}: ${pkg.titleTR}`);
-    }
-    
-    return result;
   }
   
   async getFeaturedPackages(): Promise<Package[]> {
