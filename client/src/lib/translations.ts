@@ -3177,6 +3177,61 @@ export const translations: Record<string, LanguageMap> = {
     [Language.English]: "Go Back Home",
     [Language.Russian]: "Вернуться на главную",
     [Language.Georgian]: "მთავარზე დაბრუნება"
+  },
+  
+  "products.featuredServices": {
+    [Language.Turkish]: "Öne Çıkan Hizmetlerimiz",
+    [Language.English]: "Our Featured Services",
+    [Language.Russian]: "Наши Популярные Услуги",
+    [Language.Georgian]: "ჩვენი გამორჩეული სერვისები"
+  },
+  "products.careProducts": {
+    [Language.Turkish]: "Bakım Ürünlerimiz",
+    [Language.English]: "Our Care Products",
+    [Language.Russian]: "Наши Продукты по Уходу",
+    [Language.Georgian]: "ჩვენი მოვლის პროდუქტები"
+  },
+  "products.premium": {
+    [Language.Turkish]: "Premium",
+    [Language.English]: "Premium",
+    [Language.Russian]: "Премиум",
+    [Language.Georgian]: "პრემიუმი"
+  },
+  "products.serviceFeature1": {
+    [Language.Turkish]: "Ücretsiz konsültasyon seansı",
+    [Language.English]: "Free consultation session",
+    [Language.Russian]: "Бесплатная консультационная сессия",
+    [Language.Georgian]: "უფასო საკონსულტაციო სესია"
+  },
+  "products.serviceFeature2": {
+    [Language.Turkish]: "1 yıl boyunca takip ve destek",
+    [Language.English]: "Follow-up and support for 1 year",
+    [Language.Russian]: "Последующее наблюдение и поддержка в течение 1 года",
+    [Language.Georgian]: "მეთვალყურეობა და მხარდაჭერა 1 წლის განმავლობაში"
+  },
+  "products.serviceFeature3": {
+    [Language.Turkish]: "100% memnuniyet garantisi",
+    [Language.English]: "100% satisfaction guarantee",
+    [Language.Russian]: "100% гарантия удовлетворения",
+    [Language.Georgian]: "100% კმაყოფილების გარანტია"
+  },
+  "products.viewDetails": {
+    [Language.Turkish]: "Detayları Görüntüle",
+    [Language.English]: "View Details",
+    [Language.Russian]: "Посмотреть Детали",
+    [Language.Georgian]: "დეტალების ნახვა"
+  },
+  "common.hours": {
+    [Language.Turkish]: "Saat",
+    [Language.English]: "Hours",
+    [Language.Russian]: "Часов",
+    [Language.Georgian]: "საათი"
+  },
+  "common.minutes": {
+    [Language.Turkish]: "Dakika",
+    [Language.English]: "Minutes",
+    [Language.Russian]: "Минут",
+    [Language.Georgian]: "წუთი"
   }
 };
 
