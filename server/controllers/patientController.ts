@@ -39,9 +39,39 @@ export const getPatientById = async (req: Request, res: Response) => {
 // Yeni hasta oluştur
 export const createPatient = async (req: Request, res: Response) => {
   try {
-    const validatedData = insertPatientSchema.parse(req.body);
-    const newPatient = await storage.createPatient(validatedData);
-    res.status(201).json(newPatient);
+    console.log("createPatient çağrıldı, request body:", req.body);
+    
+    // Zorunlu alanlar için varsayılan değerleri ayarla
+    const patientData = {
+      ...req.body,
+      status: req.body.status || "active",
+      email: req.body.email || null,
+      dateOfBirth: req.body.dateOfBirth ? new Date(req.body.dateOfBirth) : null,
+      gender: req.body.gender || null,
+      nationality: req.body.nationality || null,
+      passportNumber: req.body.passportNumber || null,
+      address: req.body.address || null,
+      medicalHistory: req.body.medicalHistory || null,
+      allergies: req.body.allergies || null,
+      medications: req.body.medications || null,
+      notes: req.body.notes || null,
+      serviceId: req.body.serviceId || null,
+      lastVisitDate: req.body.lastVisitDate ? new Date(req.body.lastVisitDate) : null
+    };
+    
+    try {
+      console.log("Hasta oluşturulacak veriler:", patientData);
+      const validatedData = insertPatientSchema.parse(patientData);
+      console.log("Validasyon başarılı:", validatedData);
+      
+      const newPatient = await storage.createPatient(validatedData);
+      console.log("Hasta başarıyla oluşturuldu:", newPatient);
+      
+      res.status(201).json(newPatient);
+    } catch (error) {
+      console.error("Veri validasyon hatası:", error);
+      res.status(400).json({ message: "Geçersiz hasta verileri", error });
+    }
   } catch (error) {
     console.error("Hasta oluşturulurken hata oluştu:", error);
     res.status(500).json({ message: "Hasta oluşturulurken bir hata oluştu" });
@@ -111,18 +141,41 @@ export const getPatientDocuments = async (req: Request, res: Response) => {
 // Hasta dökümanı oluştur
 export const createPatientDocument = async (req: Request, res: Response) => {
   try {
+    console.log(`createPatientDocument çağrıldı, request body:`, req.body);
     const patientId = parseInt(req.params.patientId);
     if (isNaN(patientId)) {
       return res.status(400).json({ message: "Geçersiz hasta ID" });
     }
 
-    const validatedData = insertPatientDocumentSchema.parse({
-      ...req.body,
-      patientId
-    });
+    // Hasta var mı kontrol et
+    const patient = await storage.getPatientById(patientId);
+    if (!patient) {
+      console.error(`Hasta ID ${patientId} bulunamadı`);
+      return res.status(404).json({ message: "Hasta bulunamadı" });
+    }
 
-    const newDocument = await storage.createPatientDocument(validatedData);
-    res.status(201).json(newDocument);
+    const documentData = {
+      ...req.body,
+      patientId,
+      uploadDate: new Date(),
+      description: req.body.description || null,
+      isConfidential: req.body.isConfidential === true
+    };
+
+    console.log("Oluşturulacak döküman verisi:", documentData);
+
+    try {
+      const validatedData = insertPatientDocumentSchema.parse(documentData);
+      console.log("Validasyon başarılı:", validatedData);
+      
+      const newDocument = await storage.createPatientDocument(validatedData);
+      console.log("Oluşturulan belge:", newDocument);
+      
+      res.status(201).json(newDocument);
+    } catch (error) {
+      console.error("Veri validasyon hatası:", error);
+      res.status(400).json({ message: "Geçersiz belge verileri", error });
+    }
   } catch (error) {
     console.error(`Hasta ID ${req.params.patientId} için döküman oluşturulurken hata oluştu:`, error);
     res.status(500).json({ message: "Hasta dökümanı oluşturulurken bir hata oluştu" });
