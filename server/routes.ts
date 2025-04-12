@@ -29,6 +29,7 @@ import { seedExtendedBlogPosts } from "./controllers/extendedBlogSeedController"
 import { seedUniqueBlogPosts } from "./controllers/uniqueBlogSeedController";
 import { seedBlogDirectly } from "./controllers/seedBlogsDirectController";
 import * as adminControllers from "./controllers/adminControllers";
+import * as patientController from "./controllers/patientController";
 import {
   getBlogPosts,
   getPaginatedBlogPosts,
@@ -870,6 +871,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     }
   });
+
+  // Hasta Yönetimi API Routes
+  // Hasta routes
+  app.get("/api/patients", patientController.getAllPatients);
+  app.get("/api/patients/:id", patientController.getPatientById);
+  app.post("/api/patients", patientController.createPatient);
+  app.put("/api/patients/:id", patientController.updatePatient);
+  app.delete("/api/patients/:id", patientController.deletePatient);
+  
+  // Hasta dökümanları routes
+  app.get("/api/patients/:patientId/documents", patientController.getPatientDocuments);
+  app.post("/api/patients/:patientId/documents", patientController.createPatientDocument);
+  app.put("/api/documents/:documentId", patientController.updatePatientDocument);
+  app.delete("/api/documents/:documentId", patientController.deletePatientDocument);
+  
+  // Hasta tedavi kayıtları routes
+  app.get("/api/patients/:patientId/treatments", patientController.getPatientTreatmentRecords);
+  app.post("/api/patients/:patientId/treatments", patientController.createTreatmentRecord);
+  app.put("/api/treatments/:recordId", patientController.updateTreatmentRecord);
+  app.delete("/api/treatments/:recordId", patientController.deleteTreatmentRecord);
 
   const httpServer = createServer(app);
 
