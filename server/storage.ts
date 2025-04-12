@@ -167,6 +167,9 @@ export interface IStorage {
 }
 
 export class MemStorage implements IStorage {
+  async clearProducts(): Promise<void> {
+    this.products.clear();
+  }
   private users: Map<number, User>;
   private services: Map<number, Service>;
   private blogPosts: Map<number, BlogPost>;
@@ -1477,6 +1480,10 @@ export class DatabaseStorage implements IStorage {
   async deleteProduct(id: number): Promise<boolean> {
     await db.delete(products).where(eq(products.id, id));
     return true;
+  }
+  
+  async clearProducts(): Promise<void> {
+    await db.delete(products);
   }
 
   // Package operations

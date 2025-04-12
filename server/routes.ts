@@ -572,7 +572,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Insert each product
       for (const product of vithairProducts) {
-        await storage.createProduct(product);
+        try {
+          await storage.createProduct({
+            ...product,
+            // Add required fields for InsertProduct
+            usageTR: "Kullanım talimatları için ürün etiketini inceleyin.",
+            usageEN: "See product label for usage instructions.",
+            usageRU: "Смотрите этикетку продукта для получения инструкций по использованию.",
+            usageKA: "გამოყენების ინსტრუქციებისთვის იხილეთ პროდუქტის ეტიკეტი.",
+            ingredientsTR: "İçerik bilgisi için ürün etiketini inceleyin.",
+            ingredientsEN: "See product label for ingredient information.",
+            ingredientsRU: "Смотрите этикетку продукта для получения информации о составе.",
+            ingredientsKA: "ინგრედიენტების შესახებ ინფორმაციისთვის იხილეთ პროდუქტის ეტიკეტი.",
+            order: 1
+          });
+        } catch (productError) {
+          console.error(`Error creating product ${product.nameTR}:`, productError);
+        }
       }
       
       res.status(200).json({ 
@@ -582,10 +598,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     } catch (error) {
       console.error("Error seeding Vithair products:", error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
       res.status(500).json({ 
         success: false, 
         message: "Failed to seed Vithair products", 
-        error: error.message 
+        error: errorMessage 
       });
     }
   });
