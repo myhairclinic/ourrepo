@@ -604,6 +604,71 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: "Failed to toggle bot status" });
     }
   });
+  
+  // Test bildirim gönderme
+  app.post("/api/telegram/test-notification", async (req, res) => {
+    try {
+      const { type, chatId } = req.body;
+      
+      if (!chatId) {
+        return res.status(400).json({ 
+          success: false, 
+          message: "ChatId veya kullanıcı adı belirtilmemiş" 
+        });
+      }
+      
+      let message = "Bu bir test bildirim mesajıdır.";
+      
+      // Bildirimin türüne göre farklı mesaj içeriği oluştur
+      if (type === "new_appointment") {
+        message = "🔔 Yeni Randevu Bildirimi (TEST)\n\n" +
+          "İsim: Test Müşteri\n" +
+          "Hizmet: Saç Ekimi\n" +
+          "Tarih: " + new Date().toLocaleString("tr-TR") + "\n" +
+          "Telefon: +90 555 123 4567\n" +
+          "E-posta: test@example.com\n\n" +
+          "Bu bir test mesajıdır, gerçek bir randevu değildir.";
+      } else if (type === "appointment_reminder") {
+        message = "⏰ Randevu Hatırlatması (TEST)\n\n" +
+          "Randevunuz 1 saat içinde başlayacak!\n" +
+          "İsim: Test Müşteri\n" +
+          "Hizmet: Saç Ekimi\n" +
+          "Saat: " + new Date(Date.now() + 60 * 60 * 1000).toLocaleTimeString("tr-TR") + "\n\n" +
+          "Bu bir test mesajıdır, gerçek bir randevu değildir.";
+      }
+      
+      // @ işareti içeriyorsa kullanıcı adı olarak kabul et
+      let result;
+      if (chatId.startsWith('@')) {
+        result = await telegramBotService.sendMessageToOperator(chatId.substring(1), message);
+      } else {
+        // Chat ID olarak kabul et
+        const chatIdNumber = Number(chatId);
+        if (isNaN(chatIdNumber)) {
+          return res.status(400).json({ 
+            success: false, 
+            message: "Geçersiz chat ID formatı. Sayı olmalı veya @ ile başlayan kullanıcı adı olmalı." 
+          });
+        }
+        result = await telegramBotService.sendMessageByChatId(chatIdNumber, message);
+      }
+      
+      if (result) {
+        res.json({ success: true, message: "Test bildirimi başarıyla gönderildi" });
+      } else {
+        res.status(500).json({ 
+          success: false, 
+          message: "Bildirim gönderilemedi. Kullanıcı botu başlatmış mı kontrol edin (/start komutu)." 
+        });
+      }
+    } catch (error) {
+      console.error("Test bildirimi gönderme hatası:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: `Test bildirimi gönderilirken hata oluştu: ${error.message}` 
+      });
+    }
+  });
 
   // Seed data routes (public during development)
   app.post("/api/seed/services", seedServices);

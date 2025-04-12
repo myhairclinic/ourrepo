@@ -261,7 +261,7 @@ class TelegramBotService {
   }
   
   // Operatöre kullanıcı adı ile mesaj gönder
-  private async sendMessageToOperator(username: string, message: string) {
+  async sendMessageToOperator(username: string, message: string) {
     try {
       if (!this.bot) {
         console.error(`Bot is not initialized, cannot send message to @${username}`);
@@ -671,6 +671,27 @@ E-posta: ${appointment.email}
     } catch (error) {
       console.error('Error updating bot settings:', error);
       return { success: false, error: 'Bot settings could not be updated' };
+    }
+  }
+  
+  // Chat ID ile direkt mesaj gönder
+  async sendMessageByChatId(chatId: number, message: string) {
+    try {
+      if (!this.bot) {
+        console.error(`Bot is not initialized, cannot send message to chat ID ${chatId}`);
+        return false;
+      }
+      
+      console.log(`Sending message directly to chat ID: ${chatId}`);
+      await this.bot.sendMessage(chatId.toString(), message, { parse_mode: 'Markdown' });
+      console.log(`Successfully sent message to chat ID: ${chatId}`);
+      return true;
+    } catch (error) {
+      console.error(`Error sending message to chat ID ${chatId}:`, error);
+      if (error.message && error.message.includes('chat not found')) {
+        console.warn(`This usually happens when the user with chat ID ${chatId} has not started a conversation with the bot. They need to send /start to the bot first.`);
+      }
+      return false;
     }
   }
   
