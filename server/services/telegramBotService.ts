@@ -4,9 +4,10 @@ import {
   telegramContacts as contacts, 
   telegramMessages as messages, 
   telegramPredefinedMessages as predefinedMessages, 
-  telegramBotSettings as botSettingsTable 
+  telegramBotSettings as botSettingsTable,
+  appointments
 } from '@shared/schema';
-import { eq, desc, and } from 'drizzle-orm';
+import { eq, desc, and, gt, lte } from 'drizzle-orm';
 
 // Telegram Bot işlemleri için servis
 class TelegramBotService {
@@ -84,69 +85,355 @@ class TelegramBotService {
   private setupEventHandlers() {
     if (!this.bot) return;
 
-    // Yeni mesaj geldiğinde
+    // Personel komutları için
+    this.bot.onText(/\/start/, async (msg) => {
+      try {
+        const chatId = msg.chat.id.toString();
+        const firstName = msg.from?.first_name || '';
+        
+        // Sadece yetkili personele yanıt ver
+        const [botSettings] = await db.select().from(botSettingsTable);
+        const operators = botSettings?.operators || [];
+        const username = msg.from?.username || '';
+        
+        const isAuthorized = operators.some(
+          (op: { telegramUsername: string; isActive: boolean }) => 
+            op.telegramUsername === username && op.isActive
+        );
+        
+        if (isAuthorized) {
+          await this.bot?.sendMessage(
+            chatId,
+            `Merhaba ${firstName}! MyHair Clinic randevu botu hizmetinizde.\n\nRandevu bildirimleri ve hatırlatmaları otomatik olarak gönderilecektir.`
+          );
+        } else {
+          await this.bot?.sendMessage(
+            chatId,
+            `Merhaba ${firstName}! Bu bot sadece yetkili personel tarafından kullanılabilir.`
+          );
+        }
+      } catch (error) {
+        console.error('Error handling /start command:', error);
+      }
+    });
+    
+    // Yeni mesaj geldiğinde (sadece personelden gelen komutlar işlenecek)
     this.bot.on('message', async (msg) => {
       try {
         const chatId = msg.chat.id.toString();
         const text = msg.text || '';
-        const firstName = msg.from?.first_name || '';
-        const lastName = msg.from?.last_name || '';
+        
+        // Komut değilse işleme
+        if (!text.startsWith('/')) return;
+        
+        // Sadece yetkili personele yanıt ver
+        const [botSettings] = await db.select().from(botSettingsTable);
+        const operators = botSettings?.operators || [];
         const username = msg.from?.username || '';
         
-        // Kişiyi veritabanında kontrol et, yoksa ekle
-        const [existingContact] = await db.select().from(contacts)
-          .where(eq(contacts.chatId, chatId));
+        const isAuthorized = operators.some(
+          (op: { telegramUsername: string; isActive: boolean }) => 
+            op.telegramUsername === username && op.isActive
+        );
         
-        if (!existingContact) {
-          // Yeni kişi ekle
-          await db.insert(contacts).values({
+        if (!isAuthorized) return;
+        
+        // Komutları işle
+        if (text === '/appointments') {
+          await this.sendTodaysAppointments(chatId);
+        } else if (text === '/help') {
+          await this.bot?.sendMessage(
             chatId,
-            username,
-            firstName,
-            lastName,
-            language: 'tr', // Varsayılan dil
-            startDate: new Date(),
-            lastMessageDate: new Date(),
-            messagesCount: 1,
-            isBlocked: false,
-            tags: [],
-            notes: '',
-            stage: 'inquiry'
-          });
-        } else {
-          // Mevcut kişiyi güncelle
-          await db.update(contacts)
-            .set({
-              lastMessageDate: new Date(),
-              messagesCount: (existingContact.messagesCount || 0) + 1,
-            })
-            .where(eq(contacts.chatId, chatId));
-        }
-        
-        // Mesajı kaydet
-        await db.insert(messages).values({
-          chatId,
-          text,
-          date: new Date(),
-          isIncoming: true,
-          isRead: false
-        });
-        
-        // Kişi engellenmişse cevap verme
-        if (existingContact?.isBlocked) {
-          return;
-        }
-        
-        // Bot otomatik yanıt versin mi?
-        const [botConfig] = await db.select().from(botSettingsTable);
-        if (botConfig?.autoResponder) {
-          // Otomatik yanıt gönderme işlemi burada yapılacak
-          // Bu kısım Botun nasıl çalışması gerektiğine göre özelleştirilebilir
+            `Kullanılabilir komutlar:\n\n/start - Botu başlat\n/appointments - Bugünkü randevuları görüntüle\n/help - Yardım mesajını görüntüle`
+          );
         }
       } catch (error) {
-        console.error('Error handling incoming message:', error);
+        console.error('Error handling message:', error);
       }
     });
+    
+    // Periyodik işlemler için zamanlayıcı başlat
+    this.startAppointmentCheckers();
+  }
+  
+  // Periyodik randevu kontrolü için zamanlayıcıları başlat
+  private startAppointmentCheckers() {
+    // Her 5 dakikada bir yaklaşan randevuları kontrol et
+    setInterval(() => this.checkUpcomingAppointments(), 5 * 60 * 1000);
+    
+    // Her gün sabah 9'da günlük randevu özetini gönder
+    this.scheduleDailySummary();
+  }
+  
+  // Günlük randevu özeti için zamanlayıcı
+  private scheduleDailySummary() {
+    const now = new Date();
+    const scheduledTime = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      9, // Saat 9'da
+      0, // 0 dakika
+      0
+    );
+    
+    // Eğer şu an 9:00'dan sonraysa, yarın için planla
+    if (now > scheduledTime) {
+      scheduledTime.setDate(scheduledTime.getDate() + 1);
+    }
+    
+    const timeUntilExecution = scheduledTime.getTime() - now.getTime();
+    
+    setTimeout(() => {
+      this.sendDailyAppointmentSummary();
+      // Sonraki gün için yeniden planla
+      this.scheduleDailySummary();
+    }, timeUntilExecution);
+  }
+  
+  // Yaklaşan randevuları kontrol et ve bildirimleri gönder
+  private async checkUpcomingAppointments() {
+    try {
+      const [botSettings] = await db.select().from(botSettingsTable);
+      if (!botSettings?.isActive || !botSettings?.notifications?.appointmentReminder) {
+        return;
+      }
+      
+      const now = new Date();
+      const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+      
+      // Bir saat içinde olan ve bildirim gönderilmemiş randevuları getir
+      const upcomingAppointments = await db.select()
+        .from(appointments)
+        .where(
+          and(
+            gt(appointments.preferredDate, now.toISOString()),
+            lte(appointments.preferredDate, oneHourLater.toISOString()),
+            eq(appointments.status, 'confirmed')
+          )
+        );
+      
+      // Her yetkili personele randevu hatırlatmalarını gönder
+      const operators = botSettings?.operators || [];
+      for (const appointment of upcomingAppointments) {
+        const service = await this.getServiceName(appointment.serviceId);
+        const appointmentDate = new Date(appointment.preferredDate);
+        
+        // Şablon mesajı hazırla
+        const reminderMessage = this.formatAppointmentReminderMessage(
+          appointment,
+          service,
+          appointmentDate
+        );
+        
+        // Yetkili personele mesaj gönder
+        for (const operator of operators) {
+          if (operator.isActive && operator.telegramUsername) {
+            await this.sendMessageToOperator(operator.telegramUsername, reminderMessage);
+          }
+        }
+        
+        // İşlenen randevuyu güncelle (notification_sent olarak işaretle)
+        await db.update(appointments)
+          .set({ status: 'notification_sent' })
+          .where(eq(appointments.id, appointment.id));
+      }
+    } catch (error) {
+      console.error('Error checking upcoming appointments:', error);
+    }
+  }
+  
+  // Operatöre kullanıcı adı ile mesaj gönder
+  private async sendMessageToOperator(username: string, message: string) {
+    try {
+      if (!this.bot) return;
+      
+      // Kullanıcı adına göre chat ID getir
+      const chat = await this.bot.getChat(`@${username}`);
+      if (chat && chat.id) {
+        await this.bot.sendMessage(chat.id.toString(), message, { parse_mode: 'Markdown' });
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error(`Error sending message to @${username}:`, error);
+      return false;
+    }
+  }
+  
+  // Randevu hatırlatma mesajını formatlama
+  private formatAppointmentReminderMessage(appointment: any, serviceName: string, date: Date) {
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    
+    return `⏰ *RANDEVU HATIRLATMASI*
+
+Aşağıdaki randevunuz 1 saat içinde başlayacaktır:
+
+📆 Tarih: ${day}.${month}.${year}
+⏰ Saat: ${hours}:${minutes}
+
+👤 *Hasta Bilgileri*
+İsim: ${appointment.name}
+Telefon: ${appointment.phone}
+
+💇 Hizmet: ${serviceName}`;
+  }
+  
+  // Yeni randevu bildirim mesajını formatlama
+  private formatNewAppointmentMessage(appointment: any, serviceName: string, date: Date) {
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    
+    return `🔔 *YENİ RANDEVU BİLDİRİMİ*
+
+📆 Tarih: ${day}.${month}.${year}
+⏰ Saat: ${hours}:${minutes}
+
+👤 *Hasta Bilgileri*
+İsim: ${appointment.name}
+Telefon: ${appointment.phone}
+E-posta: ${appointment.email}
+
+💇 Hizmet: ${serviceName}
+
+📝 Ek Bilgiler: ${appointment.message || '-'}`;
+  }
+  
+  // Servisin adını id'ye göre getir
+  private async getServiceName(serviceId: number) {
+    try {
+      const [service] = await db.select().from(services)
+        .where(eq(services.id, serviceId));
+      
+      return service ? service.titleTR : 'Bilinmeyen Hizmet';
+    } catch (error) {
+      console.error('Error getting service name:', error);
+      return 'Bilinmeyen Hizmet';
+    }
+  }
+  
+  // Bugünkü randevuları görüntüle
+  private async sendTodaysAppointments(chatId: string) {
+    try {
+      const today = new Date();
+      const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate()).toISOString();
+      const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59).toISOString();
+      
+      const todaysAppointments = await db.select()
+        .from(appointments)
+        .where(
+          and(
+            gte(appointments.preferredDate, startOfDay),
+            lte(appointments.preferredDate, endOfDay)
+          )
+        );
+      
+      if (todaysAppointments.length === 0) {
+        await this.bot?.sendMessage(chatId, "Bugüne ait randevu bulunmamaktadır.");
+        return;
+      }
+      
+      let message = "*BUGÜNKÜ RANDEVULAR*\n\n";
+      
+      for (const appointment of todaysAppointments) {
+        const service = await this.getServiceName(appointment.serviceId);
+        const appointmentTime = new Date(appointment.preferredDate);
+        const hours = appointmentTime.getHours().toString().padStart(2, '0');
+        const minutes = appointmentTime.getMinutes().toString().padStart(2, '0');
+        
+        message += `⏰ *${hours}:${minutes}* - ${appointment.name}\n`;
+        message += `📞 ${appointment.phone}\n`;
+        message += `💇 ${service}\n`;
+        message += `🔄 Durum: ${this.getStatusText(appointment.status)}\n\n`;
+      }
+      
+      await this.bot?.sendMessage(chatId, message, { parse_mode: 'Markdown' });
+    } catch (error) {
+      console.error('Error sending today\'s appointments:', error);
+      await this.bot?.sendMessage(chatId, "Randevular alınırken bir hata oluştu.");
+    }
+  }
+  
+  // Durum metnini formatla
+  private getStatusText(status: string) {
+    switch (status) {
+      case 'pending': return '⏳ Beklemede';
+      case 'confirmed': return '✅ Onaylandı';
+      case 'cancelled': return '❌ İptal Edildi';
+      case 'completed': return '✓ Tamamlandı';
+      case 'notification_sent': return '🔔 Hatırlatma Gönderildi';
+      default: return status;
+    }
+  }
+  
+  // Günlük randevu özetini gönder
+  private async sendDailyAppointmentSummary() {
+    try {
+      const [botSettings] = await db.select().from(botSettingsTable);
+      if (!botSettings?.isActive || !botSettings?.notifications?.dailySummary) {
+        return;
+      }
+      
+      // Yarınki randevuları getir
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const startOfTomorrow = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate()).toISOString();
+      const endOfTomorrow = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 23, 59, 59).toISOString();
+      
+      const tomorrowsAppointments = await db.select()
+        .from(appointments)
+        .where(
+          and(
+            gte(appointments.preferredDate, startOfTomorrow),
+            lte(appointments.preferredDate, endOfTomorrow),
+            eq(appointments.status, 'confirmed')
+          )
+        );
+      
+      // Mesajı hazırla
+      const day = tomorrow.getDate().toString().padStart(2, '0');
+      const month = (tomorrow.getMonth() + 1).toString().padStart(2, '0');
+      const year = tomorrow.getFullYear();
+      
+      let message = `*${day}.${month}.${year} TARİHLİ RANDEVU ÖZETİ*\n\n`;
+      
+      if (tomorrowsAppointments.length === 0) {
+        message += "Yarın için planlanmış randevu bulunmamaktadır.";
+      } else {
+        message += `Toplam ${tomorrowsAppointments.length} randevu bulunmaktadır:\n\n`;
+        
+        // Randevuları saate göre sırala
+        tomorrowsAppointments.sort((a, b) => new Date(a.preferredDate).getTime() - new Date(b.preferredDate).getTime());
+        
+        for (const appointment of tomorrowsAppointments) {
+          const service = await this.getServiceName(appointment.serviceId);
+          const appointmentTime = new Date(appointment.preferredDate);
+          const hours = appointmentTime.getHours().toString().padStart(2, '0');
+          const minutes = appointmentTime.getMinutes().toString().padStart(2, '0');
+          
+          message += `⏰ *${hours}:${minutes}* - ${appointment.name}\n`;
+          message += `📞 ${appointment.phone}\n`;
+          message += `💇 ${service}\n\n`;
+        }
+      }
+      
+      // Yetkili personele mesaj gönder
+      const operators = botSettings?.operators || [];
+      for (const operator of operators) {
+        if (operator.isActive && operator.telegramUsername) {
+          await this.sendMessageToOperator(operator.telegramUsername, message);
+        }
+      }
+    } catch (error) {
+      console.error('Error sending daily appointment summary:', error);
+    }
   }
 
   // Tüm kişileri getir
