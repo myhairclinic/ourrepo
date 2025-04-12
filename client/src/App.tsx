@@ -8,6 +8,7 @@ import { LanguageProvider } from "./context/LanguageContext";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import WhatsAppButton from "./components/layout/WhatsAppButton";
+import AppointmentButton from "./components/layout/AppointmentButton";
 
 // Pages
 import HomePage from "./pages/HomePage";
@@ -234,7 +235,12 @@ function AppContent() {
       {!isAdminRoute && <Header />}
       <Router />
       {!isAdminRoute && <Footer />}
-      {!isAdminRoute && <WhatsAppButton />}
+      {!isAdminRoute && (
+        <>
+          <WhatsAppButton />
+          <AppointmentButton />
+        </>
+      )}
       <Toaster />
     </>
   );
