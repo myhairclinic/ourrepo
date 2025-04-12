@@ -895,9 +895,12 @@ const AdminDashboard = () => {
               <Dialog open={isAppointmentDialogOpen} onOpenChange={setIsAppointmentDialogOpen}>
                 <DialogContent className="sm:max-w-[500px]">
                   <DialogHeader>
-                    <DialogTitle>Yeni Randevu Oluştur</DialogTitle>
+                    <DialogTitle>{form.getValues("id") ? "Randevu Düzenle" : "Yeni Randevu Oluştur"}</DialogTitle>
                     <DialogDescription>
-                      Yeni bir randevu oluşturmak için aşağıdaki formu doldurun.
+                      {form.getValues("id") 
+                        ? "Randevu bilgilerini düzenlemek için aşağıdaki formu kullanın."
+                        : "Yeni bir randevu oluşturmak için aşağıdaki formu doldurun."
+                      }
                     </DialogDescription>
                   </DialogHeader>
                   
@@ -1037,10 +1040,10 @@ const AdminDashboard = () => {
                           {createAppointmentMutation.isPending ? (
                             <>
                               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                              Oluşturuluyor...
+                              {form.getValues("id") ? "Güncelleniyor..." : "Oluşturuluyor..."}
                             </>
                           ) : (
-                            "Randevu Oluştur"
+                            form.getValues("id") ? "Randevu Güncelle" : "Randevu Oluştur"
                           )}
                         </Button>
                       </DialogFooter>
