@@ -3,11 +3,11 @@ import { Link } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { ALL_LANGUAGES } from "@/lib/languages";
 import { PUBLIC_PATHS } from "@/lib/constants";
-import { Globe, ChevronDown, Menu, X, Phone, Calendar, Clock, MapPin } from "lucide-react";
-
+import { Globe, ChevronDown, Menu, X, Phone, Calendar, Clock, MapPin, Mail } from "lucide-react";
+import AppLogo from "./AppLogo";
 
 export default function Header() {
-  const { language, changeLanguage } = useLanguage();
+  const { language, changeLanguage, addPrefix } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
@@ -30,74 +30,35 @@ export default function Header() {
   };
 
   return (
-    <header className={`sticky top-0 z-50 transition-all duration-300 
-      ${isScrolled ? "bg-white/95 backdrop-blur-md shadow-md" : "bg-white shadow-sm"}`}>
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href={`/${language}`} className="flex items-center">
-            <img 
-              src="/images/logo.png" 
-              alt="MyHair Clinic" 
-              className="h-14 md:h-16"
-              style={{ filter: 'drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.1))' }}
-            />
-          </Link>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-6">
-            <Link href={`/${language}`} 
-                  className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
-              Ana Sayfa
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-            </Link>
-            <Link href={`/${language}/services`} 
-                  className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
-              Hizmetlerimiz
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-            </Link>
-            <Link href={`/${language}/packages`} 
-                  className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
-              Paketler
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-            </Link>
-            <Link href={`/${language}/gallery`} 
-                  className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
-              Galeri
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-            </Link>
-            <Link href={`/${language}/blog`} 
-                  className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
-              Blog
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-            </Link>
-            <Link href={`/${language}/social-media`} 
-                  className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
-              Sosyal Medya
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-            </Link>
-            <Link href={`/${language}/products`} 
-                  className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
-              Ürünler
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-            </Link>
-            <Link href={`/${language}/contact`} 
-                  className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
-              İletişim
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-            </Link>
-          </nav>
-
-          {/* Language Selector & Appointment Button */}
-          <div className="hidden md:flex items-center space-x-4">
+    <header className="sticky top-0 z-50 transition-all duration-300">
+      {/* Top Bar with Contact Info */}
+      <div className="bg-gradient-to-r from-blue-600 to-blue-500 text-white py-2 hidden md:block">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-6 text-sm">
+              <a href="tel:+995555003044" className="flex items-center hover:text-blue-100 transition-colors">
+                <Phone size={14} className="mr-1.5" />
+                <span>+995 555 003044</span>
+              </a>
+              <a href="mailto:myhairtbilisi@gmail.com" className="flex items-center hover:text-blue-100 transition-colors">
+                <Mail size={14} className="mr-1.5" />
+                <span>myhairtbilisi@gmail.com</span>
+              </a>
+              <div className="flex items-center">
+                <MapPin size={14} className="mr-1.5" />
+                <span>Tsotne Dadiani 59, Tbilisi</span>
+              </div>
+            </div>
+            
+            {/* Language Selector */}
             <div className="relative">
               <button 
                 onClick={toggleLangMenu}
-                className="flex items-center space-x-2 text-neutral-700 px-3 py-1.5 rounded-full bg-gray-50 hover:bg-gray-100 transition-colors border border-gray-200"
+                className="flex items-center space-x-2 text-white px-3 py-1 rounded hover:bg-blue-700/40 transition-colors"
               >
-                <Globe size={16} className="text-primary" />
-                <span className="text-sm font-medium uppercase">{language}</span>
-                <ChevronDown size={14} className={`transition-transform duration-300 ${isLangMenuOpen ? 'rotate-180' : ''}`} />
+                <Globe size={14} />
+                <span className="text-sm uppercase">{language}</span>
+                <ChevronDown size={12} className={`transition-transform duration-300 ${isLangMenuOpen ? 'rotate-180' : ''}`} />
               </button>
               
               {isLangMenuOpen && (
@@ -122,27 +83,106 @@ export default function Header() {
                 </div>
               )}
             </div>
-            
-            <Link
-              href={`/${language}/appointment`}
-              className="bg-primary text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
-            >
-              Randevu Al
-            </Link>
           </div>
+        </div>
+      </div>
+      
+      {/* Main Navigation */}
+      <div className={`transition-all duration-300 ${isScrolled ? "bg-white/95 backdrop-blur-md shadow-md py-2" : "bg-white shadow-sm py-4"}`}>
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-center">
+            {/* Logo */}
+            <Link href={addPrefix("/")} className="flex items-center">
+              <div className="flex items-center">
+                <img 
+                  src="/images/logo.png" 
+                  alt="MyHair Clinic" 
+                  className="h-16 mr-2"
+                />
+                <div className="hidden lg:block">
+                  <AppLogo />
+                </div>
+              </div>
+            </Link>
 
-          {/* Mobile Menu Button */}
-          <button 
-            className="md:hidden flex items-center justify-center text-neutral-700 p-2"
-            onClick={toggleMobileMenu}
-            aria-label={isMobileMenuOpen ? "Menüyü Kapat" : "Menüyü Aç"}
-          >
-            {isMobileMenuOpen ? (
-              <X size={24} />
-            ) : (
-              <Menu size={24} />
-            )}
-          </button>
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex space-x-5 lg:space-x-6">
+              <Link href={addPrefix("/")} 
+                    className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
+                Ana Sayfa
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+              <Link href={addPrefix("/services")} 
+                    className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
+                Hizmetlerimiz
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+              <Link href={addPrefix("/packages")} 
+                    className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
+                Paketler
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+              <Link href={addPrefix("/gallery")} 
+                    className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
+                Galeri
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+              <Link href={addPrefix("/blog")} 
+                    className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
+                Blog
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+              <Link href={addPrefix("/social-media")} 
+                    className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
+                Sosyal Medya
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+              <Link href={addPrefix("/products")} 
+                    className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
+                Ürünler
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+              <Link href={addPrefix("/contact")} 
+                    className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
+                İletişim
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </Link>
+            </nav>
+
+            {/* Appointment Button */}
+            <div className="hidden md:block">
+              <Link
+                href={addPrefix("/appointment")}
+                className="bg-primary text-white px-6 py-2.5 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg flex items-center"
+              >
+                <Calendar size={16} className="mr-2" />
+                <span>Randevu Al</span>
+              </Link>
+            </div>
+
+            {/* Mobile Menu Button & Language (Mobile) */}
+            <div className="md:hidden flex items-center space-x-2">
+              <button 
+                onClick={toggleLangMenu}
+                className="flex items-center justify-center space-x-1 text-neutral-700 p-2"
+              >
+                <Globe size={20} className="text-primary" />
+                <span className="text-xs font-medium uppercase">{language}</span>
+              </button>
+              
+              <button 
+                className="flex items-center justify-center text-neutral-700 p-2"
+                onClick={toggleMobileMenu}
+                aria-label={isMobileMenuOpen ? "Menüyü Kapat" : "Menüyü Aç"}
+              >
+                {isMobileMenuOpen ? (
+                  <X size={24} />
+                ) : (
+                  <Menu size={24} />
+                )}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 

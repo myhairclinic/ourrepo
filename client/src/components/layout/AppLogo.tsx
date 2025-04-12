@@ -10,7 +10,7 @@ export default function AppLogo() {
       <style>{`
         .logo-container {
           width: auto;
-          height: 40px;
+          height: 45px;
           display: flex;
           align-items: center;
         }
@@ -21,7 +21,7 @@ export default function AppLogo() {
         }
         .blue-text {
           color: #0064b0;
-          font-size: 18px;
+          font-size: 24px;
           font-weight: bold;
           position: relative;
           display: flex;
@@ -29,8 +29,8 @@ export default function AppLogo() {
           letter-spacing: 1px;
         }
         .orange-strand {
-          width: 14px;
-          height: 24px;
+          width: 16px;
+          height: 32px;
           margin: 0 4px;
           position: relative;
           display: inline-block;
@@ -38,10 +38,10 @@ export default function AppLogo() {
         .orange-strand:before {
           content: '';
           position: absolute;
-          width: 3px;
-          height: 24px;
+          width: 4px;
+          height: 32px;
           background-color: #ffa500;
-          top: -2px;
+          top: -3px;
           left: 6px;
           border-radius: 2px;
           transform: skewX(5deg);
@@ -50,34 +50,34 @@ export default function AppLogo() {
         .orange-strand:after {
           content: '';
           position: absolute;
-          width: 10px;
-          height: 10px;
+          width: 12px;
+          height: 12px;
           background: radial-gradient(circle, rgba(255,165,0,0.2) 0%, rgba(255,165,0,0) 70%);
           top: 5px;
           left: 2px;
         }
         .brown-text {
           color: #8b6f58;
-          font-size: 10px;
+          font-size: 14px;
           font-weight: 500;
           letter-spacing: 0.5px;
         }
         @media (min-width: 768px) {
           .logo-container {
-            height: 45px;
+            height: 55px;
           }
           .blue-text {
-            font-size: 22px;
+            font-size: 28px;
           }
           .orange-strand {
-            width: 16px;
-            height: 30px;
+            width: 18px;
+            height: 36px;
           }
           .orange-strand:before {
-            height: 30px;
+            height: 36px;
           }
           .brown-text {
-            font-size: 12px;
+            font-size: 16px;
           }
         }
       `}</style>
