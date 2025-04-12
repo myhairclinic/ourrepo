@@ -143,6 +143,9 @@ export default function TelegramBotManagement() {
   const [editingPredefinedMessage, setEditingPredefinedMessage] = useState<any>(null);
   const [isPredefinedMessageDialogOpen, setIsPredefinedMessageDialogOpen] = useState(false);
   const [operatorStatus, setOperatorStatus] = useState(true);
+  const [testNotificationType, setTestNotificationType] = useState("new_appointment");
+  const [testChatId, setTestChatId] = useState("");
+  const [sendingTestNotification, setSendingTestNotification] = useState(false);
   
   // Kişileri getir
   const { 
@@ -923,7 +926,7 @@ export default function TelegramBotManagement() {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="test-notification-type">Bildirim Türü</Label>
-                    <Select defaultValue="new_appointment">
+                    <Select id="test-notification-type" defaultValue="new_appointment">
                       <SelectTrigger>
                         <SelectValue placeholder="Bildirim türü seçin" />
                       </SelectTrigger>
@@ -936,9 +939,14 @@ export default function TelegramBotManagement() {
                   
                   <div className="space-y-2">
                     <Label htmlFor="test-chat-id">Hedef Chat ID veya Kullanıcı Adı</Label>
-                    <Input id="test-chat-id" placeholder="@kullaniciadi veya -100123456789" />
+                    <Input 
+                      id="test-chat-id" 
+                      placeholder="@kullaniciadi veya 123456789" 
+                      autoComplete="off"
+                    />
                     <p className="text-xs text-muted-foreground">
-                      Kullanıcı adını girerken @ işaretini eklemeyi unutmayın (ör: @kullaniciadi)
+                      Kullanıcı adını girerken @ işaretini eklemeyi unutmayın (ör: @kullaniciadi).
+                      Chat ID girmek için sadece sayısal değer girin.
                     </p>
                   </div>
                 </div>
