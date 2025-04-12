@@ -679,12 +679,14 @@ export class MemStorage implements IStorage {
     const newAppointment: Appointment = {
       ...appointment,
       id,
-      status: "new",
+      status: "pending",
       appointmentTime: null,
       notificationSent: false,
       notificationScheduled: false,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      message: appointment.message || null,
+      preferredDate: appointment.preferredDate || null
     };
     this.appointments.set(id, newAppointment);
     return newAppointment;
