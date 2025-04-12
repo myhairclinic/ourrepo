@@ -926,8 +926,11 @@ export default function TelegramBotManagement() {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="test-notification-type">Bildirim Türü</Label>
-                    <Select id="test-notification-type" defaultValue="new_appointment">
-                      <SelectTrigger>
+                    <Select
+                      value={testNotificationType}
+                      onValueChange={setTestNotificationType}
+                    >
+                      <SelectTrigger id="test-notification-type">
                         <SelectValue placeholder="Bildirim türü seçin" />
                       </SelectTrigger>
                       <SelectContent>
@@ -943,6 +946,8 @@ export default function TelegramBotManagement() {
                       id="test-chat-id" 
                       placeholder="@kullaniciadi veya 123456789" 
                       autoComplete="off"
+                      value={testChatId}
+                      onChange={(e) => setTestChatId(e.target.value)}
                     />
                     <p className="text-xs text-muted-foreground">
                       Kullanıcı adını girerken @ işaretini eklemeyi unutmayın (ör: @kullaniciadi).
@@ -957,11 +962,9 @@ export default function TelegramBotManagement() {
                   </p>
                   <Button 
                     className="w-full"
+                    disabled={sendingTestNotification || !testChatId}
                     onClick={async () => {
-                      const notificationType = document.querySelector<HTMLSelectElement>("#test-notification-type")?.value || "new_appointment";
-                      const chatId = document.querySelector<HTMLInputElement>("#test-chat-id")?.value;
-                      
-                      if (!chatId) {
+                      if (!testChatId) {
                         toast({
                           title: "Eksik Bilgi",
                           description: "Lütfen bir hedef kullanıcı adı veya chat ID girin.",
@@ -971,12 +974,13 @@ export default function TelegramBotManagement() {
                       }
                       
                       try {
+                        setSendingTestNotification(true);
                         const res = await fetch("/api/telegram/test-notification", {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
                           body: JSON.stringify({
-                            type: notificationType,
-                            chatId: chatId
+                            type: testNotificationType,
+                            chatId: testChatId
                           })
                         });
                         
@@ -1000,10 +1004,19 @@ export default function TelegramBotManagement() {
                           description: `Test bildirimi gönderilirken bir hata oluştu: ${error.message}`,
                           variant: "destructive"
                         });
+                      } finally {
+                        setSendingTestNotification(false);
                       }
                     }}
                   >
-                    Test Bildirimi Gönder
+                    {sendingTestNotification ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Gönderiliyor...
+                      </>
+                    ) : (
+                      "Test Bildirimi Gönder"
+                    )}
                   </Button>
                 </div>
               </div>
