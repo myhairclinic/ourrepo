@@ -80,7 +80,8 @@ export default function AppointmentButton({ text, fixed = true }: AppointmentBut
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
               style={{
-                animation: "pulse 2s infinite"
+                animation: "pulse 2s infinite",
+                boxShadow: "0 0 15px 5px rgba(59, 130, 246, 0.5)"
               }}
             >
               <Calendar size={30} className="stroke-[1.5]" />
