@@ -1,14 +1,10 @@
-// Hasta ekleme seed scripti
-import { storage } from './storage.js';
+// Hasta ekleme scripti
+import { storage } from './server/storage.ts';
 
 async function createDemoPatient() {
   try {
-    const existingPatient = await storage.getPatientByPhone('+905551234567');
-    
-    if (existingPatient) {
-      console.log('Demo hasta zaten oluşturulmuş, ID:', existingPatient.id);
-      return;
-    }
+    const patients = await storage.getPatients();
+    console.log("Mevcut hastalar:", patients.length);
     
     const patient = await storage.createPatient({
       fullName: 'Demo Hasta',
@@ -47,6 +43,9 @@ async function createDemoPatient() {
     });
     
     console.log('Demo hasta için tedavi kaydı eklendi');
+    
+    const updatedPatients = await storage.getPatients();
+    console.log("Güncellenmiş hasta listesi:", updatedPatients.length);
     
   } catch (error) {
     console.error('Demo hasta oluşturulurken hata:', error);
