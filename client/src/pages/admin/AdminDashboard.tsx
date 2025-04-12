@@ -272,58 +272,122 @@ const AdminDashboard = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Desktop Header */}
-        <header className="hidden lg:flex bg-white shadow-sm p-4">
+        <header className="hidden lg:flex bg-white shadow-sm p-4 sticky top-0 z-10">
           <div className="flex-1 flex items-center">
             <div className="relative w-64">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input 
                 type="text" 
-                placeholder="Search..." 
-                className="pl-10 pr-4 py-2 w-full rounded-lg border focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                placeholder="Ara..." 
+                className="pl-10 pr-4 py-2 w-full rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all duration-200"
               />
+            </div>
+            <div className="ml-4 flex items-center text-sm text-gray-600">
+              <span className="hidden xl:block">
+                <span className="font-medium">Hoş geldiniz,</span> bugün {new Date().toLocaleDateString('tr-TR', {day: 'numeric', month: 'long', year: 'numeric'})}
+              </span>
             </div>
           </div>
           
           <div className="flex items-center gap-6">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="flex items-center text-sm focus:outline-none">
+                <button className="flex items-center text-sm focus:outline-none hover:text-primary transition-colors">
                   <span className="hidden md:block mr-1 font-medium">Dil</span>
                   <ChevronDown className="w-4 h-4" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>Türkçe</DropdownMenuItem>
-                <DropdownMenuItem>English</DropdownMenuItem>
-                <DropdownMenuItem>Русский</DropdownMenuItem>
-                <DropdownMenuItem>ქართული</DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">Türkçe</DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">English</DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">Русский</DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">ქართული</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
             
-            <button className="p-2 rounded-full hover:bg-gray-100">
-              <Bell className="w-5 h-5 text-gray-600" />
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-2 focus:outline-none relative p-1 hover:bg-gray-100 rounded-full transition-colors">
+                  <div className="relative">
+                    <Bell className="w-5 h-5 text-gray-600" />
+                    <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-red-500 flex items-center justify-center text-[10px] text-white">3</span>
+                  </div>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-80">
+                <DropdownMenuLabel className="flex justify-between items-center">
+                  <span>Bildirimler</span>
+                  <span className="text-xs text-primary cursor-pointer hover:underline">Tümünü Okundu İşaretle</span>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <div className="max-h-60 overflow-y-auto">
+                  <DropdownMenuItem className="cursor-pointer p-3 hover:bg-gray-50">
+                    <div className="flex flex-col w-full">
+                      <div className="flex justify-between items-start w-full">
+                        <span className="font-medium text-sm">Yeni randevu talebi</span>
+                        <span className="text-xs bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded-full">Yeni</span>
+                      </div>
+                      <span className="text-xs text-gray-500 mt-1">Anıl Sezkin - Sakal Ekimi</span>
+                      <span className="text-xs text-gray-500 mt-0.5">5 dakika önce</span>
+                    </div>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer p-3 hover:bg-gray-50">
+                    <div className="flex flex-col w-full">
+                      <div className="flex justify-between items-start w-full">
+                        <span className="font-medium text-sm">Yeni mesaj</span>
+                        <span className="text-xs bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded-full">Yeni</span>
+                      </div>
+                      <span className="text-xs text-gray-500 mt-1">Bir ziyaretçi bilgi talep ediyor</span>
+                      <span className="text-xs text-gray-500 mt-0.5">2 saat önce</span>
+                    </div>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer p-3 hover:bg-gray-50">
+                    <div className="flex flex-col w-full">
+                      <span className="font-medium text-sm">Randevu hatırlatıcı</span>
+                      <span className="text-xs text-gray-500 mt-1">Yarın 3 randevunuz bulunmaktadır</span>
+                      <span className="text-xs text-gray-500 mt-0.5">1 gün önce</span>
+                    </div>
+                  </DropdownMenuItem>
+                </div>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="justify-center text-primary cursor-pointer font-medium">
+                  Tüm bildirimleri görüntüle
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="flex items-center text-sm focus:outline-none">
-                  <div className="flex-shrink-0 h-8 w-8 rounded-full bg-primary flex items-center justify-center text-white">
-                    {user.username.charAt(0).toUpperCase()}
+                <button className="flex items-center gap-2 focus:outline-none hover:bg-gray-50 p-1.5 rounded-lg transition-colors">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                    <User className="w-5 h-5 text-primary" />
                   </div>
-                  <div className="ml-3">
-                    <p className="font-medium">{user.username}</p>
-                    <p className="text-xs text-gray-500">Admin</p>
+                  <div className="hidden md:block text-left">
+                    <div className="text-sm font-medium">{user.username}</div>
+                    <div className="text-xs text-gray-500">{user.role || "Yönetici"}</div>
                   </div>
-                  <ChevronDown className="ml-1 w-4 h-4" />
+                  <ChevronDown className="w-4 h-4" />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Hesap</DropdownMenuLabel>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel className="flex flex-col items-center justify-center pt-4 pb-2">
+                  <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+                    <User className="w-8 h-8 text-primary" />
+                  </div>
+                  <span className="text-center">{user.username}</span>
+                  <span className="text-xs text-gray-500">{user.role || "Yönetici"}</span>
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Profil</DropdownMenuItem>
-                <DropdownMenuItem>Ayarlar</DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">
+                  <User className="w-4 h-4 mr-2" />
+                  Profil
+                </DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">
+                  <Settings className="w-4 h-4 mr-2" />
+                  Ayarlar
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout}>
+                <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-red-600 hover:text-red-700 hover:bg-red-50">
                   <LogOut className="w-4 h-4 mr-2" />
                   Çıkış Yap
                 </DropdownMenuItem>
