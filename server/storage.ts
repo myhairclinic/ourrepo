@@ -93,6 +93,8 @@ export interface IStorage {
   getPackages(): Promise<Package[]>;
   getPackageById(id: number): Promise<Package | undefined>;
   getPackageBySlug(slug: string): Promise<Package | undefined>;
+  getOnePackagePerCountry(): Promise<Package[]>;
+  getFeaturedPackages(): Promise<Package[]>;
   createPackage(pkg: InsertPackage): Promise<Package>;
   updatePackage(id: number, pkg: Partial<InsertPackage>): Promise<Package | undefined>;
   deletePackage(id: number): Promise<boolean>;
@@ -659,6 +661,27 @@ export class MemStorage implements IStorage {
     return Array.from(this.packages.values()).find(
       (pkg) => pkg.slug === slug,
     );
+  }
+
+  async getOnePackagePerCountry(): Promise<Package[]> {
+    // Tüm paketleri al ve ülkeye göre grupla
+    const packages = Array.from(this.packages.values());
+    const countryMap = new Map<string, Package>();
+    
+    // Her ülke için sadece bir paket ekle (son eklenen paket kalır)
+    for (const pkg of packages) {
+      if (pkg.country) {
+        countryMap.set(pkg.country, pkg);
+      }
+    }
+    
+    // Map'ten değerleri al ve dizi olarak döndür
+    return Array.from(countryMap.values());
+  }
+  
+  async getFeaturedPackages(): Promise<Package[]> {
+    // Öne çıkan paketleri filtreleyerek döndür
+    return Array.from(this.packages.values()).filter(pkg => pkg.isFeatured);
   }
 
   async createPackage(pkg: InsertPackage): Promise<Package> {
