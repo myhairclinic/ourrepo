@@ -1615,35 +1615,66 @@ export class DatabaseStorage implements IStorage {
 
   // Appointment operations
   async getAppointments(): Promise<Appointment[]> {
-    return await db.select().from(appointments);
+    try {
+      const result = await db.select().from(appointments).orderBy(desc(appointments.createdAt));
+      return result;
+    } catch (error) {
+      console.error("Error fetching appointments:", error);
+      throw error;
+    }
   }
 
   async getAppointmentById(id: number): Promise<Appointment | undefined> {
-    const [appointment] = await db.select().from(appointments).where(eq(appointments.id, id));
-    return appointment;
+    try {
+      const [appointment] = await db.select().from(appointments).where(eq(appointments.id, id));
+      return appointment;
+    } catch (error) {
+      console.error(`Error fetching appointment with ID ${id}:`, error);
+      return undefined;
+    }
   }
 
   async createAppointment(appointment: InsertAppointment): Promise<Appointment> {
-    const [newAppointment] = await db.insert(appointments).values({
-      ...appointment,
-      createdAt: new Date()
-    }).returning();
-    return newAppointment;
+    try {
+      const [newAppointment] = await db.insert(appointments).values({
+        ...appointment,
+        status: "new",
+        notificationScheduled: false,
+        notificationSent: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }).returning();
+      return newAppointment;
+    } catch (error) {
+      console.error("Error creating appointment:", error);
+      throw error;
+    }
   }
 
   async updateAppointment(id: number, appointment: Partial<Appointment>): Promise<Appointment | undefined> {
-    const [updatedAppointment] = await db.update(appointments)
-      .set({
-        ...appointment
-      })
-      .where(eq(appointments.id, id))
-      .returning();
-    return updatedAppointment;
+    try {
+      const [updatedAppointment] = await db.update(appointments)
+        .set({
+          ...appointment,
+          updatedAt: new Date()
+        })
+        .where(eq(appointments.id, id))
+        .returning();
+      return updatedAppointment;
+    } catch (error) {
+      console.error(`Error updating appointment with ID ${id}:`, error);
+      throw error;
+    }
   }
 
   async deleteAppointment(id: number): Promise<boolean> {
-    await db.delete(appointments).where(eq(appointments.id, id));
-    return true;
+    try {
+      await db.delete(appointments).where(eq(appointments.id, id));
+      return true;
+    } catch (error) {
+      console.error(`Error deleting appointment with ID ${id}:`, error);
+      return false;
+    }
   }
 
   // Testimonial operations
