@@ -1,6 +1,11 @@
 import TelegramBot from 'node-telegram-bot-api';
 import { db } from '../db';
-import { contacts, messages, predefinedMessages, botSettings as botSettingsTable } from '@shared/schema';
+import { 
+  telegramContacts as contacts, 
+  telegramMessages as messages, 
+  telegramPredefinedMessages as predefinedMessages, 
+  telegramBotSettings as botSettingsTable 
+} from '@shared/schema';
 import { eq, desc, and } from 'drizzle-orm';
 
 // Telegram Bot işlemleri için servis
@@ -185,15 +190,19 @@ class TelegramBotService {
         isRead: true
       });
       
-      // Kişinin son mesaj tarihini güncelle
-      await db.update(contacts)
-        .set({
-          lastMessageDate: new Date(),
-          messagesCount: {
-            increment: 1
-          }
-        })
-        .where(eq(contacts.chatId, chatId));
+      // Kişinin son mesaj tarihini ve mesaj sayısını güncelle
+      const contact = await db.select().from(contacts)
+        .where(eq(contacts.chatId, chatId))
+        .then(rows => rows[0]);
+        
+      if (contact) {
+        await db.update(contacts)
+          .set({
+            lastMessageDate: new Date(),
+            messagesCount: (contact.messagesCount || 0) + 1
+          })
+          .where(eq(contacts.chatId, chatId));
+      }
       
       return { success: true };
     } catch (error) {

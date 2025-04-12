@@ -8,7 +8,10 @@ import {
   insertChatMessageSchema, 
   insertChatOperatorSchema,
   insertAftercareGuideSchema,
-  insertPackageSchema
+  insertPackageSchema,
+  insertTelegramContactSchema,
+  insertTelegramMessageSchema,
+  insertTelegramPredefinedMessageSchema
 } from "@shared/schema";
 import { 
   getServices, 
@@ -17,6 +20,7 @@ import {
   updateService,
   deleteService
 } from "./controllers/contentController";
+import { telegramBotService } from "./services/telegramBotService";
 import { seedServices, seedPackages, seedNewCountryPackages } from "./controllers/seedController";
 import { seedBlogPosts } from "./controllers/seedBlogController";
 import { seedExtendedBlogPosts } from "./controllers/extendedBlogSeedController";
@@ -451,6 +455,151 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Blog admin features
   app.patch("/api/blog/:id/feature", toggleFeatured);
   app.patch("/api/blog/:id/publish", togglePublished);
+
+  // Telegram Bot API Routes
+  app.get("/api/telegram/contacts", async (req, res) => {
+    try {
+      const contacts = await telegramBotService.getContacts();
+      res.json(contacts);
+    } catch (error) {
+      console.error("Error fetching telegram contacts:", error);
+      res.status(500).json({ error: "Failed to fetch telegram contacts" });
+    }
+  });
+  
+  app.get("/api/telegram/messages/:chatId", async (req, res) => {
+    try {
+      const messages = await telegramBotService.getMessages(req.params.chatId);
+      res.json(messages);
+    } catch (error) {
+      console.error("Error fetching telegram messages:", error);
+      res.status(500).json({ error: "Failed to fetch telegram messages" });
+    }
+  });
+  
+  app.post("/api/telegram/send", async (req, res) => {
+    try {
+      const { chatId, text } = req.body;
+      if (!chatId || !text) {
+        return res.status(400).json({ error: "Chat ID and text are required" });
+      }
+      const result = await telegramBotService.sendMessage(chatId, text);
+      res.json(result);
+    } catch (error) {
+      console.error("Error sending telegram message:", error);
+      res.status(500).json({ error: "Failed to send telegram message" });
+    }
+  });
+  
+  app.get("/api/telegram/predefined-messages", async (req, res) => {
+    try {
+      const messages = await telegramBotService.getPredefinedMessages();
+      res.json(messages);
+    } catch (error) {
+      console.error("Error fetching predefined messages:", error);
+      res.status(500).json({ error: "Failed to fetch predefined messages" });
+    }
+  });
+  
+  app.post("/api/telegram/predefined-messages", async (req, res) => {
+    try {
+      const result = await telegramBotService.savePredefinedMessage(req.body);
+      res.json(result);
+    } catch (error) {
+      console.error("Error saving predefined message:", error);
+      res.status(500).json({ error: "Failed to save predefined message" });
+    }
+  });
+  
+  app.delete("/api/telegram/predefined-messages/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: "Invalid message ID" });
+      }
+      const result = await telegramBotService.deletePredefinedMessage(id);
+      res.json(result);
+    } catch (error) {
+      console.error("Error deleting predefined message:", error);
+      res.status(500).json({ error: "Failed to delete predefined message" });
+    }
+  });
+  
+  app.put("/api/telegram/contacts/:chatId/block", async (req, res) => {
+    try {
+      const { isBlocked } = req.body;
+      if (typeof isBlocked !== 'boolean') {
+        return res.status(400).json({ error: "isBlocked must be a boolean" });
+      }
+      const result = await telegramBotService.toggleContactBlock(req.params.chatId, isBlocked);
+      res.json(result);
+    } catch (error) {
+      console.error("Error updating contact block status:", error);
+      res.status(500).json({ error: "Failed to update contact block status" });
+    }
+  });
+  
+  app.put("/api/telegram/contacts/:chatId/notes", async (req, res) => {
+    try {
+      const { notes } = req.body;
+      if (typeof notes !== 'string') {
+        return res.status(400).json({ error: "Notes must be a string" });
+      }
+      const result = await telegramBotService.updateContactNotes(req.params.chatId, notes);
+      res.json(result);
+    } catch (error) {
+      console.error("Error updating contact notes:", error);
+      res.status(500).json({ error: "Failed to update contact notes" });
+    }
+  });
+  
+  app.put("/api/telegram/contacts/:chatId/tags", async (req, res) => {
+    try {
+      const { tags } = req.body;
+      if (!Array.isArray(tags)) {
+        return res.status(400).json({ error: "Tags must be an array" });
+      }
+      const result = await telegramBotService.updateContactTags(req.params.chatId, tags);
+      res.json(result);
+    } catch (error) {
+      console.error("Error updating contact tags:", error);
+      res.status(500).json({ error: "Failed to update contact tags" });
+    }
+  });
+  
+  app.get("/api/telegram/settings", async (req, res) => {
+    try {
+      const settings = await telegramBotService.getBotSettings();
+      res.json(settings);
+    } catch (error) {
+      console.error("Error fetching bot settings:", error);
+      res.status(500).json({ error: "Failed to fetch bot settings" });
+    }
+  });
+  
+  app.put("/api/telegram/settings", async (req, res) => {
+    try {
+      const result = await telegramBotService.updateBotSettings(req.body);
+      res.json(result);
+    } catch (error) {
+      console.error("Error updating bot settings:", error);
+      res.status(500).json({ error: "Failed to update bot settings" });
+    }
+  });
+  
+  app.post("/api/telegram/toggle", async (req, res) => {
+    try {
+      const { isActive } = req.body;
+      if (typeof isActive !== 'boolean') {
+        return res.status(400).json({ error: "isActive must be a boolean" });
+      }
+      await telegramBotService.toggleBotStatus(isActive);
+      res.json({ success: true, isActive });
+    } catch (error) {
+      console.error("Error toggling bot status:", error);
+      res.status(500).json({ error: "Failed to toggle bot status" });
+    }
+  });
 
   // Seed data routes (public during development)
   app.post("/api/seed/services", seedServices);

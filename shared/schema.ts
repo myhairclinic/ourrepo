@@ -368,6 +368,125 @@ export const updateClinicInfoSchema = createInsertSchema(clinicInfo).omit({
 // Package Type
 export type PackageType = "standard" | "premium" | "luxury" | "budget";
 
+// Telegram Bot için şema tanımları
+import { pgEnum } from 'drizzle-orm/pg-core';
+
+export const telegramContactStageEnum = pgEnum('contact_stage', [
+  'inquiry',        // İlk iletişim
+  'consultation',   // Danışmanlık aşaması
+  'appointment',    // Randevu planlandı
+  'post-treatment', // Tedavi sonrası takip
+  'follow-up'       // Uzun vadeli takip
+]);
+
+// Telegram bot kontakları
+export const telegramContacts = pgTable('telegram_contacts', {
+  id: serial('id').primaryKey(),
+  chatId: text('chat_id').notNull(),
+  username: text('username'),
+  firstName: text('first_name'),
+  lastName: text('last_name'),
+  language: text('language').default('tr'),
+  startDate: timestamp('start_date').defaultNow().notNull(),
+  lastMessageDate: timestamp('last_message_date').defaultNow().notNull(),
+  messagesCount: integer('messages_count').default(0),
+  isBlocked: boolean('is_blocked').default(false),
+  tags: jsonb('tags').$type<string[]>().default([]),
+  notes: text('notes'),
+  stage: telegramContactStageEnum('stage').default('inquiry'),
+  appointmentDate: timestamp('appointment_date'),
+  phone: text('phone'),
+  email: text('email'),
+  location: text('location')
+});
+
+// Telegram bot mesajları
+export const telegramMessages = pgTable('telegram_messages', {
+  id: serial('id').primaryKey(),
+  chatId: text('chat_id').notNull(),
+  text: text('text').notNull(),
+  date: timestamp('date').defaultNow().notNull(),
+  isIncoming: boolean('is_incoming').notNull(),
+  isRead: boolean('is_read').default(false)
+});
+
+// Telegram bot hazır yanıtları
+export const telegramPredefinedMessages = pgTable('telegram_predefined_messages', {
+  id: serial('id').primaryKey(),
+  title: text('title').notNull(),
+  text: text('text').notNull(),
+  language: text('language').default('tr'),
+  tags: jsonb('tags').$type<string[]>().default([])
+});
+
+// Telegram bot ayarları
+export const telegramBotSettings = pgTable('telegram_bot_settings', {
+  id: serial('id').primaryKey(),
+  isActive: boolean('is_active').default(true),
+  autoResponder: boolean('auto_responder').default(true),
+  welcomeMessage: text('welcome_message'),
+  offlineMessage: text('offline_message'),
+  workingHours: jsonb('working_hours').$type<{
+    [key: string]: { start: string; end: string; isActive: boolean }
+  }>(),
+  languages: jsonb('languages').$type<{ code: string; isActive: boolean }[]>(),
+  operators: jsonb('operators').$type<{
+    id: number;
+    name: string;
+    isActive: boolean;
+    telegramUsername: string;
+  }[]>(),
+  notifications: jsonb('notifications').$type<{
+    newMessage: boolean;
+    newContact: boolean;
+    appointmentReminder: boolean;
+    dailySummary: boolean;
+  }>()
+});
+
+// Zod şemaları - Telegram Bot
+export const insertTelegramContactSchema = createInsertSchema(telegramContacts, {
+  tags: z.array(z.string()).optional(),
+  stage: z.enum(['inquiry', 'consultation', 'appointment', 'post-treatment', 'follow-up']).optional()
+});
+
+export const insertTelegramMessageSchema = createInsertSchema(telegramMessages);
+
+export const insertTelegramPredefinedMessageSchema = createInsertSchema(telegramPredefinedMessages, {
+  tags: z.array(z.string()).optional()
+});
+
+export const insertTelegramBotSettingsSchema = createInsertSchema(telegramBotSettings, {
+  workingHours: z.record(
+    z.string(),
+    z.object({
+      start: z.string(),
+      end: z.string(),
+      isActive: z.boolean()
+    })
+  ).optional(),
+  languages: z.array(
+    z.object({
+      code: z.string(),
+      isActive: z.boolean()
+    })
+  ).optional(),
+  operators: z.array(
+    z.object({
+      id: z.number(),
+      name: z.string(),
+      isActive: z.boolean(),
+      telegramUsername: z.string()
+    })
+  ).optional(),
+  notifications: z.object({
+    newMessage: z.boolean(),
+    newContact: z.boolean(),
+    appointmentReminder: z.boolean(),
+    dailySummary: z.boolean()
+  }).optional()
+});
+
 // Type exports
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -398,6 +517,19 @@ export type InsertTestimonial = z.infer<typeof insertTestimonialSchema>;
 
 export type Message = typeof messages.$inferSelect;
 export type InsertMessage = z.infer<typeof insertMessageSchema>;
+
+// Telegram Bot tip tanımlamaları
+export type TelegramContact = typeof telegramContacts.$inferSelect;
+export type InsertTelegramContact = z.infer<typeof insertTelegramContactSchema>;
+
+export type TelegramMessage = typeof telegramMessages.$inferSelect;
+export type InsertTelegramMessage = z.infer<typeof insertTelegramMessageSchema>;
+
+export type TelegramPredefinedMessage = typeof telegramPredefinedMessages.$inferSelect;
+export type InsertTelegramPredefinedMessage = z.infer<typeof insertTelegramPredefinedMessageSchema>;
+
+export type TelegramBotSetting = typeof telegramBotSettings.$inferSelect;
+export type InsertTelegramBotSetting = z.infer<typeof insertTelegramBotSettingsSchema>;
 
 export type ClinicInfo = typeof clinicInfo.$inferSelect;
 export type UpdateClinicInfo = z.infer<typeof updateClinicInfoSchema>;
