@@ -56,7 +56,6 @@ export default function HomePage() {
         <PatientJourney />
         <ServiceCards />
         <PackageCards />
-        <FeaturedPackageCards />
         <FeaturedProducts />
         <BlogSlider />
         
