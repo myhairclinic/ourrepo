@@ -623,5 +623,4 @@ E-posta: ${appointment.email}
 
 export const telegramBotService = new TelegramBotService();
 
-// Servis başlangıçta otomatik başlatılır
-telegramBotService.initialize().catch(console.error);
+// Servisi burada otomatik başlatmıyoruz, routes.ts içinde kontrollü şekilde başlatılacak
