@@ -56,7 +56,15 @@ export const updateAppointmentStatus = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid status" });
     }
     
-    const appointment = await storage.updateAppointment(id, { status });
+    // Status, updateAppointment fonksiyonuna doğrudan geçirilmemeli
+    // Önce mevcut kaydı alalım
+    const currentAppointment = await storage.getAppointmentById(id);
+    if (!currentAppointment) {
+      return res.status(404).json({ message: "Appointment not found" });
+    }
+    
+    // Sonra kaydı güncelleyelim, doğrudan DB_SET kullanarak status'u ayarlayacağız
+    const appointment = await storage.updateAppointmentStatus(id, status);
     if (!appointment) {
       return res.status(404).json({ message: "Appointment not found" });
     }
