@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -199,11 +199,13 @@ const PatientManagement = () => {
   });
   
   // Hasta otomatik oluşturulduğunda ilişkili randevu bilgilerini almak için
-  const [appointmentId, setAppointmentId] = useState<number | null>(null);
   const { data: relatedAppointment, isLoading: isAppointmentLoading } = useQuery({
-    queryKey: ["/api/appointments", appointmentId],
+    queryKey: ["/api/appointments", selectedPatient?.notes && extractAppointmentId(selectedPatient.notes)],
     queryFn: async () => {
+      if (!selectedPatient?.notes) return null;
+      const appointmentId = extractAppointmentId(selectedPatient.notes);
       if (!appointmentId) return null;
+      
       const res = await fetch(`/api/appointments/${appointmentId}`);
       if (!res.ok) {
         if (res.status === 404) return null;
@@ -211,7 +213,7 @@ const PatientManagement = () => {
       }
       return res.json();
     },
-    enabled: !!appointmentId,
+    enabled: !!(selectedPatient?.notes && selectedPatient.notes.includes("Otomatik oluşturuldu. Randevu ID:")),
   });
   
   const { data: treatmentRecords, isLoading: isTreatmentsLoading, refetch: refetchTreatments } = useQuery({
@@ -485,7 +487,7 @@ const PatientManagement = () => {
   };
   
   // Extracting appointment ID from patient notes
-  const extractAppointmentId = (patientNotes: string | null): number | null => {
+  const extractAppointmentId = useCallback((patientNotes: string | null): number | null => {
     if (!patientNotes) return null;
     
     const match = patientNotes.match(/Randevu ID: (\d+),/);
@@ -493,7 +495,7 @@ const PatientManagement = () => {
       return parseInt(match[1], 10);
     }
     return null;
-  };
+  }, []);
   
   const handleEditPatient = (patient: any) => {
     patientForm.reset({
@@ -999,16 +1001,12 @@ const PatientManagement = () => {
                           <div className="text-sm font-medium text-gray-500 mb-2">İlişkili Randevu</div>
                           {(() => {
                             // Hasta seçildiğinde randevu ID'sini çıkar ve sorgula
-                            const appointmentId = extractAppointmentId(selectedPatient.notes);
-                            
-                            if (appointmentId !== appointmentId) {
-                              setAppointmentId(appointmentId);
-                            }
+                            const apptId = extractAppointmentId(selectedPatient.notes);
                             
                             if (isAppointmentLoading) {
                               return (
                                 <div className="flex items-center space-x-2 text-sm text-gray-500">
-                                  <LoaderCircle className="h-3 w-3 animate-spin" />
+                                  <RotateCcw className="h-3 w-3 animate-spin" />
                                   <span>Randevu bilgileri yükleniyor...</span>
                                 </div>
                               );
@@ -1017,7 +1015,7 @@ const PatientManagement = () => {
                             if (!relatedAppointment) {
                               return (
                                 <div className="text-sm text-gray-900">
-                                  Randevu bilgileri bulunamadı. (ID: {appointmentId})
+                                  Randevu bilgileri bulunamadı. (ID: {extractAppointmentId(selectedPatient.notes)})
                                 </div>
                               );
                             }
