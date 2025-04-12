@@ -1260,7 +1260,7 @@ export class DatabaseStorage implements IStorage {
 
   // Service operations
   async getServices(): Promise<Service[]> {
-    return await db.select().from(services).orderBy(asc(services.order));
+    return await db.select().from(services);
   }
 
   async getServiceById(id: number): Promise<Service | undefined> {
@@ -1409,7 +1409,7 @@ export class DatabaseStorage implements IStorage {
 
   // Gallery operations
   async getGalleryItems(): Promise<GalleryItem[]> {
-    return await db.select().from(galleryItems).orderBy(asc(galleryItems.order));
+    return await db.select().from(galleryItems);
   }
 
   async getGalleryItemById(id: number): Promise<GalleryItem | undefined> {
@@ -1420,15 +1420,13 @@ export class DatabaseStorage implements IStorage {
   async getGalleryItemsByType(type: string): Promise<GalleryItem[]> {
     return await db.select()
       .from(galleryItems)
-      .where(eq(galleryItems.type, type))
-      .orderBy(asc(galleryItems.order));
+      .where(eq(galleryItems.type, type));
   }
 
   async getGalleryItemsByServiceId(serviceId: number): Promise<GalleryItem[]> {
     return await db.select()
       .from(galleryItems)
-      .where(eq(galleryItems.serviceId, serviceId))
-      .orderBy(asc(galleryItems.order));
+      .where(eq(galleryItems.serviceId, serviceId));
   }
 
   async createGalleryItem(item: InsertGalleryItem): Promise<GalleryItem> {
@@ -1451,7 +1449,7 @@ export class DatabaseStorage implements IStorage {
 
   // FAQ operations
   async getFaqs(): Promise<FAQ[]> {
-    return await db.select().from(faqs).orderBy(asc(faqs.order));
+    return await db.select().from(faqs);
   }
 
   async getFaqById(id: number): Promise<FAQ | undefined> {
@@ -1462,8 +1460,7 @@ export class DatabaseStorage implements IStorage {
   async getFaqsByServiceId(serviceId: number): Promise<FAQ[]> {
     return await db.select()
       .from(faqs)
-      .where(eq(faqs.serviceId, serviceId))
-      .orderBy(asc(faqs.order));
+      .where(eq(faqs.serviceId, serviceId));
   }
 
   async createFaq(faq: InsertFAQ): Promise<FAQ> {
@@ -1486,7 +1483,7 @@ export class DatabaseStorage implements IStorage {
 
   // Product operations
   async getProducts(): Promise<Product[]> {
-    return await db.select().from(products).orderBy(asc(products.order));
+    return await db.select().from(products);
   }
 
   async getProductById(id: number): Promise<Product | undefined> {
@@ -1592,7 +1589,7 @@ export class DatabaseStorage implements IStorage {
 
   // Testimonial operations
   async getTestimonials(): Promise<Testimonial[]> {
-    return await db.select().from(testimonials).orderBy(asc(testimonials.order));
+    return await db.select().from(testimonials);
   }
 
   async getTestimonialById(id: number): Promise<Testimonial | undefined> {
@@ -1620,7 +1617,7 @@ export class DatabaseStorage implements IStorage {
 
   // User Review operations
   async getUserReviews(): Promise<UserReview[]> {
-    return await db.select().from(userReviews).orderBy(desc(userReviews.createdAt));
+    return await db.select().from(userReviews);
   }
 
   async getUserReviewById(id: number): Promise<UserReview | undefined> {
@@ -1667,7 +1664,7 @@ export class DatabaseStorage implements IStorage {
 
   // Message operations
   async getMessages(): Promise<Message[]> {
-    return await db.select().from(messages).orderBy(desc(messages.createdAt));
+    return await db.select().from(messages);
   }
 
   async getMessageById(id: number): Promise<Message | undefined> {
