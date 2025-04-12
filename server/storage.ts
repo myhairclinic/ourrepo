@@ -302,6 +302,7 @@ export class MemStorage implements IStorage {
     const user: User = { 
       ...insertUser, 
       id, 
+      role: insertUser.role || 'admin', // Ensure role is never undefined
       createdAt: new Date() 
     };
     this.users.set(id, user);
@@ -679,6 +680,9 @@ export class MemStorage implements IStorage {
       ...appointment,
       id,
       status: "new",
+      appointmentTime: null,
+      notificationSent: false,
+      notificationScheduled: false,
       createdAt: new Date(),
       updatedAt: new Date()
     };
