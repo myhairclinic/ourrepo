@@ -263,68 +263,91 @@ class TelegramBotService {
   // Operatöre kullanıcı adı ile mesaj gönder
   async sendMessageToOperator(username: string, message: string) {
     try {
+      // Bot initialized check ve auto-initialize ekliyoruz
       if (!this._isInitialized || !this.bot) {
-        console.error(`Bot is not initialized, cannot send message to @${username}`);
-        return false;
+        console.warn(`Bot is not initialized, attempting to initialize before sending to @${username}...`);
+        await this.initialize();
+        
+        if (!this._isInitialized || !this.bot) {
+          console.error(`Bot initialization failed, cannot send message to @${username}`);
+          return false;
+        }
       }
       
-      if (!username) {
+      if (!username || username.trim() === '') {
         console.error('Invalid username: Username cannot be empty');
         return false;
       }
       
-      // TELEGRAM_BOT_TOKEN çevresel değişkeni kontrolü ekleyelim
+      // TELEGRAM_BOT_TOKEN çevresel değişkeni kontrolü
       if (!process.env.TELEGRAM_BOT_TOKEN) {
         console.error('TELEGRAM_BOT_TOKEN çevresel değişkeni ayarlanmamış. Bot API isteği yapılamaz.');
         return false;
       }
       
       // Kullanıcı adını düzenleyelim (@ işareti ekleyelim)
-      let formattedUsername = username;
-      if (!username.startsWith('@')) {
-        formattedUsername = `@${username}`;
+      let formattedUsername = username.trim();
+      if (!formattedUsername.startsWith('@')) {
+        formattedUsername = `@${formattedUsername}`;
       }
       
-      console.log(`Getting chat ID for ${formattedUsername}...`);
+      console.log(`Attempting to send message to ${formattedUsername}...`);
+      
+      // İlk önce getChat ile chat ID almayı deneyelim
       try {
-        // Kullanıcı adına göre chat ID getir
+        console.log(`Getting chat ID for ${formattedUsername}...`);
         const chat = await this.bot.getChat(formattedUsername);
-        console.log(`Got chat for ${formattedUsername}:`, chat?.id ? 'Chat ID found' : 'No chat ID found');
         
         if (chat && chat.id) {
-          console.log(`Sending message to ${formattedUsername} with chat ID: ${chat.id}`);
-          await this.bot.sendMessage(chat.id.toString(), message, { parse_mode: 'Markdown' });
-          console.log(`Successfully sent message to ${formattedUsername}`);
-          return true;
+          console.log(`Found chat ID for ${formattedUsername}: ${chat.id}`);
+          
+          try {
+            const response = await this.bot.sendMessage(chat.id.toString(), message, { parse_mode: 'Markdown' });
+            console.log(`Successfully sent message to ${formattedUsername} via chat ID ${chat.id}, message ID: ${response.message_id}`);
+            return true;
+          } catch (sendError: any) {
+            console.error(`Error sending message to ${formattedUsername} using chat ID ${chat.id}:`, sendError?.message || 'Unknown error');
+            throw sendError; // Re-throw for later handling
+          }
         } else {
-          console.warn(`No chat ID found for ${formattedUsername}`);
-          return false;
+          console.warn(`No valid chat ID found for ${formattedUsername}`);
         }
       } catch (chatError: any) {
-        // Eğer kullanıcı bulunamazsa veya bota mesaj atmamışsa direkt kullanıcı adıyla deneyelim
-        console.log(`Error getting chat for ${formattedUsername}:`, chatError?.message || 'Unknown error');
+        // getChat başarısız olursa ve hata chat not found ise kullanıcının botu başlatması gerekiyor
+        console.warn(`Could not get chat for ${formattedUsername}:`, chatError?.message || 'Unknown error');
         
         if (chatError?.message?.includes('chat not found')) {
-          console.warn(`User ${formattedUsername} has not started a conversation with the bot yet. They need to send /start command to @MyHairClinicBot first.`);
+          console.warn(`User ${formattedUsername} has not started a conversation with the bot yet.`);
+          console.warn(`IMPORTANT: ${formattedUsername} must send /start to the @MyHairClinicBot to receive notifications.`);
         }
         
+        // Son çare olarak direkt kullanıcı adına göndermeyi deneyelim
         try {
-          // Son çare olarak direkt kullanıcı adına göndermeyi deneyelim
-          await this.bot.sendMessage(formattedUsername, message, { parse_mode: 'Markdown' });
-          console.log(`Successfully sent direct message to ${formattedUsername}`);
+          console.log(`Attempting to send direct message to username: ${formattedUsername}`);
+          const response = await this.bot.sendMessage(formattedUsername, message, { parse_mode: 'Markdown' });
+          console.log(`Successfully sent direct message to ${formattedUsername}, message ID: ${response.message_id}`);
           return true;
         } catch (directError: any) {
+          // Bu da başarısız olursa artık pes ediyoruz
           console.error(`Failed to send direct message to ${formattedUsername}:`, directError?.message || 'Unknown error');
           
           if (directError?.message?.includes('chat not found')) {
-            console.warn(`OPERATOR NOTIFICATION FAILED: User @${username} must first start a conversation with the bot by sending /start command to @MyHairClinicBot`);
+            console.warn(`OPERATOR NOTIFICATION FAILED: User ${formattedUsername} must first start a conversation with the bot.`);
+            console.warn(`Ask the user to open Telegram app and send /start to @MyHairClinicBot`);
+          } else if (directError?.message?.includes('bot was blocked')) {
+            console.warn(`The user ${formattedUsername} has blocked the bot. They need to unblock @MyHairClinicBot.`);
           }
           
           return false;
         }
       }
+      
+      return false; // Default return if all attempts fail
     } catch (error: any) {
-      console.error(`Error in sendMessageToOperator for @${username}:`, error);
+      console.error(`Overall error in sendMessageToOperator for ${username}:`, error?.message || 'Unknown error');
+      if (error?.stack) {
+        console.error(`Stack trace: ${error.stack}`);
+      }
       return false;
     }
   }
@@ -695,9 +718,15 @@ E-posta: ${appointment.email}
   // Chat ID ile direkt mesaj gönder
   async sendMessageByChatId(chatId: number, message: string) {
     try {
+      // Bot initialized check ve auto-initialize ekliyoruz
       if (!this._isInitialized || !this.bot) {
-        console.error(`Bot is not initialized, cannot send message to chat ID ${chatId}`);
-        return false;
+        console.warn(`Bot is not initialized, attempting to initialize...`);
+        await this.initialize();
+        
+        if (!this._isInitialized || !this.bot) {
+          console.error(`Bot initialization failed, cannot send message to chat ID ${chatId}`);
+          return false;
+        }
       }
       
       if (!chatId) {
@@ -711,24 +740,33 @@ E-posta: ${appointment.email}
         return false;
       }
       
+      // Telegram API çağrısı yapıyoruz
       console.log(`Sending message directly to chat ID: ${chatId}`);
-      await this.bot.sendMessage(chatId.toString(), message, { parse_mode: 'Markdown' });
-      console.log(`Successfully sent message to chat ID: ${chatId}`);
-      return true;
-    } catch (error: any) {
-      console.error(`Error sending message to chat ID ${chatId}:`, error);
-      
-      // Daha detaylı hata mesajları
-      if (error && error.message) {
-        if (error.message.includes('chat not found')) {
-          console.warn(`This usually happens when the user with chat ID ${chatId} has not started a conversation with the bot. They need to send /start to the bot first.`);
-        } else if (error.message.includes('bot was blocked by the user')) {
-          console.warn(`The user with chat ID ${chatId} has blocked the bot. They need to unblock the bot before messages can be sent.`);
-        } else if (error.message.includes('ETELEGRAM')) {
-          console.warn(`Telegram API error: ${error.message}. Please check if the TELEGRAM_BOT_TOKEN is valid and the bot is properly set up.`);
+      try {
+        const response = await this.bot.sendMessage(chatId.toString(), message, { parse_mode: 'Markdown' });
+        console.log(`Successfully sent message to chat ID: ${chatId}, message ID: ${response.message_id}`);
+        return true;
+      } catch (sendError: any) {
+        // Telegram API'den gelen hatalar için detaylı mesajlar
+        console.error(`Error in sendMessage API call to chat ID ${chatId}:`, sendError?.message || 'Unknown error');
+        
+        if (sendError?.message?.includes('chat not found')) {
+          console.warn(`Chat ID ${chatId} not found. This usually means the ID is incorrect or the user has not started a conversation with the bot.`);
+          console.warn(`Suggest to the user that they should open Telegram and send "/start" to @MyHairClinicBot first.`);
+        } else if (sendError?.message?.includes('bot was blocked')) {
+          console.warn(`The user with chat ID ${chatId} has blocked the bot. They need to unblock @MyHairClinicBot.`);
+        } else if (sendError?.message?.includes('ETELEGRAM')) {
+          console.warn(`Telegram API error with TELEGRAM_BOT_TOKEN: ${sendError.message}`);
         }
+        
+        throw sendError; // Hatayı yukarı ilet
       }
-      
+    } catch (error: any) {
+      console.error(`Overall error in sendMessageByChatId for ${chatId}:`, error?.message || 'Unknown error');
+      // Detaylı stack trace için
+      if (error?.stack) {
+        console.error(`Stack trace: ${error.stack}`);
+      }
       return false;
     }
   }

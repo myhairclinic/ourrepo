@@ -617,6 +617,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
       
+      console.log(`Test bildirim isteği alındı: type=${type}, chatId=${chatId}`);
+      
+      // Öncelikle Telegram bot servisinin başlatılıp başlatılmadığını kontrol et
+      if (!telegramBotService.isInitialized) {
+        console.warn('Telegram bot başlatılmamış, otomatik başlatılıyor...');
+        await telegramBotService.initialize();
+        
+        if (!telegramBotService.isInitialized) {
+          return res.status(500).json({
+            success: false,
+            message: "Telegram bot başlatılamadı. TELEGRAM_BOT_TOKEN kontrol edilmeli."
+          });
+        }
+      }
+      
       const now = new Date();
       const formattedDate = now.toLocaleString("tr-TR", { 
         year: 'numeric', 
@@ -661,22 +676,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
           "_Bu bir test mesajıdır, gerçek bir randevu değildir._";
       }
       
+      console.log(`Test bildirim mesajı oluşturuldu: "${messageTitle}"`);
+      
       // @ işareti içeriyorsa kullanıcı adı olarak kabul et
-      let result;
-      if (chatId.startsWith('@')) {
-        console.log(`Test bildirimi gönderiliyor: ${messageTitle} -> kullanıcı: ${chatId}`);
-        result = await telegramBotService.sendMessageToOperator(chatId.substring(1), message);
-      } else {
-        // Chat ID olarak kabul et
-        const chatIdNumber = Number(chatId);
-        if (isNaN(chatIdNumber)) {
-          return res.status(400).json({ 
-            success: false, 
-            message: "Geçersiz chat ID formatı. Sayı olmalı veya @ ile başlayan kullanıcı adı olmalı." 
-          });
+      let result = false;
+      
+      try {
+        if (chatId.includes('@') || isNaN(Number(chatId))) {
+          // Kullanıcı adı formatı
+          let username = chatId;
+          if (chatId.startsWith('@')) {
+            username = chatId.substring(1);
+          }
+          
+          console.log(`Test bildirimi kullanıcı adına gönderiliyor: ${username}`);
+          result = await telegramBotService.sendMessageToOperator(username, message);
+        } else {
+          // Chat ID formatı
+          const chatIdNumber = Number(chatId);
+          console.log(`Test bildirimi chat ID'ye gönderiliyor: ${chatIdNumber}`);
+          result = await telegramBotService.sendMessageByChatId(chatIdNumber, message);
         }
-        console.log(`Test bildirimi gönderiliyor: ${messageTitle} -> chat ID: ${chatIdNumber}`);
-        result = await telegramBotService.sendMessageByChatId(chatIdNumber, message);
+      } catch (sendError: any) {
+        console.error(`Mesaj gönderme hatası: ${sendError.message || 'Bilinmeyen hata'}`);
+        return res.status(500).json({
+          success: false,
+          message: `Mesaj gönderilirken hata oluştu: ${sendError.message}`,
+          errorDetail: sendError
+        });
       }
       
       if (result) {
@@ -690,7 +717,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.warn(`Test bildirimi gönderilemedi: ${type} - Chat ID: ${chatId}`);
         res.status(500).json({ 
           success: false, 
-          message: "Bildirim gönderilemedi. Kullanıcı botu başlatmış mı kontrol edin (/start komutu)." 
+          message: "Bildirim gönderilemedi. Kullanıcının botu başlatması gerekiyor (/start komutu). Kullanıcı @MyHairClinicBot ile bir kez etkileşimde bulunmalı." 
         });
       }
     } catch (error: any) {
