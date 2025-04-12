@@ -1,6 +1,14 @@
 import { Helmet } from "react-helmet";
 import { useLanguage } from "@/hooks/use-language";
 import { useLocation } from "wouter";
+import { Language } from "@shared/types";
+import { 
+  generateOrganizationSchema, 
+  generateBaseKeywords,
+  generateArticleSchema,
+  generateServiceSchema,
+  generateFAQSchema
+} from "@/lib/seo";
 
 interface SEOProps {
   title: string;
@@ -10,6 +18,12 @@ interface SEOProps {
   noIndex?: boolean;
   schema?: Record<string, any>;
   canonicalPath?: string;
+  pageType?: "website" | "article" | "service" | "product";
+  publishDate?: string;
+  modifiedDate?: string;
+  author?: string;
+  additionalMetaTags?: Record<string, string>;
+  faqs?: Array<{question: string; answer: string}>;
 }
 
 export default function SEO({
@@ -20,111 +34,115 @@ export default function SEO({
   noIndex = false,
   schema,
   canonicalPath,
+  pageType = "website",
+  publishDate,
+  modifiedDate,
+  author,
+  additionalMetaTags,
+  faqs
 }: SEOProps) {
   const { language } = useLanguage();
-  const [pathname] = useLocation();
+  const [location] = useLocation();
   
-  // Base URL - üretim ortamına göre güncellenebilir
-  const baseUrl = "https://myhairclinic.com";
-  
-  // Tam URL oluşturma
-  const fullUrl = canonicalPath 
+  // Base URL ve canonical URL oluşturma
+  const baseUrl = "https://myhairclinic.com"; // Üretim ortamında gerçek domain
+  const canonicalUrl = canonicalPath 
     ? `${baseUrl}${canonicalPath}` 
-    : `${baseUrl}${pathname}`;
+    : `${baseUrl}${location}`;
   
-  // Tam görsel URL'i
-  const fullImageUrl = imageUrl.startsWith("http") 
+  // Görsel URL'sini tam URL'e çevirme
+  const fullImageUrl = imageUrl.startsWith('http') 
     ? imageUrl 
     : `${baseUrl}${imageUrl}`;
-    
-  // Alternatif diller için hreflang URL'leri
+  
+  // Anahtar kelimeler
+  const keywordsContent = keywords || generateBaseKeywords(language);
+  
+  // Diller için alternatif URL'ler
+  const currentPath = canonicalPath || location;
+  const pathWithoutLang = currentPath.replace(/^\/(tr|en|ru|ka)/, '');
+  
   const hreflangUrls = {
-    tr: `${baseUrl}/tr${canonicalPath?.replace(/^\/(tr|en|ru|ka)/, '') || pathname.replace(/^\/(tr|en|ru|ka)/, '')}`,
-    en: `${baseUrl}/en${canonicalPath?.replace(/^\/(tr|en|ru|ka)/, '') || pathname.replace(/^\/(tr|en|ru|ka)/, '')}`,
-    ru: `${baseUrl}/ru${canonicalPath?.replace(/^\/(tr|en|ru|ka)/, '') || pathname.replace(/^\/(tr|en|ru|ka)/, '')}`,
-    ka: `${baseUrl}/ka${canonicalPath?.replace(/^\/(tr|en|ru|ka)/, '') || pathname.replace(/^\/(tr|en|ru|ka)/, '')}`,
+    tr: `${baseUrl}/tr${pathWithoutLang}`,
+    en: `${baseUrl}/en${pathWithoutLang}`,
+    ru: `${baseUrl}/ru${pathWithoutLang}`,
+    ka: `${baseUrl}/ka${pathWithoutLang}`
   };
   
-  // JSON-LD Şema oluşturma
-  const generateSchemaMarkup = () => {
-    if (schema) {
-      return JSON.stringify(schema);
+  // Şemayı belirleme
+  let jsonLdSchema = schema;
+  if (!jsonLdSchema) {
+    if (pageType === "article" && publishDate) {
+      jsonLdSchema = generateArticleSchema(
+        title,
+        description,
+        canonicalUrl,
+        fullImageUrl,
+        publishDate,
+        modifiedDate,
+        author
+      );
+    } else if (pageType === "service") {
+      jsonLdSchema = generateServiceSchema(
+        title,
+        description,
+        canonicalUrl,
+        fullImageUrl
+      );
+    } else if (faqs && faqs.length > 0) {
+      jsonLdSchema = generateFAQSchema(faqs);
+    } else {
+      jsonLdSchema = generateOrganizationSchema();
     }
-    
-    // Varsayılan olarak Organization şeması
-    const defaultSchema = {
-      "@context": "https://schema.org",
-      "@type": "MedicalBusiness",
-      "name": "MyHair Clinic",
-      "url": baseUrl,
-      "logo": `${baseUrl}/images/logo.png`,
-      "description": description,
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Tsotne Dadiani 59",
-        "addressLocality": "Tbilisi",
-        "addressCountry": "Georgia"
-      },
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+995555003044",
-        "email": "myhairtbilisi@gmail.com",
-        "contactType": "customer service"
-      },
-      "sameAs": [
-        "https://www.instagram.com/myhairtbilisi",
-        "https://www.facebook.com/myhairtbilisi"
-      ]
-    };
-    
-    return JSON.stringify(defaultSchema);
-  };
-  
+  }
+
   return (
     <Helmet>
-      {/* Temel Meta Etiketleri */}
-      <title>{title}</title>
+      <title>{title} | MyHair Clinic</title>
       <meta name="description" content={description} />
-      {keywords && <meta name="keywords" content={keywords} />}
+      <meta name="keywords" content={keywordsContent} />
       
-      {/* Canonical URL */}
-      <link rel="canonical" href={fullUrl} />
+      {/* Canonical ve Hreflang etiketleri */}
+      <link rel="canonical" href={canonicalUrl} />
+      <link rel="alternate" hrefLang="tr" href={hreflangUrls.tr} />
+      <link rel="alternate" hrefLang="en" href={hreflangUrls.en} />
+      <link rel="alternate" hrefLang="ru" href={hreflangUrls.ru} />
+      <link rel="alternate" hrefLang="ka" href={hreflangUrls.ka} />
+      <link rel="alternate" hrefLang="x-default" href={hreflangUrls.en} />
       
-      {/* Alternatif Diller (hreflang) */}
-      <link rel="alternate" hreflang="tr" href={hreflangUrls.tr} />
-      <link rel="alternate" hreflang="en" href={hreflangUrls.en} />
-      <link rel="alternate" hreflang="ru" href={hreflangUrls.ru} />
-      <link rel="alternate" hreflang="ka" href={hreflangUrls.ka} />
-      <link rel="alternate" hreflang="x-default" href={hreflangUrls.en} />
-      
-      {/* Sosyal Medya Meta Etiketleri - Open Graph */}
+      {/* Open Graph Meta Etiketleri */}
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
+      <meta property="og:url" content={canonicalUrl} />
+      <meta property="og:type" content={pageType} />
       <meta property="og:image" content={fullImageUrl} />
-      <meta property="og:url" content={fullUrl} />
-      <meta property="og:type" content="website" />
       <meta property="og:site_name" content="MyHair Clinic" />
       <meta property="og:locale" content={language.toLowerCase()} />
       
-      {/* Twitter Kartı */}
+      {/* Twitter Kartı Etiketleri */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={fullImageUrl} />
       
-      {/* Mobil Cihazlar İçin */}
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta name="format-detection" content="telephone=no" />
+      {/* Arama Motoru Direktifleri */}
+      <meta 
+        name="robots" 
+        content={noIndex 
+          ? "noindex, nofollow" 
+          : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+        } 
+      />
       
-      {/* Arama Motorları İçin Ek Direktifler */}
-      {noIndex ? (
-        <meta name="robots" content="noindex, nofollow" />
-      ) : (
-        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-      )}
+      {/* Ek meta etiketleri */}
+      {additionalMetaTags && Object.entries(additionalMetaTags).map(([name, content]) => (
+        <meta key={name} name={name} content={content} />
+      ))}
       
-      {/* Yapılandırılmış Veri (JSON-LD) */}
-      <script type="application/ld+json">{generateSchemaMarkup()}</script>
+      {/* Yapılandırılmış Veri (Schema.org) */}
+      <script type="application/ld+json">
+        {JSON.stringify(jsonLdSchema)}
+      </script>
     </Helmet>
   );
 }

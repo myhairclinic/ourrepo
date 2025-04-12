@@ -1,5 +1,4 @@
 import { useLanguage } from "@/hooks/use-language";
-import { Helmet } from "react-helmet";
 import { Language } from "@shared/types";
 import HeroSlider from "@/components/home/HeroSlider";
 import ServiceCards from "@/components/home/ServiceCards";
@@ -11,14 +10,16 @@ import BlogSlider from "@/components/home/BlogSlider";
 import FeaturedProducts from "@/components/home/FeaturedProducts";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import AppointmentButton from "@/components/layout/AppointmentButton";
+import SEO from "@/components/layout/SEO";
+import { generateOrganizationSchema } from "@/lib/seo";
 
 export default function HomePage() {
   const { language } = useLanguage();
   const { t, formatCurrency } = useTranslation(language);
   
   // Sayfa başlık ve açıklaması - çeviri sistemi kullanılıyor
-  const pageTitle = t("home.title");
-  const pageDescription = t("home.description");
+  const pageTitle = t("home.title") || "Tiflis Saç Ekimi ve Estetik Merkezi";
+  const pageDescription = t("home.description") || "MyHair Clinic, Tiflis'te lider saç ekimi ve estetik merkezi. FUE ve DHI teknikleri kullanarak doğal görünümlü saç ekimi, sakal ekimi ve kaş ekimi hizmetleri sunuyoruz.";
   
   // Yer tutucu değişkenli örnek çeviriler (örnek olarak eklenmiştir)
   const exampleTranslation1 = t("home.procedure_cost", { procedure: "FUE" });
@@ -28,12 +29,17 @@ export default function HomePage() {
   // Para birimi formatlama örneği
   const packagePrice = formatCurrency(1500);
   
+  // JSON-LD şeması
+  const organizationSchema = generateOrganizationSchema();
+  
   return (
     <>
-      <Helmet>
-        <title>{pageTitle}</title>
-        <meta name="description" content={pageDescription} />
-      </Helmet>
+      <SEO 
+        title={pageTitle}
+        description={pageDescription}
+        schema={organizationSchema}
+        pageType="website"
+      />
       
       <main>
         {/* Yeni çeviri sistemi örneği - sadece gösterim amaçlı 
