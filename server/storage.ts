@@ -1644,9 +1644,12 @@ export class DatabaseStorage implements IStorage {
     try {
       const [newAppointment] = await db.insert(appointments).values({
         ...appointment,
-        status: "new",
+        status: "pending",
+        appointmentTime: appointment.appointmentTime || null,
         notificationScheduled: false,
         notificationSent: false,
+        message: appointment.message || null,
+        preferredDate: appointment.preferredDate || null,
         createdAt: new Date(),
         updatedAt: new Date()
       }).returning();
@@ -1667,7 +1670,7 @@ export class DatabaseStorage implements IStorage {
       
       // appointmentTime değeri varsa ekle, yoksa sadece diğer verileri güncelle
       const dataToUpdate = appointmentTime 
-        ? { ...otherAppointmentData, appointment_time: appointmentTime, updatedAt: now } 
+        ? { ...otherAppointmentData, appointmentTime: appointmentTime, updatedAt: now } 
         : { ...otherAppointmentData, updatedAt: now };
         
       const [updatedAppointment] = await db.update(appointments)
