@@ -698,21 +698,34 @@ E-posta: ${appointment.email}
       const operators = botSettings?.operators || [];
       console.log('Found operators:', JSON.stringify(operators));
       
+      if (!operators.length) {
+        console.warn('No operators found in settings! Add operators to bot settings.');
+        return false;
+      }
+      
       let success = false;
+      let failedOperators = [];
+      
       // Tüm aktif operatörlere mesajı gönder
       for (const operator of operators) {
         if (operator.isActive && operator.telegramUsername) {
           console.log(`Sending message to operator: ${operator.telegramUsername}`);
           const result = await this.sendMessageToOperator(operator.telegramUsername, message);
           console.log(`Result of sending to ${operator.telegramUsername}:`, result);
-          if (result) success = true;
+          
+          if (result) {
+            success = true;
+          } else {
+            failedOperators.push(operator.telegramUsername);
+          }
         } else {
           console.log(`Skipping inactive or missing username operator:`, operator);
         }
       }
       
-      if (!operators.length) {
-        console.warn('No operators found in settings! Add operators to bot settings.');
+      if (failedOperators.length > 0) {
+        console.warn(`Failed to send message to ${failedOperators.length} operators: ${failedOperators.join(', ')}`);
+        console.warn('These operators may not have started a conversation with the bot yet. They need to send /start command to @MyHairClinicBot first.');
       }
       
       return success;

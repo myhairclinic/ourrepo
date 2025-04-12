@@ -910,6 +910,15 @@ export default function TelegramBotManagement() {
               </CardDescription>
             </CardHeader>
             <CardContent>
+              <Alert variant="warning" className="mb-4">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertTitle>Önemli Hatırlatma</AlertTitle>
+                <AlertDescription>
+                  Test göndermeden önce, hedef kullanıcının mutlaka <strong>@MyHairClinicBot</strong> ile bir sohbet başlatmış olması gerekiyor. 
+                  Bu işlem için kullanıcı Telegram'da botu bulup <strong>/start</strong> komutunu göndermelidir.
+                </AlertDescription>
+              </Alert>
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-4">
                   <div className="space-y-2">
@@ -928,10 +937,16 @@ export default function TelegramBotManagement() {
                   <div className="space-y-2">
                     <Label htmlFor="test-chat-id">Hedef Chat ID veya Kullanıcı Adı</Label>
                     <Input id="test-chat-id" placeholder="@kullaniciadi veya -100123456789" />
+                    <p className="text-xs text-muted-foreground">
+                      Kullanıcı adını girerken @ işaretini eklemeyi unutmayın (ör: @kullaniciadi)
+                    </p>
                   </div>
                 </div>
                 
-                <div className="flex items-end">
+                <div className="flex items-end flex-col space-y-2">
+                  <p className="text-sm text-muted-foreground mb-2 text-right">
+                    Test mesajı başarısız olursa, kullanıcının botu başlatıp başlatmadığını kontrol edin.
+                  </p>
                   <Button className="w-full">Test Bildirimi Gönder</Button>
                 </div>
               </div>
