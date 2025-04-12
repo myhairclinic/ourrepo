@@ -158,6 +158,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/packages/one-per-country", async (req, res) => {
     try {
       const packages = await storage.getOnePackagePerCountry();
+      console.log("One package per country fetched:", packages.length);
       res.json(packages);
     } catch (error) {
       console.error("Error fetching one package per country:", error);
