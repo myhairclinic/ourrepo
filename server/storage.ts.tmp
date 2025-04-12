@@ -28,6 +28,7 @@ import connectPg from "connect-pg-simple";
 const MemoryStore = createMemoryStore(session);
 const PostgresSessionStore = connectPg(session);
 
+// Interface for storage operations
 export interface IStorage {
   // User operations
   getUser(id: number): Promise<User | undefined>;
@@ -93,6 +94,8 @@ export interface IStorage {
   getPackages(): Promise<Package[]>;
   getPackageById(id: number): Promise<Package | undefined>;
   getPackageBySlug(slug: string): Promise<Package | undefined>;
+  getPackagesByCountry(countryCode: string): Promise<Package[]>;
+  getFeaturedPackages(): Promise<Package[]>;
   createPackage(pkg: InsertPackage): Promise<Package>;
   updatePackage(id: number, pkg: Partial<InsertPackage>): Promise<Package | undefined>;
   deletePackage(id: number): Promise<boolean>;
@@ -100,9 +103,8 @@ export interface IStorage {
   // Appointment operations
   getAppointments(): Promise<Appointment[]>;
   getAppointmentById(id: number): Promise<Appointment | undefined>;
-  getAppointmentsByStatus(status: string): Promise<Appointment[]>;
   createAppointment(appointment: InsertAppointment): Promise<Appointment>;
-  updateAppointment(id: number, appointment: Partial<InsertAppointment>): Promise<Appointment | undefined>;
+  updateAppointment(id: number, appointment: Partial<Appointment>): Promise<Appointment | undefined>;
   deleteAppointment(id: number): Promise<boolean>;
 
   // Testimonial operations
@@ -115,26 +117,27 @@ export interface IStorage {
   // User Review operations
   getUserReviews(): Promise<UserReview[]>;
   getUserReviewById(id: number): Promise<UserReview | undefined>;
-  getUserReviewsByServiceId(serviceId: number | null): Promise<UserReview[]>;
+  getUserReviewsByServiceId(serviceId: number): Promise<UserReview[]>;
+  getApprovedUserReviews(): Promise<UserReview[]>;
   createUserReview(review: InsertUserReview): Promise<UserReview>;
-  updateUserReview(id: number, review: Partial<InsertUserReview>): Promise<UserReview | undefined>;
-  approveUserReview(id: number): Promise<UserReview | undefined>;
+  updateUserReviewApproval(id: number, isApproved: boolean): Promise<UserReview | undefined>;
   deleteUserReview(id: number): Promise<boolean>;
 
   // Message operations
   getMessages(): Promise<Message[]>;
   getMessageById(id: number): Promise<Message | undefined>;
   createMessage(message: InsertMessage): Promise<Message>;
-  markMessageAsRead(id: number): Promise<Message | undefined>;
+  updateMessageReadStatus(id: number, isRead: boolean): Promise<Message | undefined>;
   deleteMessage(id: number): Promise<boolean>;
 
   // Clinic Info operations
   getClinicInfo(): Promise<ClinicInfo | undefined>;
   updateClinicInfo(info: UpdateClinicInfo): Promise<ClinicInfo | undefined>;
-
+  
   // Aftercare Guide operations
   getAftercareGuides(): Promise<AftercareGuide[]>;
   getAftercareGuideById(id: number): Promise<AftercareGuide | undefined>;
+  getAftercareGuidesByServiceId(serviceId: number): Promise<AftercareGuide[]>;
   createAftercareGuide(guide: InsertAftercareGuide): Promise<AftercareGuide>;
   updateAftercareGuide(id: number, guide: Partial<InsertAftercareGuide>): Promise<AftercareGuide | undefined>;
   deleteAftercareGuide(id: number): Promise<boolean>;
@@ -143,15 +146,12 @@ export interface IStorage {
   getChatSessions(): Promise<ChatSession[]>;
   getChatSessionById(id: number): Promise<ChatSession | undefined>;
   getChatSessionByVisitorId(visitorId: string): Promise<ChatSession | undefined>;
-  getActiveChatSessions(): Promise<ChatSession[]>;
   createChatSession(session: InsertChatSession): Promise<ChatSession>;
-  updateChatSession(id: number, session: Partial<InsertChatSession>): Promise<ChatSession | undefined>;
-  archiveChatSession(id: number): Promise<ChatSession | undefined>;
-  markChatSessionAsRead(id: number): Promise<ChatSession | undefined>;
+  updateChatSession(id: number, sessionData: Partial<ChatSession>): Promise<ChatSession | undefined>;
   deleteChatSession(id: number): Promise<boolean>;
 
   // Chat Message operations
-  getChatMessages(sessionId: number): Promise<ChatMessage[]>;
+  getChatMessagesBySessionId(sessionId: number): Promise<ChatMessage[]>;
   getChatMessageById(id: number): Promise<ChatMessage | undefined>;
   createChatMessage(message: InsertChatMessage): Promise<ChatMessage>;
   markChatMessageAsRead(id: number): Promise<ChatMessage | undefined>;
@@ -164,6 +164,9 @@ export interface IStorage {
   createChatOperator(operator: InsertChatOperator): Promise<ChatOperator>;
   updateChatOperatorAvailability(userId: number, isAvailable: boolean): Promise<ChatOperator | undefined>;
   deleteChatOperator(userId: number): Promise<boolean>;
+
+  // Session store
+  sessionStore: any;
 
   // Patient operations
   getPatients(): Promise<Patient[]>;
@@ -185,9 +188,6 @@ export interface IStorage {
   createTreatmentRecord(data: InsertTreatmentRecord): Promise<TreatmentRecord>;
   updateTreatmentRecord(id: number, data: Partial<InsertTreatmentRecord>): Promise<TreatmentRecord | undefined>;
   deleteTreatmentRecord(id: number): Promise<TreatmentRecord | undefined>;
-
-  // Session store
-  sessionStore: any;
 }
 
 export class MemStorage implements IStorage {
@@ -211,9 +211,6 @@ export class MemStorage implements IStorage {
   private chatSessions: Map<number, ChatSession>;
   private chatMessages: Map<number, ChatMessage>;
   private chatOperators: Map<number, ChatOperator>;
-  private patients: Map<number, Patient>;
-  private patientDocuments: Map<number, PatientDocument>;
-  private treatmentRecords: Map<number, TreatmentRecord>;
   
   private currentUserId: number;
   private currentServiceId: number;
@@ -230,9 +227,6 @@ export class MemStorage implements IStorage {
   private currentChatSessionId: number;
   private currentChatMessageId: number;
   private currentChatOperatorId: number;
-  private currentPatientId: number;
-  private currentPatientDocumentId: number;
-  private currentTreatmentRecordId: number;
   
   sessionStore: any;
 
@@ -252,9 +246,6 @@ export class MemStorage implements IStorage {
     this.chatSessions = new Map();
     this.chatMessages = new Map();
     this.chatOperators = new Map();
-    this.patients = new Map();
-    this.patientDocuments = new Map();
-    this.treatmentRecords = new Map();
 
     this.currentUserId = 1;
     this.currentServiceId = 1;
@@ -271,9 +262,6 @@ export class MemStorage implements IStorage {
     this.currentChatSessionId = 1;
     this.currentChatMessageId = 1;
     this.currentChatOperatorId = 1;
-    this.currentPatientId = 1;
-    this.currentPatientDocumentId = 1;
-    this.currentTreatmentRecordId = 1;
 
     this.sessionStore = new MemoryStore({
       checkPeriod: 86400000, // Prune expired entries every 24h
@@ -647,17 +635,29 @@ export class MemStorage implements IStorage {
 
   // Package operations
   async getPackages(): Promise<Package[]> {
-    return Array.from(this.packages.values());
+    return Array.from(this.packages.values()).sort((a, b) => a.order - b.order);
   }
 
   async getPackageById(id: number): Promise<Package | undefined> {
     return this.packages.get(id);
   }
-
+  
   async getPackageBySlug(slug: string): Promise<Package | undefined> {
     return Array.from(this.packages.values()).find(
       (pkg) => pkg.slug === slug,
     );
+  }
+  
+  async getPackagesByCountry(countryCode: string): Promise<Package[]> {
+    return Array.from(this.packages.values())
+      .filter(pkg => pkg.countryOrigin === countryCode)
+      .sort((a, b) => a.order - b.order);
+  }
+  
+  async getFeaturedPackages(): Promise<Package[]> {
+    return Array.from(this.packages.values())
+      .filter(pkg => pkg.isActive && pkg.isFeatured)
+      .sort((a, b) => a.order - b.order);
   }
 
   async createPackage(pkg: InsertPackage): Promise<Package> {
@@ -691,17 +691,11 @@ export class MemStorage implements IStorage {
 
   // Appointment operations
   async getAppointments(): Promise<Appointment[]> {
-    return Array.from(this.appointments.values()).sort((a, b) => b.appointmentDate.getTime() - a.appointmentDate.getTime());
+    return Array.from(this.appointments.values()).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
 
   async getAppointmentById(id: number): Promise<Appointment | undefined> {
     return this.appointments.get(id);
-  }
-
-  async getAppointmentsByStatus(status: string): Promise<Appointment[]> {
-    return Array.from(this.appointments.values())
-      .filter(appointment => appointment.status === status)
-      .sort((a, b) => b.appointmentDate.getTime() - a.appointmentDate.getTime());
   }
 
   async createAppointment(appointment: InsertAppointment): Promise<Appointment> {
@@ -709,19 +703,27 @@ export class MemStorage implements IStorage {
     const newAppointment: Appointment = {
       ...appointment,
       id,
-      createdAt: new Date()
+      status: "pending",
+      appointmentTime: null,
+      notificationSent: false,
+      notificationScheduled: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      message: appointment.message || null,
+      preferredDate: appointment.preferredDate || null
     };
     this.appointments.set(id, newAppointment);
     return newAppointment;
   }
 
-  async updateAppointment(id: number, appointment: Partial<InsertAppointment>): Promise<Appointment | undefined> {
+  async updateAppointment(id: number, appointment: Partial<Appointment>): Promise<Appointment | undefined> {
     const existingAppointment = this.appointments.get(id);
     if (!existingAppointment) return undefined;
 
     const updatedAppointment: Appointment = {
       ...existingAppointment,
-      ...appointment
+      ...appointment,
+      updatedAt: new Date()
     };
     this.appointments.set(id, updatedAppointment);
     return updatedAppointment;
@@ -766,7 +768,7 @@ export class MemStorage implements IStorage {
   async deleteTestimonial(id: number): Promise<boolean> {
     return this.testimonials.delete(id);
   }
-
+  
   // User Review operations
   async getUserReviews(): Promise<UserReview[]> {
     return Array.from(this.userReviews.values()).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
@@ -776,9 +778,15 @@ export class MemStorage implements IStorage {
     return this.userReviews.get(id);
   }
 
-  async getUserReviewsByServiceId(serviceId: number | null): Promise<UserReview[]> {
+  async getUserReviewsByServiceId(serviceId: number): Promise<UserReview[]> {
     return Array.from(this.userReviews.values())
-      .filter(review => review.serviceId === serviceId && review.isApproved)
+      .filter(review => review.serviceId === serviceId)
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  }
+
+  async getApprovedUserReviews(): Promise<UserReview[]> {
+    return Array.from(this.userReviews.values())
+      .filter(review => review.isApproved)
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
 
@@ -794,25 +802,13 @@ export class MemStorage implements IStorage {
     return newReview;
   }
 
-  async updateUserReview(id: number, review: Partial<InsertUserReview>): Promise<UserReview | undefined> {
+  async updateUserReviewApproval(id: number, isApproved: boolean): Promise<UserReview | undefined> {
     const existingReview = this.userReviews.get(id);
     if (!existingReview) return undefined;
 
     const updatedReview: UserReview = {
       ...existingReview,
-      ...review
-    };
-    this.userReviews.set(id, updatedReview);
-    return updatedReview;
-  }
-
-  async approveUserReview(id: number): Promise<UserReview | undefined> {
-    const existingReview = this.userReviews.get(id);
-    if (!existingReview) return undefined;
-
-    const updatedReview: UserReview = {
-      ...existingReview,
-      isApproved: true
+      isApproved
     };
     this.userReviews.set(id, updatedReview);
     return updatedReview;
@@ -843,13 +839,13 @@ export class MemStorage implements IStorage {
     return newMessage;
   }
 
-  async markMessageAsRead(id: number): Promise<Message | undefined> {
-    const message = this.messages.get(id);
-    if (!message) return undefined;
+  async updateMessageReadStatus(id: number, isRead: boolean): Promise<Message | undefined> {
+    const existingMessage = this.messages.get(id);
+    if (!existingMessage) return undefined;
 
     const updatedMessage: Message = {
-      ...message,
-      isRead: true
+      ...existingMessage,
+      isRead
     };
     this.messages.set(id, updatedMessage);
     return updatedMessage;
@@ -872,16 +868,23 @@ export class MemStorage implements IStorage {
       ...info,
       updatedAt: new Date()
     };
+
     return this.clinicInfo;
   }
-
+  
   // Aftercare Guide operations
   async getAftercareGuides(): Promise<AftercareGuide[]> {
-    return Array.from(this.aftercareGuides.values());
+    return Array.from(this.aftercareGuides.values()).sort((a, b) => a.order - b.order);
   }
 
   async getAftercareGuideById(id: number): Promise<AftercareGuide | undefined> {
     return this.aftercareGuides.get(id);
+  }
+
+  async getAftercareGuidesByServiceId(serviceId: number): Promise<AftercareGuide[]> {
+    return Array.from(this.aftercareGuides.values())
+      .filter(guide => guide.serviceId === serviceId)
+      .sort((a, b) => a.order - b.order);
   }
 
   async createAftercareGuide(guide: InsertAftercareGuide): Promise<AftercareGuide> {
@@ -925,13 +928,7 @@ export class MemStorage implements IStorage {
 
   async getChatSessionByVisitorId(visitorId: string): Promise<ChatSession | undefined> {
     return Array.from(this.chatSessions.values())
-      .find(session => session.visitorId === visitorId && !session.isArchived);
-  }
-
-  async getActiveChatSessions(): Promise<ChatSession[]> {
-    return Array.from(this.chatSessions.values())
-      .filter(session => !session.isArchived)
-      .sort((a, b) => b.lastMessageAt.getTime() - a.lastMessageAt.getTime());
+      .find(session => session.visitorId === visitorId && session.status === 'active');
   }
 
   async createChatSession(session: InsertChatSession): Promise<ChatSession> {
@@ -939,46 +936,23 @@ export class MemStorage implements IStorage {
     const newSession: ChatSession = {
       ...session,
       id,
+      status: 'active',
+      lastMessageAt: new Date(),
       createdAt: new Date(),
       isArchived: false,
-      hasUnreadMessages: false,
-      lastMessageAt: new Date()
+      hasUnreadMessages: false
     };
     this.chatSessions.set(id, newSession);
     return newSession;
   }
 
-  async updateChatSession(id: number, session: Partial<InsertChatSession>): Promise<ChatSession | undefined> {
+  async updateChatSession(id: number, sessionData: Partial<ChatSession>): Promise<ChatSession | undefined> {
     const existingSession = this.chatSessions.get(id);
     if (!existingSession) return undefined;
 
     const updatedSession: ChatSession = {
       ...existingSession,
-      ...session
-    };
-    this.chatSessions.set(id, updatedSession);
-    return updatedSession;
-  }
-
-  async archiveChatSession(id: number): Promise<ChatSession | undefined> {
-    const session = this.chatSessions.get(id);
-    if (!session) return undefined;
-
-    const updatedSession: ChatSession = {
-      ...session,
-      isArchived: true
-    };
-    this.chatSessions.set(id, updatedSession);
-    return updatedSession;
-  }
-
-  async markChatSessionAsRead(id: number): Promise<ChatSession | undefined> {
-    const session = this.chatSessions.get(id);
-    if (!session) return undefined;
-
-    const updatedSession: ChatSession = {
-      ...session,
-      hasUnreadMessages: false
+      ...sessionData,
     };
     this.chatSessions.set(id, updatedSession);
     return updatedSession;
@@ -989,7 +963,7 @@ export class MemStorage implements IStorage {
   }
 
   // Chat Message operations
-  async getChatMessages(sessionId: number): Promise<ChatMessage[]> {
+  async getChatMessagesBySessionId(sessionId: number): Promise<ChatMessage[]> {
     return Array.from(this.chatMessages.values())
       .filter(message => message.sessionId === sessionId)
       .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
@@ -1004,30 +978,29 @@ export class MemStorage implements IStorage {
     const newMessage: ChatMessage = {
       ...message,
       id,
-      timestamp: new Date()
+      timestamp: new Date(),
+      isRead: message.senderType !== 'visitor' // mark operator and system messages as read by default
     };
     this.chatMessages.set(id, newMessage);
 
-    // Update session to reflect new message
+    // Update the session's lastMessageAt
     const session = this.chatSessions.get(message.sessionId);
     if (session) {
-      const updatedSession: ChatSession = {
-        ...session,
+      this.updateChatSession(session.id, { 
         lastMessageAt: new Date(),
-        hasUnreadMessages: message.senderType === 'visitor' // Mark as unread only if from visitor
-      };
-      this.chatSessions.set(session.id, updatedSession);
+        hasUnreadMessages: message.senderType === 'visitor' // mark session as having unread messages if from visitor
+      });
     }
 
     return newMessage;
   }
 
   async markChatMessageAsRead(id: number): Promise<ChatMessage | undefined> {
-    const message = this.chatMessages.get(id);
-    if (!message) return undefined;
+    const existingMessage = this.chatMessages.get(id);
+    if (!existingMessage) return undefined;
 
     const updatedMessage: ChatMessage = {
-      ...message,
+      ...existingMessage,
       isRead: true
     };
     this.chatMessages.set(id, updatedMessage);
@@ -1065,17 +1038,17 @@ export class MemStorage implements IStorage {
   }
 
   async updateChatOperatorAvailability(userId: number, isAvailable: boolean): Promise<ChatOperator | undefined> {
-    const operator = Array.from(this.chatOperators.values())
-      .find(op => op.userId === userId);
+    const existingOperator = Array.from(this.chatOperators.values())
+      .find(operator => operator.userId === userId);
     
-    if (!operator) return undefined;
+    if (!existingOperator) return undefined;
 
     const updatedOperator: ChatOperator = {
-      ...operator,
+      ...existingOperator,
       isAvailable,
       lastActiveAt: new Date()
     };
-    this.chatOperators.set(operator.id, updatedOperator);
+    this.chatOperators.set(existingOperator.id, updatedOperator);
     return updatedOperator;
   }
 
@@ -1086,155 +1059,16 @@ export class MemStorage implements IStorage {
     if (!operator) return false;
     return this.chatOperators.delete(operator.id);
   }
-
-  // Patient operations
-  async getPatients(): Promise<Patient[]> {
-    return Array.from(this.patients.values()).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-  }
-
-  async getPatientById(id: number): Promise<Patient | undefined> {
-    return this.patients.get(id);
-  }
-
-  async createPatient(data: InsertPatient): Promise<Patient> {
-    const id = this.currentPatientId++;
-    const patient: Patient = {
-      ...data,
-      id,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-    this.patients.set(id, patient);
-    return patient;
-  }
-
-  async updatePatient(id: number, data: Partial<InsertPatient>): Promise<Patient | undefined> {
-    const existingPatient = this.patients.get(id);
-    if (!existingPatient) return undefined;
-
-    const updatedPatient: Patient = {
-      ...existingPatient,
-      ...data,
-      updatedAt: new Date()
-    };
-    this.patients.set(id, updatedPatient);
-    return updatedPatient;
-  }
-
-  async deletePatient(id: number): Promise<Patient | undefined> {
-    const patient = this.patients.get(id);
-    if (!patient) return undefined;
-
-    // İlgili hasta dokümanlarını ve tedavi kayıtlarını da silmek için
-    Array.from(this.patientDocuments.values())
-      .filter(doc => doc.patientId === id)
-      .forEach(doc => this.patientDocuments.delete(doc.id));
-    
-    Array.from(this.treatmentRecords.values())
-      .filter(record => record.patientId === id)
-      .forEach(record => this.treatmentRecords.delete(record.id));
-    
-    this.patients.delete(id);
-    return patient;
-  }
-
-  // Patient Document operations
-  async getPatientDocuments(patientId: number): Promise<PatientDocument[]> {
-    return Array.from(this.patientDocuments.values())
-      .filter(doc => doc.patientId === patientId)
-      .sort((a, b) => b.uploadDate.getTime() - a.uploadDate.getTime());
-  }
-
-  async getDocumentById(id: number): Promise<PatientDocument | undefined> {
-    return this.patientDocuments.get(id);
-  }
-
-  async createPatientDocument(data: InsertPatientDocument): Promise<PatientDocument> {
-    const id = this.currentPatientDocumentId++;
-    const document: PatientDocument = {
-      ...data,
-      id,
-      uploadDate: new Date(),
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-    this.patientDocuments.set(id, document);
-    return document;
-  }
-
-  async updatePatientDocument(id: number, data: Partial<InsertPatientDocument>): Promise<PatientDocument | undefined> {
-    const existingDocument = this.patientDocuments.get(id);
-    if (!existingDocument) return undefined;
-
-    const updatedDocument: PatientDocument = {
-      ...existingDocument,
-      ...data,
-      updatedAt: new Date()
-    };
-    this.patientDocuments.set(id, updatedDocument);
-    return updatedDocument;
-  }
-
-  async deletePatientDocument(id: number): Promise<PatientDocument | undefined> {
-    const document = this.patientDocuments.get(id);
-    if (!document) return undefined;
-    
-    this.patientDocuments.delete(id);
-    return document;
-  }
-
-  // Treatment Record operations
-  async getTreatmentRecords(patientId: number): Promise<TreatmentRecord[]> {
-    return Array.from(this.treatmentRecords.values())
-      .filter(record => record.patientId === patientId)
-      .sort((a, b) => b.treatmentDate.getTime() - a.treatmentDate.getTime());
-  }
-
-  async getTreatmentRecordById(id: number): Promise<TreatmentRecord | undefined> {
-    return this.treatmentRecords.get(id);
-  }
-
-  async createTreatmentRecord(data: InsertTreatmentRecord): Promise<TreatmentRecord> {
-    const id = this.currentTreatmentRecordId++;
-    const record: TreatmentRecord = {
-      ...data,
-      id,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-    this.treatmentRecords.set(id, record);
-    return record;
-  }
-
-  async updateTreatmentRecord(id: number, data: Partial<InsertTreatmentRecord>): Promise<TreatmentRecord | undefined> {
-    const existingRecord = this.treatmentRecords.get(id);
-    if (!existingRecord) return undefined;
-
-    const updatedRecord: TreatmentRecord = {
-      ...existingRecord,
-      ...data,
-      updatedAt: new Date()
-    };
-    this.treatmentRecords.set(id, updatedRecord);
-    return updatedRecord;
-  }
-
-  async deleteTreatmentRecord(id: number): Promise<TreatmentRecord | undefined> {
-    const record = this.treatmentRecords.get(id);
-    if (!record) return undefined;
-    
-    this.treatmentRecords.delete(id);
-    return record;
-  }
 }
 
+// Database Storage class for PostgreSQL
 export class DatabaseStorage implements IStorage {
   sessionStore: any;
 
   constructor() {
-    this.sessionStore = new PostgresSessionStore({
-      pool,
-      createTableIfMissing: true
+    this.sessionStore = new PostgresSessionStore({ 
+      pool, 
+      createTableIfMissing: true 
     });
   }
 
@@ -1248,39 +1082,143 @@ export class DatabaseStorage implements IStorage {
     const [user] = await db.select().from(users).where(eq(users.username, username));
     return user;
   }
-
+  
   async getUsers(): Promise<User[]> {
     return await db.select().from(users);
   }
 
-  async createUser(user: InsertUser): Promise<User> {
-    const [newUser] = await db.insert(users).values(user).returning();
-    return newUser;
+  async createUser(insertUser: InsertUser): Promise<User> {
+    // Ensure role is never undefined
+    const userWithDefaults = {
+      ...insertUser,
+      role: insertUser.role || "admin"
+    };
+    
+    const [user] = await db.insert(users).values({
+      ...userWithDefaults,
+      createdAt: new Date()
+    }).returning();
+    return user;
   }
 
   // Service operations
   async getServices(): Promise<Service[]> {
-    return await db.select().from(services).orderBy(asc(services.order));
+    try {
+      return await db.select({
+        id: services.id,
+        slug: services.slug,
+        titleTR: services.titleTR,
+        titleEN: services.titleEN,
+        titleRU: services.titleRU,
+        titleKA: services.titleKA,
+        descriptionTR: services.descriptionTR,
+        descriptionEN: services.descriptionEN,
+        descriptionRU: services.descriptionRU,
+        descriptionKA: services.descriptionKA,
+        imageUrl: services.imageUrl,
+        isActive: services.isActive,
+        createdAt: services.createdAt,
+        updatedAt: services.updatedAt
+      }).from(services);
+    } catch (error) {
+      console.error("Error in getServices:", error);
+      return [];
+    }
   }
 
   async getServiceById(id: number): Promise<Service | undefined> {
-    const [service] = await db.select().from(services).where(eq(services.id, id));
-    return service;
+    try {
+      const [service] = await db.select({
+        id: services.id,
+        slug: services.slug,
+        titleTR: services.titleTR,
+        titleEN: services.titleEN,
+        titleRU: services.titleRU,
+        titleKA: services.titleKA,
+        descriptionTR: services.descriptionTR,
+        descriptionEN: services.descriptionEN,
+        descriptionRU: services.descriptionRU,
+        descriptionKA: services.descriptionKA,
+        imageUrl: services.imageUrl,
+        isActive: services.isActive,
+        createdAt: services.createdAt,
+        updatedAt: services.updatedAt
+      }).from(services).where(eq(services.id, id));
+      return service;
+    } catch (error) {
+      console.error("Error in getServiceById:", error);
+      return undefined;
+    }
   }
 
   async getServiceBySlug(slug: string): Promise<Service | undefined> {
-    const [service] = await db.select().from(services).where(eq(services.slug, slug));
-    return service;
+    try {
+      const [service] = await db.select({
+        id: services.id,
+        slug: services.slug,
+        titleTR: services.titleTR,
+        titleEN: services.titleEN,
+        titleRU: services.titleRU,
+        titleKA: services.titleKA,
+        descriptionTR: services.descriptionTR,
+        descriptionEN: services.descriptionEN,
+        descriptionRU: services.descriptionRU,
+        descriptionKA: services.descriptionKA,
+        detailedContentTR: services.detailedContentTR,
+        detailedContentEN: services.detailedContentEN,
+        detailedContentRU: services.detailedContentRU,
+        detailedContentKA: services.detailedContentKA,
+        procedureStepsTR: services.procedureStepsTR,
+        procedureStepsEN: services.procedureStepsEN,
+        procedureStepsRU: services.procedureStepsRU,
+        procedureStepsKA: services.procedureStepsKA,
+        candidateInfoTR: services.candidateInfoTR,
+        candidateInfoEN: services.candidateInfoEN,
+        candidateInfoRU: services.candidateInfoRU,
+        candidateInfoKA: services.candidateInfoKA,
+        postCareTR: services.postCareTR,
+        postCareEN: services.postCareEN,
+        postCareRU: services.postCareRU,
+        postCareKA: services.postCareKA,
+        imageUrl: services.imageUrl,
+        extraImageUrls: services.extraImageUrls,
+        videoUrl: services.videoUrl,
+        duration: services.duration,
+        price: services.price,
+        metaTitleTR: services.metaTitleTR,
+        metaTitleEN: services.metaTitleEN,
+        metaTitleRU: services.metaTitleRU,
+        metaTitleKA: services.metaTitleKA,
+        metaDescriptionTR: services.metaDescriptionTR,
+        metaDescriptionEN: services.metaDescriptionEN, 
+        metaDescriptionRU: services.metaDescriptionRU,
+        metaDescriptionKA: services.metaDescriptionKA,
+        isActive: services.isActive,
+        createdAt: services.createdAt,
+        updatedAt: services.updatedAt
+      }).from(services).where(eq(services.slug, slug));
+      return service;
+    } catch (error) {
+      console.error("Error in getServiceBySlug:", error);
+      return undefined;
+    }
   }
 
   async createService(service: InsertService): Promise<Service> {
-    const [newService] = await db.insert(services).values(service).returning();
+    const [newService] = await db.insert(services).values({
+      ...service,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }).returning();
     return newService;
   }
 
   async updateService(id: number, service: Partial<InsertService>): Promise<Service | undefined> {
     const [updatedService] = await db.update(services)
-      .set({ ...service, updatedAt: new Date() })
+      .set({
+        ...service,
+        updatedAt: new Date()
+      })
       .where(eq(services.id, id))
       .returning();
     return updatedService;
@@ -1293,9 +1231,14 @@ export class DatabaseStorage implements IStorage {
 
   // Blog operations
   async getBlogPosts(): Promise<BlogPost[]> {
-    return await db.select().from(blogPosts).orderBy(desc(blogPosts.createdAt));
+    try {
+      return await db.select().from(blogPosts).orderBy(desc(blogPosts.createdAt));
+    } catch (error) {
+      console.error("Error in getBlogPosts:", error);
+      return [];
+    }
   }
-
+  
   async getPaginatedBlogPosts(params: {
     page: number;
     limit: number;
@@ -1308,108 +1251,147 @@ export class DatabaseStorage implements IStorage {
     totalPosts: number;
     totalPages: number;
   }> {
-    const { page, limit, category, tag, search, sort } = params;
-    
-    let query = db.select().from(blogPosts);
-
-    if (category) {
-      query = query.where(eq(blogPosts.category, category));
+    try {
+      const { page, limit, category, tag, search, sort } = params;
+      
+      // Başlangıç sorgusu
+      let query = db.select().from(blogPosts);
+      
+      // Kategori filtresi
+      if (category) {
+        query = query.where(eq(blogPosts.category, category));
+      }
+      
+      // Etiket filtresi (veritabanında tam eşleşme arayamıyoruz, bu yüzden sonuçları JS tarafında filtreleriz)
+      let filteredPosts: BlogPost[] = [];
+      
+      // Sıralama
+      if (sort === 'oldest') {
+        query = query.orderBy(asc(blogPosts.createdAt));
+      } else if (sort === 'popular') {
+        query = query.orderBy(desc(blogPosts.viewCount));
+      } else {
+        // Default: en yeni (newest)
+        query = query.orderBy(desc(blogPosts.createdAt));
+      }
+      
+      // Tüm sonuçları al
+      const allPosts = await query;
+      
+      // Etiket ve arama filtresi JS tarafında yapılmalı
+      filteredPosts = allPosts;
+      
+      // Etiket filtresi
+      if (tag) {
+        filteredPosts = filteredPosts.filter(post => {
+          const tagArray = typeof post.tags === 'string' 
+            ? post.tags.split(',').map(t => t.trim()) 
+            : post.tags;
+          return Array.isArray(tagArray) && tagArray.some(t => t.toLowerCase() === tag.toLowerCase());
+        });
+      }
+      
+      // Arama filtresi
+      if (search) {
+        const searchLower = search.toLowerCase();
+        filteredPosts = filteredPosts.filter(post => {
+          const title = (post.titleTR + ' ' + post.titleEN + ' ' + post.titleRU + ' ' + post.titleKA).toLowerCase();
+          const summary = (post.summaryTR + ' ' + post.summaryEN + ' ' + post.summaryRU + ' ' + post.summaryKA).toLowerCase();
+          const content = (post.contentTR + ' ' + post.contentEN + ' ' + post.contentRU + ' ' + post.contentKA).toLowerCase();
+          
+          return title.includes(searchLower) || 
+                 summary.includes(searchLower) || 
+                 content.includes(searchLower) ||
+                 post.author.toLowerCase().includes(searchLower);
+        });
+      }
+      
+      // Toplam sayfa sayısını hesapla
+      const totalPosts = filteredPosts.length;
+      const totalPages = Math.ceil(totalPosts / limit);
+      
+      // Sayfalama
+      const startIndex = (page - 1) * limit;
+      const paginatedPosts = filteredPosts.slice(startIndex, startIndex + limit);
+      
+      return {
+        posts: paginatedPosts,
+        totalPosts,
+        totalPages
+      };
+    } catch (error) {
+      console.error("Error in getPaginatedBlogPosts:", error);
+      return {
+        posts: [],
+        totalPosts: 0,
+        totalPages: 0
+      };
     }
-
-    // Handle tag/search filtering after we get the posts because it's complex
-    let posts = await query;
-    
-    // Tag filtering (in-memory because we need to parse JSON)
-    if (tag) {
-      posts = posts.filter(post => {
-        let tags: string[] = [];
-        if (post.tags && typeof post.tags === 'string') {
-          tags = post.tags.split(',').map(t => t.trim());
-        } else if (Array.isArray(post.tags)) {
-          tags = post.tags;
-        }
-        return tags.some(t => t.toLowerCase() === tag.toLowerCase());
-      });
-    }
-    
-    // Search filtering (in-memory for multi-field search)
-    if (search) {
-      const searchLower = search.toLowerCase();
-      posts = posts.filter(post => {
-        return (
-          post.titleTR.toLowerCase().includes(searchLower) ||
-          post.titleEN.toLowerCase().includes(searchLower) ||
-          post.titleRU.toLowerCase().includes(searchLower) ||
-          post.titleKA.toLowerCase().includes(searchLower) ||
-          post.summaryTR.toLowerCase().includes(searchLower) ||
-          post.summaryEN.toLowerCase().includes(searchLower) ||
-          post.summaryRU.toLowerCase().includes(searchLower) ||
-          post.summaryKA.toLowerCase().includes(searchLower) ||
-          post.contentTR.toLowerCase().includes(searchLower) ||
-          post.contentEN.toLowerCase().includes(searchLower) ||
-          post.contentRU.toLowerCase().includes(searchLower) ||
-          post.contentKA.toLowerCase().includes(searchLower) ||
-          post.author.toLowerCase().includes(searchLower)
-        );
-      });
-    }
-    
-    // Sort posts
-    if (sort === 'oldest') {
-      posts = posts.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
-    } else if (sort === 'popular') {
-      posts = posts.sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0));
-    } else {
-      // Default: newest
-      posts = posts.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-    }
-    
-    // Get totals
-    const totalPosts = posts.length;
-    const totalPages = Math.ceil(totalPosts / limit);
-    
-    // Paginate
-    const startIndex = (page - 1) * limit;
-    const paginatedPosts = posts.slice(startIndex, startIndex + limit);
-    
-    return {
-      posts: paginatedPosts,
-      totalPosts,
-      totalPages
-    };
   }
 
   async getBlogPostById(id: number): Promise<BlogPost | undefined> {
-    const [post] = await db.select().from(blogPosts).where(eq(blogPosts.id, id));
-    return post;
+    try {
+      const [post] = await db.select().from(blogPosts).where(eq(blogPosts.id, id));
+      return post;
+    } catch (error) {
+      console.error(`Error in getBlogPostById(${id}):`, error);
+      return undefined;
+    }
   }
 
   async getBlogPostBySlug(slug: string): Promise<BlogPost | undefined> {
-    const [post] = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug));
-    return post;
+    try {
+      const [post] = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug));
+      return post;
+    } catch (error) {
+      console.error(`Error in getBlogPostBySlug(${slug}):`, error);
+      return undefined;
+    }
   }
 
   async createBlogPost(post: InsertBlogPost): Promise<BlogPost> {
-    const [newPost] = await db.insert(blogPosts).values(post).returning();
-    return newPost;
+    try {
+      const [newPost] = await db.insert(blogPosts).values({
+        ...post,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }).returning();
+      return newPost;
+    } catch (error) {
+      console.error("Error in createBlogPost:", error);
+      throw error;
+    }
   }
 
   async updateBlogPost(id: number, post: Partial<InsertBlogPost>): Promise<BlogPost | undefined> {
-    const [updatedPost] = await db.update(blogPosts)
-      .set({ ...post, updatedAt: new Date() })
-      .where(eq(blogPosts.id, id))
-      .returning();
-    return updatedPost;
+    try {
+      const [updatedPost] = await db.update(blogPosts)
+        .set({
+          ...post,
+          updatedAt: new Date()
+        })
+        .where(eq(blogPosts.id, id))
+        .returning();
+      return updatedPost;
+    } catch (error) {
+      console.error(`Error in updateBlogPost(${id}):`, error);
+      return undefined;
+    }
   }
 
   async deleteBlogPost(id: number): Promise<boolean> {
-    await db.delete(blogPosts).where(eq(blogPosts.id, id));
-    return true;
+    try {
+      await db.delete(blogPosts).where(eq(blogPosts.id, id));
+      return true;
+    } catch (error) {
+      console.error(`Error in deleteBlogPost(${id}):`, error);
+      return false;
+    }
   }
 
   // Gallery operations
   async getGalleryItems(): Promise<GalleryItem[]> {
-    return await db.select().from(galleryItems).orderBy(asc(galleryItems.order));
+    return await db.select().from(galleryItems).orderBy(galleryItems.order);
   }
 
   async getGalleryItemById(id: number): Promise<GalleryItem | undefined> {
@@ -1418,27 +1400,30 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getGalleryItemsByType(type: string): Promise<GalleryItem[]> {
-    return await db.select()
-      .from(galleryItems)
+    return await db.select().from(galleryItems)
       .where(eq(galleryItems.type, type))
-      .orderBy(asc(galleryItems.order));
+      .orderBy(galleryItems.order);
   }
 
   async getGalleryItemsByServiceId(serviceId: number): Promise<GalleryItem[]> {
-    return await db.select()
-      .from(galleryItems)
+    return await db.select().from(galleryItems)
       .where(eq(galleryItems.serviceId, serviceId))
-      .orderBy(asc(galleryItems.order));
+      .orderBy(galleryItems.order);
   }
 
   async createGalleryItem(item: InsertGalleryItem): Promise<GalleryItem> {
-    const [newItem] = await db.insert(galleryItems).values(item).returning();
+    const [newItem] = await db.insert(galleryItems).values({
+      ...item,
+      createdAt: new Date()
+    }).returning();
     return newItem;
   }
 
   async updateGalleryItem(id: number, item: Partial<InsertGalleryItem>): Promise<GalleryItem | undefined> {
     const [updatedItem] = await db.update(galleryItems)
-      .set(item)
+      .set({
+        ...item
+      })
       .where(eq(galleryItems.id, id))
       .returning();
     return updatedItem;
@@ -1451,7 +1436,7 @@ export class DatabaseStorage implements IStorage {
 
   // FAQ operations
   async getFaqs(): Promise<FAQ[]> {
-    return await db.select().from(faqs).orderBy(asc(faqs.order));
+    return await db.select().from(faqs).orderBy(faqs.order);
   }
 
   async getFaqById(id: number): Promise<FAQ | undefined> {
@@ -1460,20 +1445,24 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getFaqsByServiceId(serviceId: number): Promise<FAQ[]> {
-    return await db.select()
-      .from(faqs)
+    return await db.select().from(faqs)
       .where(eq(faqs.serviceId, serviceId))
-      .orderBy(asc(faqs.order));
+      .orderBy(faqs.order);
   }
 
   async createFaq(faq: InsertFAQ): Promise<FAQ> {
-    const [newFaq] = await db.insert(faqs).values(faq).returning();
+    const [newFaq] = await db.insert(faqs).values({
+      ...faq,
+      createdAt: new Date()
+    }).returning();
     return newFaq;
   }
 
   async updateFaq(id: number, faq: Partial<InsertFAQ>): Promise<FAQ | undefined> {
     const [updatedFaq] = await db.update(faqs)
-      .set(faq)
+      .set({
+        ...faq
+      })
       .where(eq(faqs.id, id))
       .returning();
     return updatedFaq;
@@ -1486,7 +1475,7 @@ export class DatabaseStorage implements IStorage {
 
   // Product operations
   async getProducts(): Promise<Product[]> {
-    return await db.select().from(products).orderBy(asc(products.order));
+    return await db.select().from(products).orderBy(products.order);
   }
 
   async getProductById(id: number): Promise<Product | undefined> {
@@ -1500,13 +1489,20 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createProduct(product: InsertProduct): Promise<Product> {
-    const [newProduct] = await db.insert(products).values(product).returning();
+    const [newProduct] = await db.insert(products).values({
+      ...product,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }).returning();
     return newProduct;
   }
 
   async updateProduct(id: number, product: Partial<InsertProduct>): Promise<Product | undefined> {
     const [updatedProduct] = await db.update(products)
-      .set({ ...product, updatedAt: new Date() })
+      .set({
+        ...product,
+        updatedAt: new Date()
+      })
       .where(eq(products.id, id))
       .returning();
     return updatedProduct;
@@ -1516,7 +1512,7 @@ export class DatabaseStorage implements IStorage {
     await db.delete(products).where(eq(products.id, id));
     return true;
   }
-
+  
   async clearProducts(): Promise<boolean> {
     await db.delete(products);
     return true;
@@ -1524,27 +1520,119 @@ export class DatabaseStorage implements IStorage {
 
   // Package operations
   async getPackages(): Promise<Package[]> {
-    return await db.select().from(packages);
+    return await db.select().from(packages).orderBy(packages.order);
+  }
+  
+  async getOnePackagePerCountry(): Promise<Package[]> {
+    // Desteklenen ülkeler (Ukrayna'yı da ekledik)
+    const countries = ['TR', 'RU', 'AZ', 'KZ', 'IR', 'UA'];
+    const result: Package[] = [];
+    
+    try {
+      // Tüm paketleri al
+      const allPackages = await db.select().from(packages);
+      
+      // Her ülke için bir paket seç
+      for (const country of countries) {
+        // Bu ülke için paketleri filtrele
+        const countryPackages = allPackages.filter(pkg => 
+          pkg.countryOrigin === country
+        );
+        
+        // Paket yoksa, sahte paket oluştur ve ekle
+        if (countryPackages.length === 0) {
+          // İlk paketimizi kopyala ve ülke kodunu değiştir
+          const samplePackage = allPackages[0] ? { ...allPackages[0] } : null;
+          
+          if (samplePackage) {
+            // Ülkeye göre başlık oluştur
+            let countryName = '';
+            switch (country) {
+              case 'TR': countryName = 'Türkiye'; break;
+              case 'RU': countryName = 'Rusya'; break;
+              case 'AZ': countryName = 'Azerbaycan'; break;
+              case 'KZ': countryName = 'Kazakistan'; break;
+              case 'IR': countryName = 'İran'; break;
+              case 'UA': countryName = 'Ukrayna'; break;
+              default: countryName = 'Uluslararası'; break;
+            }
+            
+            // Ülke kodunu ayarla
+            samplePackage.countryOrigin = country;
+            samplePackage.titleTR = `${countryName} Saç Ekimi Paketi`;
+            samplePackage.titleEN = `${countryName} Hair Transplant Package`;
+            
+            result.push(samplePackage);
+          }
+        } 
+        // Ülke için paket varsa aktif olan ve/veya öne çıkan paketi ekle
+        else {
+          // Öncelikle aktif ve öne çıkan paketleri tercih et
+          const featuredActivePackage = countryPackages.find(
+            pkg => pkg.isActive && pkg.isFeatured
+          );
+          
+          // Eğer aktif ve öne çıkan paket yoksa, sadece aktif paketlere bak
+          const activePackage = countryPackages.find(
+            pkg => pkg.isActive
+          );
+          
+          // Herhangi bir paket yoksa, listenin ilk elemanını ekle
+          const packageToAdd = featuredActivePackage || activePackage || countryPackages[0];
+          
+          // Paket zaten countryOrigin içeriyor olmalı, yine de kontrol edelim
+          if (packageToAdd && !packageToAdd.countryOrigin) {
+            packageToAdd.countryOrigin = country;
+          }
+          
+          result.push(packageToAdd);
+        }
+      }
+    } catch (error) {
+      console.error(`Error getting packages per country:`, error);
+    }
+    
+    return result;
   }
 
   async getPackageById(id: number): Promise<Package | undefined> {
     const [pkg] = await db.select().from(packages).where(eq(packages.id, id));
     return pkg;
   }
-
+  
   async getPackageBySlug(slug: string): Promise<Package | undefined> {
     const [pkg] = await db.select().from(packages).where(eq(packages.slug, slug));
     return pkg;
   }
+  
+  async getPackagesByCountry(countryCode: string): Promise<Package[]> {
+    return await db.select().from(packages)
+      .where(eq(packages.countryOrigin, countryCode))
+      .orderBy(packages.order);
+  }
+  
+  async getFeaturedPackages(): Promise<Package[]> {
+    return await db.select().from(packages)
+      .where(eq(packages.isFeatured, true))
+      .where(eq(packages.isActive, true))
+      .orderBy(packages.order);
+  }
 
   async createPackage(pkg: InsertPackage): Promise<Package> {
-    const [newPackage] = await db.insert(packages).values(pkg).returning();
+    const [newPackage] = await db.insert(packages).values({
+      ...pkg,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }).returning();
     return newPackage;
   }
 
   async updatePackage(id: number, pkg: Partial<InsertPackage>): Promise<Package | undefined> {
     const [updatedPackage] = await db.update(packages)
-      .set({ ...pkg, updatedAt: new Date() })
+      .set({
+        ...pkg,
+        updatedAt: new Date()
+      })
       .where(eq(packages.id, id))
       .returning();
     return updatedPackage;
@@ -1557,42 +1645,83 @@ export class DatabaseStorage implements IStorage {
 
   // Appointment operations
   async getAppointments(): Promise<Appointment[]> {
-    return await db.select().from(appointments).orderBy(desc(appointments.appointmentDate));
+    try {
+      const result = await db.select().from(appointments).orderBy(desc(appointments.createdAt));
+      return result;
+    } catch (error) {
+      console.error("Error fetching appointments:", error);
+      throw error;
+    }
   }
 
   async getAppointmentById(id: number): Promise<Appointment | undefined> {
-    const [appointment] = await db.select().from(appointments).where(eq(appointments.id, id));
-    return appointment;
-  }
-
-  async getAppointmentsByStatus(status: string): Promise<Appointment[]> {
-    return await db.select()
-      .from(appointments)
-      .where(eq(appointments.status, status))
-      .orderBy(desc(appointments.appointmentDate));
+    try {
+      const [appointment] = await db.select().from(appointments).where(eq(appointments.id, id));
+      return appointment;
+    } catch (error) {
+      console.error(`Error fetching appointment with ID ${id}:`, error);
+      return undefined;
+    }
   }
 
   async createAppointment(appointment: InsertAppointment): Promise<Appointment> {
-    const [newAppointment] = await db.insert(appointments).values(appointment).returning();
-    return newAppointment;
+    try {
+      const [newAppointment] = await db.insert(appointments).values({
+        ...appointment,
+        status: "pending",
+        appointmentTime: appointment.appointmentTime || null,
+        notificationScheduled: false,
+        notificationSent: false,
+        message: appointment.message || null,
+        preferredDate: appointment.preferredDate || null,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }).returning();
+      return newAppointment;
+    } catch (error) {
+      console.error("Error creating appointment:", error);
+      throw error;
+    }
   }
 
-  async updateAppointment(id: number, appointment: Partial<InsertAppointment>): Promise<Appointment | undefined> {
-    const [updatedAppointment] = await db.update(appointments)
-      .set(appointment)
-      .where(eq(appointments.id, id))
-      .returning();
-    return updatedAppointment;
+  async updateAppointment(id: number, appointment: Partial<Appointment>): Promise<Appointment | undefined> {
+    try {
+      // Şu anki zamanı kullanarak updatedAt'i ayarla
+      const now = new Date();
+      
+      // Güncelleme verilerinden appointmentTime çıkarılır ve değer olarak kullanılırsa, çakışma olmasın
+      const { appointmentTime, ...otherAppointmentData } = appointment;
+      
+      // appointmentTime değeri varsa ekle, yoksa sadece diğer verileri güncelle
+      const dataToUpdate = appointmentTime 
+        ? { ...otherAppointmentData, appointmentTime: appointmentTime, updatedAt: now } 
+        : { ...otherAppointmentData, updatedAt: now };
+        
+      const [updatedAppointment] = await db.update(appointments)
+        .set(dataToUpdate)
+        .where(eq(appointments.id, id))
+        .returning();
+        
+      return updatedAppointment;
+    } catch (error) {
+      console.error(`Error updating appointment with ID ${id}:`, error);
+      throw error;
+    }
   }
 
   async deleteAppointment(id: number): Promise<boolean> {
-    await db.delete(appointments).where(eq(appointments.id, id));
-    return true;
+    try {
+      await db.delete(appointments).where(eq(appointments.id, id));
+      return true;
+    } catch (error) {
+      console.error(`Error deleting appointment with ID ${id}:`, error);
+      return false;
+    }
   }
 
   // Testimonial operations
   async getTestimonials(): Promise<Testimonial[]> {
-    return await db.select().from(testimonials).orderBy(asc(testimonials.order));
+    return await db.select().from(testimonials);
   }
 
   async getTestimonialById(id: number): Promise<Testimonial | undefined> {
@@ -1601,18 +1730,23 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createTestimonial(testimonial: InsertTestimonial): Promise<Testimonial> {
-    const [newTestimonial] = await db.insert(testimonials).values(testimonial).returning();
+    const [newTestimonial] = await db.insert(testimonials).values({
+      ...testimonial,
+      createdAt: new Date()
+    }).returning();
     return newTestimonial;
   }
-
+  
   async updateTestimonial(id: number, testimonial: Partial<InsertTestimonial>): Promise<Testimonial | undefined> {
     const [updatedTestimonial] = await db.update(testimonials)
-      .set(testimonial)
+      .set({
+        ...testimonial
+      })
       .where(eq(testimonials.id, id))
       .returning();
     return updatedTestimonial;
   }
-
+  
   async deleteTestimonial(id: number): Promise<boolean> {
     await db.delete(testimonials).where(eq(testimonials.id, id));
     return true;
@@ -1628,10 +1762,14 @@ export class DatabaseStorage implements IStorage {
     return review;
   }
 
-  async getUserReviewsByServiceId(serviceId: number | null): Promise<UserReview[]> {
-    return await db.select()
-      .from(userReviews)
+  async getUserReviewsByServiceId(serviceId: number): Promise<UserReview[]> {
+    return await db.select().from(userReviews)
       .where(eq(userReviews.serviceId, serviceId))
+      .orderBy(desc(userReviews.createdAt));
+  }
+
+  async getApprovedUserReviews(): Promise<UserReview[]> {
+    return await db.select().from(userReviews)
       .where(eq(userReviews.isApproved, true))
       .orderBy(desc(userReviews.createdAt));
   }
@@ -1639,22 +1777,17 @@ export class DatabaseStorage implements IStorage {
   async createUserReview(review: InsertUserReview): Promise<UserReview> {
     const [newReview] = await db.insert(userReviews).values({
       ...review,
-      isApproved: false
+      isApproved: false,
+      createdAt: new Date()
     }).returning();
     return newReview;
   }
 
-  async updateUserReview(id: number, review: Partial<InsertUserReview>): Promise<UserReview | undefined> {
+  async updateUserReviewApproval(id: number, isApproved: boolean): Promise<UserReview | undefined> {
     const [updatedReview] = await db.update(userReviews)
-      .set(review)
-      .where(eq(userReviews.id, id))
-      .returning();
-    return updatedReview;
-  }
-
-  async approveUserReview(id: number): Promise<UserReview | undefined> {
-    const [updatedReview] = await db.update(userReviews)
-      .set({ isApproved: true })
+      .set({
+        isApproved
+      })
       .where(eq(userReviews.id, id))
       .returning();
     return updatedReview;
@@ -1678,14 +1811,16 @@ export class DatabaseStorage implements IStorage {
   async createMessage(message: InsertMessage): Promise<Message> {
     const [newMessage] = await db.insert(messages).values({
       ...message,
-      isRead: false
+      createdAt: new Date()
     }).returning();
     return newMessage;
   }
 
-  async markMessageAsRead(id: number): Promise<Message | undefined> {
+  async updateMessageReadStatus(id: number, isRead: boolean): Promise<Message | undefined> {
     const [updatedMessage] = await db.update(messages)
-      .set({ isRead: true })
+      .set({
+        isRead
+      })
       .where(eq(messages.id, id))
       .returning();
     return updatedMessage;
@@ -1698,59 +1833,36 @@ export class DatabaseStorage implements IStorage {
 
   // Clinic Info operations
   async getClinicInfo(): Promise<ClinicInfo | undefined> {
-    const [info] = await db.select().from(clinicInfo);
+    const [info] = await db.select().from(clinicInfo).limit(1);
     return info;
   }
 
   async updateClinicInfo(info: UpdateClinicInfo): Promise<ClinicInfo | undefined> {
     // Check if clinic info exists
-    const existing = await this.getClinicInfo();
+    const existingInfo = await this.getClinicInfo();
     
-    if (existing) {
-      // Update
+    if (existingInfo) {
+      // Update existing clinic info
       const [updatedInfo] = await db.update(clinicInfo)
-        .set({ ...info, updatedAt: new Date() })
-        .where(eq(clinicInfo.id, existing.id))
+        .set({
+          ...info,
+          updatedAt: new Date()
+        })
+        .where(eq(clinicInfo.id, existingInfo.id))
         .returning();
       return updatedInfo;
     } else {
-      // Create
-      const [newInfo] = await db.insert(clinicInfo).values({
-        ...info,
-        updatedAt: new Date()
-      }).returning();
+      // Create new clinic info
+      const [newInfo] = await db.insert(clinicInfo)
+        .values({
+          ...info,
+          updatedAt: new Date()
+        })
+        .returning();
       return newInfo;
     }
   }
-
-  // Aftercare Guide operations
-  async getAftercareGuides(): Promise<AftercareGuide[]> {
-    return await db.select().from(aftercareGuides);
-  }
-
-  async getAftercareGuideById(id: number): Promise<AftercareGuide | undefined> {
-    const [guide] = await db.select().from(aftercareGuides).where(eq(aftercareGuides.id, id));
-    return guide;
-  }
-
-  async createAftercareGuide(guide: InsertAftercareGuide): Promise<AftercareGuide> {
-    const [newGuide] = await db.insert(aftercareGuides).values(guide).returning();
-    return newGuide;
-  }
-
-  async updateAftercareGuide(id: number, guide: Partial<InsertAftercareGuide>): Promise<AftercareGuide | undefined> {
-    const [updatedGuide] = await db.update(aftercareGuides)
-      .set({ ...guide, updatedAt: new Date() })
-      .where(eq(aftercareGuides.id, id))
-      .returning();
-    return updatedGuide;
-  }
-
-  async deleteAftercareGuide(id: number): Promise<boolean> {
-    await db.delete(aftercareGuides).where(eq(aftercareGuides.id, id));
-    return true;
-  }
-
+  
   // Chat Session operations
   async getChatSessions(): Promise<ChatSession[]> {
     return await db.select().from(chatSessions).orderBy(desc(chatSessions.lastMessageAt));
@@ -1762,67 +1874,40 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getChatSessionByVisitorId(visitorId: string): Promise<ChatSession | undefined> {
-    const [session] = await db.select()
-      .from(chatSessions)
+    const [session] = await db.select().from(chatSessions)
       .where(eq(chatSessions.visitorId, visitorId))
-      .where(eq(chatSessions.isArchived, false));
+      .where(eq(chatSessions.status, 'active'));
     return session;
-  }
-
-  async getActiveChatSessions(): Promise<ChatSession[]> {
-    return await db.select()
-      .from(chatSessions)
-      .where(eq(chatSessions.isArchived, false))
-      .orderBy(desc(chatSessions.lastMessageAt));
   }
 
   async createChatSession(session: InsertChatSession): Promise<ChatSession> {
     const [newSession] = await db.insert(chatSessions).values({
       ...session,
-      hasUnreadMessages: false,
+      status: 'active',
+      lastMessageAt: new Date(),
+      createdAt: new Date(),
       isArchived: false,
-      lastMessageAt: new Date()
+      hasUnreadMessages: false
     }).returning();
     return newSession;
   }
 
-  async updateChatSession(id: number, session: Partial<InsertChatSession>): Promise<ChatSession | undefined> {
+  async updateChatSession(id: number, sessionData: Partial<ChatSession>): Promise<ChatSession | undefined> {
     const [updatedSession] = await db.update(chatSessions)
-      .set(session)
-      .where(eq(chatSessions.id, id))
-      .returning();
-    return updatedSession;
-  }
-
-  async archiveChatSession(id: number): Promise<ChatSession | undefined> {
-    const [updatedSession] = await db.update(chatSessions)
-      .set({ isArchived: true })
-      .where(eq(chatSessions.id, id))
-      .returning();
-    return updatedSession;
-  }
-
-  async markChatSessionAsRead(id: number): Promise<ChatSession | undefined> {
-    const [updatedSession] = await db.update(chatSessions)
-      .set({ hasUnreadMessages: false })
+      .set(sessionData)
       .where(eq(chatSessions.id, id))
       .returning();
     return updatedSession;
   }
 
   async deleteChatSession(id: number): Promise<boolean> {
-    // First delete all messages in this session
-    await db.delete(chatMessages).where(eq(chatMessages.sessionId, id));
-    
-    // Then delete the session
     await db.delete(chatSessions).where(eq(chatSessions.id, id));
     return true;
   }
 
   // Chat Message operations
-  async getChatMessages(sessionId: number): Promise<ChatMessage[]> {
-    return await db.select()
-      .from(chatMessages)
+  async getChatMessagesBySessionId(sessionId: number): Promise<ChatMessage[]> {
+    return await db.select().from(chatMessages)
       .where(eq(chatMessages.sessionId, sessionId))
       .orderBy(asc(chatMessages.timestamp));
   }
@@ -1835,18 +1920,17 @@ export class DatabaseStorage implements IStorage {
   async createChatMessage(message: InsertChatMessage): Promise<ChatMessage> {
     const [newMessage] = await db.insert(chatMessages).values({
       ...message,
-      timestamp: new Date()
+      timestamp: new Date(),
+      isRead: message.senderType !== 'visitor' // mark operator and system messages as read by default
     }).returning();
 
-    // Update the session's lastMessageAt and unread status
-    if (message.sessionId) {
-      await db.update(chatSessions)
-        .set({
-          lastMessageAt: new Date(),
-          hasUnreadMessages: message.senderType === 'visitor' // Only mark as unread if from visitor
-        })
-        .where(eq(chatSessions.id, message.sessionId));
-    }
+    // Update the session's lastMessageAt
+    await db.update(chatSessions)
+      .set({ 
+        lastMessageAt: new Date(),
+        hasUnreadMessages: message.senderType === 'visitor' // mark session as having unread messages if from visitor
+      })
+      .where(eq(chatSessions.id, message.sessionId));
 
     return newMessage;
   }
@@ -1870,16 +1954,12 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getChatOperatorByUserId(userId: number): Promise<ChatOperator | undefined> {
-    const [operator] = await db.select()
-      .from(chatOperators)
-      .where(eq(chatOperators.userId, userId));
+    const [operator] = await db.select().from(chatOperators).where(eq(chatOperators.userId, userId));
     return operator;
   }
 
   async getAvailableChatOperators(): Promise<ChatOperator[]> {
-    return await db.select()
-      .from(chatOperators)
-      .where(eq(chatOperators.isAvailable, true));
+    return await db.select().from(chatOperators).where(eq(chatOperators.isAvailable, true));
   }
 
   async createChatOperator(operator: InsertChatOperator): Promise<ChatOperator> {
@@ -1892,7 +1972,7 @@ export class DatabaseStorage implements IStorage {
 
   async updateChatOperatorAvailability(userId: number, isAvailable: boolean): Promise<ChatOperator | undefined> {
     const [updatedOperator] = await db.update(chatOperators)
-      .set({
+      .set({ 
         isAvailable,
         lastActiveAt: new Date()
       })
@@ -1906,20 +1986,62 @@ export class DatabaseStorage implements IStorage {
     return true;
   }
 
+  // Aftercare Guide operations
+  async getAftercareGuides(): Promise<AftercareGuide[]> {
+    return await db.select().from(aftercareGuides).orderBy(aftercareGuides.order);
+  }
+
+  async getAftercareGuideById(id: number): Promise<AftercareGuide | undefined> {
+    const [guide] = await db.select().from(aftercareGuides).where(eq(aftercareGuides.id, id));
+    return guide;
+  }
+
+  async getAftercareGuidesByServiceId(serviceId: number): Promise<AftercareGuide[]> {
+    return await db.select().from(aftercareGuides)
+      .where(eq(aftercareGuides.serviceId, serviceId))
+      .orderBy(aftercareGuides.order);
+  }
+
+  async createAftercareGuide(guide: InsertAftercareGuide): Promise<AftercareGuide> {
+    const [newGuide] = await db.insert(aftercareGuides).values({
+      ...guide,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }).returning();
+    return newGuide;
+  }
+
+  async updateAftercareGuide(id: number, guide: Partial<InsertAftercareGuide>): Promise<AftercareGuide | undefined> {
+    const [updatedGuide] = await db.update(aftercareGuides)
+      .set({
+        ...guide,
+        updatedAt: new Date()
+      })
+      .where(eq(aftercareGuides.id, id))
+      .returning();
+    return updatedGuide;
+  }
+
+  async deleteAftercareGuide(id: number): Promise<boolean> {
+    await db.delete(aftercareGuides).where(eq(aftercareGuides.id, id));
+    return true;
+  },
+
   // Patient operations
   async getPatients(): Promise<Patient[]> {
-    return await db.select().from(patients).orderBy(desc(patients.createdAt));
-  }
+    const patients = await db.select().from(patients).orderBy(desc(patients.createdAt));
+    return patients;
+  },
 
   async getPatientById(id: number): Promise<Patient | undefined> {
     const [patient] = await db.select().from(patients).where(eq(patients.id, id));
     return patient;
-  }
+  },
 
   async createPatient(data: InsertPatient): Promise<Patient> {
     const [patient] = await db.insert(patients).values(data).returning();
     return patient;
-  }
+  },
 
   async updatePatient(id: number, data: Partial<InsertPatient>): Promise<Patient | undefined> {
     const [patient] = await db.update(patients)
@@ -1927,7 +2049,7 @@ export class DatabaseStorage implements IStorage {
       .where(eq(patients.id, id))
       .returning();
     return patient;
-  }
+  },
 
   async deletePatient(id: number): Promise<Patient | undefined> {
     // İlgili hasta dokümanlarını ve tedavi kayıtlarını da silmek için
@@ -1939,7 +2061,7 @@ export class DatabaseStorage implements IStorage {
       .where(eq(patients.id, id))
       .returning();
     return patient;
-  }
+  },
 
   // Patient Document operations
   async getPatientDocuments(patientId: number): Promise<PatientDocument[]> {
@@ -1947,18 +2069,18 @@ export class DatabaseStorage implements IStorage {
       .where(eq(patientDocuments.patientId, patientId))
       .orderBy(desc(patientDocuments.uploadDate));
     return documents;
-  }
+  },
 
   async getDocumentById(id: number): Promise<PatientDocument | undefined> {
     const [document] = await db.select().from(patientDocuments)
       .where(eq(patientDocuments.id, id));
     return document;
-  }
+  },
 
   async createPatientDocument(data: InsertPatientDocument): Promise<PatientDocument> {
     const [document] = await db.insert(patientDocuments).values(data).returning();
     return document;
-  }
+  },
 
   async updatePatientDocument(id: number, data: Partial<InsertPatientDocument>): Promise<PatientDocument | undefined> {
     const [document] = await db.update(patientDocuments)
@@ -1966,14 +2088,14 @@ export class DatabaseStorage implements IStorage {
       .where(eq(patientDocuments.id, id))
       .returning();
     return document;
-  }
+  },
 
   async deletePatientDocument(id: number): Promise<PatientDocument | undefined> {
     const [document] = await db.delete(patientDocuments)
       .where(eq(patientDocuments.id, id))
       .returning();
     return document;
-  }
+  },
 
   // Treatment Record operations
   async getTreatmentRecords(patientId: number): Promise<TreatmentRecord[]> {
@@ -1981,18 +2103,18 @@ export class DatabaseStorage implements IStorage {
       .where(eq(treatmentRecords.patientId, patientId))
       .orderBy(desc(treatmentRecords.treatmentDate));
     return records;
-  }
+  },
 
   async getTreatmentRecordById(id: number): Promise<TreatmentRecord | undefined> {
     const [record] = await db.select().from(treatmentRecords)
       .where(eq(treatmentRecords.id, id));
     return record;
-  }
+  },
 
   async createTreatmentRecord(data: InsertTreatmentRecord): Promise<TreatmentRecord> {
     const [record] = await db.insert(treatmentRecords).values(data).returning();
     return record;
-  }
+  },
 
   async updateTreatmentRecord(id: number, data: Partial<InsertTreatmentRecord>): Promise<TreatmentRecord | undefined> {
     const [record] = await db.update(treatmentRecords)
@@ -2000,11 +2122,115 @@ export class DatabaseStorage implements IStorage {
       .where(eq(treatmentRecords.id, id))
       .returning();
     return record;
-  }
+  },
 
   async deleteTreatmentRecord(id: number): Promise<TreatmentRecord | undefined> {
     const [record] = await db.delete(treatmentRecords)
       .where(eq(treatmentRecords.id, id))
+      .returning();
+    return record;
+  }
+
+  // Hastalar için CRUD işlemleri
+  async getPatients(): Promise<Patient[]> {
+    const patients = await db.select().from(schema.patients).orderBy(desc(schema.patients.createdAt));
+    return patients;
+  },
+
+  async getPatientById(id: number): Promise<Patient | undefined> {
+    const [patient] = await db.select().from(schema.patients).where(eq(schema.patients.id, id));
+    return patient;
+  },
+
+  async createPatient(data: InsertPatient): Promise<Patient> {
+    const [patient] = await db.insert(schema.patients).values(data).returning();
+    return patient;
+  },
+
+  async updatePatient(id: number, data: Partial<InsertPatient>): Promise<Patient | undefined> {
+    const [patient] = await db.update(schema.patients)
+      .set({ ...data, updatedAt: new Date() })
+      .where(eq(schema.patients.id, id))
+      .returning();
+    return patient;
+  },
+
+  async deletePatient(id: number): Promise<Patient | undefined> {
+    // İlgili hasta dokümanlarını ve tedavi kayıtlarını da silmek için
+    await db.delete(schema.patientDocuments).where(eq(schema.patientDocuments.patientId, id));
+    await db.delete(schema.treatmentRecords).where(eq(schema.treatmentRecords.patientId, id));
+    
+    // Hastayı sil
+    const [patient] = await db.delete(schema.patients)
+      .where(eq(schema.patients.id, id))
+      .returning();
+    return patient;
+  },
+
+  // Hasta dokümanları için CRUD işlemleri
+  async getPatientDocuments(patientId: number): Promise<PatientDocument[]> {
+    const documents = await db.select().from(schema.patientDocuments)
+      .where(eq(schema.patientDocuments.patientId, patientId))
+      .orderBy(desc(schema.patientDocuments.uploadDate));
+    return documents;
+  },
+
+  async getDocumentById(id: number): Promise<PatientDocument | undefined> {
+    const [document] = await db.select().from(schema.patientDocuments)
+      .where(eq(schema.patientDocuments.id, id));
+    return document;
+  },
+
+  async createPatientDocument(data: InsertPatientDocument): Promise<PatientDocument> {
+    const [document] = await db.insert(schema.patientDocuments).values(data).returning();
+    return document;
+  },
+
+  async updatePatientDocument(id: number, data: Partial<InsertPatientDocument>): Promise<PatientDocument | undefined> {
+    const [document] = await db.update(schema.patientDocuments)
+      .set({ ...data, updatedAt: new Date() })
+      .where(eq(schema.patientDocuments.id, id))
+      .returning();
+    return document;
+  },
+
+  async deletePatientDocument(id: number): Promise<PatientDocument | undefined> {
+    const [document] = await db.delete(schema.patientDocuments)
+      .where(eq(schema.patientDocuments.id, id))
+      .returning();
+    return document;
+  },
+
+  // Tedavi kayıtları için CRUD işlemleri
+  async getTreatmentRecords(patientId: number): Promise<TreatmentRecord[]> {
+    const records = await db.select().from(schema.treatmentRecords)
+      .where(eq(schema.treatmentRecords.patientId, patientId))
+      .orderBy(desc(schema.treatmentRecords.treatmentDate));
+    return records;
+  },
+
+  async getTreatmentRecordById(id: number): Promise<TreatmentRecord | undefined> {
+    const [record] = await db.select().from(schema.treatmentRecords)
+      .where(eq(schema.treatmentRecords.id, id));
+    return record;
+  },
+
+  async createTreatmentRecord(data: InsertTreatmentRecord): Promise<TreatmentRecord> {
+    const [record] = await db.insert(schema.treatmentRecords).values(data).returning();
+    return record;
+  },
+
+  async updateTreatmentRecord(id: number, data: Partial<InsertTreatmentRecord>): Promise<TreatmentRecord | undefined> {
+    const [record] = await db.update(schema.treatmentRecords)
+      .set({ ...data, updatedAt: new Date() })
+      .where(eq(schema.treatmentRecords.id, id))
+      .returning();
+    return record;
+  },
+
+  async deleteTreatmentRecord(id: number): Promise<TreatmentRecord | undefined> {
+    const [record] = await db.delete(schema.treatmentRecords)
+      .where(eq(schema.treatmentRecords.id, id))
       .returning();
     return record;
   }

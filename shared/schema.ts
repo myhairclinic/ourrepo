@@ -636,3 +636,82 @@ export type InsertChatMessage = z.infer<typeof insertChatMessageSchema>;
 
 export type ChatOperator = typeof chatOperators.$inferSelect;
 export type InsertChatOperator = z.infer<typeof insertChatOperatorSchema>;
+
+// Patients
+export const patients = pgTable("patients", {
+  id: serial("id").primaryKey(),
+  fullName: text("full_name").notNull(),
+  email: text("email"),
+  phone: text("phone").notNull(),
+  dateOfBirth: timestamp("date_of_birth"),
+  gender: text("gender"),
+  nationality: text("nationality"),
+  passportNumber: text("passport_number"),
+  address: text("address"),
+  medicalHistory: text("medical_history"),
+  allergies: text("allergies"),
+  medications: text("medications"),
+  notes: text("notes"),
+  serviceId: integer("service_id").references(() => services.id),
+  registrationDate: timestamp("registration_date").notNull().defaultNow(),
+  lastVisitDate: timestamp("last_visit_date"),
+  status: text("status").notNull().default("active"), // active, inactive, completed
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const insertPatientSchema = createInsertSchema(patients).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Patient Documents
+export const patientDocuments = pgTable("patient_documents", {
+  id: serial("id").primaryKey(),
+  patientId: integer("patient_id").notNull().references(() => patients.id),
+  documentType: text("document_type").notNull(), // passport, medical-report, consent-form, before-photo, after-photo, etc.
+  fileName: text("file_name").notNull(),
+  fileUrl: text("file_url").notNull(),
+  uploadDate: timestamp("upload_date").notNull().defaultNow(),
+  description: text("description"),
+  isConfidential: boolean("is_confidential").notNull().default(false),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const insertPatientDocumentSchema = createInsertSchema(patientDocuments).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Treatment Records
+export const treatmentRecords = pgTable("treatment_records", {
+  id: serial("id").primaryKey(),
+  patientId: integer("patient_id").notNull().references(() => patients.id),
+  serviceId: integer("service_id").references(() => services.id),
+  treatmentDate: timestamp("treatment_date").notNull(),
+  doctorName: text("doctor_name").notNull(),
+  procedureDetails: text("procedure_details").notNull(),
+  notes: text("notes"),
+  followUpDate: timestamp("follow_up_date"),
+  status: text("status").notNull().default("planned"), // planned, in-progress, completed, cancelled
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const insertTreatmentRecordSchema = createInsertSchema(treatmentRecords).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type Patient = typeof patients.$inferSelect;
+export type InsertPatient = z.infer<typeof insertPatientSchema>;
+
+export type PatientDocument = typeof patientDocuments.$inferSelect;
+export type InsertPatientDocument = z.infer<typeof insertPatientDocumentSchema>;
+
+export type TreatmentRecord = typeof treatmentRecords.$inferSelect;
+export type InsertTreatmentRecord = z.infer<typeof insertTreatmentRecordSchema>;
