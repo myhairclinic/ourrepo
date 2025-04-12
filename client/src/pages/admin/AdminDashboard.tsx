@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { useAdmin } from "@/hooks/use-admin";
-import { Loader2, Settings, Users, Package, MessageCircle, Calendar, FileText, Image, Star, HelpCircle, BookOpen, Package2, BarChart, ArrowLeft, LogOut, ShoppingBag, Heart, Globe, Search, ChevronDown, Bell, User, Menu, X, PlusCircle, Trash2, Edit, Download, Upload, Eye, HardDrive, List, LayoutGrid, LayoutList, Shield, Send, ChevronLeft, ChevronRight, CheckCircle, Clock, Pencil, Activity } from "lucide-react";
+import { Loader2, Settings, Users, Package, MessageCircle, Calendar, FileText, Image, Star, HelpCircle, BookOpen, Package2, BarChart, ArrowLeft, LogOut, ShoppingBag, Heart, Globe, Search, ChevronDown, Bell, User, Menu, X, PlusCircle, Trash2, Edit, Download, Upload, Eye, HardDrive, List, LayoutGrid, LayoutList, Shield, Send, ChevronLeft, ChevronRight, CheckCircle, Clock, Pencil, Activity, Layers } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
 import { 
