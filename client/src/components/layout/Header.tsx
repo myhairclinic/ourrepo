@@ -55,8 +55,13 @@ export default function Header() {
                 onClick={toggleLangMenu}
                 className="flex items-center space-x-2 text-white px-3 py-1 rounded hover:bg-blue-700/40 transition-colors"
               >
-                <span className="text-xl mr-1">{ALL_LANGUAGES.find(l => l.code === language)?.flag}</span>
-                <span className="text-sm uppercase">{language}</span>
+                <span className="text-2xl">
+                {language === "tr" && "🇹🇷"}
+                {language === "en" && "🇬🇧"}
+                {language === "ru" && "🇷🇺"}
+                {language === "ka" && "🇬🇪"}
+                </span>
+                <span className="text-sm uppercase ml-2">{language}</span>
                 <ChevronDown size={12} className={`transition-transform duration-300 ${isLangMenuOpen ? 'rotate-180' : ''}`} />
               </button>
               
@@ -74,7 +79,12 @@ export default function Header() {
                           language === lang.code ? "bg-primary/5 text-primary font-medium" : "text-gray-700"
                         }`}
                       >
-                        <span className="mr-2 text-2xl">{lang.flag}</span>
+                        <span className="mr-2 text-2xl">
+                        {lang.code === "tr" && "🇹🇷"}
+                        {lang.code === "en" && "🇬🇧"}
+                        {lang.code === "ru" && "🇷🇺"}
+                        {lang.code === "ka" && "🇬🇪"}
+                        </span>
                         <span>{lang.name}</span>
                       </button>
                     ))}
@@ -165,7 +175,12 @@ export default function Header() {
                 onClick={toggleLangMenu}
                 className="flex items-center justify-center space-x-1 text-neutral-700 p-2"
               >
-                <span className="text-xl mr-1">{ALL_LANGUAGES.find(l => l.code === language)?.flag}</span>
+                <span className="text-2xl mr-1">
+                {language === "tr" && "🇹🇷"}
+                {language === "en" && "🇬🇧"}
+                {language === "ru" && "🇷🇺"}
+                {language === "ka" && "🇬🇪"}
+                </span>
                 <span className="text-xs font-medium uppercase">{language}</span>
               </button>
               
@@ -255,7 +270,12 @@ export default function Header() {
                       : "bg-gray-50 hover:bg-gray-100 border border-gray-100"
                   }`}
                 >
-                  <span className="mr-2 text-2xl">{lang.flag}</span>
+                  <span className="mr-2 text-2xl">
+                  {lang.code === "tr" && "🇹🇷"}
+                  {lang.code === "en" && "🇬🇧"}
+                  {lang.code === "ru" && "🇷🇺"}
+                  {lang.code === "ka" && "🇬🇪"}
+                  </span>
                   <span>{lang.name}</span>
                 </button>
               ))}
