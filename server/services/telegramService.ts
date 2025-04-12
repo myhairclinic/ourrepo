@@ -393,7 +393,7 @@ export const scheduleAppointmentReminder = async (appointmentId: number, reminde
         const serviceName = await telegramBotService.getServiceNamePublic(appointment.serviceId);
         
         // Tarih ve saat formatla
-        const appointmentDate = new Date(appointment.preferredDate);
+        const appointmentDate = appointment.preferredDate ? new Date(appointment.preferredDate) : new Date();
         if (appointment.appointmentTime) {
           const [hours, minutes] = appointment.appointmentTime.split(':').map(Number);
           appointmentDate.setHours(hours, minutes);

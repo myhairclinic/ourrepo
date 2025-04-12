@@ -599,7 +599,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         telegramService.notifyAppointmentConfirmation(appointment, appointmentTime);
         res.json({ success: true, message: "Confirmation notification sent" });
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error sending telegram notification:", error);
       res.status(500).json({ 
         error: "Failed to send telegram notification",

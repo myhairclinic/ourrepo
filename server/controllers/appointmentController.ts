@@ -107,7 +107,7 @@ export const confirmAppointmentWithTime = async (req: Request, res: Response) =>
     }
     
     // Schedule notification for 1 hour before appointment if notificationScheduled is true
-    if (notificationScheduled) {
+    if (notificationScheduled && appointment.preferredDate) {
       const appointmentDate = new Date(appointment.preferredDate);
       const [hours, minutes] = appointmentTime.split(':').map(Number);
       
