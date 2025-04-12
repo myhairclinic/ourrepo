@@ -221,6 +221,12 @@ export const notifyNewAppointment = (appointment: Appointment): void => {
     const appointmentDate = appointment.preferredDate 
       ? new Date(appointment.preferredDate)
       : new Date(); // Eğer tarih belirtilmemişse şimdiki zamanı kullan
+      
+    // Saati ayarla, eğer appointmentTime varsa
+    if (appointment.appointmentTime) {
+      const [hours, minutes] = appointment.appointmentTime.split(':').map(Number);
+      appointmentDate.setHours(hours, minutes);
+    }
     
     // telegramBotService başlatılmış mı kontrol et
     if (!telegramBotService.isInitialized) {
@@ -261,13 +267,28 @@ export const notifyAppointmentUpdate = (appointment: Appointment): void => {
       return;
     }
     
+    // Randevu tarihi ve saati
+    const appointmentDate = appointment.preferredDate ? new Date(appointment.preferredDate) : new Date();
+    // Saati ayarla, eğer appointmentTime varsa
+    if (appointment.appointmentTime) {
+      const [hours, minutes] = appointment.appointmentTime.split(':').map(Number);
+      appointmentDate.setHours(hours, minutes);
+    }
+    
+    const formattedDate = appointmentDate.toLocaleDateString('tr-TR');
+    const formattedTime = appointment.appointmentTime || appointmentDate.toLocaleTimeString('tr-TR', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    
     const message = `
 🔄 *RANDEVU GÜNCELLENDİ*
 
 📝 *İsim:* ${appointment.name}
 📧 *E-posta:* ${appointment.email}
 📱 *Telefon:* ${appointment.phone}
-📆 *Tarih:* ${appointment.preferredDate ? new Date(appointment.preferredDate).toLocaleDateString('tr-TR') : 'Belirtilmedi'}
+📆 *Tarih:* ${formattedDate}
+⏰ *Saat:* ${formattedTime}
 🔶 *Durum:* ${getStatusText(appointment.status)}
 ⏰ *Güncelleme:* ${new Date(appointment.updatedAt).toLocaleString('tr-TR')}
 
@@ -310,6 +331,12 @@ export const notifyAppointmentConfirmation = (appointment: Appointment, appointm
     
     // Randevu tarihi ve saati
     const appointmentDate = appointment.preferredDate ? new Date(appointment.preferredDate) : new Date();
+    // Saati ayarla, eğer appointmentTime varsa
+    if (appointment.appointmentTime) {
+      const [hours, minutes] = appointment.appointmentTime.split(':').map(Number);
+      appointmentDate.setHours(hours, minutes);
+    }
+    
     const formattedDate = appointmentDate.toLocaleDateString('tr-TR', {
       weekday: 'long', 
       year: 'numeric', 
