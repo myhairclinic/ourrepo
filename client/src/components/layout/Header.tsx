@@ -55,13 +55,13 @@ export default function Header() {
                 onClick={toggleLangMenu}
                 className="flex items-center space-x-2 text-white px-3 py-1 rounded hover:bg-blue-700/40 transition-colors"
               >
-                <Globe size={14} />
+                <span className="text-xl mr-1">{ALL_LANGUAGES.find(l => l.code === language)?.flag}</span>
                 <span className="text-sm uppercase">{language}</span>
                 <ChevronDown size={12} className={`transition-transform duration-300 ${isLangMenuOpen ? 'rotate-180' : ''}`} />
               </button>
               
               {isLangMenuOpen && (
-                <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden z-50">
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 overflow-hidden z-50">
                   <div className="py-1">
                     {ALL_LANGUAGES.map((lang) => (
                       <button
@@ -74,7 +74,7 @@ export default function Header() {
                           language === lang.code ? "bg-primary/5 text-primary font-medium" : "text-gray-700"
                         }`}
                       >
-                        <span className="mr-2 text-lg">{lang.flag}</span>
+                        <span className="mr-2 text-2xl">{lang.flag}</span>
                         <span>{lang.name}</span>
                       </button>
                     ))}
@@ -165,7 +165,7 @@ export default function Header() {
                 onClick={toggleLangMenu}
                 className="flex items-center justify-center space-x-1 text-neutral-700 p-2"
               >
-                <Globe size={20} className="text-primary" />
+                <span className="text-xl mr-1">{ALL_LANGUAGES.find(l => l.code === language)?.flag}</span>
                 <span className="text-xs font-medium uppercase">{language}</span>
               </button>
               
@@ -255,7 +255,7 @@ export default function Header() {
                       : "bg-gray-50 hover:bg-gray-100 border border-gray-100"
                   }`}
                 >
-                  <span className="mr-2 text-lg">{lang.flag}</span>
+                  <span className="mr-2 text-2xl">{lang.flag}</span>
                   <span>{lang.name}</span>
                 </button>
               ))}
