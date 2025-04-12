@@ -24,8 +24,8 @@ export default function AdminLoginPage() {
     
     try {
       await login(username, password);
-      // Dashboard sayfası artık olmadığı için ana sayfaya yönlendir
-      setLocation("/");
+      // Yeni admin dashboard sayfasına yönlendir
+      setLocation("/admin/dashboard");
     } catch (err) {
       setError("Kullanıcı adı veya şifre hatalı");
     } finally {

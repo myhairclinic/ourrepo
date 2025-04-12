@@ -29,8 +29,9 @@ import SocialMediaPage from "./pages/SocialMediaPage";
 import AftercareGuidesPage from "./pages/AftercareGuidesPage";
 import NotFound from "./pages/not-found";
 
-// Admin Pages - Sadece Login sayfası
+// Admin Pages
 import AdminLoginPage from "@/pages/admin/AdminLoginPage";
+import AdminDashboard from "@/pages/admin/AdminDashboard";
 import BrowserSeedPage from "@/pages/BrowserSeedPage";
 
 // Admin Context Provider
@@ -65,15 +66,10 @@ function Router() {
   
   return (
     <Switch>
-      {/* Sadece Admin Login rotası */}
+      {/* Admin rotaları */}
       <Route path="/admin/login" component={AdminLoginPage} />
+      <Route path="/admin/dashboard" component={AdminDashboard} />
       <Route path="/admin" component={AdminLoginPage} />
-      <Route path="/admin/*">
-        {() => {
-          setLocation("/admin/login");
-          return null;
-        }}
-      </Route>
       
       {/* Special tool routes */}
       <Route path="/seed-blogs" component={BrowserSeedPage} />
