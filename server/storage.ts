@@ -22,7 +22,7 @@ import {
 import session from "express-session";
 import createMemoryStore from "memorystore";
 import { db, pool } from "./db";
-import { eq, desc, asc } from "drizzle-orm";
+import { eq, desc, asc, sql } from "drizzle-orm";
 import connectPg from "connect-pg-simple";
 
 const MemoryStore = createMemoryStore(session);
