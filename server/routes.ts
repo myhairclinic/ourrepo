@@ -127,6 +127,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Vithair ürünlerini çekme endpoint'i
   app.post("/api/products/fetch-vithair", fetchVithairProducts);
+  
+  // Tüm ürünleri temizleme endpoint'i için /api/admin/clear-products kullanılmaktadır
 
   // Package routes
   app.get("/api/packages", async (req, res) => {
