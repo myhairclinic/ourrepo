@@ -910,7 +910,7 @@ export default function TelegramBotManagement() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Alert variant="warning" className="mb-4">
+              <Alert className="mb-4 border-amber-500 text-amber-800 bg-amber-50 dark:bg-amber-900 dark:text-amber-50">
                 <AlertTriangle className="h-4 w-4" />
                 <AlertTitle>Önemli Hatırlatma</AlertTitle>
                 <AlertDescription>
@@ -947,7 +947,56 @@ export default function TelegramBotManagement() {
                   <p className="text-sm text-muted-foreground mb-2 text-right">
                     Test mesajı başarısız olursa, kullanıcının botu başlatıp başlatmadığını kontrol edin.
                   </p>
-                  <Button className="w-full">Test Bildirimi Gönder</Button>
+                  <Button 
+                    className="w-full"
+                    onClick={async () => {
+                      const notificationType = document.querySelector<HTMLSelectElement>("#test-notification-type")?.value || "new_appointment";
+                      const chatId = document.querySelector<HTMLInputElement>("#test-chat-id")?.value;
+                      
+                      if (!chatId) {
+                        toast({
+                          title: "Eksik Bilgi",
+                          description: "Lütfen bir hedef kullanıcı adı veya chat ID girin.",
+                          variant: "destructive"
+                        });
+                        return;
+                      }
+                      
+                      try {
+                        const res = await fetch("/api/telegram/test-notification", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({
+                            type: notificationType,
+                            chatId: chatId
+                          })
+                        });
+                        
+                        const data = await res.json();
+                        
+                        if (res.ok) {
+                          toast({
+                            title: "Test bildirimi gönderildi",
+                            description: "Test bildirimi başarıyla gönderildi."
+                          });
+                        } else {
+                          toast({
+                            title: "Bildirim gönderilemedi",
+                            description: data.message || "Bildirim gönderilirken bir hata oluştu. Kullanıcının botu başlatıp başlatmadığını kontrol edin.",
+                            variant: "destructive"
+                          });
+                        }
+                      } catch (error: any) {
+                        toast({
+                          title: "Hata",
+                          description: `Test bildirimi gönderilirken bir hata oluştu: ${error.message}`,
+                          variant: "destructive"
+                        });
+                      }
+                    }}
+                  >
+                    Test Bildirimi Gönder
+                  </Button>
                 </div>
               </div>
             </CardContent>
