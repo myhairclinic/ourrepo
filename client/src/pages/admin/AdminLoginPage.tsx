@@ -24,7 +24,8 @@ export default function AdminLoginPage() {
     
     try {
       await login(username, password);
-      setLocation("/admin/dashboard");
+      // Dashboard sayfası artık olmadığı için ana sayfaya yönlendir
+      setLocation("/");
     } catch (err) {
       setError("Kullanıcı adı veya şifre hatalı");
     } finally {
@@ -147,16 +148,7 @@ export default function AdminLoginPage() {
               )}
             </button>
             
-            <div className="text-center pt-2">
-              <button
-                type="button"
-                className="text-primary hover:text-blue-700 text-sm font-medium hover:underline transition-colors"
-                onClick={() => setLocation("/admin/register")}
-                disabled={isLoading}
-              >
-                Henüz hesabınız yok mu? Yeni hesap oluşturun
-              </button>
-            </div>
+            {/* "Hesap oluştur" butonu kaldırıldı */}
           </form>
 
           <div className="mt-8 text-center text-xs text-gray-500">
