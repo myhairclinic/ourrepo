@@ -8,7 +8,7 @@ import {
   appointments,
   services
 } from '@shared/schema';
-import { eq, desc, and, gt, lte } from 'drizzle-orm';
+import { eq, desc, and, gt, lte, gte } from 'drizzle-orm';
 import { Appointment } from '@shared/schema';
 
 // Telegram Bot işlemleri için servis
@@ -225,7 +225,7 @@ class TelegramBotService {
       const operators = botSettings?.operators || [];
       for (const appointment of upcomingAppointments) {
         const service = await this.getServiceName(appointment.serviceId);
-        const appointmentDate = new Date(appointment.preferredDate);
+        const appointmentDate = appointment.preferredDate ? new Date(appointment.preferredDate) : new Date();
         
         // Şablon mesajı hazırla
         const reminderMessage = this.formatAppointmentReminderMessage(
@@ -352,7 +352,7 @@ E-posta: ${appointment.email}
       
       for (const appointment of todaysAppointments) {
         const service = await this.getServiceName(appointment.serviceId);
-        const appointmentTime = new Date(appointment.preferredDate);
+        const appointmentTime = appointment.preferredDate ? new Date(appointment.preferredDate) : new Date();
         const hours = appointmentTime.getHours().toString().padStart(2, '0');
         const minutes = appointmentTime.getMinutes().toString().padStart(2, '0');
         
@@ -418,11 +418,15 @@ E-posta: ${appointment.email}
         message += `Toplam ${tomorrowsAppointments.length} randevu bulunmaktadır:\n\n`;
         
         // Randevuları saate göre sırala
-        tomorrowsAppointments.sort((a, b) => new Date(a.preferredDate).getTime() - new Date(b.preferredDate).getTime());
+        tomorrowsAppointments.sort((a, b) => {
+          const dateA = a.preferredDate ? new Date(a.preferredDate) : new Date();
+          const dateB = b.preferredDate ? new Date(b.preferredDate) : new Date();
+          return dateA.getTime() - dateB.getTime();
+        });
         
         for (const appointment of tomorrowsAppointments) {
           const service = await this.getServiceName(appointment.serviceId);
-          const appointmentTime = new Date(appointment.preferredDate);
+          const appointmentTime = appointment.preferredDate ? new Date(appointment.preferredDate) : new Date();
           const hours = appointmentTime.getHours().toString().padStart(2, '0');
           const minutes = appointmentTime.getMinutes().toString().padStart(2, '0');
           
