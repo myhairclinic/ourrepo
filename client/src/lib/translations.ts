@@ -3232,6 +3232,12 @@ export const translations: Record<string, LanguageMap> = {
     [Language.English]: "Minutes",
     [Language.Russian]: "Минут",
     [Language.Georgian]: "წუთი"
+  },
+  "products.new": {
+    [Language.Turkish]: "Yeni",
+    [Language.English]: "New",
+    [Language.Russian]: "Новинка",
+    [Language.Georgian]: "ახალი"
   }
 };
 
