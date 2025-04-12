@@ -439,7 +439,7 @@ const AdminDashboard = () => {
         <div className="bg-white w-64 min-h-screen pt-16 shadow-lg">
           <div className="px-4 py-6">
             <ul className="space-y-2">
-              {sidebarItems.map((item) => (
+              {sidebarItems.map((item: any) => (
                 <li key={item.id}>
                   <button
                     onClick={() => {
@@ -497,7 +497,7 @@ const AdminDashboard = () => {
         
         <div className="px-4 py-6 flex-grow overflow-y-auto">
           <ul className="space-y-2">
-            {sidebarItems.map((item) => (
+            {sidebarItems.map((item: any) => (
               <li key={item.id}>
                 <button
                   onClick={() => setActiveSection(item.id)}
@@ -1318,7 +1318,7 @@ const AdminDashboard = () => {
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                       {paginatedAppointments && paginatedAppointments.length > 0 ? (
-                        paginatedAppointments.map((appointment, index) => (
+                        paginatedAppointments.map((appointment: any, index: number) => (
                           <tr key={appointment.id || index} className="hover:bg-gray-50 transition-colors">
                             <td className="px-4 py-4 whitespace-nowrap">
                               <div className="flex items-center">
@@ -1492,7 +1492,7 @@ const AdminDashboard = () => {
                           <ChevronLeft className="h-4 w-4" />
                         </button>
                         
-                        {[...Array(totalPages)].map((_, i) => (
+                        {[...Array(totalPages)].map((_: any, i: number) => (
                           <button 
                             key={i}
                             onClick={() => setCurrentPage(i + 1)}
