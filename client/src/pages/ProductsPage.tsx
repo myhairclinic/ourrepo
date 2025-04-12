@@ -208,10 +208,7 @@ export default function ProductsPage() {
                     </div>
                   </CardContent>
                   
-                  <CardFooter className="p-5 pt-2 flex justify-end items-center gap-2">
-                    <Button variant="secondary" size="sm" className="gap-1" onClick={() => window.open(`mailto:myhairtbilisi@gmail.com?subject=Bilgi%20Talebi:%20${encodeURIComponent(language === 'tr' ? product.nameTR : language === 'en' ? product.nameEN : language === 'ru' ? product.nameRU : product.nameKA)}`)}>
-                      {t('products.inquireProduct')}
-                    </Button>
+                  <CardFooter className="p-5 pt-2 flex justify-end items-center">
                     <Link href={addPrefix(`/products/${product.slug}`)}>
                       <Button className="gap-1">
                         {t('common.moreInfo')}
