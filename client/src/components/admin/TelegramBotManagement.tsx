@@ -144,7 +144,7 @@ export default function TelegramBotManagement() {
   const [isPredefinedMessageDialogOpen, setIsPredefinedMessageDialogOpen] = useState(false);
   const [operatorStatus, setOperatorStatus] = useState(true);
   const [testNotificationType, setTestNotificationType] = useState("new_appointment");
-  const [testChatId, setTestChatId] = useState("");
+  const [testChatId, setTestChatId] = useState("@MyHairClinicBot");
   
   // Test bildirimi gönderme mutasyonu
   const sendTestNotificationMutation = useMutation({
