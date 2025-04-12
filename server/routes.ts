@@ -93,6 +93,10 @@ import {
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication routes
   setupAuth(app);
+  
+  // Initialize Telegram bot
+  await telegramBotService.initialize();
+  console.log("Telegram bot initialization attempt completed");
 
   // Content routes
   app.get("/api/services", getServices);
