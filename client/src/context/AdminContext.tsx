@@ -1,8 +1,15 @@
 import { createContext, ReactNode, useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { User } from "@shared/schema";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+
+// Kullanıcı tipi (schema modülü olmadan)
+interface User {
+  id: number;
+  username: string;
+  role: string;
+  createdAt: Date;
+}
 
 export interface AdminContextType {
   user: User | null;
