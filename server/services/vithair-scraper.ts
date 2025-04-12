@@ -1,5 +1,3 @@
-import axios from 'axios';
-import * as cheerio from 'cheerio';
 import { db } from '../db';
 import { products } from '@shared/schema';
 import { eq } from 'drizzle-orm';

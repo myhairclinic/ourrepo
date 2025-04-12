@@ -261,10 +261,58 @@ export default function ProductsManager() {
     <AdminLayout title="Products Management">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold">Products</h2>
-        <Button onClick={handleOpenAddDialog}>
-          <Plus className="mr-2 h-4 w-4" />
-          Add Product
-        </Button>
+        <div className="flex space-x-3">
+          <Button 
+            variant="outline" 
+            onClick={() => {
+              setIsFetchingVithair(true);
+              apiRequest("POST", "/api/admin/sync-vithair-products")
+                .then(async (res) => {
+                  const data = await res.json();
+                  if (res.ok) {
+                    toast({
+                      title: "Success",
+                      description: `${data.count || 0} Vithair products synced successfully.`,
+                    });
+                    queryClient.invalidateQueries({ queryKey: [API_ROUTES.PRODUCTS] });
+                  } else {
+                    toast({
+                      title: "Error",
+                      description: data.message || "Failed to sync Vithair products",
+                      variant: "destructive",
+                    });
+                  }
+                })
+                .catch((error) => {
+                  toast({
+                    title: "Error",
+                    description: error.message || "Failed to sync Vithair products",
+                    variant: "destructive",
+                  });
+                })
+                .finally(() => {
+                  setIsFetchingVithair(false);
+                });
+            }}
+            disabled={isFetchingVithair}
+          >
+            {isFetchingVithair ? (
+              <div className="flex items-center">
+                <div className="animate-spin mr-2 h-4 w-4 border-b-2 border-primary"></div>
+                Syncing...
+              </div>
+            ) : (
+              <>
+                <Download className="mr-2 h-4 w-4" />
+                Sync Vithair Products
+              </>
+            )}
+          </Button>
+          <Button onClick={handleOpenAddDialog}>
+            <Plus className="mr-2 h-4 w-4" />
+            Add Product
+          </Button>
+        </div>
       </div>
 
       <Card>
