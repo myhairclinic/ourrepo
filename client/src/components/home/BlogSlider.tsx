@@ -142,14 +142,14 @@ export default function BlogSlider() {
   return (
     <section className="py-12 overflow-hidden bg-[#f9fafc] dark:bg-gray-900">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col items-center mb-12">
+        <div className="flex flex-col items-start mb-12">
           <div className="mb-3 px-4 py-1 text-sm font-medium rounded-full border-primary/30 bg-primary/5 shadow-sm">
             {t("blog.badge")}
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80 leading-tight">
             {t("common.latestFromOurBlog")}
           </h2>
-          <p className="text-foreground/70 max-w-xl text-base font-light leading-relaxed text-center">
+          <p className="text-foreground/70 max-w-xl text-base font-light leading-relaxed">
             {t("blog.exploreRecentArticles")}
           </p>
             
