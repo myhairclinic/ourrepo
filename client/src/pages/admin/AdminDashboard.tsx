@@ -15,6 +15,7 @@ import GalleryManagement from "@/components/admin/GalleryManagement";
 import ReviewsManagement from "@/components/admin/ReviewsManagement";
 import FaqManagement from "@/components/admin/FaqManagement";
 import AftercareManagement from "@/components/admin/AftercareManagement";
+import SeoManagement from "@/components/admin/SeoManagement";
 
 import {
   DropdownMenu,
@@ -1053,7 +1054,13 @@ const AdminDashboard = () => {
             </div>
           )}
           
-          {activeSection !== "dashboard" && activeSection !== "appointments" && activeSection !== "services" && activeSection !== "packages" && activeSection !== "blog" && activeSection !== "users" && activeSection !== "gallery" && activeSection !== "reviews" && activeSection !== "faqs" && activeSection !== "aftercare" && (
+          {activeSection === "seo" && (
+            <div>
+              <SeoManagement />
+            </div>
+          )}
+          
+          {activeSection !== "dashboard" && activeSection !== "appointments" && activeSection !== "services" && activeSection !== "packages" && activeSection !== "blog" && activeSection !== "users" && activeSection !== "gallery" && activeSection !== "reviews" && activeSection !== "faqs" && activeSection !== "aftercare" && activeSection !== "seo" && (
             <div>
               <h1 className="text-2xl font-bold text-gray-900 mb-6">{sidebarItems.find(item => item.id === activeSection)?.label || "İçerik"} Yönetimi</h1>
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
