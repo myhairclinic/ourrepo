@@ -63,10 +63,28 @@ export const updateAppointmentStatus = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Appointment not found" });
     }
     
+    // Randevu durumu kontrolü (zaten aynı durumda ise güncellemeye gerek yok)
+    if (currentAppointment.status === status) {
+      return res.json(currentAppointment);
+    }
+    
     // Sonra kaydı güncelleyelim, doğrudan DB_SET kullanarak status'u ayarlayacağız
     const appointment = await storage.updateAppointmentStatus(id, status);
     if (!appointment) {
       return res.status(404).json({ message: "Appointment not found" });
+    }
+    
+    // Eğer durum "confirmed" olarak değiştiyse ve appointmentTime zaten ayarlanmışsa
+    // otomatik olarak hasta kaydını oluşturalım
+    if (status === "confirmed" && appointment.appointmentTime && 
+        (currentAppointment.status !== "confirmed")) {
+      try {
+        await createPatientFromAppointment(appointment);
+        console.log(`Randevu onaylandığı için hasta otomatik olarak oluşturuldu: ${appointment.name}`);
+      } catch (err) {
+        console.error('Randevudan hasta oluşturulurken hata:', err);
+        // Hasta oluşturma hatası olsa bile işlemi devam ettir, sadece loglama yap
+      }
     }
     
     // Send notification to Telegram about status update
