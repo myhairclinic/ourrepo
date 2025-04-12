@@ -171,9 +171,24 @@ export default function TelegramBotManagement() {
       return data;
     },
     onSuccess: (data) => {
+      let notificationType = "";
+      switch(data.type) {
+        case 'new_appointment':
+          notificationType = 'Yeni randevu';
+          break;
+        case 'appointment_reminder':
+          notificationType = 'Randevu hatırlatma';
+          break;
+        case 'daily_summary':
+          notificationType = 'Günlük özet';
+          break;
+        default:
+          notificationType = 'Test';
+      }
+      
       toast({
         title: "Test bildirimi gönderildi",
-        description: `${data.type === 'new_appointment' ? 'Yeni randevu' : 'Randevu hatırlatma'} test bildirimi başarıyla gönderildi.`
+        description: `${notificationType} test bildirimi başarıyla gönderildi.`
       });
     },
     onError: (error: Error) => {

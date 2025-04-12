@@ -83,11 +83,27 @@ export const telegramService = {
       const appointmentDate = new Date(Date.now() + 60 * 60 * 1000);
       
       // Hatırlatma mesajını oluştur
-      const message = telegramBotService.formatAppointmentReminderMessage(
-        testAppointment as any,
-        serviceName,
-        appointmentDate
-      );
+      const reminderTime = new Date(appointmentDate.getTime());
+      const formattedDate = appointmentDate.toLocaleDateString('tr-TR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+      const formattedTime = appointmentDate.toLocaleTimeString('tr-TR', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      
+      const message = `*⏰ Randevu Hatırlatması (TEST)*\n\n` +
+        `Aşağıdaki randevunuz 1 saat içinde başlayacak!\n\n` +
+        `👤 *Hasta Bilgileri*\n` +
+        `İsim: ${testAppointment.name}\n` +
+        `Telefon: ${testAppointment.phone}\n\n` +
+        `💇 *Randevu Detayları*\n` +
+        `Hizmet: ${serviceName}\n` +
+        `Tarih: ${formattedDate}\n` +
+        `Saat: ${formattedTime}\n\n` +
+        `_Bu bir test mesajıdır, gerçek bir randevu değildir._`;
       
       // Mesajı gönder
       let result;
