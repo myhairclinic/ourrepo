@@ -145,7 +145,37 @@ export default function TelegramBotManagement() {
   const [operatorStatus, setOperatorStatus] = useState(true);
   const [testNotificationType, setTestNotificationType] = useState("new_appointment");
   const [testChatId, setTestChatId] = useState("");
-  const [sendingTestNotification, setSendingTestNotification] = useState(false);
+  
+  // Test bildirimi gönderme mutasyonu
+  const sendTestNotificationMutation = useMutation({
+    mutationFn: async ({type, chatId}: {type: string, chatId: string}) => {
+      const res = await fetch("/api/telegram/test-notification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type, chatId })
+      });
+      
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || "Bildirim gönderilirken bir hata oluştu");
+      }
+      
+      return res.json();
+    },
+    onSuccess: (data) => {
+      toast({
+        title: "Test bildirimi gönderildi",
+        description: `${data.type === 'new_appointment' ? 'Yeni randevu' : 'Randevu hatırlatma'} test bildirimi başarıyla gönderildi.`
+      });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Bildirim gönderilemedi",
+        description: error.message || "Bildirim gönderilirken bir hata oluştu. Kullanıcının botu başlatıp başlatmadığını kontrol edin.",
+        variant: "destructive"
+      });
+    }
+  });
   
   // Kişileri getir
   const { 
@@ -962,8 +992,8 @@ export default function TelegramBotManagement() {
                   </p>
                   <Button 
                     className="w-full"
-                    disabled={sendingTestNotification || !testChatId}
-                    onClick={async () => {
+                    disabled={sendTestNotificationMutation.isPending || !testChatId}
+                    onClick={() => {
                       if (!testChatId) {
                         toast({
                           title: "Eksik Bilgi",
@@ -973,43 +1003,13 @@ export default function TelegramBotManagement() {
                         return;
                       }
                       
-                      try {
-                        setSendingTestNotification(true);
-                        const res = await fetch("/api/telegram/test-notification", {
-                          method: "POST",
-                          headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({
-                            type: testNotificationType,
-                            chatId: testChatId
-                          })
-                        });
-                        
-                        const data = await res.json();
-                        
-                        if (res.ok) {
-                          toast({
-                            title: "Test bildirimi gönderildi",
-                            description: "Test bildirimi başarıyla gönderildi."
-                          });
-                        } else {
-                          toast({
-                            title: "Bildirim gönderilemedi",
-                            description: data.message || "Bildirim gönderilirken bir hata oluştu. Kullanıcının botu başlatıp başlatmadığını kontrol edin.",
-                            variant: "destructive"
-                          });
-                        }
-                      } catch (error: any) {
-                        toast({
-                          title: "Hata",
-                          description: `Test bildirimi gönderilirken bir hata oluştu: ${error.message}`,
-                          variant: "destructive"
-                        });
-                      } finally {
-                        setSendingTestNotification(false);
-                      }
+                      sendTestNotificationMutation.mutate({
+                        type: testNotificationType,
+                        chatId: testChatId
+                      });
                     }}
                   >
-                    {sendingTestNotification ? (
+                    {sendTestNotificationMutation.isPending ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         Gönderiliyor...
