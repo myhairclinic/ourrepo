@@ -24,7 +24,12 @@ class TelegramBotService {
 
   // Bot başlatma fonksiyonu
   async initialize() {
-    if (this.isInitialized) return;
+    console.log('Telegram bot initialization starting...');
+    
+    if (this.isInitialized) {
+      console.log('Telegram bot is already initialized, skipping initialization');
+      return;
+    }
 
     // Token kontrolü
     const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -32,13 +37,17 @@ class TelegramBotService {
       console.error('TELEGRAM_BOT_TOKEN environment variable is not set');
       return;
     }
+    console.log('TELEGRAM_BOT_TOKEN found, proceeding with initialization');
 
     try {
       // Bot ayarlarını al
+      console.log('Fetching bot settings from database...');
       const [settings] = await db.select().from(botSettingsTable);
       const isActive = settings?.isActive ?? true;
+      console.log('Bot settings fetched, isActive:', isActive);
 
       if (isActive) {
+        console.log('Creating Telegram bot instance with polling...');
         this.bot = new TelegramBot(token, { polling: true });
         this.setupEventHandlers();
         this._isInitialized = true;
@@ -254,17 +263,40 @@ class TelegramBotService {
   // Operatöre kullanıcı adı ile mesaj gönder
   private async sendMessageToOperator(username: string, message: string) {
     try {
-      if (!this.bot) return;
-      
-      // Kullanıcı adına göre chat ID getir
-      const chat = await this.bot.getChat(`@${username}`);
-      if (chat && chat.id) {
-        await this.bot.sendMessage(chat.id.toString(), message, { parse_mode: 'Markdown' });
-        return true;
+      if (!this.bot) {
+        console.error(`Bot is not initialized, cannot send message to @${username}`);
+        return false;
       }
-      return false;
+      
+      console.log(`Getting chat ID for @${username}...`);
+      try {
+        // Kullanıcı adına göre chat ID getir
+        const chat = await this.bot.getChat(`@${username}`);
+        console.log(`Got chat for @${username}:`, chat?.id ? 'Chat ID found' : 'No chat ID found');
+        
+        if (chat && chat.id) {
+          console.log(`Sending message to @${username} with chat ID: ${chat.id}`);
+          await this.bot.sendMessage(chat.id.toString(), message, { parse_mode: 'Markdown' });
+          console.log(`Successfully sent message to @${username}`);
+          return true;
+        } else {
+          console.warn(`No chat ID found for @${username}`);
+          return false;
+        }
+      } catch (chatError) {
+        // Eğer kullanıcı bulunamazsa veya bota mesaj atmamışsa direkt kullanıcı adıyla deneyelim
+        console.log(`Error getting chat, trying direct message to @${username}...`);
+        try {
+          await this.bot.sendMessage(`@${username}`, message, { parse_mode: 'Markdown' });
+          console.log(`Successfully sent direct message to @${username}`);
+          return true;
+        } catch (directError) {
+          console.error(`Failed to send direct message to @${username}:`, directError);
+          return false;
+        }
+      }
     } catch (error) {
-      console.error(`Error sending message to @${username}:`, error);
+      console.error(`Error in sendMessageToOperator for @${username}:`, error);
       return false;
     }
   }
@@ -650,17 +682,27 @@ E-posta: ${appointment.email}
         return false;
       }
       
+      console.log('Getting bot settings to send notification to operators...');
       // Bot ayarlarını al ve operatör listesini getir
       const [botSettings] = await db.select().from(botSettingsTable);
       const operators = botSettings?.operators || [];
+      console.log('Found operators:', JSON.stringify(operators));
       
       let success = false;
       // Tüm aktif operatörlere mesajı gönder
       for (const operator of operators) {
         if (operator.isActive && operator.telegramUsername) {
+          console.log(`Sending message to operator: ${operator.telegramUsername}`);
           const result = await this.sendMessageToOperator(operator.telegramUsername, message);
+          console.log(`Result of sending to ${operator.telegramUsername}:`, result);
           if (result) success = true;
+        } else {
+          console.log(`Skipping inactive or missing username operator:`, operator);
         }
+      }
+      
+      if (!operators.length) {
+        console.warn('No operators found in settings! Add operators to bot settings.');
       }
       
       return success;
