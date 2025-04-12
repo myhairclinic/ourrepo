@@ -27,10 +27,11 @@ export default function BlogSlider() {
 
   // Responsive slider - adjusts items per view based on screen size
   function getItemsPerPage() {
-    if (typeof window === 'undefined') return 3;
+    if (typeof window === 'undefined') return 4;
     if (window.innerWidth < 640) return 1;
-    if (window.innerWidth < 1024) return 2;
-    return 3;
+    if (window.innerWidth < 768) return 2;
+    if (window.innerWidth < 1024) return 3;
+    return 4;
   }
 
   // Update items per page on window resize
@@ -118,19 +119,19 @@ export default function BlogSlider() {
           </div>
           
           <div className="relative mt-4">
-            <div className="flex gap-4 overflow-hidden">
+            <div className="flex gap-2 overflow-hidden">
               {[1, 2, 3, 4].map((i) => (
-                <Card key={i} className="min-w-[270px] w-full flex-shrink-0">
-                  <Skeleton className="h-36 w-full rounded-t-lg" />
-                  <CardContent className="p-3">
-                    <div className="flex gap-3 mb-1">
-                      <Skeleton className="h-3 w-20" />
-                      <Skeleton className="h-3 w-20" />
+                <Card key={i} className="min-w-[220px] w-full flex-shrink-0">
+                  <Skeleton className="h-28 w-full rounded-t-lg" />
+                  <CardContent className="p-2">
+                    <div className="flex gap-2 mb-1">
+                      <Skeleton className="h-2.5 w-16" />
+                      <Skeleton className="h-2.5 w-16" />
                     </div>
-                    <Skeleton className="h-5 w-full mb-1.5" />
-                    <Skeleton className="h-3 w-full mb-1" />
-                    <Skeleton className="h-3 w-full mb-1" />
-                    <Skeleton className="h-3 w-16 mt-2" />
+                    <Skeleton className="h-4 w-full mb-1" />
+                    <Skeleton className="h-2.5 w-full mb-0.5" />
+                    <Skeleton className="h-2.5 w-full mb-0.5" />
+                    <Skeleton className="h-2.5 w-14 mt-1.5" />
                   </CardContent>
                 </Card>
               ))}
@@ -185,50 +186,50 @@ export default function BlogSlider() {
           </div>
           
           {/* Blog cards */}
-          <div className="flex gap-4 overflow-hidden">
+          <div className="flex gap-2 overflow-hidden">
             {visibleBlogs?.map((blog) => (
-              <Card key={blog.id} className="min-w-[270px] w-full flex-shrink-0 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg border border-gray-100 dark:border-gray-800">
-                <div className="relative h-36 overflow-hidden rounded-t-lg">
+              <Card key={blog.id} className="min-w-[220px] w-full flex-shrink-0 transform transition-all duration-300 hover:shadow-md border border-gray-100 dark:border-gray-800">
+                <div className="relative h-28 overflow-hidden rounded-t-lg">
                   <img 
                     src={blog.imageUrl} 
                     alt={getBlogTitle(blog)} 
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end p-2">
-                    <div className="flex items-center text-white text-xs gap-1">
-                      <Tag className="h-3 w-3" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-1.5">
+                    <div className="flex items-center text-white text-[10px] gap-0.5">
+                      <Tag className="h-2.5 w-2.5" />
                       <span>{getBlogCategory(blog)}</span>
                     </div>
                   </div>
                 </div>
                 
-                <CardContent className="p-3">
-                  <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-1 gap-3">
-                    <div className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3" />
+                <CardContent className="p-2">
+                  <div className="flex items-center text-[10px] text-gray-500 dark:text-gray-400 mb-1 gap-2">
+                    <div className="flex items-center gap-0.5">
+                      <Calendar className="h-2.5 w-2.5" />
                       <span>{formatBlogDate(blog.createdAt)}</span>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <User className="h-3 w-3" />
+                    <div className="flex items-center gap-0.5">
+                      <User className="h-2.5 w-2.5" />
                       <span>{blog.author}</span>
                     </div>
                   </div>
                   
-                  <h3 className="text-md font-semibold line-clamp-2 mb-1.5 hover:text-primary transition-colors">
+                  <h3 className="text-sm font-semibold line-clamp-2 mb-1 hover:text-primary transition-colors">
                     <a href={`/${language.toLowerCase()}/blog/${blog.slug}`}>{getBlogTitle(blog)}</a>
                   </h3>
                   
-                  <p className="text-gray-600 dark:text-gray-300 text-xs line-clamp-2 leading-relaxed">
+                  <p className="text-gray-600 dark:text-gray-300 text-[10px] line-clamp-2 leading-relaxed">
                     {getExcerpt(blog)}
                   </p>
                   
-                  <div className="mt-2">
+                  <div className="mt-1.5">
                     <a 
                       href={`/${language.toLowerCase()}/blog/${blog.slug}`}
-                      className="text-primary hover:text-primary/80 font-medium text-xs flex items-center"
+                      className="text-primary hover:text-primary/80 font-medium text-[10px] flex items-center"
                     >
                       {t("blog.readMore")}
-                      <ChevronRight className="h-3 w-3 ml-1" />
+                      <ChevronRight className="h-2.5 w-2.5 ml-0.5" />
                     </a>
                   </div>
                 </CardContent>
