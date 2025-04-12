@@ -62,6 +62,7 @@ import {
 
 // Formun doğrulama şeması
 const appointmentFormSchema = z.object({
+  id: z.number().optional(),
   name: z.string().min(3, { message: "İsim en az 3 karakter olmalıdır." }),
   email: z.string().email({ message: "Geçerli bir e-posta adresi giriniz." }),
   phone: z.string().min(6, { message: "Geçerli bir telefon numarası giriniz." }),
@@ -100,11 +101,17 @@ const AdminDashboard = () => {
     }
   });
   
-  // Randevu oluşturma mutation'u
+  // Randevu oluşturma/güncelleme mutation'u
   const createAppointmentMutation = useMutation({
     mutationFn: async (data: AppointmentFormValues) => {
-      const res = await fetch("/api/appointments", {
-        method: "POST",
+      // Eğer id varsa güncelleme, yoksa oluşturma işlemi
+      const isUpdate = !!data.id;
+      
+      const url = isUpdate ? `/api/appointments/${data.id}` : "/api/appointments";
+      const method = isUpdate ? "PUT" : "POST";
+      
+      const res = await fetch(url, {
+        method: method,
         headers: {
           "Content-Type": "application/json",
         },
@@ -112,12 +119,15 @@ const AdminDashboard = () => {
       });
       
       if (!res.ok) {
-        throw new Error("Randevu oluşturulurken bir hata meydana geldi");
+        throw new Error(isUpdate 
+          ? "Randevu güncellenirken bir hata meydana geldi" 
+          : "Randevu oluşturulurken bir hata meydana geldi"
+        );
       }
       
       return res.json();
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       // Modal'ı kapat
       setIsAppointmentDialogOpen(false);
       
@@ -130,17 +140,21 @@ const AdminDashboard = () => {
       // Başarı mesajı göster
       toast({
         title: "Başarılı",
-        description: "Randevu başarıyla oluşturuldu",
+        description: variables.id 
+          ? "Randevu başarıyla güncellendi" 
+          : "Randevu başarıyla oluşturuldu",
         variant: "default",
       });
     },
-    onError: (error) => {
-      console.error("Randevu oluşturma hatası:", error);
+    onError: (error, variables) => {
+      console.error(variables.id ? "Randevu güncelleme hatası:" : "Randevu oluşturma hatası:", error);
       
       // Hata mesajı göster
       toast({
         title: "Hata",
-        description: "Randevu oluşturulurken bir hata meydana geldi. Lütfen tekrar deneyin.",
+        description: variables.id 
+          ? "Randevu güncellenirken bir hata meydana geldi. Lütfen tekrar deneyin." 
+          : "Randevu oluşturulurken bir hata meydana geldi. Lütfen tekrar deneyin.",
         variant: "destructive",
       });
     }
@@ -1113,16 +1127,13 @@ const AdminDashboard = () => {
                     </select>
                   </div>
                   
-                  <button 
-                    onClick={() => {
-                      // Implement new appointment creation
-                      alert('Yeni randevu oluşturma fonksiyonu henüz eklenmedi');
-                    }}
+                  <Button 
+                    onClick={() => setIsAppointmentDialogOpen(true)}
                     className="px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 shadow-sm flex items-center"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Yeni Randevu
-                  </button>
+                  </Button>
                 </div>
                 
                 <div className="overflow-x-auto">
@@ -1203,8 +1214,18 @@ const AdminDashboard = () => {
                               <div className="flex space-x-1">
                                 <button 
                                   onClick={() => {
-                                    // Randevu düzenleme modalı açılacak
-                                    alert(`Randevu #${appointment.id} düzenleme işlevi için modal açılacak`);
+                                    // Form'u randevu verileriyle doldurup modal'ı aç
+                                    form.reset({
+                                      id: appointment.id,
+                                      name: appointment.name,
+                                      email: appointment.email,
+                                      phone: appointment.phone,
+                                      serviceId: String(appointment.serviceId),
+                                      preferredDate: appointment.preferredDate || "",
+                                      message: appointment.message || "",
+                                      status: appointment.status
+                                    });
+                                    setIsAppointmentDialogOpen(true);
                                   }}
                                   className="p-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors duration-200 tooltip" 
                                   title="Düzenle"
