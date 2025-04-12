@@ -431,11 +431,11 @@ const AdminDashboard = () => {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300 group relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-bl-full transform transition-transform duration-300 group-hover:scale-125"></div>
+                <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-all duration-300 group relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-bl-[100%] transform transition-transform duration-500 group-hover:scale-125 origin-top-right"></div>
                   <div className="flex items-center">
-                    <div className="flex-shrink-0 bg-blue-100 p-3 rounded-lg shadow-sm">
-                      <Calendar className="w-7 h-7 text-blue-500" />
+                    <div className="flex-shrink-0 p-3 rounded-lg shadow-sm bg-gradient-to-r from-blue-500 to-blue-600">
+                      <Calendar className="w-7 h-7 text-white" />
                     </div>
                     <div className="ml-4 z-10">
                       <h2 className="text-sm font-semibold text-gray-500 mb-1">Toplam Randevu</h2>
@@ -453,11 +453,11 @@ const AdminDashboard = () => {
                   </div>
                 </div>
                 
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300 group relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-red-500/5 rounded-bl-full transform transition-transform duration-300 group-hover:scale-125"></div>
+                <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-all duration-300 group relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-bl-[100%] transform transition-transform duration-500 group-hover:scale-125 origin-top-right"></div>
                   <div className="flex items-center">
-                    <div className="flex-shrink-0 bg-red-100 p-3 rounded-lg shadow-sm">
-                      <Package className="w-7 h-7 text-red-500" />
+                    <div className="flex-shrink-0 p-3 rounded-lg shadow-sm bg-gradient-to-r from-red-500 to-red-600">
+                      <Package className="w-7 h-7 text-white" />
                     </div>
                     <div className="ml-4 z-10">
                       <h2 className="text-sm font-semibold text-gray-500 mb-1">Toplam Paket</h2>

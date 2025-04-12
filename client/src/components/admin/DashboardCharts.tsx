@@ -212,18 +212,18 @@ export const CountryDistributionChart = ({ data }: ChartProps) => {
   }, []);
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+    <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-all duration-300">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
-          <div className="flex-shrink-0 p-2 bg-amber-100 rounded-lg mr-3">
-            <Layers className="w-5 h-5 text-amber-600" />
+          <div className="flex-shrink-0 p-2.5 bg-gradient-to-r from-amber-500 to-orange-600 rounded-lg mr-3 shadow-sm">
+            <Globe className="w-5 h-5 text-white" />
           </div>
           <div>
             <h3 className="font-semibold text-gray-800 text-lg">Ülkelere Göre Dağılım</h3>
             <p className="text-sm text-gray-500 mt-0.5">Son 30 gün</p>
           </div>
         </div>
-        <button className="text-sm text-primary flex items-center font-medium hover:underline">
+        <button className="text-sm text-primary flex items-center font-medium hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-colors">
           Detaylı Analiz
           <ChevronRight className="w-4 h-4 ml-1" />
         </button>
@@ -248,6 +248,7 @@ export const CountryDistributionChart = ({ data }: ChartProps) => {
               axisLine={false} 
               tickLine={false} 
               tick={{ fill: '#64748b', fontSize: 12 }}
+              domain={[0, 'dataMax + 10']}
             />
             <YAxis 
               dataKey="name" 
@@ -258,16 +259,25 @@ export const CountryDistributionChart = ({ data }: ChartProps) => {
               tick={{ fill: '#64748b', fontSize: 12 }}
               width={80}
             />
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip 
+              content={<CustomTooltip />} 
+              animationDuration={200}
+              animationEasing="ease-out"
+              cursor={{ fill: 'rgba(236, 240, 243, 0.5)' }}
+            />
             <Bar 
               dataKey="value" 
               name="Ziyaretçi Sayısı"
               animationDuration={1500} 
-              barSize={20} 
-              radius={[0, 4, 4, 0]}
+              barSize={24} 
+              radius={[0, 6, 6, 0]}
             >
               {chartData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
+                <Cell 
+                  key={`cell-${index}`} 
+                  fill={entry.color} 
+                  style={{ filter: 'drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.1))' }}
+                />
               ))}
             </Bar>
           </BarChart>
@@ -290,18 +300,18 @@ export const ServiceDistributionChart = ({ data }: ChartProps) => {
   }, []);
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+    <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-all duration-300">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
-          <div className="flex-shrink-0 p-2 bg-green-100 rounded-lg mr-3">
-            <Settings className="w-5 h-5 text-green-600" />
+          <div className="flex-shrink-0 p-2.5 bg-gradient-to-r from-teal-500 to-green-600 rounded-lg mr-3 shadow-sm">
+            <TrendingUp className="w-5 h-5 text-white" />
           </div>
           <div>
             <h3 className="font-semibold text-gray-800 text-lg">Hizmet Dağılımı</h3>
             <p className="text-sm text-gray-500 mt-0.5">Toplam randevular</p>
           </div>
         </div>
-        <button className="text-sm text-primary flex items-center font-medium hover:underline">
+        <button className="text-sm text-primary flex items-center font-medium hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-colors">
           Tüm Hizmetler
           <ChevronRight className="w-4 h-4 ml-1" />
         </button>
@@ -316,19 +326,34 @@ export const ServiceDistributionChart = ({ data }: ChartProps) => {
               labelLine={false}
               innerRadius={0}
               outerRadius={90}
-              paddingAngle={1}
+              paddingAngle={2}
               dataKey="value"
+              stroke="#ffffff"
+              strokeWidth={2}
               label={({ name, percent }) => percent > 0.05 ? `${(percent * 100).toFixed(0)}%` : ''}
+              animationBegin={0}
+              animationDuration={1200}
+              animationEasing="ease-out"
             >
               {chartData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
+                <Cell 
+                  key={`cell-${index}`} 
+                  fill={entry.color} 
+                  style={{ filter: 'drop-shadow(0px 2px 3px rgba(0, 0, 0, 0.1))' }}
+                />
               ))}
             </Pie>
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip 
+              content={<CustomTooltip />} 
+              animationDuration={200}
+              animationEasing="ease-out"
+            />
             <Legend 
               layout="vertical" 
               verticalAlign="middle" 
               align="right"
+              iconSize={10}
+              wrapperStyle={{ paddingLeft: 20, fontSize: 13 }}
               formatter={(value, entry, index) => {
                 const { color } = chartData[index];
                 const total = chartData.reduce((sum, item) => sum + item.value, 0);
