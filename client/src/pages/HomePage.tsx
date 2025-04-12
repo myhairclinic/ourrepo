@@ -8,6 +8,7 @@ import { useTranslation } from "@/lib/translations";
 import MainSlider from "@/components/home/MainSlider";
 import PatientJourney from "@/components/home/PatientJourney";
 import BlogSlider from "@/components/home/BlogSlider";
+import FeaturedProducts from "@/components/home/FeaturedProducts";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import AppointmentButton from "@/components/layout/AppointmentButton";
 
@@ -48,6 +49,7 @@ export default function HomePage() {
         <PatientJourney />
         <ServiceCards />
         <PackageCards />
+        <FeaturedProducts />
         <BlogSlider />
         
         {/* Fixed buttons */}

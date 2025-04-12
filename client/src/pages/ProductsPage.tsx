@@ -10,7 +10,7 @@ import { Product } from "@shared/schema";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle, Star, Sparkles, Shield } from "lucide-react";
+import { ArrowRight, CheckCircle, Star, Sparkles, Shield, Loader2 } from "lucide-react";
 
 export default function ProductsPage() {
   const { language, addPrefix } = useLanguage();
@@ -19,99 +19,10 @@ export default function ProductsPage() {
   // Type safe language handling
   const lang = language as Language;
   
-  // Vitharin ürünleri (saç bakım ürünleri)
-  const vitharinProducts = [
-    {
-      id: 1,
-      slug: "vitharin-shampoo",
-      nameTR: "Vitharin Şampuan",
-      nameEN: "Vitharin Shampoo",
-      nameRU: "Шампунь Vitharin",
-      nameKA: "Vitharin შამპუნი",
-      descriptionTR: "Saç köklerini besleyen ve güçlendiren özel formüllü şampuan.",
-      descriptionEN: "Special formula shampoo that nourishes and strengthens hair roots.",
-      descriptionRU: "Шампунь со специальной формулой, питающий и укрепляющий корни волос.",
-      descriptionKA: "სპეციალური ფორმულის შამპუნი, რომელიც კვებავს და აძლიერებს თმის ფესვებს.",
-      imageUrl: "/images/products/vitharin-shampoo.jpg",
-      isNew: true,
-      price: 29.99
-    },
-    {
-      id: 2,
-      slug: "vitharin-conditioner",
-      nameTR: "Vitharin Saç Kremi",
-      nameEN: "Vitharin Conditioner",
-      nameRU: "Кондиционер Vitharin",
-      nameKA: "Vitharin კონდიციონერი",
-      descriptionTR: "Saçları yumuşatan ve parlatan saç kremi.",
-      descriptionEN: "Conditioner that softens hair and adds shine.",
-      descriptionRU: "Кондиционер, смягчающий волосы и придающий им блеск.",
-      descriptionKA: "კონდიციონერი, რომელიც არბილებს თმას და ამატებს ბზინვარებას.",
-      imageUrl: "/images/products/vitharin-conditioner.jpg",
-      isNew: false,
-      price: 24.99
-    },
-    {
-      id: 3,
-      slug: "vitharin-serum",
-      nameTR: "Vitharin Saç Serumu",
-      nameEN: "Vitharin Hair Serum",
-      nameRU: "Сыворотка для волос Vitharin",
-      nameKA: "Vitharin თმის შრატი",
-      descriptionTR: "Saç dökülmesini önleyen ve saç büyümesini destekleyen konsantre serum.",
-      descriptionEN: "Concentrated serum that prevents hair loss and promotes hair growth.",
-      descriptionRU: "Концентрированная сыворотка, предотвращающая выпадение волос и способствующая их росту.",
-      descriptionKA: "კონცენტრირებული შრატი, რომელიც ხელს უშლის თმის ცვენას და ხელს უწყობს თმის ზრდას.",
-      imageUrl: "/images/products/vitharin-serum.jpg",
-      isNew: true,
-      price: 39.99
-    },
-    {
-      id: 4,
-      slug: "vitharin-hair-mask",
-      nameTR: "Vitharin Saç Maskesi",
-      nameEN: "Vitharin Hair Mask",
-      nameRU: "Маска для волос Vitharin",
-      nameKA: "Vitharin თმის ნიღაბი",
-      descriptionTR: "Yıpranmış saçlar için yoğun bakım maskesi.",
-      descriptionEN: "Intensive care mask for damaged hair.",
-      descriptionRU: "Маска интенсивного ухода для поврежденных волос.",
-      descriptionKA: "ინტენსიური მოვლის ნიღაბი დაზიანებული თმისთვის.",
-      imageUrl: "/images/products/vitharin-mask.jpg",
-      isNew: false,
-      price: 34.99
-    },
-    {
-      id: 5,
-      slug: "vitharin-hair-oil",
-      nameTR: "Vitharin Saç Yağı",
-      nameEN: "Vitharin Hair Oil",
-      nameRU: "Масло для волос Vitharin",
-      nameKA: "Vitharin თმის ზეთი",
-      descriptionTR: "Doğal yağlarla zenginleştirilmiş nemlendirici saç yağı.",
-      descriptionEN: "Moisturizing hair oil enriched with natural oils.",
-      descriptionRU: "Увлажняющее масло для волос, обогащенное натуральными маслами.",
-      descriptionKA: "დამატენიანებელი თმის ზეთი, გამდიდრებული ბუნებრივი ზეთებით.",
-      imageUrl: "/images/products/vitharin-oil.jpg",
-      isNew: false,
-      price: 27.99
-    },
-    {
-      id: 6,
-      slug: "vitharin-hair-spray",
-      nameTR: "Vitharin Saç Spreyi",
-      nameEN: "Vitharin Hair Spray",
-      nameRU: "Спрей для волос Vitharin",
-      nameKA: "Vitharin თმის სპრეი",
-      descriptionTR: "Saç stilini koruyan ve parlaklık veren saç spreyi.",
-      descriptionEN: "Hair spray that protects style and adds shine.",
-      descriptionRU: "Спрей для волос, защищающий стиль и придающий блеск.",
-      descriptionKA: "თმის სპრეი, რომელიც იცავს სტილს და ამატებს ბზინვარებას.",
-      imageUrl: "/images/products/vitharin-spray.jpg",
-      isNew: false,
-      price: 19.99
-    }
-  ];
+  // Vithair ürünlerini API'den çek
+  const { data: products, isLoading, error } = useQuery<Product[]>({
+    queryKey: [API_ROUTES.PRODUCTS],
+  });
   
   return (
     <>
@@ -133,7 +44,7 @@ export default function ProductsPage() {
             center
           />
           
-          {/* Vitharin Products Grid */}
+          {/* Vithair Products Grid */}
           <div className="mt-10">
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-3xl font-bold text-primary">
@@ -143,82 +54,96 @@ export default function ProductsPage() {
               </h2>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8">
-              {vitharinProducts.map((product) => (
-                <Card key={product.id} className="group overflow-hidden transition-all duration-300 hover:shadow-lg border-primary/5">
-                  <div className="relative overflow-hidden h-64">
-                    <img 
-                      src={product.imageUrl} 
-                      alt={language === 'tr' ? product.nameTR : 
+            {isLoading ? (
+              <div className="flex justify-center items-center h-64">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+            ) : error ? (
+              <div className="text-center p-8 bg-red-50 rounded-lg border border-red-100">
+                <p className="text-red-500">{t('errors.failedToLoadProducts')}</p>
+              </div>
+            ) : products && products.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8">
+                {products.map((product) => (
+                  <Card key={product.id} className="group overflow-hidden transition-all duration-300 hover:shadow-lg border-primary/5">
+                    <div className="relative overflow-hidden h-64">
+                      <img 
+                        src={product.imageUrl} 
+                        alt={language === 'tr' ? product.nameTR : 
+                             language === 'en' ? product.nameEN : 
+                             language === 'ru' ? product.nameRU : 
+                             product.nameKA} 
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      {product.isNew && (
+                        <Badge className="absolute top-3 right-3 bg-primary hover:bg-primary/90">
+                          {t('products.new')}
+                        </Badge>
+                      )}
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 flex justify-end">
+                        <Badge variant="outline" className="bg-white/90 text-primary border-primary/20 backdrop-blur-sm">
+                          <Star size={12} className="mr-1" /> Vithair Professional
+                        </Badge>
+                      </div>
+                    </div>
+                    
+                    <CardHeader className="p-5 pb-0">
+                      <div className="flex justify-between items-start">
+                        <CardTitle className="text-xl font-bold text-primary">
+                          {language === 'tr' ? product.nameTR : 
                            language === 'en' ? product.nameEN : 
                            language === 'ru' ? product.nameRU : 
-                           product.nameKA} 
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    {product.isNew && (
-                      <Badge className="absolute top-3 right-3 bg-primary hover:bg-primary/90">
-                        {t('products.new')}
-                      </Badge>
-                    )}
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 flex justify-end">
-                      <Badge variant="outline" className="bg-white/90 text-primary border-primary/20 backdrop-blur-sm">
-                        <Star size={12} className="mr-1" /> Vitharin Professional
-                      </Badge>
-                    </div>
-                  </div>
-                  
-                  <CardHeader className="p-5 pb-0">
-                    <div className="flex justify-between items-start">
-                      <CardTitle className="text-xl font-bold text-primary">
-                        {language === 'tr' ? product.nameTR : 
-                         language === 'en' ? product.nameEN : 
-                         language === 'ru' ? product.nameRU : 
-                         product.nameKA}
-                      </CardTitle>
-                    </div>
-                    <CardDescription className="mt-2 text-sm">
-                      {language === 'tr' ? product.descriptionTR : 
-                       language === 'en' ? product.descriptionEN : 
-                       language === 'ru' ? product.descriptionRU : 
-                       product.descriptionKA}
-                    </CardDescription>
-                  </CardHeader>
-                  
-                  <CardContent className="p-5 pt-3">
-                    <div className="mt-4 pt-4 border-t border-gray-100">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs uppercase font-medium text-muted-foreground">
-                          {t('products.keyFeatures')}
-                        </span>
+                           product.nameKA}
+                        </CardTitle>
                       </div>
-                      <div className="space-y-2">
-                        <div className="flex items-start">
-                          <Shield size={16} className="text-primary mr-2 mt-0.5 flex-shrink-0" />
-                          <span className="text-sm">{t('products.serviceFeature1')}</span>
+                      <CardDescription className="mt-2 text-sm">
+                        {language === 'tr' ? product.descriptionTR : 
+                         language === 'en' ? product.descriptionEN : 
+                         language === 'ru' ? product.descriptionRU : 
+                         product.descriptionKA}
+                      </CardDescription>
+                    </CardHeader>
+                    
+                    <CardContent className="p-5 pt-3">
+                      <div className="mt-4 pt-4 border-t border-gray-100">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs uppercase font-medium text-muted-foreground">
+                            {t('products.keyFeatures')}
+                          </span>
                         </div>
-                        <div className="flex items-start">
-                          <CheckCircle size={16} className="text-primary mr-2 mt-0.5 flex-shrink-0" />
-                          <span className="text-sm">{t('products.serviceFeature2')}</span>
-                        </div>
-                        <div className="flex items-start">
-                          <CheckCircle size={16} className="text-primary mr-2 mt-0.5 flex-shrink-0" />
-                          <span className="text-sm">{t('products.serviceFeature3')}</span>
+                        <div className="space-y-2">
+                          <div className="flex items-start">
+                            <Shield size={16} className="text-primary mr-2 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">{t('products.serviceFeature1')}</span>
+                          </div>
+                          <div className="flex items-start">
+                            <CheckCircle size={16} className="text-primary mr-2 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">{t('products.serviceFeature2')}</span>
+                          </div>
+                          <div className="flex items-start">
+                            <CheckCircle size={16} className="text-primary mr-2 mt-0.5 flex-shrink-0" />
+                            <span className="text-sm">{t('products.serviceFeature3')}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                  
-                  <CardFooter className="p-5 pt-2 flex justify-end items-center">
-                    <Link href={addPrefix(`/products/${product.slug}`)}>
-                      <Button className="gap-1">
-                        {t('common.moreInfo')}
-                        <ArrowRight size={14} />
-                      </Button>
-                    </Link>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
+                    </CardContent>
+                    
+                    <CardFooter className="p-5 pt-2 flex justify-end items-center">
+                      <Link href={addPrefix(`/products/${product.slug}`)}>
+                        <Button className="gap-1">
+                          {t('common.moreInfo')}
+                          <ArrowRight size={14} />
+                        </Button>
+                      </Link>
+                    </CardFooter>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center p-8 bg-blue-50 rounded-lg border border-blue-100">
+                <p className="text-blue-500">{t('products.noProductsAvailable')}</p>
+              </div>
+            )}
           </div>
           
           {/* Products Info Section */}
