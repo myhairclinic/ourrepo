@@ -2231,6 +2231,37 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Посмотреть детали",
     [Language.Georgian]: "დეტალების ნახვა"
   },
+  
+  "packages.featured.tagline": {
+    [Language.Turkish]: "Özel Paketlerimiz",
+    [Language.English]: "Our Special Packages",
+    [Language.Russian]: "Наши Специальные Пакеты",
+    [Language.Georgian]: "ჩვენი სპეციალური პაკეტები"
+  },
+  "packages.featured.title": {
+    [Language.Turkish]: "Sizin İçin Seçtiğimiz Paketler",
+    [Language.English]: "Packages Selected for You",
+    [Language.Russian]: "Пакеты, Подобранные для Вас",
+    [Language.Georgian]: "თქვენთვის შერჩეული პაკეტები"
+  },
+  "packages.featured.subtitle": {
+    [Language.Turkish]: "Her ülkeden gelen misafirlerimiz için özel olarak tasarlanmış lüks seyahat ve sağlık paketlerimizle eşsiz bir deneyim yaşayın.",
+    [Language.English]: "Experience a unique journey with our luxury travel and health packages specially designed for our guests from every country.",
+    [Language.Russian]: "Испытайте уникальное путешествие с нашими роскошными туристическими и оздоровительными пакетами, специально разработанными для наших гостей из любой страны.",
+    [Language.Georgian]: "გამოცადეთ უნიკალური მოგზაურობა ჩვენი ლუქსუსური სამოგზაურო და ჯანმრთელობის პაკეტებით, რომლებიც სპეციალურად შექმნილია ჩვენი სტუმრებისთვის ყველა ქვეყნიდან."
+  },
+  "packages.featured.viewAllPackages": {
+    [Language.Turkish]: "Tüm Paketleri Görüntüle",
+    [Language.English]: "View All Packages",
+    [Language.Russian]: "Посмотреть Все Пакеты",
+    [Language.Georgian]: "ყველა პაკეტის ნახვა"
+  },
+  "packages.featured.noPackagesFound": {
+    [Language.Turkish]: "Öne çıkan paket bulunamadı",
+    [Language.English]: "No featured packages found",
+    [Language.Russian]: "Не найдено избранных пакетов",
+    [Language.Georgian]: "გამორჩეული პაკეტები არ მოიძებნა"
+  },
   "services.bookAppointment": {
     [Language.Turkish]: "Randevu Al",
     [Language.English]: "Book Appointment",
