@@ -105,6 +105,7 @@ const PatientManagement = () => {
   const [activeTab, setActiveTab] = useState("all-patients");
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
+  const [sourceFilter, setSourceFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedPatient, setSelectedPatient] = useState<any>(null);
   const [isNewPatientDialogOpen, setIsNewPatientDialogOpen] = useState(false);
@@ -539,7 +540,11 @@ const PatientManagement = () => {
     
     const matchesStatus = !statusFilter || patient.status === statusFilter;
     
-    return matchesSearch && matchesStatus;
+    const matchesSource = !sourceFilter || 
+      (sourceFilter === "appointment" && patient.notes && patient.notes.includes("Otomatik oluşturuldu. Randevu ID:")) ||
+      (sourceFilter === "manual" && (!patient.notes || !patient.notes.includes("Otomatik oluşturuldu. Randevu ID:")));
+    
+    return matchesSearch && matchesStatus && matchesSource;
   }) : [];
   
   const totalPages = Math.ceil((filteredPatients?.length || 0) / itemsPerPage);
@@ -654,15 +659,23 @@ const PatientManagement = () => {
                       {currentPatients.map((patient: any) => (
                         <tr key={patient.id} className="hover:bg-gray-50">
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <button 
-                              onClick={() => {
-                                setSelectedPatient(patient);
-                                setActiveTab("patient-details");
-                              }}
-                              className="text-left hover:text-primary font-medium text-gray-900"
-                            >
-                              {patient.fullName}
-                            </button>
+                            <div className="flex flex-col">
+                              <button 
+                                onClick={() => {
+                                  setSelectedPatient(patient);
+                                  setActiveTab("patient-details");
+                                }}
+                                className="text-left hover:text-primary font-medium text-gray-900"
+                              >
+                                {patient.fullName}
+                              </button>
+                              {patient.notes && patient.notes.includes("Otomatik oluşturuldu. Randevu ID:") && (
+                                <span className="text-xs text-muted-foreground mt-1 flex items-center">
+                                  <CheckCircle className="h-3 w-3 mr-1 text-green-500" />
+                                  Randevudan otomatik oluşturuldu
+                                </span>
+                              )}
+                            </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm text-gray-900">{patient.phone}</div>
