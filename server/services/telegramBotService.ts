@@ -424,7 +424,7 @@ E-posta: ${appointment.email}
 📝 Ek Bilgiler: ${appointment.message || '-'}`;
   }
   
-  // Servisin adını id'ye göre getir
+  // Servisin adını id'ye göre getir 
   private async getServiceName(serviceId: number) {
     try {
       const [service] = await db.select().from(services)
