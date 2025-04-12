@@ -270,7 +270,6 @@ export const appointments = pgTable("appointments", {
 export const insertAppointmentSchema = createInsertSchema(appointments).omit({
   id: true,
   status: true,
-  appointmentTime: true,
   notificationScheduled: true,
   notificationSent: true,
   createdAt: true,
