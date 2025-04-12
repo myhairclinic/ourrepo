@@ -3,7 +3,10 @@ import { useLocation } from "wouter";
 import { useAdmin } from "@/hooks/use-admin";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Settings, Users, Package, MessageCircle, Calendar, FileText, Image, Star, HelpCircle, BookOpen, Package2, BarChart, ArrowLeft, LogOut, ShoppingBag, Heart, Globe, Search, ChevronDown, Bell, User, Menu, X, PlusCircle, Trash2, Edit, Download, Upload, Eye, HardDrive, List, LayoutGrid, LayoutList, Shield, Send, ChevronLeft, ChevronRight, CheckCircle, XCircle, Clock, Pencil, Activity, Layers, Plus, Edit2, Mail, Phone, Check } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { 
   VisitorsChart, 
@@ -21,6 +24,34 @@ import MessageManagement from "@/components/admin/MessageManagement";
 import TelegramBotManagement from "@/components/admin/TelegramBotManagement";
 
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -29,18 +60,96 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+// Formun doğrulama şeması
+const appointmentFormSchema = z.object({
+  name: z.string().min(3, { message: "İsim en az 3 karakter olmalıdır." }),
+  email: z.string().email({ message: "Geçerli bir e-posta adresi giriniz." }),
+  phone: z.string().min(6, { message: "Geçerli bir telefon numarası giriniz." }),
+  serviceId: z.string({ required_error: "Lütfen bir hizmet seçiniz." }),
+  preferredDate: z.string().optional(),
+  message: z.string().optional(),
+  status: z.enum(["pending", "confirmed", "cancelled", "completed"]).default("pending"),
+});
+
+type AppointmentFormValues = z.infer<typeof appointmentFormSchema>;
+
 const AdminDashboard = () => {
   const { user, logout, isLoading } = useAdmin();
   const { toast } = useToast();
   const [, setLocation] = useLocation();
   const [activeSection, setActiveSection] = useState("dashboard");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAppointmentDialogOpen, setIsAppointmentDialogOpen] = useState(false);
   const [stats, setStats] = useState({
     appointments: 0,
     products: 0,
     services: 0,
     users: 0
   });
+  
+  // Randevu form tanımlaması
+  const form = useForm<AppointmentFormValues>({
+    resolver: zodResolver(appointmentFormSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      message: "",
+      preferredDate: "",
+      status: "pending",
+    }
+  });
+  
+  // Randevu oluşturma mutation'u
+  const createAppointmentMutation = useMutation({
+    mutationFn: async (data: AppointmentFormValues) => {
+      const res = await fetch("/api/appointments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      
+      if (!res.ok) {
+        throw new Error("Randevu oluşturulurken bir hata meydana geldi");
+      }
+      
+      return res.json();
+    },
+    onSuccess: () => {
+      // Modal'ı kapat
+      setIsAppointmentDialogOpen(false);
+      
+      // Form'u sıfırla
+      form.reset();
+      
+      // Randevular listesini yenile
+      refetchAppointments();
+      
+      // Başarı mesajı göster
+      toast({
+        title: "Başarılı",
+        description: "Randevu başarıyla oluşturuldu",
+        variant: "default",
+      });
+    },
+    onError: (error) => {
+      console.error("Randevu oluşturma hatası:", error);
+      
+      // Hata mesajı göster
+      toast({
+        title: "Hata",
+        description: "Randevu oluşturulurken bir hata meydana geldi. Lütfen tekrar deneyin.",
+        variant: "destructive",
+      });
+    }
+  });
+  
+  // Randevu oluşturma formu gönderildiğinde çalışacak fonksiyon
+  const onSubmit = (data: AppointmentFormValues) => {
+    createAppointmentMutation.mutate(data);
+  };
   
   // Temel istatistikleri al
   const { data: services } = useQuery({
@@ -751,15 +860,180 @@ const AdminDashboard = () => {
             <div>
               <div className="flex items-center justify-between mb-6">
                 <h1 className="text-2xl font-bold text-gray-900">Randevu Yönetimi</h1>
-                <div className="flex items-center">
-                  <span className="text-xs px-2.5 py-1 bg-blue-100 text-blue-800 rounded-full mr-2">
+                <div className="flex items-center space-x-3">
+                  <span className="text-xs px-2.5 py-1 bg-blue-100 text-blue-800 rounded-full">
                     Son 24 saat: 3 yeni
                   </span>
                   <span className="text-xs px-2.5 py-1 bg-green-100 text-green-800 rounded-full">
                     Bu hafta: 12 randevu
                   </span>
+                  <Button 
+                    onClick={() => setIsAppointmentDialogOpen(true)}
+                    className="flex items-center space-x-1 text-sm"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Yeni Randevu</span>
+                  </Button>
                 </div>
               </div>
+              
+              {/* Randevu Oluşturma Modal'ı */}
+              <Dialog open={isAppointmentDialogOpen} onOpenChange={setIsAppointmentDialogOpen}>
+                <DialogContent className="sm:max-w-[500px]">
+                  <DialogHeader>
+                    <DialogTitle>Yeni Randevu Oluştur</DialogTitle>
+                    <DialogDescription>
+                      Yeni bir randevu oluşturmak için aşağıdaki formu doldurun.
+                    </DialogDescription>
+                  </DialogHeader>
+                  
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>İsim Soyisim</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Hasta adı soyadı" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>E-posta</FormLabel>
+                            <FormControl>
+                              <Input type="email" placeholder="E-posta adresi" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="phone"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Telefon</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Telefon numarası" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="serviceId"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Hizmet</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Hizmet seçin" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                {services?.map((service: any) => (
+                                  <SelectItem key={service.id} value={service.id.toString()}>
+                                    {service.titleTR}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="preferredDate"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Tercih Edilen Tarih</FormLabel>
+                            <FormControl>
+                              <Input type="date" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="message"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Mesaj</FormLabel>
+                            <FormControl>
+                              <Textarea placeholder="Ek notlar..." {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="status"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Durum</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Durum seçin" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="pending">Beklemede</SelectItem>
+                                <SelectItem value="confirmed">Onaylandı</SelectItem>
+                                <SelectItem value="cancelled">İptal Edildi</SelectItem>
+                                <SelectItem value="completed">Tamamlandı</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <DialogFooter className="mt-6 flex justify-end gap-2">
+                        <Button 
+                          variant="outline" 
+                          type="button" 
+                          onClick={() => setIsAppointmentDialogOpen(false)}
+                        >
+                          İptal
+                        </Button>
+                        <Button 
+                          type="submit" 
+                          disabled={createAppointmentMutation.isPending}
+                        >
+                          {createAppointmentMutation.isPending ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Oluşturuluyor...
+                            </>
+                          ) : (
+                            "Randevu Oluştur"
+                          )}
+                        </Button>
+                      </DialogFooter>
+                    </form>
+                  </Form>
+                </DialogContent>
+              </Dialog>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div className="bg-white p-4 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-all duration-300 overflow-hidden relative group">
