@@ -166,7 +166,7 @@ export default function BlogSlider() {
             <Button 
               variant="outline" 
               size="icon" 
-              className="bg-white dark:bg-gray-800 shadow-md hover:bg-primary/10 text-primary"
+              className="bg-white dark:bg-gray-800 shadow-md hover:bg-primary/10 text-primary border border-primary/10"
               onClick={prevSlide}
             >
               <ChevronLeft className="h-5 w-5" />
@@ -174,7 +174,7 @@ export default function BlogSlider() {
             <Button 
               variant="outline" 
               size="icon" 
-              className="bg-white dark:bg-gray-800 shadow-md hover:bg-primary/10 text-primary"
+              className="bg-white dark:bg-gray-800 shadow-md hover:bg-primary/10 text-primary border border-primary/10"
               onClick={nextSlide}
             >
               <ChevronRight className="h-5 w-5" />
@@ -182,9 +182,9 @@ export default function BlogSlider() {
           </div>
           
           {/* Blog cards */}
-          <div className="flex gap-6 overflow-hidden">
+          <div className="flex gap-6 overflow-hidden pl-1">
             {visibleBlogs?.map((blog) => (
-              <Card key={blog.id} className="min-w-[320px] w-full max-w-sm flex-shrink-0 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
+              <Card key={blog.id} className="min-w-[320px] w-full max-w-sm flex-shrink-0 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg border border-gray-100 dark:border-gray-800">
                 <div className="relative h-48 overflow-hidden rounded-t-lg">
                   <img 
                     src={blog.imageUrl} 
@@ -211,11 +211,11 @@ export default function BlogSlider() {
                     </div>
                   </div>
                   
-                  <h3 className="text-lg font-semibold line-clamp-2 mb-2 hover:text-primary transition-colors">
+                  <h3 className="text-lg font-semibold line-clamp-2 mb-3 hover:text-primary transition-colors">
                     <a href={`/${language.toLowerCase()}/blog/${blog.slug}`}>{getBlogTitle(blog)}</a>
                   </h3>
                   
-                  <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3">
+                  <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 leading-relaxed">
                     {getExcerpt(blog)}
                   </p>
                   
@@ -235,7 +235,7 @@ export default function BlogSlider() {
           
           {/* Pagination indicators */}
           {blogs.length > itemsPerPage && (
-            <div className="flex justify-center mt-8 gap-2">
+            <div className="flex justify-start mt-8 gap-2 pl-1">
               {Array.from({ length: Math.ceil(blogs.length / itemsPerPage) }).map((_, index) => (
                 <button
                   key={index}
