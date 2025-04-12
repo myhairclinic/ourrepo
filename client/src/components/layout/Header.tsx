@@ -55,12 +55,13 @@ export default function Header() {
                 onClick={toggleLangMenu}
                 className="flex items-center space-x-2 text-white px-3 py-1 rounded hover:bg-blue-700/40 transition-colors"
               >
-                <span className="text-2xl">
-                {language === "tr" ? "TR" : ""}
-                {language === "en" ? "GB" : ""}
-                {language === "ru" ? "RU" : ""}
-                {language === "ka" ? "GE" : ""}
-                </span>
+                <div className="w-8 h-5 overflow-hidden rounded shadow-sm border border-gray-100">
+                  <img 
+                    src={`/images/flags/${language === "tr" ? "tr" : language === "en" ? "gb" : language === "ru" ? "ru" : "ge"}.svg`}
+                    alt={language}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 <span className="text-sm uppercase ml-2">{language}</span>
                 <ChevronDown size={12} className={`transition-transform duration-300 ${isLangMenuOpen ? 'rotate-180' : ''}`} />
               </button>
@@ -79,12 +80,13 @@ export default function Header() {
                           language === lang.code ? "bg-primary/5 text-primary font-medium" : "text-gray-700"
                         }`}
                       >
-                        <span className="mr-2 text-2xl">
-                        {lang.code === "tr" && "🇹🇷"}
-                        {lang.code === "en" && "🇬🇧"}
-                        {lang.code === "ru" && "🇷🇺"}
-                        {lang.code === "ka" && "🇬🇪"}
-                        </span>
+                        <div className="w-6 h-4 mr-2 overflow-hidden rounded shadow-sm border border-gray-100">
+                          <img 
+                            src={`/images/flags/${lang.code === "tr" ? "tr" : lang.code === "en" ? "gb" : lang.code === "ru" ? "ru" : "ge"}.svg`}
+                            alt={lang.code}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
                         <span>{lang.name}</span>
                       </button>
                     ))}
@@ -175,13 +177,14 @@ export default function Header() {
                 onClick={toggleLangMenu}
                 className="flex items-center justify-center space-x-1 text-neutral-700 p-2"
               >
-                <span className="text-2xl mr-1">
-                {language === "tr" ? "TR" : ""}
-                {language === "en" ? "GB" : ""}
-                {language === "ru" ? "RU" : ""}
-                {language === "ka" ? "GE" : ""}
-                </span>
-                <span className="text-xs font-medium uppercase">{language}</span>
+                <div className="w-6 h-4 overflow-hidden rounded shadow-sm border border-gray-100">
+                  <img 
+                    src={`/images/flags/${language === "tr" ? "tr" : language === "en" ? "gb" : language === "ru" ? "ru" : "ge"}.svg`}
+                    alt={language}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <span className="text-xs font-medium uppercase ml-1">{language}</span>
               </button>
               
               <button 
@@ -270,12 +273,13 @@ export default function Header() {
                       : "bg-gray-50 hover:bg-gray-100 border border-gray-100"
                   }`}
                 >
-                  <span className="mr-2 text-2xl">
-                  {lang.code === "tr" ? "TR" : ""}
-                  {lang.code === "en" ? "GB" : ""}
-                  {lang.code === "ru" ? "RU" : ""}
-                  {lang.code === "ka" ? "GE" : ""}
-                  </span>
+                  <div className="w-6 h-4 mr-2 overflow-hidden rounded shadow-sm border border-gray-100">
+                    <img 
+                      src={`/images/flags/${lang.code === "tr" ? "tr" : lang.code === "en" ? "gb" : lang.code === "ru" ? "ru" : "ge"}.svg`}
+                      alt={lang.code}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                   <span>{lang.name}</span>
                 </button>
               ))}
