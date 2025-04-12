@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { useAdmin } from "@/hooks/use-admin";
+import { useToast } from "@/hooks/use-toast";
 import { Loader2, Settings, Users, Package, MessageCircle, Calendar, FileText, Image, Star, HelpCircle, BookOpen, Package2, BarChart, ArrowLeft, LogOut, ShoppingBag, Heart, Globe, Search, ChevronDown, Bell, User, Menu, X, PlusCircle, Trash2, Edit, Download, Upload, Eye, HardDrive, List, LayoutGrid, LayoutList, Shield, Send, ChevronLeft, ChevronRight, CheckCircle, XCircle, Clock, Pencil, Activity, Layers, Plus, Edit2, Mail, Phone, Check } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -30,6 +31,7 @@ import {
 
 const AdminDashboard = () => {
   const { user, logout, isLoading } = useAdmin();
+  const { toast } = useToast();
   const [, setLocation] = useLocation();
   const [activeSection, setActiveSection] = useState("dashboard");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -83,6 +85,43 @@ const AdminDashboard = () => {
       return res.json();
     }
   });
+  
+  // Randevu durum güncelleme fonksiyonu
+  const updateAppointmentStatus = async (id: number, status: string) => {
+    try {
+      const res = await fetch(`/api/appointments/${id}/status`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status }),
+      });
+      
+      if (!res.ok) {
+        throw new Error(`Randevu durumu güncellenirken bir hata oluştu: ${res.statusText}`);
+      }
+      
+      // Randevular listesini yenile
+      refetchAppointments();
+      
+      // Başarı mesajı göster
+      toast({
+        title: "Başarılı",
+        description: `Randevu durumu "${status === 'confirmed' ? 'onaylandı' : status === 'cancelled' ? 'iptal edildi' : status}" olarak güncellendi.`,
+        variant: "success",
+      });
+      
+    } catch (error) {
+      console.error('Randevu durumu güncelleme hatası:', error);
+      
+      // Hata mesajı göster
+      toast({
+        title: "Hata",
+        description: `Randevu durumu güncellenirken bir hata oluştu. Lütfen tekrar deneyin.`,
+        variant: "destructive",
+      });
+    }
+  };
   
   // Filtered appointments
   const filteredAppointments = appointments ? appointments.filter((appointment: any) => {
@@ -888,16 +927,72 @@ const AdminDashboard = () => {
                             </td>
                             <td className="px-4 py-4 whitespace-nowrap">
                               <div className="flex space-x-1">
-                                <button className="p-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors duration-200 tooltip" title="Düzenle">
+                                <button 
+                                  onClick={() => {
+                                    // Randevu düzenleme modalı açılacak
+                                    alert(`Randevu #${appointment.id} düzenleme işlevi için modal açılacak`);
+                                  }}
+                                  className="p-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors duration-200 tooltip" 
+                                  title="Düzenle"
+                                >
                                   <Edit2 className="h-4 w-4" />
                                 </button>
-                                <button className="p-1.5 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 transition-colors duration-200 tooltip" title="Onayla">
+                                <button 
+                                  onClick={() => {
+                                    const confirmAction = window.confirm(`${appointment.name} adlı kişinin randevusunu onaylamak istediğinizden emin misiniz?`);
+                                    if (confirmAction) {
+                                      updateAppointmentStatus(appointment.id, "confirmed");
+                                    }
+                                  }}
+                                  disabled={appointment.status === "confirmed"}
+                                  className={`p-1.5 ${appointment.status === "confirmed" ? "bg-gray-50 text-gray-400 cursor-not-allowed" : "bg-green-50 text-green-600 hover:bg-green-100 cursor-pointer"} rounded-lg transition-colors duration-200 tooltip`} 
+                                  title={appointment.status === "confirmed" ? "Zaten Onaylandı" : "Onayla"}
+                                >
                                   <Check className="h-4 w-4" />
                                 </button>
-                                <button className="p-1.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors duration-200 tooltip" title="İptal Et">
+                                <button 
+                                  onClick={() => {
+                                    const confirmAction = window.confirm(`${appointment.name} adlı kişinin randevusunu iptal etmek istediğinizden emin misiniz?`);
+                                    if (confirmAction) {
+                                      updateAppointmentStatus(appointment.id, "cancelled");
+                                    }
+                                  }}
+                                  disabled={appointment.status === "cancelled"}
+                                  className={`p-1.5 ${appointment.status === "cancelled" ? "bg-gray-50 text-gray-400 cursor-not-allowed" : "bg-red-50 text-red-600 hover:bg-red-100 cursor-pointer"} rounded-lg transition-colors duration-200 tooltip`} 
+                                  title={appointment.status === "cancelled" ? "Zaten İptal Edildi" : "İptal Et"}
+                                >
                                   <X className="h-4 w-4" />
                                 </button>
-                                <button className="p-1.5 bg-purple-50 text-purple-600 rounded-lg hover:bg-purple-100 transition-colors duration-200 tooltip" title="Bildirim Gönder">
+                                <button 
+                                  onClick={async () => {
+                                    try {
+                                      // Telegram bildirimi gönderme API çağrısı
+                                      const res = await fetch(`/api/telegram/send-notification/${appointment.id}`, {
+                                        method: 'POST'
+                                      });
+                                      
+                                      if (!res.ok) {
+                                        throw new Error(`Bildirim gönderilirken bir hata oluştu: ${res.statusText}`);
+                                      }
+                                      
+                                      toast({
+                                        title: "Bildirim Gönderildi",
+                                        description: `${appointment.name} için Telegram bildirimi başarıyla gönderildi.`,
+                                        variant: "success",
+                                      });
+                                    } catch (error) {
+                                      console.error('Telegram bildirimi gönderme hatası:', error);
+                                      
+                                      toast({
+                                        title: "Hata",
+                                        description: `Telegram bildirimi gönderilirken bir hata oluştu. Lütfen tekrar deneyin.`,
+                                        variant: "destructive",
+                                      });
+                                    }
+                                  }}
+                                  className="p-1.5 bg-purple-50 text-purple-600 rounded-lg hover:bg-purple-100 transition-colors duration-200 tooltip cursor-pointer" 
+                                  title="Bildirim Gönder"
+                                >
                                   <Bell className="h-4 w-4" />
                                 </button>
                               </div>
