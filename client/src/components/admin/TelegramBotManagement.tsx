@@ -26,6 +26,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import PredefinedMessageManagement from './PredefinedMessageManagement';
 import {
   Select,
   SelectContent,
@@ -616,6 +617,10 @@ export default function TelegramBotManagement() {
             <Settings className="h-4 w-4 mr-2" />
             Bot Ayarları
           </TabsTrigger>
+          <TabsTrigger value="predefined-messages">
+            <MessageSquare className="h-4 w-4 mr-2" />
+            Hazır Mesajlar
+          </TabsTrigger>
         </TabsList>
 
         {/* Personel Yönetimi Sekmesi */}
@@ -1029,6 +1034,11 @@ export default function TelegramBotManagement() {
               )}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* Hazır Mesajlar Sekmesi */}
+        <TabsContent value="predefined-messages" className="space-y-4">
+          <PredefinedMessageManagement />
         </TabsContent>
       </Tabs>
     </div>
