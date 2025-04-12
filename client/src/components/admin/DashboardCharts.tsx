@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Sector, AreaChart, Area, LineChart, Line } from 'recharts';
-import { TrendingUp, Users, Calendar, Settings, ChevronRight, Layers } from "lucide-react";
+import { TrendingUp, Users, Calendar, Settings, ChevronRight, Layers, Activity, Globe, Map } from "lucide-react";
 
 type ChartProps = {
   data: any[];
@@ -38,18 +38,18 @@ export const VisitorsChart = ({ data }: ChartProps) => {
   }, []);
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+    <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-all duration-300">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
-          <div className="flex-shrink-0 p-2 bg-blue-100 rounded-lg mr-3">
-            <Users className="w-5 h-5 text-blue-600" />
+          <div className="flex-shrink-0 p-2.5 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg mr-3 shadow-sm">
+            <Activity className="w-5 h-5 text-white" />
           </div>
           <div>
             <h3 className="font-semibold text-gray-800 text-lg">Ziyaretçi Analizi</h3>
             <p className="text-sm text-gray-500 mt-0.5">Son 7 ay</p>
           </div>
         </div>
-        <button className="text-sm text-primary flex items-center font-medium hover:underline">
+        <button className="text-sm text-primary flex items-center font-medium hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-colors">
           Detaylı Rapor
           <ChevronRight className="w-4 h-4 ml-1" />
         </button>
@@ -133,18 +133,18 @@ export const AppointmentsChart = ({ data }: ChartProps) => {
   }, []);
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+    <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-all duration-300">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
-          <div className="flex-shrink-0 p-2 bg-indigo-100 rounded-lg mr-3">
-            <Calendar className="w-5 h-5 text-indigo-600" />
+          <div className="flex-shrink-0 p-2.5 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-lg mr-3 shadow-sm">
+            <Calendar className="w-5 h-5 text-white" />
           </div>
           <div>
             <h3 className="font-semibold text-gray-800 text-lg">Randevu Durumları</h3>
             <p className="text-sm text-gray-500 mt-0.5">Güncel dağılım</p>
           </div>
         </div>
-        <button className="text-sm text-primary flex items-center font-medium hover:underline">
+        <button className="text-sm text-primary flex items-center font-medium hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-colors">
           Tüm Randevular
           <ChevronRight className="w-4 h-4 ml-1" />
         </button>
@@ -161,16 +161,24 @@ export const AppointmentsChart = ({ data }: ChartProps) => {
               paddingAngle={2}
               dataKey="value"
               cornerRadius={4}
+              stroke="#ffffff"
+              strokeWidth={3}
             >
               {chartData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
             </Pie>
-            <Tooltip content={<CustomTooltip />} />
+            <Tooltip 
+              content={<CustomTooltip />} 
+              animationDuration={200}
+              animationEasing="ease-out"
+            />
             <Legend 
               layout="vertical" 
               verticalAlign="middle" 
               align="right"
+              iconSize={10}
+              wrapperStyle={{ paddingLeft: 20, fontSize: 13 }}
               formatter={(value, entry, index) => {
                 const { color } = chartData[index];
                 const total = chartData.reduce((sum, item) => sum + item.value, 0);
