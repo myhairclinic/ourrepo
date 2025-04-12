@@ -1916,6 +1916,11 @@ export class DatabaseStorage implements IStorage {
     const [patient] = await db.select().from(patients).where(eq(patients.id, id));
     return patient;
   }
+  
+  async getPatientByPhone(phone: string): Promise<Patient | undefined> {
+    const [patient] = await db.select().from(patients).where(eq(patients.phone, phone));
+    return patient;
+  }
 
   async createPatient(data: InsertPatient): Promise<Patient> {
     const [patient] = await db.insert(patients).values(data).returning();
