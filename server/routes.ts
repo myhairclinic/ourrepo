@@ -282,6 +282,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put("/api/testimonials/:id", updateTestimonial);
   app.delete("/api/testimonials/:id", deleteTestimonial);
   
+  // Hasta Yönetimi Routes
+  app.get("/api/patients", patientController.getAllPatients);
+  app.get("/api/patients/:id", patientController.getPatientById);
+  app.post("/api/patients", patientController.createPatient);
+  app.put("/api/patients/:id", patientController.updatePatient);
+  app.delete("/api/patients/:id", patientController.deletePatient);
+  
+  // Hasta Döküman Routes
+  app.get("/api/patients/:patientId/documents", patientController.getPatientDocuments);
+  app.post("/api/patients/:patientId/documents", patientController.createPatientDocument);
+  app.put("/api/documents/:documentId", patientController.updatePatientDocument);
+  app.delete("/api/documents/:documentId", patientController.deletePatientDocument);
+  
+  // Hasta Tedavi Routes
+  app.get("/api/patients/:patientId/treatments", patientController.getPatientTreatmentRecords);
+  app.post("/api/patients/:patientId/treatments", patientController.createTreatmentRecord);
+  app.put("/api/treatments/:recordId", patientController.updateTreatmentRecord);
+  app.delete("/api/treatments/:recordId", patientController.deleteTreatmentRecord);
+  
   // User Review routes
   app.get("/api/reviews", async (req, res) => {
     try {
