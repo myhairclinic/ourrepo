@@ -102,20 +102,28 @@ export const confirmAppointmentWithTime = async (req: Request, res: Response) =>
       return res.status(400).json({ message: "Status must be 'confirmed' for this operation" });
     }
     
-    // Update appointment with time and status
+    // Önce randevuyu doğru şekilde güncelleyelim - sadece appointmentTime bilgisini güncelle
+    const currentAppointment = await storage.getAppointmentById(id);
+    if (!currentAppointment) {
+      return res.status(404).json({ message: "Appointment not found" });
+    }
+    
     const appointment = await storage.updateAppointment(id, { 
-      appointmentTime, 
-      status, 
-      notificationScheduled: notificationScheduled === true,
-      notificationSent: false
+      appointmentTime 
     });
+
+    // Sonra status'u ayrı güncelleyelim
+    const updatedAppointment = await storage.updateAppointmentStatus(id, status);
     
     if (!appointment) {
       return res.status(404).json({ message: "Appointment not found" });
     }
     
+    // Bildirim durumlarını doğrudan güncelleme yapmıyoruz
+    // Bunun yerine statusu güncelledikten sonra ilgili servisleri çağırıyoruz
+    
     // Schedule notification for 1 hour before appointment if notificationScheduled is true
-    if (notificationScheduled && appointment.preferredDate) {
+    if (notificationScheduled && appointment && appointment.preferredDate) {
       const appointmentDate = new Date(appointment.preferredDate);
       const [hours, minutes] = appointmentTime.split(':').map(Number);
       
@@ -133,18 +141,21 @@ export const confirmAppointmentWithTime = async (req: Request, res: Response) =>
       }
     }
     
+    // Güncellenmiş randevu bilgilerini kullan
+    const finalAppointment = updatedAppointment || appointment;
+    
     // Send notification to Telegram about appointment confirmation with time
-    telegramService.notifyAppointmentConfirmation(appointment, appointmentTime);
+    telegramService.notifyAppointmentConfirmation(finalAppointment, appointmentTime);
     
     // Onaylanmış randevu hasta kaydına dönüştürülüyor
     try {
-      await createPatientFromAppointment(appointment);
-      console.log(`Hasta otomatik olarak oluşturuldu: ${appointment.name}`);
+      await createPatientFromAppointment(finalAppointment);
+      console.log(`Hasta otomatik olarak oluşturuldu: ${finalAppointment.name}`);
     } catch (err) {
       console.error('Randevudan hasta oluşturulurken hata:', err);
     }
     
-    res.json(appointment);
+    res.json(finalAppointment);
   } catch (error) {
     console.error('Error confirming appointment with time:', error);
     res.status(500).json({ message: "Failed to confirm appointment with time" });
