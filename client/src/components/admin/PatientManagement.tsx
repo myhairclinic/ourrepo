@@ -198,6 +198,22 @@ const PatientManagement = () => {
     enabled: !!selectedPatient?.id,
   });
   
+  // Hasta otomatik oluşturulduğunda ilişkili randevu bilgilerini almak için
+  const [appointmentId, setAppointmentId] = useState<number | null>(null);
+  const { data: relatedAppointment, isLoading: isAppointmentLoading } = useQuery({
+    queryKey: ["/api/appointments", appointmentId],
+    queryFn: async () => {
+      if (!appointmentId) return null;
+      const res = await fetch(`/api/appointments/${appointmentId}`);
+      if (!res.ok) {
+        if (res.status === 404) return null;
+        throw new Error("İlişkili randevu bilgileri getirilirken bir hata oluştu.");
+      }
+      return res.json();
+    },
+    enabled: !!appointmentId,
+  });
+  
   const { data: treatmentRecords, isLoading: isTreatmentsLoading, refetch: refetchTreatments } = useQuery({
     queryKey: ["/api/patients", selectedPatient?.id, "treatments"],
     queryFn: async () => {
@@ -466,6 +482,17 @@ const PatientManagement = () => {
   
   const onSubmitTreatment = (data: TreatmentFormValues) => {
     createTreatmentMutation.mutate(data);
+  };
+  
+  // Extracting appointment ID from patient notes
+  const extractAppointmentId = (patientNotes: string | null): number | null => {
+    if (!patientNotes) return null;
+    
+    const match = patientNotes.match(/Randevu ID: (\d+),/);
+    if (match && match[1]) {
+      return parseInt(match[1], 10);
+    }
+    return null;
   };
   
   const handleEditPatient = (patient: any) => {
@@ -964,6 +991,76 @@ const PatientManagement = () => {
                       <div className="text-sm font-medium text-gray-500">Tıbbi Geçmiş</div>
                       <div className="text-sm text-gray-900">{selectedPatient.medicalHistory || "-"}</div>
                     </div>
+                    
+                    {/* İlişkili Randevu Bilgisi */}
+                    {selectedPatient.notes && selectedPatient.notes.includes("Otomatik oluşturuldu. Randevu ID:") && (
+                      <>
+                        <div className="border-t pt-2 mt-2">
+                          <div className="text-sm font-medium text-gray-500 mb-2">İlişkili Randevu</div>
+                          {(() => {
+                            // Hasta seçildiğinde randevu ID'sini çıkar ve sorgula
+                            const appointmentId = extractAppointmentId(selectedPatient.notes);
+                            
+                            if (appointmentId !== appointmentId) {
+                              setAppointmentId(appointmentId);
+                            }
+                            
+                            if (isAppointmentLoading) {
+                              return (
+                                <div className="flex items-center space-x-2 text-sm text-gray-500">
+                                  <LoaderCircle className="h-3 w-3 animate-spin" />
+                                  <span>Randevu bilgileri yükleniyor...</span>
+                                </div>
+                              );
+                            }
+                            
+                            if (!relatedAppointment) {
+                              return (
+                                <div className="text-sm text-gray-900">
+                                  Randevu bilgileri bulunamadı. (ID: {appointmentId})
+                                </div>
+                              );
+                            }
+                            
+                            return (
+                              <div className="space-y-2 rounded-md border p-3 text-sm">
+                                <div className="grid grid-cols-2 gap-1">
+                                  <div className="text-xs font-medium text-gray-500">Tarih</div>
+                                  <div className="text-xs">
+                                    {relatedAppointment.preferredDate ? new Date(relatedAppointment.preferredDate).toLocaleDateString('tr-TR') : '-'}
+                                  </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-1">
+                                  <div className="text-xs font-medium text-gray-500">Saat</div>
+                                  <div className="text-xs">{relatedAppointment.appointmentTime || '-'}</div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-1">
+                                  <div className="text-xs font-medium text-gray-500">Durum</div>
+                                  <div className="text-xs">
+                                    <Badge variant={
+                                      relatedAppointment.status === "confirmed" ? "default" :
+                                      relatedAppointment.status === "completed" ? "secondary" :
+                                      relatedAppointment.status === "cancelled" ? "destructive" :
+                                      "outline"
+                                    } className="text-[10px] px-1 py-0">
+                                      {relatedAppointment.status === "new" && "Yeni"}
+                                      {relatedAppointment.status === "confirmed" && "Onaylandı"}
+                                      {relatedAppointment.status === "completed" && "Tamamlandı"}
+                                      {relatedAppointment.status === "cancelled" && "İptal"}
+                                    </Badge>
+                                  </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-1">
+                                  <div className="text-xs font-medium text-gray-500">Mesaj</div>
+                                  <div className="text-xs">{relatedAppointment.message || '-'}</div>
+                                </div>
+                              </div>
+                            );
+                          })()}
+                        </div>
+                      </>
+                    )}
+                    
                     <div className="grid grid-cols-2 gap-2">
                       <div className="text-sm font-medium text-gray-500">Notlar</div>
                       <div className="text-sm text-gray-900">{selectedPatient.notes || "-"}</div>
