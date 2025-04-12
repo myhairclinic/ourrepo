@@ -85,6 +85,7 @@ export interface IStorage {
   createProduct(product: InsertProduct): Promise<Product>;
   updateProduct(id: number, product: Partial<InsertProduct>): Promise<Product | undefined>;
   deleteProduct(id: number): Promise<boolean>;
+  clearProducts(): Promise<void>;
 
   // Package operations
   getPackages(): Promise<Package[]>;

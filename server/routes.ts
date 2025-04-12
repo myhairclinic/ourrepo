@@ -469,6 +469,126 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/seed-packages", seedPackages);
   // Route for adding only new country packages (Azerbaijan and Kazakhstan)
   app.post("/api/seed/new-country-packages", seedNewCountryPackages);
+  
+  // Seed Vithair products
+  app.post("/api/seed/vithair-products", async (req, res) => {
+    try {
+      // Define Vithair products based on vithair.com.tr website
+      const vithairProducts = [
+        {
+          nameTR: "Vithair PHD Şampuan",
+          nameEN: "Vithair PHD Shampoo",
+          nameRU: "Vithair PHD Шампунь",
+          nameKA: "Vithair PHD შამპუნი",
+          slug: "vithair-phd-shampoo",
+          descriptionTR: "Saç dökülmesini önleyen ve saç büyümesini hızlandıran özel formüllü şampuan.",
+          descriptionEN: "Specially formulated shampoo that prevents hair loss and accelerates hair growth.",
+          descriptionRU: "Специально разработанный шампунь, предотвращающий выпадение волос и ускоряющий их рост.",
+          descriptionKA: "სპეციალურად შემუშავებული შამპუნი, რომელიც ხელს უშლის თმის ცვენას და აჩქარებს თმის ზრდას.",
+          imageUrl: "https://www.vithair.com.tr/wp-content/uploads/2021/09/ViTHAIR-PHD-SAMPUAN-300x300.png",
+          isActive: true,
+          isNew: true,
+          price: 0
+        },
+        {
+          nameTR: "Vithair Onarıcı Şampuan",
+          nameEN: "Vithair Repair Shampoo",
+          nameRU: "Vithair Восстанавливающий Шампунь",
+          nameKA: "Vithair აღმდგენი შამპუნი",
+          slug: "vithair-repair-shampoo",
+          descriptionTR: "Hasar görmüş saçları onaran ve güçlendiren gelişmiş formül.",
+          descriptionEN: "Advanced formula that repairs and strengthens damaged hair.",
+          descriptionRU: "Продвинутая формула, восстанавливающая и укрепляющая поврежденные волосы.",
+          descriptionKA: "წინწაწეული ფორმულა, რომელიც აღადგენს და აძლიერებს დაზიანებულ თმას.",
+          imageUrl: "https://www.vithair.com.tr/wp-content/uploads/2021/09/ViTHAIR-ONARICI-SAMPUAN-300x300.png",
+          isActive: true,
+          isNew: false,
+          price: 0
+        },
+        {
+          nameTR: "Vithair Saç Bakım Kiti",
+          nameEN: "Vithair Hair Care Kit",
+          nameRU: "Набор по уходу за волосами Vithair",
+          nameKA: "Vithair თმის მოვლის ნაკრები",
+          slug: "vithair-hair-care-kit",
+          descriptionTR: "Saç ekimi sonrası tam bakım için ideal ürün seti.",
+          descriptionEN: "Ideal product set for complete care after hair transplantation.",
+          descriptionRU: "Идеальный набор продуктов для полного ухода после трансплантации волос.",
+          descriptionKA: "იდეალური პროდუქტების ნაკრები სრული მოვლისათვის თმის გადანერგვის შემდეგ.",
+          imageUrl: "https://www.vithair.com.tr/wp-content/uploads/2021/09/ViTHAIR-SAC-BAKIM-KiTi-300x300.png",
+          isActive: true,
+          isNew: true,
+          price: 0
+        },
+        {
+          nameTR: "Vithair Saç Serumu",
+          nameEN: "Vithair Hair Serum",
+          nameRU: "Сыворотка для волос Vithair",
+          nameKA: "Vithair თმის შრატი",
+          slug: "vithair-hair-serum",
+          descriptionTR: "Saç foliküllerini besleyen ve güçlendiren yoğun bakım serumu.",
+          descriptionEN: "Intensive care serum that nourishes and strengthens hair follicles.",
+          descriptionRU: "Сыворотка интенсивного ухода, питающая и укрепляющая волосяные фолликулы.",
+          descriptionKA: "ინტენსიური მოვლის შრატი, რომელიც კვებავს და აძლიერებს თმის ფოლიკულებს.",
+          imageUrl: "https://www.vithair.com.tr/wp-content/uploads/2021/09/ViTHAIR-SAC-SERUMU-300x300.png",
+          isActive: true,
+          isNew: false,
+          price: 0
+        },
+        {
+          nameTR: "Vithair Saç Vitamini",
+          nameEN: "Vithair Hair Vitamin",
+          nameRU: "Витамины для волос Vithair",
+          nameKA: "Vithair თმის ვიტამინი",
+          slug: "vithair-hair-vitamin",
+          descriptionTR: "İçeriden saç sağlığını destekleyen özel vitamin formülü.",
+          descriptionEN: "Special vitamin formula that supports hair health from within.",
+          descriptionRU: "Специальная витаминная формула, поддерживающая здоровье волос изнутри.",
+          descriptionKA: "სპეციალური ვიტამინის ფორმულა, რომელიც ხელს უწყობს თმის ჯანმრთელობას შიგნიდან.",
+          imageUrl: "https://www.vithair.com.tr/wp-content/uploads/2021/09/ViTHAIR-SAC-ViTAMiNi-300x300.png",
+          isActive: true,
+          isNew: true,
+          price: 0
+        },
+        {
+          nameTR: "Vithair Nem Kremi",
+          nameEN: "Vithair Moisture Cream",
+          nameRU: "Увлажняющий крем Vithair",
+          nameKA: "Vithair ტენიანობის კრემი",
+          slug: "vithair-moisture-cream",
+          descriptionTR: "Saç ve saç derisini derinlemesine nemlendirmeye yardımcı olan krem.",
+          descriptionEN: "Cream that helps deeply moisturize hair and scalp.",
+          descriptionRU: "Крем, который помогает глубоко увлажнить волосы и кожу головы.",
+          descriptionKA: "კრემი, რომელიც ეხმარება ღრმად დატენიანებას თმისა და თავის კანის.",
+          imageUrl: "https://www.vithair.com.tr/wp-content/uploads/2021/09/ViTHAIR-NEM-KREMi-300x300.png",
+          isActive: true,
+          isNew: false,
+          price: 0
+        }
+      ];
+
+      // Clear existing products if necessary and insert new ones
+      await storage.clearProducts();
+      
+      // Insert each product
+      for (const product of vithairProducts) {
+        await storage.createProduct(product);
+      }
+      
+      res.status(200).json({ 
+        success: true, 
+        message: "Vithair products seeded successfully",
+        count: vithairProducts.length
+      });
+    } catch (error) {
+      console.error("Error seeding Vithair products:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to seed Vithair products", 
+        error: error.message 
+      });
+    }
+  });
 
   const httpServer = createServer(app);
 
