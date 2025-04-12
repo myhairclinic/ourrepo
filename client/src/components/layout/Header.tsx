@@ -4,6 +4,7 @@ import { useLanguage } from "@/hooks/use-language";
 import { ALL_LANGUAGES } from "@/lib/languages";
 import { PUBLIC_PATHS } from "@/lib/constants";
 import { Globe, ChevronDown, Menu, X, Phone, Calendar, Clock, MapPin, Mail } from "lucide-react";
+import { FlagIcon } from "@/components/flags";
 
 export default function Header() {
   const { language, changeLanguage, addPrefix } = useLanguage();
@@ -56,11 +57,7 @@ export default function Header() {
                 className="flex items-center space-x-2 text-white px-3 py-1 rounded hover:bg-blue-700/40 transition-colors"
               >
                 <div className="w-8 h-5 overflow-hidden rounded shadow-sm border border-gray-100">
-                  <img 
-                    src={`/images/flags/${language === "tr" ? "tr" : language === "en" ? "gb" : language === "ru" ? "ru" : "ge"}.svg`}
-                    alt={language}
-                    className="w-full h-full object-cover"
-                  />
+                  <FlagIcon code={language} />
                 </div>
                 <span className="text-sm uppercase ml-2">{language}</span>
                 <ChevronDown size={12} className={`transition-transform duration-300 ${isLangMenuOpen ? 'rotate-180' : ''}`} />
@@ -81,11 +78,7 @@ export default function Header() {
                         }`}
                       >
                         <div className="w-6 h-4 mr-2 overflow-hidden rounded shadow-sm border border-gray-100">
-                          <img 
-                            src={`/images/flags/${lang.code === "tr" ? "tr" : lang.code === "en" ? "gb" : lang.code === "ru" ? "ru" : "ge"}.svg`}
-                            alt={lang.code}
-                            className="w-full h-full object-cover"
-                          />
+                          <FlagIcon code={lang.code} />
                         </div>
                         <span>{lang.name}</span>
                       </button>
@@ -178,11 +171,7 @@ export default function Header() {
                 className="flex items-center justify-center space-x-1 text-neutral-700 p-2"
               >
                 <div className="w-6 h-4 overflow-hidden rounded shadow-sm border border-gray-100">
-                  <img 
-                    src={`/images/flags/${language === "tr" ? "tr" : language === "en" ? "gb" : language === "ru" ? "ru" : "ge"}.svg`}
-                    alt={language}
-                    className="w-full h-full object-cover"
-                  />
+                  <FlagIcon code={language} />
                 </div>
                 <span className="text-xs font-medium uppercase ml-1">{language}</span>
               </button>
@@ -274,11 +263,7 @@ export default function Header() {
                   }`}
                 >
                   <div className="w-6 h-4 mr-2 overflow-hidden rounded shadow-sm border border-gray-100">
-                    <img 
-                      src={`/images/flags/${lang.code === "tr" ? "tr" : lang.code === "en" ? "gb" : lang.code === "ru" ? "ru" : "ge"}.svg`}
-                      alt={lang.code}
-                      className="w-full h-full object-cover"
-                    />
+                    <FlagIcon code={lang.code} />
                   </div>
                   <span>{lang.name}</span>
                 </button>
