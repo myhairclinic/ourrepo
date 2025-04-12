@@ -814,7 +814,33 @@ export default function TelegramBotManagement() {
                           className="flex-1 mr-2" 
                           defaultValue="-1001234567890"
                         />
-                        <Button variant="outline">Test</Button>
+                        <Button 
+                          variant="outline"
+                          onClick={() => {
+                            const chatId = document.getElementById("appointment-group") as HTMLInputElement;
+                            if (chatId && chatId.value) {
+                              setTestChatId(chatId.value);
+                              setTestNotificationType("new_appointment");
+                              sendTestNotificationMutation.mutate({
+                                type: "new_appointment",
+                                chatId: chatId.value
+                              });
+                            } else {
+                              toast({
+                                title: "Eksik Bilgi",
+                                description: "Lütfen bir hedef kullanıcı adı veya chat ID girin.",
+                                variant: "destructive"
+                              });
+                            }
+                          }}
+                        >
+                          {sendTestNotificationMutation.isPending && testNotificationType === "new_appointment" ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Gönderiliyor...
+                            </>
+                          ) : "Test"}
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -838,7 +864,33 @@ export default function TelegramBotManagement() {
                           className="flex-1 mr-2" 
                           defaultValue="-1001234567890"
                         />
-                        <Button variant="outline">Test</Button>
+                        <Button 
+                          variant="outline"
+                          onClick={() => {
+                            const chatId = document.getElementById("reminder-group") as HTMLInputElement;
+                            if (chatId && chatId.value) {
+                              setTestChatId(chatId.value);
+                              setTestNotificationType("appointment_reminder");
+                              sendTestNotificationMutation.mutate({
+                                type: "appointment_reminder",
+                                chatId: chatId.value
+                              });
+                            } else {
+                              toast({
+                                title: "Eksik Bilgi",
+                                description: "Lütfen bir hedef kullanıcı adı veya chat ID girin.",
+                                variant: "destructive"
+                              });
+                            }
+                          }}
+                        >
+                          {sendTestNotificationMutation.isPending && testNotificationType === "appointment_reminder" ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Gönderiliyor...
+                            </>
+                          ) : "Test"}
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -863,7 +915,33 @@ export default function TelegramBotManagement() {
                         className="flex-1 mr-2" 
                         defaultValue="-1001234567890"
                       />
-                      <Button variant="outline">Test</Button>
+                      <Button 
+                        variant="outline"
+                        onClick={() => {
+                          const chatId = document.getElementById("summary-group") as HTMLInputElement;
+                          if (chatId && chatId.value) {
+                            setTestChatId(chatId.value);
+                            setTestNotificationType("daily_summary");
+                            sendTestNotificationMutation.mutate({
+                              type: "daily_summary",
+                              chatId: chatId.value
+                            });
+                          } else {
+                            toast({
+                              title: "Eksik Bilgi",
+                              description: "Lütfen bir hedef kullanıcı adı veya chat ID girin.",
+                              variant: "destructive"
+                            });
+                          }
+                        }}
+                      >
+                        {sendTestNotificationMutation.isPending && testNotificationType === "daily_summary" ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Gönderiliyor...
+                          </>
+                        ) : "Test"}
+                      </Button>
                     </div>
                   </div>
                 </div>
