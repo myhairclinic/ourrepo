@@ -26,6 +26,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Alert,
+  AlertTitle,
+  AlertDescription
+} from "@/components/ui/alert";
 import PredefinedMessageManagement from './PredefinedMessageManagement';
 import {
   Select,
@@ -62,7 +67,8 @@ import {
   Send,
   Eye,
   Trash2,
-  Plus
+  Plus,
+  AlertTriangle
 } from 'lucide-react';
 
 // Türkçe dil desteğini açıkça belirtiyoruz
