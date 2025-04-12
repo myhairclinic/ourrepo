@@ -21,7 +21,8 @@ import {
   Flag,
   MoreVertical,
   ExternalLink,
-  Smartphone
+  Smartphone,
+  Globe
 } from "lucide-react";
 
 import {

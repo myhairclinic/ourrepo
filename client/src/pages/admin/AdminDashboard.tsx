@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { useAdmin } from "@/hooks/use-admin";
-import { Loader2, Settings, Users, Package, MessageCircle, Calendar, FileText, Image, Star, HelpCircle, BookOpen, Package2, BarChart, ArrowLeft, LogOut, ShoppingBag, Heart, Globe, Search, ChevronDown, Bell, User, Menu, X, PlusCircle, Trash2, Edit, Download, Upload, Eye, HardDrive, List, LayoutGrid, LayoutList, Shield } from "lucide-react";
+import { Loader2, Settings, Users, Package, MessageCircle, Calendar, FileText, Image, Star, HelpCircle, BookOpen, Package2, BarChart, ArrowLeft, LogOut, ShoppingBag, Heart, Globe, Search, ChevronDown, Bell, User, Menu, X, PlusCircle, Trash2, Edit, Download, Upload, Eye, HardDrive, List, LayoutGrid, LayoutList, Shield, Send } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
 import { 
@@ -17,6 +17,7 @@ import FaqManagement from "@/components/admin/FaqManagement";
 import AftercareManagement from "@/components/admin/AftercareManagement";
 import SeoManagement from "@/components/admin/SeoManagement";
 import MessageManagement from "@/components/admin/MessageManagement";
+import TelegramBotManagement from "@/components/admin/TelegramBotManagement";
 
 import {
   DropdownMenu,
@@ -122,6 +123,7 @@ const AdminDashboard = () => {
     { id: "faqs", label: "SSS", icon: <HelpCircle className="w-5 h-5" /> },
     { id: "aftercare", label: "Bakım Rehberleri", icon: <BookOpen className="w-5 h-5" /> },
     { id: "messages", label: "Mesajlar", icon: <MessageCircle className="w-5 h-5" /> },
+    { id: "telegram", label: "Telegram Bot", icon: <Send className="w-5 h-5" /> },
     { id: "users", label: "Kullanıcılar", icon: <Users className="w-5 h-5" /> },
     { id: "seo", label: "SEO Ayarları", icon: <Globe className="w-5 h-5" /> },
   ];
@@ -1067,7 +1069,13 @@ const AdminDashboard = () => {
             </div>
           )}
           
-          {activeSection !== "dashboard" && activeSection !== "appointments" && activeSection !== "services" && activeSection !== "packages" && activeSection !== "blog" && activeSection !== "users" && activeSection !== "gallery" && activeSection !== "reviews" && activeSection !== "faqs" && activeSection !== "aftercare" && activeSection !== "seo" && activeSection !== "messages" && (
+          {activeSection === "telegram" && (
+            <div>
+              <TelegramBotManagement />
+            </div>
+          )}
+          
+          {activeSection !== "dashboard" && activeSection !== "appointments" && activeSection !== "services" && activeSection !== "packages" && activeSection !== "blog" && activeSection !== "users" && activeSection !== "gallery" && activeSection !== "reviews" && activeSection !== "faqs" && activeSection !== "aftercare" && activeSection !== "seo" && activeSection !== "messages" && activeSection !== "telegram" && (
             <div>
               <h1 className="text-2xl font-bold text-gray-900 mb-6">{sidebarItems.find(item => item.id === activeSection)?.label || "İçerik"} Yönetimi</h1>
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
