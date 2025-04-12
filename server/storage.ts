@@ -1572,36 +1572,39 @@ export class DatabaseStorage implements IStorage {
   
   async getOnePackagePerCountry(): Promise<Package[]> {
     try {
-      // Bu SQL sorgusunu taklit ederiz:
-      // SELECT DISTINCT ON (country_origin) * FROM packages
-      // WHERE is_active = true 
-      // ORDER BY country_origin, updated_at DESC
-      
-      // Her ülke için bir paket almak istiyoruz
-      const countryList = ['TR', 'RU', 'AZ', 'KZ', 'UA', 'IR'];
+      // Her ülkeden bir paket getirme stratejisi
       const result: Package[] = [];
       
-      // Her ülke için paketleri getirelim
+      // SQL ile doğrudan her ülke için bir paket sorgular
+      // Önce her ülkeyi belirtelim
+      const countryList = ['TR', 'RU', 'AZ', 'KZ', 'UA', 'IR'];
+      
+      // Her ülke için ayrı bir paket seçelim ve id'leri birbirinden farklı olsun
       for (const countryCode of countryList) {
-        // Bu SQL sorgusunun JS dengi
-        const countryPackages = await db.select()
-          .from(packages)
+        // Her ülke kodu için o ülkenin paketlerinden birini seçelim 
+        // Ve her ülkeden farklı bir paket alalım
+        const countryPackages = await db.select().from(packages)
           .where(eq(packages.countryOrigin, countryCode))
-          .where(eq(packages.isActive, true))
-          .orderBy(desc(packages.updatedAt));
+          .where(eq(packages.isActive, true));
           
-        // Her ülke için en son güncellenmiş paketi alalım
         if (countryPackages.length > 0) {
-          const latestPackage = countryPackages[0];
-          console.log(`Package found for country ${countryCode}: ${latestPackage.titleTR}`);
-          result.push(latestPackage);
+          // Her ülkeden bir paketi rastgele seçme
+          const randomIndex = Math.floor(Math.random() * countryPackages.length);
+          const selectedPackage = countryPackages[randomIndex];
+          
+          console.log(`Selected package for ${countryCode}: ${selectedPackage.titleTR} (ID: ${selectedPackage.id})`);
+          result.push(selectedPackage);
         }
       }
       
       // Toplam paket sayısını logla
-      console.log(`Total packages found (one per country): ${result.length}`);
+      console.log(`Found packages from ${result.length} different countries`);
       
-      // Her ülkeden bir tane paket döndürürüz
+      // Sonuçları kontrol et
+      for (const pkg of result) {
+        console.log(`Package from ${pkg.countryOrigin}: "${pkg.titleTR}" (ID: ${pkg.id})`);
+      }
+      
       return result;
     } catch (error) {
       console.error("Error in getOnePackagePerCountry:", error);
