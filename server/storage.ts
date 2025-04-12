@@ -1573,10 +1573,9 @@ export class DatabaseStorage implements IStorage {
   async getOnePackagePerCountry(): Promise<Package[]> {
     // Her ülke için bir paket alıyoruz
     // Önce tüm benzersiz ülkeleri bulalım
-    const countries = await db.select({ countryOrigin: packages.countryOrigin })
+    const countries = await db.selectDistinct({ countryOrigin: packages.countryOrigin })
       .from(packages)
-      .where(eq(packages.isActive, true))
-      .groupBy(packages.countryOrigin);
+      .where(eq(packages.isActive, true));
     
     // Her ülke için en son güncellenen paketi alalım
     const result: Package[] = [];
@@ -1584,6 +1583,7 @@ export class DatabaseStorage implements IStorage {
     for (const { countryOrigin } of countries) {
       if (!countryOrigin) continue; // null ise atla
       
+      // Bu ülke için en son güncellenen paketi alalım
       const [pkg] = await db.select()
         .from(packages)
         .where(eq(packages.countryOrigin, countryOrigin))
@@ -1592,14 +1592,20 @@ export class DatabaseStorage implements IStorage {
         .limit(1);
         
       if (pkg) {
-        result.push(pkg);
+        // Country alanını da countryOrigin ile aynı değere ayarlayalım
+        // Frontend'in doğru ülke kodunu alabilmesi için
+        const updatedPkg = {
+          ...pkg,
+          country: pkg.countryOrigin
+        };
+        result.push(updatedPkg);
       }
     }
     
     console.log(`One package per country found: ${result.length}`);
     if (result.length > 0) {
       result.forEach(pkg => {
-        console.log(`Package for ${pkg.countryOrigin}: ${pkg.titleTR}`);
+        console.log(`Package for ${pkg.countryOrigin} (${pkg.country}): ${pkg.titleTR}`);
       });
     }
     
