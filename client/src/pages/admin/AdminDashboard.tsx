@@ -400,60 +400,128 @@ const AdminDashboard = () => {
         <main className="flex-1 overflow-y-auto pt-16 lg:pt-0 bg-gray-50 p-4 md:p-6">
           {activeSection === "dashboard" && (
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 mb-6">Dashboard</h1>
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+                <div className="flex items-center space-x-2 mt-2 md:mt-0">
+                  <select className="px-3 py-1.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                    <option value="today">Bugün</option>
+                    <option value="week">Bu Hafta</option>
+                    <option value="month" selected>Bu Ay</option>
+                    <option value="year">Bu Yıl</option>
+                  </select>
+                  <button className="bg-gray-100 hover:bg-gray-200 transition-colors duration-200 rounded-lg p-1.5">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M16.023 11.5C16.5158 11.5 16.9883 11.3836 17.399 11.1652C17.8097 10.9467 18.143 10.6349 18.3602 10.2568C18.5775 9.87859 18.6702 9.44967 18.6283 9.02358C18.5864 8.59749 18.4115 8.19428 18.1246 7.8636C17.8377 7.53291 17.4505 7.27558 17.0122 7.12413C16.5739 6.97268 16.1025 6.9331 15.6451 7.01107C15.1876 7.08905 14.7625 7.28118 14.4186 7.56975C14.0747 7.85832 13.8267 8.23078 13.7002 8.645" stroke="#667085" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M19.5 15.5C19.8094 16.049 19.9602 16.6675 19.9371 17.2923C19.914 17.9172 19.7183 18.5225 19.3703 19.0465C19.0224 19.5705 18.5356 19.9934 17.9584 20.2668C17.3813 20.5402 16.7374 20.6527 16.0917 20.5922C15.446 20.5317 14.8310 20.3007 14.3079 19.9241C13.7848 19.5475 13.3744 19.0401 13.1188 18.456C12.8632 17.8719 12.7719 17.2319 12.8546 16.6021C12.9373 15.9723 13.1915 15.3753 13.5879 14.879" stroke="#667085" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M12 7.5C11.5875 7.1906 11.0942 6.99729 10.5794 6.94621C10.0645 6.89513 9.54392 6.98772 9.08033 7.21383C8.61673 7.43994 8.22867 7.78853 7.95738 8.22119C7.68609 8.65385 7.54033 9.15399 7.53635 9.66556C7.53237 10.1771 7.67031 10.6794 7.93376 11.1161C8.1972 11.5528 8.57898 11.9076 9.03839 12.1413" stroke="#667085" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M8.5 16.5C7.94106 16.8094 7.49223 17.2929 7.2167 17.877C6.94117 18.4611 6.85035 19.1162 6.9578 19.7516C7.06525 20.387 7.36338 20.9733 7.81143 21.4276C8.25948 21.8818 8.83345 22.1824 9.46111 22.2898C10.0888 22.3972 10.736 22.3054 11.313 22.0276C11.8899 21.7498 12.3674 21.2987 12.675 20.736" stroke="#667085" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M9.5 9.5C9.5 11.5 11.5 11.5 11.5 11.5" stroke="#667085" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M14.5 14.5C14.5 12.5 12.5 12.5 12.5 12.5" stroke="#667085" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M9.5 14.5C9.5 12.5 11.5 12.5 11.5 12.5" stroke="#667085" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M14.5 9.5C14.5 11.5 12.5 11.5 12.5 11.5" stroke="#667085" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </button>
+                  <button className="flex items-center gap-1 text-sm font-medium text-primary px-3 py-1.5 border border-primary/30 rounded-lg hover:bg-primary/5 transition-colors duration-200">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 5V19M5 12H19" className="stroke-primary" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    Rapor Oluştur
+                  </button>
+                </div>
+              </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300 group relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-bl-full transform transition-transform duration-300 group-hover:scale-125"></div>
                   <div className="flex items-center">
-                    <div className="flex-shrink-0 bg-blue-100 p-3 rounded-lg">
+                    <div className="flex-shrink-0 bg-blue-100 p-3 rounded-lg shadow-sm">
                       <Calendar className="w-7 h-7 text-blue-500" />
                     </div>
-                    <div className="ml-4">
-                      <h2 className="text-sm font-semibold text-gray-500">Toplam Randevu</h2>
-                      <p className="text-2xl font-bold text-gray-900">{stats.appointments}</p>
+                    <div className="ml-4 z-10">
+                      <h2 className="text-sm font-semibold text-gray-500 mb-1">Toplam Randevu</h2>
+                      <div className="flex items-center gap-1">
+                        <p className="text-2xl font-bold text-gray-900">{stats.appointments}</p>
+                        <span className="text-xs px-1.5 py-0.5 bg-green-100 text-green-800 rounded-full flex items-center">
+                          <svg className="w-3 h-3 mr-0.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 19V5M12 5L5 12M12 5L19 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                          10%
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">Son 30 gün</p>
                     </div>
                   </div>
                 </div>
                 
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300 group relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-red-500/5 rounded-bl-full transform transition-transform duration-300 group-hover:scale-125"></div>
                   <div className="flex items-center">
-                    <div className="flex-shrink-0 bg-red-100 p-3 rounded-lg">
+                    <div className="flex-shrink-0 bg-red-100 p-3 rounded-lg shadow-sm">
                       <Package className="w-7 h-7 text-red-500" />
                     </div>
-                    <div className="ml-4">
-                      <h2 className="text-sm font-semibold text-gray-500">Toplam Paket</h2>
-                      <p className="text-2xl font-bold text-gray-900">{packages?.length || 0}</p>
+                    <div className="ml-4 z-10">
+                      <h2 className="text-sm font-semibold text-gray-500 mb-1">Toplam Paket</h2>
+                      <div className="flex items-center gap-1">
+                        <p className="text-2xl font-bold text-gray-900">{packages?.length || 0}</p>
+                        <span className="text-xs px-1.5 py-0.5 bg-red-100 text-red-800 rounded-full flex items-center">
+                          <svg className="w-3 h-3 mr-0.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 5V19M12 19L19 12M12 19L5 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                          2%
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">Son 30 gün</p>
                     </div>
                   </div>
                 </div>
                 
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300 group relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-green-500/5 rounded-bl-full transform transition-transform duration-300 group-hover:scale-125"></div>
                   <div className="flex items-center">
-                    <div className="flex-shrink-0 bg-green-100 p-3 rounded-lg">
+                    <div className="flex-shrink-0 bg-green-100 p-3 rounded-lg shadow-sm">
                       <Settings className="w-7 h-7 text-green-500" />
                     </div>
-                    <div className="ml-4">
-                      <h2 className="text-sm font-semibold text-gray-500">Toplam Hizmet</h2>
-                      <p className="text-2xl font-bold text-gray-900">{stats.services}</p>
+                    <div className="ml-4 z-10">
+                      <h2 className="text-sm font-semibold text-gray-500 mb-1">Toplam Hizmet</h2>
+                      <div className="flex items-center gap-1">
+                        <p className="text-2xl font-bold text-gray-900">{stats.services}</p>
+                        <span className="text-xs px-1.5 py-0.5 bg-green-100 text-green-800 rounded-full flex items-center">
+                          <svg className="w-3 h-3 mr-0.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 19V5M12 5L5 12M12 5L19 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                          5%
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">Son 30 gün</p>
                     </div>
                   </div>
                 </div>
                 
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300 group relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-bl-full transform transition-transform duration-300 group-hover:scale-125"></div>
                   <div className="flex items-center">
-                    <div className="flex-shrink-0 bg-purple-100 p-3 rounded-lg">
+                    <div className="flex-shrink-0 bg-purple-100 p-3 rounded-lg shadow-sm">
                       <ShoppingBag className="w-7 h-7 text-purple-500" />
                     </div>
-                    <div className="ml-4">
-                      <h2 className="text-sm font-semibold text-gray-500">Toplam Ürün</h2>
-                      <p className="text-2xl font-bold text-gray-900">{stats.products}</p>
+                    <div className="ml-4 z-10">
+                      <h2 className="text-sm font-semibold text-gray-500 mb-1">Toplam Ürün</h2>
+                      <div className="flex items-center gap-1">
+                        <p className="text-2xl font-bold text-gray-900">{stats.products}</p>
+                        <span className="text-xs px-1.5 py-0.5 bg-gray-200 text-gray-800 rounded-full flex items-center">
+                          <svg className="w-3 h-3 mr-0.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 5V19M12 5L5 12M12 5L19 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                          0%
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">Son 30 gün</p>
                     </div>
                   </div>
                 </div>
               </div>
               
               {/* İstatistik grafikleri */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
                 <VisitorsChart data={[]} />
                 <AppointmentsChart data={[]} />
                 <CountryDistributionChart data={[]} />
@@ -461,46 +529,61 @@ const AdminDashboard = () => {
               </div>
               
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                  <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-lg font-semibold text-gray-900">Son Randevular</h2>
+                <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                  <div className="flex justify-between items-center mb-6">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0 p-2 bg-blue-100 rounded-lg mr-3">
+                        <Calendar className="w-5 h-5 text-blue-600" />
+                      </div>
+                      <div>
+                        <h2 className="font-semibold text-gray-800 text-lg">Son Randevular</h2>
+                        <p className="text-sm text-gray-500 mt-0.5">Son 5 randevu</p>
+                      </div>
+                    </div>
                     <button 
                       onClick={() => setActiveSection("appointments")}
-                      className="text-primary text-sm font-medium hover:underline flex items-center"
+                      className="text-primary text-sm font-medium hover:bg-blue-50 transition-colors px-3 py-1.5 rounded-lg flex items-center"
                     >
                       Tümünü Görüntüle
-                      <ChevronDown className="ml-1 w-4 h-4 rotate-270" />
+                      <ChevronRight className="ml-1 w-4 h-4" />
                     </button>
                   </div>
                   
                   <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
-                      <thead>
+                      <thead className="bg-gray-50">
                         <tr>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ad Soyad</th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hizmet</th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tarih</th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Durum</th>
+                          <th className="px-4 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ad Soyad</th>
+                          <th className="px-4 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hizmet</th>
+                          <th className="px-4 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tarih</th>
+                          <th className="px-4 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Durum</th>
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
                         {appointments && appointments.length > 0 ? (
                           appointments.slice(0, 5).map((appointment, index) => (
-                            <tr key={appointment.id || index}>
-                              <td className="px-4 py-3 whitespace-nowrap">
-                                <div className="text-sm font-medium text-gray-900">{appointment.name}</div>
-                                <div className="text-xs text-gray-500">{appointment.email}</div>
+                            <tr key={appointment.id || index} className="hover:bg-gray-50 transition-colors">
+                              <td className="px-4 py-3.5 whitespace-nowrap">
+                                <div className="flex items-center">
+                                  <div className="flex-shrink-0 h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 font-semibold">
+                                    {appointment.name.charAt(0).toUpperCase()}
+                                  </div>
+                                  <div className="ml-3">
+                                    <div className="text-sm font-medium text-gray-900">{appointment.name}</div>
+                                    <div className="text-xs text-gray-500">{appointment.email}</div>
+                                  </div>
+                                </div>
                               </td>
-                              <td className="px-4 py-3 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">
+                              <td className="px-4 py-3.5 whitespace-nowrap">
+                                <div className="text-sm font-medium text-gray-900">
                                   {services?.find(s => s.id === appointment.serviceId)?.titleTR || `Hizmet #${appointment.serviceId}`}
                                 </div>
                               </td>
-                              <td className="px-4 py-3 whitespace-nowrap">
+                              <td className="px-4 py-3.5 whitespace-nowrap">
                                 <div className="text-sm text-gray-900">{new Date(appointment.createdAt).toLocaleDateString()}</div>
                               </td>
-                              <td className="px-4 py-3 whitespace-nowrap">
-                                <span className={`px-2 py-1 text-xs rounded-full ${
+                              <td className="px-4 py-3.5 whitespace-nowrap">
+                                <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${
                                   appointment.status === "pending" ? "bg-yellow-100 text-yellow-800" : 
                                   appointment.status === "confirmed" ? "bg-green-100 text-green-800" :
                                   appointment.status === "cancelled" ? "bg-red-100 text-red-800" :
@@ -516,7 +599,7 @@ const AdminDashboard = () => {
                           ))
                         ) : (
                           <tr>
-                            <td colSpan={4} className="px-4 py-3 text-center text-sm text-gray-500">
+                            <td colSpan={4} className="px-4 py-3.5 text-center text-sm text-gray-500">
                               Henüz randevu bulunmamaktadır.
                             </td>
                           </tr>
@@ -526,59 +609,69 @@ const AdminDashboard = () => {
                   </div>
                 </div>
                 
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                  <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-lg font-semibold text-gray-900">Son Aktiviteler</h2>
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+                  <div className="flex items-center mb-6">
+                    <div className="flex-shrink-0 p-2 bg-green-100 rounded-lg mr-3">
+                      <Activity className="w-5 h-5 text-green-600" />
+                    </div>
+                    <div>
+                      <h2 className="font-semibold text-gray-800 text-lg">Son Aktiviteler</h2>
+                      <p className="text-sm text-gray-500 mt-0.5">Son 7 gün</p>
+                    </div>
                   </div>
                   
-                  <div className="space-y-4">
+                  <div className="space-y-5">
                     <div className="flex items-start">
-                      <div className="flex-shrink-0 bg-blue-100 p-2 rounded-full">
-                        <Calendar className="w-5 h-5 text-blue-500" />
+                      <div className="flex-shrink-0 h-9 w-9 bg-blue-100 rounded-full flex items-center justify-center">
+                        <Calendar className="w-5 h-5 text-blue-600" />
                       </div>
-                      <div className="ml-3">
-                        <p className="text-sm text-gray-900">Yeni randevu oluşturuldu</p>
-                        <p className="text-xs text-gray-500">Bugün, 09:45</p>
+                      <div className="ml-3 flex-1">
+                        <div className="flex justify-between">
+                          <p className="text-sm font-medium text-gray-900">Yeni randevu oluşturuldu</p>
+                          <span className="text-xs bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded-full font-medium">Yeni</span>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-1">Bugün, 09:45</p>
+                        <p className="text-xs text-gray-600 mt-1 bg-gray-50 p-2 rounded">Anıl Sezkin tarafından Sakal Ekimi hizmeti için randevu oluşturuldu.</p>
                       </div>
                     </div>
                     
                     <div className="flex items-start">
-                      <div className="flex-shrink-0 bg-green-100 p-2 rounded-full">
-                        <FileText className="w-5 h-5 text-green-500" />
+                      <div className="flex-shrink-0 h-9 w-9 bg-green-100 rounded-full flex items-center justify-center">
+                        <FileText className="w-5 h-5 text-green-600" />
                       </div>
-                      <div className="ml-3">
-                        <p className="text-sm text-gray-900">Yeni blog yazısı eklendi</p>
-                        <p className="text-xs text-gray-500">Dün, 14:30</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start">
-                      <div className="flex-shrink-0 bg-purple-100 p-2 rounded-full">
-                        <ShoppingBag className="w-5 h-5 text-purple-500" />
-                      </div>
-                      <div className="ml-3">
-                        <p className="text-sm text-gray-900">Yeni ürün eklendi</p>
-                        <p className="text-xs text-gray-500">2 gün önce, 11:20</p>
+                      <div className="ml-3 flex-1">
+                        <p className="text-sm font-medium text-gray-900">Yeni blog yazısı eklendi</p>
+                        <p className="text-xs text-gray-500 mt-1">Dün, 14:30</p>
                       </div>
                     </div>
                     
                     <div className="flex items-start">
-                      <div className="flex-shrink-0 bg-yellow-100 p-2 rounded-full">
-                        <Star className="w-5 h-5 text-yellow-500" />
+                      <div className="flex-shrink-0 h-9 w-9 bg-purple-100 rounded-full flex items-center justify-center">
+                        <ShoppingBag className="w-5 h-5 text-purple-600" />
                       </div>
-                      <div className="ml-3">
-                        <p className="text-sm text-gray-900">Yeni yorum onaylandı</p>
-                        <p className="text-xs text-gray-500">3 gün önce, 16:45</p>
+                      <div className="ml-3 flex-1">
+                        <p className="text-sm font-medium text-gray-900">Yeni ürün eklendi</p>
+                        <p className="text-xs text-gray-500 mt-1">2 gün önce, 11:20</p>
                       </div>
                     </div>
                     
                     <div className="flex items-start">
-                      <div className="flex-shrink-0 bg-red-100 p-2 rounded-full">
-                        <MessageCircle className="w-5 h-5 text-red-500" />
+                      <div className="flex-shrink-0 h-9 w-9 bg-yellow-100 rounded-full flex items-center justify-center">
+                        <Star className="w-5 h-5 text-yellow-600" />
                       </div>
-                      <div className="ml-3">
-                        <p className="text-sm text-gray-900">Yeni mesaj alındı</p>
-                        <p className="text-xs text-gray-500">4 gün önce, 09:15</p>
+                      <div className="ml-3 flex-1">
+                        <p className="text-sm font-medium text-gray-900">Yeni yorum onaylandı</p>
+                        <p className="text-xs text-gray-500 mt-1">3 gün önce, 16:45</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start">
+                      <div className="flex-shrink-0 h-9 w-9 bg-red-100 rounded-full flex items-center justify-center">
+                        <MessageCircle className="w-5 h-5 text-red-600" />
+                      </div>
+                      <div className="ml-3 flex-1">
+                        <p className="text-sm font-medium text-gray-900">Yeni mesaj alındı</p>
+                        <p className="text-xs text-gray-500 mt-1">4 gün önce, 09:15</p>
                       </div>
                     </div>
                   </div>

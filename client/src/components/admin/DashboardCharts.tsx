@@ -1,47 +1,120 @@
 import { useMemo } from "react";
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Sector } from 'recharts';
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Sector, AreaChart, Area, LineChart, Line } from 'recharts';
+import { TrendingUp, Users, Calendar, Settings, ChevronRight, Layers } from "lucide-react";
 
 type ChartProps = {
   data: any[];
+};
+
+const CustomTooltip = ({ active, payload, label }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-white p-3 border border-gray-200 shadow-md rounded-md">
+        <p className="font-medium text-sm text-gray-900">{label}</p>
+        {payload.map((entry: any, index: number) => (
+          <p key={`item-${index}`} style={{ color: entry.color || entry.fill }} className="text-sm">
+            {entry.name}: {entry.value.toLocaleString()}
+          </p>
+        ))}
+      </div>
+    );
+  }
+
+  return null;
 };
 
 export const VisitorsChart = ({ data }: ChartProps) => {
   // Örnek veri üretimi
   const visitData = useMemo(() => {
     return [
-      { name: 'Oca', visits: 400 },
-      { name: 'Şub', visits: 300 },
-      { name: 'Mar', visits: 600 },
-      { name: 'Nis', visits: 800 },
-      { name: 'May', visits: 1000 },
-      { name: 'Haz', visits: 900 },
-      { name: 'Tem', visits: 1200 }
+      { name: 'Oca', visits: 400, uniqueVisitors: 320 },
+      { name: 'Şub', visits: 300, uniqueVisitors: 230 },
+      { name: 'Mar', visits: 600, uniqueVisitors: 450 },
+      { name: 'Nis', visits: 800, uniqueVisitors: 590 },
+      { name: 'May', visits: 1000, uniqueVisitors: 720 },
+      { name: 'Haz', visits: 900, uniqueVisitors: 650 },
+      { name: 'Tem', visits: 1200, uniqueVisitors: 850 }
     ];
   }, []);
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow">
-      <h3 className="font-medium text-gray-700 mb-3">Aylık Ziyaretçi Sayısı</h3>
-      <div className="h-60">
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center">
+          <div className="flex-shrink-0 p-2 bg-blue-100 rounded-lg mr-3">
+            <Users className="w-5 h-5 text-blue-600" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-gray-800 text-lg">Ziyaretçi Analizi</h3>
+            <p className="text-sm text-gray-500 mt-0.5">Son 7 ay</p>
+          </div>
+        </div>
+        <button className="text-sm text-primary flex items-center font-medium hover:underline">
+          Detaylı Rapor
+          <ChevronRight className="w-4 h-4 ml-1" />
+        </button>
+      </div>
+      <div className="h-72">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart
+          <AreaChart
             width={500}
             height={300}
             data={visitData}
             margin={{
-              top: 5,
+              top: 10,
               right: 30,
-              left: 20,
-              bottom: 5,
+              left: 0,
+              bottom: 0,
             }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="visits" fill="#3b82f6" />
-          </BarChart>
+            <defs>
+              <linearGradient id="colorVisits" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+              </linearGradient>
+              <linearGradient id="colorUniqueVisitors" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#10b981" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+            <XAxis 
+              dataKey="name" 
+              axisLine={false} 
+              tickLine={false} 
+              tick={{ fill: '#64748b', fontSize: 12 }}
+            />
+            <YAxis 
+              axisLine={false} 
+              tickLine={false} 
+              tick={{ fill: '#64748b', fontSize: 12 }}
+            />
+            <Tooltip content={<CustomTooltip />} />
+            <Legend 
+              wrapperStyle={{ paddingTop: 15 }}
+              formatter={(value) => <span className="text-sm font-medium">{value}</span>}
+            />
+            <Area 
+              type="monotone" 
+              dataKey="visits" 
+              stroke="#3b82f6" 
+              fillOpacity={1} 
+              fill="url(#colorVisits)" 
+              strokeWidth={2}
+              name="Toplam Ziyaretçi"
+              activeDot={{ r: 6 }}
+            />
+            <Area 
+              type="monotone" 
+              dataKey="uniqueVisitors" 
+              stroke="#10b981" 
+              fillOpacity={1} 
+              fill="url(#colorUniqueVisitors)" 
+              strokeWidth={2}
+              name="Tekil Ziyaretçi"
+              activeDot={{ r: 6 }}
+            />
+          </AreaChart>
         </ResponsiveContainer>
       </div>
     </div>
@@ -60,27 +133,56 @@ export const AppointmentsChart = ({ data }: ChartProps) => {
   }, []);
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow">
-      <h3 className="font-medium text-gray-700 mb-3">Randevu Durumları</h3>
-      <div className="h-60">
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center">
+          <div className="flex-shrink-0 p-2 bg-indigo-100 rounded-lg mr-3">
+            <Calendar className="w-5 h-5 text-indigo-600" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-gray-800 text-lg">Randevu Durumları</h3>
+            <p className="text-sm text-gray-500 mt-0.5">Güncel dağılım</p>
+          </div>
+        </div>
+        <button className="text-sm text-primary flex items-center font-medium hover:underline">
+          Tüm Randevular
+          <ChevronRight className="w-4 h-4 ml-1" />
+        </button>
+      </div>
+      <div className="h-72 flex items-center justify-center">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart width={400} height={400}>
             <Pie
               data={chartData}
               cx="50%"
               cy="50%"
-              labelLine={false}
-              outerRadius={80}
-              fill="#8884d8"
+              innerRadius={70}
+              outerRadius={90}
+              paddingAngle={2}
               dataKey="value"
-              label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+              cornerRadius={4}
             >
               {chartData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
             </Pie>
-            <Tooltip />
-            <Legend />
+            <Tooltip content={<CustomTooltip />} />
+            <Legend 
+              layout="vertical" 
+              verticalAlign="middle" 
+              align="right"
+              formatter={(value, entry, index) => {
+                const { color } = chartData[index];
+                const total = chartData.reduce((sum, item) => sum + item.value, 0);
+                const percent = ((chartData[index].value / total) * 100).toFixed(1);
+                return (
+                  <span className="flex items-center text-sm">
+                    <span style={{ backgroundColor: color }} className="inline-block w-3 h-3 rounded-full mr-2" />
+                    <span>{value}: <strong>{chartData[index].value}</strong> ({percent}%)</span>
+                  </span>
+                );
+              }}
+            />
           </PieChart>
         </ResponsiveContainer>
       </div>
@@ -102,9 +204,23 @@ export const CountryDistributionChart = ({ data }: ChartProps) => {
   }, []);
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow">
-      <h3 className="font-medium text-gray-700 mb-3">Ülkelere Göre Dağılım</h3>
-      <div className="h-60">
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center">
+          <div className="flex-shrink-0 p-2 bg-amber-100 rounded-lg mr-3">
+            <Layers className="w-5 h-5 text-amber-600" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-gray-800 text-lg">Ülkelere Göre Dağılım</h3>
+            <p className="text-sm text-gray-500 mt-0.5">Son 30 gün</p>
+          </div>
+        </div>
+        <button className="text-sm text-primary flex items-center font-medium hover:underline">
+          Detaylı Analiz
+          <ChevronRight className="w-4 h-4 ml-1" />
+        </button>
+      </div>
+      <div className="h-72">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             width={500}
@@ -112,18 +228,36 @@ export const CountryDistributionChart = ({ data }: ChartProps) => {
             data={chartData}
             layout="vertical"
             margin={{
-              top: 5,
-              right: 30,
+              top: 15,
+              right: 50,
               left: 50,
               bottom: 5,
             }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis type="number" />
-            <YAxis dataKey="name" type="category" scale="band" />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="value" name="Ziyaretçi Sayısı">
+            <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#f1f5f9" />
+            <XAxis 
+              type="number" 
+              axisLine={false} 
+              tickLine={false} 
+              tick={{ fill: '#64748b', fontSize: 12 }}
+            />
+            <YAxis 
+              dataKey="name" 
+              type="category" 
+              scale="band" 
+              axisLine={false} 
+              tickLine={false} 
+              tick={{ fill: '#64748b', fontSize: 12 }}
+              width={80}
+            />
+            <Tooltip content={<CustomTooltip />} />
+            <Bar 
+              dataKey="value" 
+              name="Ziyaretçi Sayısı"
+              animationDuration={1500} 
+              barSize={20} 
+              radius={[0, 4, 4, 0]}
+            >
               {chartData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
@@ -148,9 +282,23 @@ export const ServiceDistributionChart = ({ data }: ChartProps) => {
   }, []);
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow">
-      <h3 className="font-medium text-gray-700 mb-3">Hizmet Dağılımı</h3>
-      <div className="h-60">
+    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center">
+          <div className="flex-shrink-0 p-2 bg-green-100 rounded-lg mr-3">
+            <Settings className="w-5 h-5 text-green-600" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-gray-800 text-lg">Hizmet Dağılımı</h3>
+            <p className="text-sm text-gray-500 mt-0.5">Toplam randevular</p>
+          </div>
+        </div>
+        <button className="text-sm text-primary flex items-center font-medium hover:underline">
+          Tüm Hizmetler
+          <ChevronRight className="w-4 h-4 ml-1" />
+        </button>
+      </div>
+      <div className="h-72">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart width={400} height={400}>
             <Pie
@@ -158,17 +306,33 @@ export const ServiceDistributionChart = ({ data }: ChartProps) => {
               cx="50%"
               cy="50%"
               labelLine={false}
-              outerRadius={80}
-              fill="#8884d8"
+              innerRadius={0}
+              outerRadius={90}
+              paddingAngle={1}
               dataKey="value"
-              label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+              label={({ name, percent }) => percent > 0.05 ? `${(percent * 100).toFixed(0)}%` : ''}
             >
               {chartData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
             </Pie>
-            <Tooltip />
-            <Legend />
+            <Tooltip content={<CustomTooltip />} />
+            <Legend 
+              layout="vertical" 
+              verticalAlign="middle" 
+              align="right"
+              formatter={(value, entry, index) => {
+                const { color } = chartData[index];
+                const total = chartData.reduce((sum, item) => sum + item.value, 0);
+                const percent = ((chartData[index].value / total) * 100).toFixed(1);
+                return (
+                  <span className="flex items-center text-sm">
+                    <span style={{ backgroundColor: color }} className="inline-block w-3 h-3 rounded-full mr-2" />
+                    <span>{value}: <strong>{chartData[index].value}</strong> ({percent}%)</span>
+                  </span>
+                );
+              }}
+            />
           </PieChart>
         </ResponsiveContainer>
       </div>
