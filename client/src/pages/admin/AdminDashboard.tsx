@@ -825,7 +825,7 @@ const AdminDashboard = () => {
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
                         {appointments && appointments.length > 0 ? (
-                          appointments.slice(0, 5).map((appointment, index) => (
+                          appointments.slice(0, 5).map((appointment: any, index: number) => (
                             <tr key={appointment.id || index} className="hover:bg-gray-50 transition-colors">
                               <td className="px-4 py-3.5 whitespace-nowrap">
                                 <div className="flex items-center">

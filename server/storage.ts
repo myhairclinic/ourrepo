@@ -1653,13 +1653,22 @@ export class DatabaseStorage implements IStorage {
 
   async updateAppointment(id: number, appointment: Partial<Appointment>): Promise<Appointment | undefined> {
     try {
+      // Şu anki zamanı kullanarak updatedAt'i ayarla
+      const now = new Date();
+      
+      // Güncelleme verilerinden appointmentTime çıkarılır ve değer olarak kullanılırsa, çakışma olmasın
+      const { appointmentTime, ...otherAppointmentData } = appointment;
+      
+      // appointmentTime değeri varsa ekle, yoksa sadece diğer verileri güncelle
+      const dataToUpdate = appointmentTime 
+        ? { ...otherAppointmentData, appointment_time: appointmentTime, updatedAt: now } 
+        : { ...otherAppointmentData, updatedAt: now };
+        
       const [updatedAppointment] = await db.update(appointments)
-        .set({
-          ...appointment,
-          updatedAt: new Date()
-        })
+        .set(dataToUpdate)
         .where(eq(appointments.id, id))
         .returning();
+        
       return updatedAppointment;
     } catch (error) {
       console.error(`Error updating appointment with ID ${id}:`, error);
