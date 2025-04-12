@@ -16,31 +16,19 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Turkish]: "Neden Bizi Seçmelisiniz",
     [Language.English]: "Why Choose Us",
     [Language.Russian]: "Почему Выбирают Нас",
-    [Language.Georgian]: "რატომ უნდა აგვირჩიოთ",
-    [Language.Azerbaijani]: "Bizi Niyə Seçməlisiniz",
-    [Language.Persian]: "چرا ما را انتخاب کنید",
-    [Language.Kazakh]: "Бізді Неге Таңдауыңыз Керек",
-    [Language.Ukrainian]: "Чому Обрати Нас"
+    [Language.Georgian]: "რატომ უნდა აგვირჩიოთ"
   },
   "home.whyChooseUs.subtitle": {
     [Language.Turkish]: "MyHair Tbilisi ile saç ekimi konusunda en iyi hizmeti alın",
     [Language.English]: "Get the best hair transplantation service with MyHair Tbilisi",
     [Language.Russian]: "Получите лучший сервис по трансплантации волос с MyHair Тбилиси",
-    [Language.Georgian]: "მიიღეთ საუკეთესო თმის გადანერგვის სერვისი MyHair თბილისთან ერთად",
-    [Language.Azerbaijani]: "MyHair Tbilisi ilə ən yaxşı saç köçürmə xidməti alın",
-    [Language.Persian]: "بهترین خدمات کاشت مو را با MyHair تفلیس دریافت کنید",
-    [Language.Kazakh]: "MyHair Тбилисимен бірге ең жақсы шаш көшіру қызметін алыңыз",
-    [Language.Ukrainian]: "Отримайте найкращий сервіс трансплантації волосся з MyHair Тбілісі"
+    [Language.Georgian]: "მიიღეთ საუკეთესო თმის გადანერგვის სერვისი MyHair თბილისთან ერთად"
   },
   "home.whyChooseUs.experience.title": {
     [Language.Turkish]: "Uzman Deneyimi",
     [Language.English]: "Expert Experience",
     [Language.Russian]: "Экспертный Опыт",
-    [Language.Georgian]: "ექსპერტული გამოცდილება",
-    [Language.Azerbaijani]: "Ekspert Təcrübəsi",
-    [Language.Persian]: "تجربه متخصص",
-    [Language.Kazakh]: "Сарапшы Тәжірибесі",
-    [Language.Ukrainian]: "Експертний Досвід"
+    [Language.Georgian]: "ექსპერტული გამოცდილება"
   },
   "home.whyChooseUs.experience.description": {
     [Language.Turkish]: "10 yılı aşkın deneyime sahip uzman doktorlarımızla hizmet veriyoruz.",
@@ -145,151 +133,91 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Georgian]: "მეტის წაკითხვა"
   },
   // Footer Translations
-  "footer": {
-    "quickLinks": {
-      [Language.Turkish]: "Hızlı Linkler",
-      [Language.English]: "Quick Links",
-      [Language.Russian]: "Быстрые Ссылки",
-      [Language.Georgian]: "სწრაფი ბმულები",
-      [Language.Azerbaijani]: "Sürətli Keçidlər",
-      [Language.Persian]: "لینک‌های سریع",
-      [Language.Kazakh]: "Жылдам Сілтемелер",
-      [Language.Ukrainian]: "Швидкі посилання"
-    },
-    "ourServices": {
-      [Language.Turkish]: "Hizmetlerimiz",
-      [Language.English]: "Our Services",
-      [Language.Russian]: "Наши Услуги",
-      [Language.Georgian]: "ჩვენი სერვისები",
-      [Language.Azerbaijani]: "Xidmətlərimiz",
-      [Language.Persian]: "خدمات ما",
-      [Language.Kazakh]: "Біздің қызметтер",
-      [Language.Ukrainian]: "Наші послуги"
-    },
-    "contactUs": {
-      [Language.Turkish]: "İletişim",
-      [Language.English]: "Contact Us",
-      [Language.Russian]: "Свяжитесь с Нами",
-      [Language.Georgian]: "დაგვიკავშირდით",
-      [Language.Azerbaijani]: "Bizimlə Əlaqə",
-      [Language.Persian]: "تماس با ما",
-      [Language.Kazakh]: "Бізбен байланыс",
-      [Language.Ukrainian]: "Зв'яжіться з нами"
-    },
-    "workingHours": {
-      [Language.Turkish]: "Pazartesi - Cumartesi: 09:00 - 18:00",
-      [Language.English]: "Monday - Saturday: 09:00 - 18:00",
-      [Language.Russian]: "Понедельник - Суббота: 09:00 - 18:00",
-      [Language.Georgian]: "ორშაბათი - შაბათი: 09:00 - 18:00",
-      [Language.Azerbaijani]: "Bazar ertəsi - Şənbə: 09:00 - 18:00",
-      [Language.Persian]: "دوشنبه - شنبه: ۰۹:۰۰ - ۱۸:۰۰",
-      [Language.Kazakh]: "Дүйсенбі - Сенбі: 09:00 - 18:00",
-      [Language.Ukrainian]: "Понеділок - Субота: 09:00 - 18:00"
-    },
-    "allRightsReserved": {
-      [Language.Turkish]: "Tüm hakları saklıdır.",
-      [Language.English]: "All rights reserved.",
-      [Language.Russian]: "Все права защищены.",
-      [Language.Georgian]: "ყველა უფლება დაცულია.",
-      [Language.Azerbaijani]: "Bütün hüquqlar qorunur.",
-      [Language.Persian]: "تمامی حقوق محفوظ است.",
-      [Language.Kazakh]: "Барлық құқықтар қорғалған.",
-      [Language.Ukrainian]: "Всі права захищені."
-    },
-    "privacyPolicy": {
-      [Language.Turkish]: "Gizlilik Politikası",
-      [Language.English]: "Privacy Policy",
-      [Language.Russian]: "Политика Конфиденциальности",
-      [Language.Georgian]: "კონფიდენციალურობის პოლიტიკა",
-      [Language.Azerbaijani]: "Gizlilik Siyasəti",
-      [Language.Persian]: "سیاست حفظ حریم خصوصی",
-      [Language.Kazakh]: "Құпиялылық саясаты",
-      [Language.Ukrainian]: "Політика конфіденційності"
-    },
-    "termsOfUse": {
-      [Language.Turkish]: "Kullanım Şartları",
-      [Language.English]: "Terms of Use",
-      [Language.Russian]: "Условия Использования",
-      [Language.Georgian]: "გამოყენების პირობები",
-      [Language.Azerbaijani]: "İstifadə Şərtləri",
-      [Language.Persian]: "شرایط استفاده",
-      [Language.Kazakh]: "Қолдану шарттары",
-      [Language.Ukrainian]: "Умови використання"
-    },
-    "description": {
-      [Language.Turkish]: "Tiflis'te lider saç ekimi ve estetik merkezi. En son teknolojiler ve uzman kadromuzla hizmetinizdeyiz.",
-      [Language.English]: "Leading hair transplantation and aesthetic center in Tbilisi. We are at your service with the latest technologies and our expert staff.",
-      [Language.Russian]: "Ведущий центр трансплантации волос и эстетики в Тбилиси. Мы к вашим услугам с новейшими технологиями и нашими экспертами.",
-      [Language.Georgian]: "წამყვანი თმის გადანერგვისა და ესთეტიკური ცენტრი თბილისში. ჩვენ გემსახურებით უახლესი ტექნოლოგიებითა და ჩვენი ექსპერტებით.",
-      [Language.Azerbaijani]: "Tbilisidə aparıcı saç köçürmə və estetik mərkəzi. Ən son texnologiyalarımız və peşəkar heyətimizlə xidmətinizdəyik.",
-      [Language.Persian]: "مرکز پیشرو در پیوند مو و زیبایی در تفلیس. ما با جدیدترین فناوری‌ها و کارکنان متخصص خود در خدمت شما هستیم.",
-      [Language.Kazakh]: "Тбилисидегі жетекші шаш трансплантациясы және эстетикалық орталығы. Біз ең соңғы технологиялар мен тәжірибелі мамандарымызбен сіздің қызметіңіздеміз.",
-      [Language.Ukrainian]: "Провідний центр трансплантації волосся та естетики в Тбілісі. Ми до ваших послуг з новітніми технологіями та нашими експертами."
-    },
-    "getDirections": {
-      [Language.Turkish]: "Yol Tarifi Al",
-      [Language.English]: "Get Directions",
-      [Language.Russian]: "Получить Маршрут",
-      [Language.Georgian]: "მიმართულების მიღება",
-      [Language.Azerbaijani]: "İstiqamət Alın",
-      [Language.Persian]: "مسیریابی",
-      [Language.Kazakh]: "Бағыт алу",
-      [Language.Ukrainian]: "Отримати маршрут"
-    }
+  "footer.quickLinks": {
+    [Language.Turkish]: "Hızlı Linkler",
+    [Language.English]: "Quick Links",
+    [Language.Russian]: "Быстрые Ссылки",
+    [Language.Georgian]: "სწრაფი ბმულები"
+  },
+  "footer.ourServices": {
+    [Language.Turkish]: "Hizmetlerimiz",
+    [Language.English]: "Our Services",
+    [Language.Russian]: "Наши Услуги",
+    [Language.Georgian]: "ჩვენი სერვისები"
+  },
+  "footer.contactUs": {
+    [Language.Turkish]: "İletişim",
+    [Language.English]: "Contact Us",
+    [Language.Russian]: "Свяжитесь с Нами",
+    [Language.Georgian]: "დაგვიკავშირდით"
+  },
+  "footer.workingHours": {
+    [Language.Turkish]: "Pazartesi - Cumartesi: 09:00 - 18:00",
+    [Language.English]: "Monday - Saturday: 09:00 - 18:00",
+    [Language.Russian]: "Понедельник - Суббота: 09:00 - 18:00",
+    [Language.Georgian]: "ორშაბათი - შაბათი: 09:00 - 18:00"
+  },
+  "footer.allRightsReserved": {
+    [Language.Turkish]: "Tüm hakları saklıdır.",
+    [Language.English]: "All rights reserved.",
+    [Language.Russian]: "Все права защищены.",
+    [Language.Georgian]: "ყველა უფლება დაცულია."
+  },
+  "footer.privacyPolicy": {
+    [Language.Turkish]: "Gizlilik Politikası",
+    [Language.English]: "Privacy Policy",
+    [Language.Russian]: "Политика Конфиденциальности",
+    [Language.Georgian]: "კონფიდენციალურობის პოლიტიკა"
+  },
+  "footer.termsOfUse": {
+    [Language.Turkish]: "Kullanım Şartları",
+    [Language.English]: "Terms of Use",
+    [Language.Russian]: "Условия Использования",
+    [Language.Georgian]: "გამოყენების პირობები"
+  },
+  "footer.description": {
+    [Language.Turkish]: "Tiflis'te lider saç ekimi ve estetik merkezi. En son teknolojiler ve uzman kadromuzla hizmetinizdeyiz.",
+    [Language.English]: "Leading hair transplantation and aesthetic center in Tbilisi. We are at your service with the latest technologies and our expert staff.",
+    [Language.Russian]: "Ведущий центр трансплантации волос и эстетики в Тбилиси. Мы к вашим услугам с новейшими технологиями и нашими экспертами.",
+    [Language.Georgian]: "წამყვანი თმის გადანერგვისა და ესთეტიკური ცენტრი თბილისში. ჩვენ გემსახურებით უახლესი ტექნოლოგიებითა და ჩვენი ექსპერტებით."
+  },
+  "footer.getDirections": {
+    [Language.Turkish]: "Yol Tarifi Al",
+    [Language.English]: "Get Directions",
+    [Language.Russian]: "Получить Маршрут",
+    [Language.Georgian]: "მიმართულების მიღება"
   },
   
   // Service Translations
-  "services": {
-    "hairTransplant": {
-      [Language.Turkish]: "Saç Ekimi",
-      [Language.English]: "Hair Transplantation",
-      [Language.Russian]: "Трансплантация Волос",
-      [Language.Georgian]: "თმის გადანერგვა",
-      [Language.Azerbaijani]: "Saç Əkimi",
-      [Language.Persian]: "کاشت مو",
-      [Language.Kazakh]: "Шаш Трансплантациясы",
-      [Language.Ukrainian]: "Трансплантація волосся"
-    },
-    "beardTransplant": {
-      [Language.Turkish]: "Sakal Ekimi",
-      [Language.English]: "Beard Transplantation",
-      [Language.Russian]: "Трансплантация Бороды",
-      [Language.Georgian]: "წვერის გადანერგვა",
-      [Language.Azerbaijani]: "Saqqal Əkimi",
-      [Language.Persian]: "کاشت ریش",
-      [Language.Kazakh]: "Сақал Трансплантациясы",
-      [Language.Ukrainian]: "Трансплантація бороди"
-    },
-    "eyebrowTransplant": {
-      [Language.Turkish]: "Kaş Ekimi",
-      [Language.English]: "Eyebrow Transplantation",
-      [Language.Russian]: "Трансплантация Бровей",
-      [Language.Georgian]: "წარბების გადანერგვა",
-      [Language.Azerbaijani]: "Qaş Əkimi",
-      [Language.Persian]: "کاشت ابرو",
-      [Language.Kazakh]: "Қас Трансплантациясы",
-      [Language.Ukrainian]: "Трансплантація брів"
-    },
-    "prpTreatment": {
-      [Language.Turkish]: "PRP Tedavisi",
-      [Language.English]: "PRP Treatment",
-      [Language.Russian]: "PRP Терапия",
-      [Language.Georgian]: "PRP მკურნალობა",
-      [Language.Azerbaijani]: "PRP Müalicəsi",
-      [Language.Persian]: "درمان PRP",
-      [Language.Kazakh]: "PRP Емдеу",
-      [Language.Ukrainian]: "PRP Терапія"
-    },
-    "mesotherapy": {
-      [Language.Turkish]: "Saç Mezoterapisi",
-      [Language.English]: "Hair Mesotherapy",
-      [Language.Russian]: "Мезотерапия Волос",
-      [Language.Georgian]: "თმის მეზოთერაპია",
-      [Language.Azerbaijani]: "Saç Mezoterapiyası",
-      [Language.Persian]: "مزوتراپی مو",
-      [Language.Kazakh]: "Шаш Мезотерапиясы",
-      [Language.Ukrainian]: "Мезотерапія волосся"
-    }
+  "services.hairTransplant": {
+    [Language.Turkish]: "Saç Ekimi",
+    [Language.English]: "Hair Transplantation",
+    [Language.Russian]: "Трансплантация Волос",
+    [Language.Georgian]: "თმის გადანერგვა"
+  },
+  "services.beardTransplant": {
+    [Language.Turkish]: "Sakal Ekimi",
+    [Language.English]: "Beard Transplantation",
+    [Language.Russian]: "Трансплантация Бороды",
+    [Language.Georgian]: "წვერის გადანერგვა"
+  },
+  "services.eyebrowTransplant": {
+    [Language.Turkish]: "Kaş Ekimi",
+    [Language.English]: "Eyebrow Transplantation",
+    [Language.Russian]: "Трансплантация Бровей",
+    [Language.Georgian]: "წარბების გადანერგვა"
+  },
+  "services.prpTreatment": {
+    [Language.Turkish]: "PRP Tedavisi",
+    [Language.English]: "PRP Treatment",
+    [Language.Russian]: "PRP Терапия",
+    [Language.Georgian]: "PRP მკურნალობა"
+  },
+  "services.mesotherapy": {
+    [Language.Turkish]: "Saç Mezoterapisi",
+    [Language.English]: "Hair Mesotherapy",
+    [Language.Russian]: "Мезотерапия Волос",
+    [Language.Georgian]: "თმის მეზოთერაპია"
   },
 
   // Common elements
