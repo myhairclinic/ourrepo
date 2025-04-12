@@ -591,6 +591,17 @@ const PatientManagement = () => {
                     <SelectItem value="completed">Tamamlandı</SelectItem>
                   </SelectContent>
                 </Select>
+                
+                <Select value={sourceFilter} onValueChange={setSourceFilter}>
+                  <SelectTrigger className="w-full sm:w-52">
+                    <SelectValue placeholder="Kaynak" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">Tüm Kaynaklar</SelectItem>
+                    <SelectItem value="appointment">Randevudan Oluşturulan</SelectItem>
+                    <SelectItem value="manual">Manuel Eklenen</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               
               <Button 
@@ -860,7 +871,15 @@ const PatientManagement = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Kişisel Bilgiler</CardTitle>
+                    <CardTitle className="flex items-center gap-2">
+                      Kişisel Bilgiler
+                      {selectedPatient.notes && selectedPatient.notes.includes("Otomatik oluşturuldu. Randevu ID:") && (
+                        <Badge variant="outline" className="ml-2 flex items-center gap-1 bg-green-50">
+                          <CheckCircle className="h-3 w-3 text-green-500" />
+                          <span className="text-xs">Randevu Onayından</span>
+                        </Badge>
+                      )}
+                    </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     <div className="grid grid-cols-2 gap-2">
