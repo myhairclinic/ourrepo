@@ -3110,6 +3110,12 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Свяжитесь с нами, чтобы узнать больше об этом продукте или разместить заказ.",
     [Language.Georgian]: "დაგვიკავშირდით ამ პროდუქტის შესახებ მეტი ინფორმაციის მისაღებად ან შეკვეთის განსათავსებლად."
   },
+  "products.keyFeatures": {
+    [Language.Turkish]: "ÖNE ÇIKAN ÖZELLİKLER",
+    [Language.English]: "KEY FEATURES",
+    [Language.Russian]: "КЛЮЧЕВЫЕ ОСОБЕННОСТИ",
+    [Language.Georgian]: "ძირითადი მახასიათებლები"
+  },
   "products.backToProducts": {
     [Language.Turkish]: "Ürünlere Geri Dön",
     [Language.English]: "Back to Products",

@@ -145,7 +145,7 @@ export default function ProductsPage() {
             
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-8">
               {vitharinProducts.map((product) => (
-                <Card key={product.id} className="group overflow-hidden transition-all duration-300 hover:shadow-lg">
+                <Card key={product.id} className="group overflow-hidden transition-all duration-300 hover:shadow-lg border-primary/5">
                   <div className="relative overflow-hidden h-64">
                     <img 
                       src={product.imageUrl} 
@@ -160,21 +160,23 @@ export default function ProductsPage() {
                         {t('products.new')}
                       </Badge>
                     )}
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4 flex justify-end">
+                      <Badge variant="outline" className="bg-white/90 text-primary border-primary/20 backdrop-blur-sm">
+                        <Star size={12} className="mr-1" /> Vitharin Professional
+                      </Badge>
+                    </div>
                   </div>
                   
                   <CardHeader className="p-5 pb-0">
                     <div className="flex justify-between items-start">
-                      <CardTitle className="text-xl font-bold">
+                      <CardTitle className="text-xl font-bold text-primary">
                         {language === 'tr' ? product.nameTR : 
                          language === 'en' ? product.nameEN : 
                          language === 'ru' ? product.nameRU : 
                          product.nameKA}
                       </CardTitle>
-                      <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20">
-                        <Star size={12} className="mr-1" /> Vitharin
-                      </Badge>
                     </div>
-                    <CardDescription className="mt-2 text-sm line-clamp-2">
+                    <CardDescription className="mt-2 text-sm">
                       {language === 'tr' ? product.descriptionTR : 
                        language === 'en' ? product.descriptionEN : 
                        language === 'ru' ? product.descriptionRU : 
@@ -183,21 +185,35 @@ export default function ProductsPage() {
                   </CardHeader>
                   
                   <CardContent className="p-5 pt-3">
-                    <div className="space-y-3 mt-2">
-                      <div className="flex items-start">
-                        <Shield size={16} className="text-green-500 mr-2 mt-0.5" />
-                        <span className="text-sm">{t('products.serviceFeature1')}</span>
+                    <div className="mt-4 pt-4 border-t border-gray-100">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs uppercase font-medium text-muted-foreground">
+                          {t('products.keyFeatures')}
+                        </span>
                       </div>
-                      <div className="flex items-start">
-                        <CheckCircle size={16} className="text-green-500 mr-2 mt-0.5" />
-                        <span className="text-sm">{t('products.serviceFeature2')}</span>
+                      <div className="space-y-2">
+                        <div className="flex items-start">
+                          <Shield size={16} className="text-primary mr-2 mt-0.5 flex-shrink-0" />
+                          <span className="text-sm">{t('products.serviceFeature1')}</span>
+                        </div>
+                        <div className="flex items-start">
+                          <CheckCircle size={16} className="text-primary mr-2 mt-0.5 flex-shrink-0" />
+                          <span className="text-sm">{t('products.serviceFeature2')}</span>
+                        </div>
+                        <div className="flex items-start">
+                          <CheckCircle size={16} className="text-primary mr-2 mt-0.5 flex-shrink-0" />
+                          <span className="text-sm">{t('products.serviceFeature3')}</span>
+                        </div>
                       </div>
                     </div>
                   </CardContent>
                   
-                  <CardFooter className="p-5 pt-2 flex justify-center items-center">
-                    <Link href={addPrefix(`/products/${product.slug}`)} className="">
-                      <Button className="gap-2">
+                  <CardFooter className="p-5 pt-2 flex justify-end items-center gap-2">
+                    <Button variant="secondary" size="sm" className="gap-1" onClick={() => window.open(`mailto:myhairtbilisi@gmail.com?subject=Bilgi%20Talebi:%20${encodeURIComponent(language === 'tr' ? product.nameTR : language === 'en' ? product.nameEN : language === 'ru' ? product.nameRU : product.nameKA)}`)}>
+                      {t('products.inquireProduct')}
+                    </Button>
+                    <Link href={addPrefix(`/products/${product.slug}`)}>
+                      <Button className="gap-1">
                         {t('common.moreInfo')}
                         <ArrowRight size={14} />
                       </Button>
