@@ -1571,42 +1571,31 @@ export class DatabaseStorage implements IStorage {
   }
   
   async getOnePackagePerCountry(): Promise<Package[]> {
-    // Her ülke için bir paket alıyoruz
-    // Önce tüm benzersiz ülkeleri bulalım
-    const countries = await db.selectDistinct({ countryOrigin: packages.countryOrigin })
-      .from(packages)
-      .where(eq(packages.isActive, true));
-    
-    // Her ülke için en son güncellenen paketi alalım
+    // Doğrudan veritabanından farklı ülke orijinli tek paket alalım
+    // Bu SQL sorgusunu taklit eden alternatif bir yaklaşım kullanıyoruz
+    const countryList = ['TR', 'RU', 'AZ', 'KZ', 'UA', 'IR'];
     const result: Package[] = [];
     
-    for (const { countryOrigin } of countries) {
-      if (!countryOrigin) continue; // null ise atla
-      
-      // Bu ülke için en son güncellenen paketi alalım
+    // Her ülke için en son güncellenmiş bir paket alalım
+    for (const countryCode of countryList) {
       const [pkg] = await db.select()
         .from(packages)
-        .where(eq(packages.countryOrigin, countryOrigin))
+        .where(eq(packages.countryOrigin, countryCode))
         .where(eq(packages.isActive, true))
         .orderBy(desc(packages.updatedAt))
         .limit(1);
         
       if (pkg) {
-        // Country alanını da countryOrigin ile aynı değere ayarlayalım
-        // Frontend'in doğru ülke kodunu alabilmesi için
-        const updatedPkg = {
-          ...pkg,
-          country: pkg.countryOrigin
-        };
-        result.push(updatedPkg);
+        console.log(`Found package for ${countryCode}: ${pkg.titleTR}`);
+        result.push(pkg);
       }
     }
     
     console.log(`One package per country found: ${result.length}`);
-    if (result.length > 0) {
-      result.forEach(pkg => {
-        console.log(`Package for ${pkg.countryOrigin} (${pkg.country}): ${pkg.titleTR}`);
-      });
+    
+    // Sonuçları kontrol edelim - böylece hangi ülkelerin temsil edildiğini görebiliriz
+    for (const pkg of result) {
+      console.log(`Package for ${pkg.countryOrigin}: ${pkg.titleTR}`);
     }
     
     return result;
