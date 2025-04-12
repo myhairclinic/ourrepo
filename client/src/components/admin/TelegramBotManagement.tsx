@@ -118,6 +118,8 @@ const predefinedMessageSchema = z.object({
 export default function TelegramBotManagement() {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("staff");
+  const [isOperatorDialogOpen, setIsOperatorDialogOpen] = useState(false);
+  const [editingOperator, setEditingOperator] = useState<any>(null);
   const [selectedContact, setSelectedContact] = useState<any>(null);
   const [messageText, setMessageText] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -125,8 +127,6 @@ export default function TelegramBotManagement() {
   const [selectedPredefinedMessage, setSelectedPredefinedMessage] = useState<any>(null);
   const [editingPredefinedMessage, setEditingPredefinedMessage] = useState<any>(null);
   const [isPredefinedMessageDialogOpen, setIsPredefinedMessageDialogOpen] = useState(false);
-  const [isOperatorDialogOpen, setIsOperatorDialogOpen] = useState(false);
-  const [editingOperator, setEditingOperator] = useState<any>(null);
   
   // Kişileri getir
   const { 
@@ -1074,6 +1074,99 @@ export default function TelegramBotManagement() {
           <PredefinedMessageManagement />
         </TabsContent>
       </Tabs>
+      
+      {/* Operatör Ekleme/Düzenleme Dialog */}
+      <Dialog open={isOperatorDialogOpen} onOpenChange={setIsOperatorDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{editingOperator ? 'Operatör Düzenle' : 'Yeni Operatör Ekle'}</DialogTitle>
+            <DialogDescription>
+              Telegram bot bildirimleri alacak personel hesabı ekleyin.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="text-right">
+                İsim
+              </Label>
+              <Input
+                id="name"
+                defaultValue={editingOperator?.name || ''}
+                className="col-span-3"
+                placeholder="Personel adı"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="telegramUsername" className="text-right">
+                Telegram Kullanıcı Adı
+              </Label>
+              <Input
+                id="telegramUsername"
+                defaultValue={editingOperator?.telegramUsername || ''}
+                className="col-span-3"
+                placeholder="kullaniciadi (@ işareti olmadan)"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="status" className="text-right">
+                Durum
+              </Label>
+              <div className="flex items-center space-x-2 col-span-3">
+                <Switch 
+                  id="status" 
+                  defaultChecked={editingOperator ? editingOperator.isActive : true} 
+                />
+                <Label htmlFor="status">Aktif</Label>
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsOperatorDialogOpen(false)}>
+              İptal
+            </Button>
+            <Button onClick={() => {
+              const name = (document.getElementById('name') as HTMLInputElement).value;
+              const telegramUsername = (document.getElementById('telegramUsername') as HTMLInputElement).value;
+              const isActive = (document.getElementById('status') as HTMLInputElement).checked;
+              
+              if (!name || !telegramUsername) {
+                toast({
+                  title: "Eksik Bilgi",
+                  description: "Lütfen tüm alanları doldurun.",
+                  variant: "destructive"
+                });
+                return;
+              }
+              
+              const operator = {
+                id: editingOperator?.id || Date.now(),
+                name,
+                telegramUsername,
+                isActive
+              };
+              
+              const currentOperators = botSettings?.operators || [];
+              let newOperators;
+              
+              if (editingOperator) {
+                // Mevcut operatörü güncelle
+                newOperators = currentOperators.map((op: any) => 
+                  op.id === editingOperator.id ? operator : op
+                );
+              } else {
+                // Yeni operatör ekle
+                newOperators = [...currentOperators, operator];
+              }
+              
+              const updatedSettings = { ...botSettings, operators: newOperators };
+              updateBotSettingsMutation.mutate(updatedSettings);
+              setIsOperatorDialogOpen(false);
+            }}>
+              {editingOperator ? 'Güncelle' : 'Ekle'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
