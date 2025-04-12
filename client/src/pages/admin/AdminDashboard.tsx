@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { useAdmin } from "@/hooks/use-admin";
-import { Loader2, Settings, Users, Package, MessageCircle, Calendar, FileText, Image, Star, HelpCircle, BookOpen, Package2, BarChart, ArrowLeft, LogOut, ShoppingBag, Heart, Globe, Search, ChevronDown, Bell, User, Menu, X, PlusCircle, Trash2, Edit, Download, Upload, Eye, HardDrive, List, LayoutGrid, LayoutList, Shield, Send } from "lucide-react";
+import { Loader2, Settings, Users, Package, MessageCircle, Calendar, FileText, Image, Star, HelpCircle, BookOpen, Package2, BarChart, ArrowLeft, LogOut, ShoppingBag, Heart, Globe, Search, ChevronDown, Bell, User, Menu, X, PlusCircle, Trash2, Edit, Download, Upload, Eye, HardDrive, List, LayoutGrid, LayoutList, Shield, Send, ChevronLeft, ChevronRight, CheckCircle, Clock, Pencil, Activity } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
 import { 
@@ -815,29 +815,73 @@ const AdminDashboard = () => {
                 </button>
               </div>
               
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <div className="p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b">
-                  <div className="relative w-full md:w-64">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input 
-                      type="text" 
-                      placeholder="Hizmet ara..." 
-                      className="pl-10 pr-4 py-2 w-full rounded-lg border focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
-                    />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-xl shadow-md text-white flex items-center justify-between">
+                  <div>
+                    <p className="text-blue-100 text-sm font-medium mb-1">Toplam Hizmet</p>
+                    <h3 className="text-3xl font-bold">{services?.length || 0}</h3>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <select className="p-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
-                      <option value="all">Tüm Hizmetler</option>
-                      <option value="active">Aktif</option>
-                      <option value="inactive">Pasif</option>
-                    </select>
-                    <div className="flex border rounded-lg overflow-hidden">
-                      <button className="p-2 bg-white text-gray-700 hover:bg-gray-50">
-                        <LayoutGrid className="w-5 h-5" />
-                      </button>
-                      <button className="p-2 bg-primary text-white">
-                        <LayoutList className="w-5 h-5" />
-                      </button>
+                  <div className="bg-white/20 p-3 rounded-lg">
+                    <Layers className="w-6 h-6 text-white" />
+                  </div>
+                </div>
+                
+                <div className="bg-gradient-to-r from-green-500 to-green-600 p-6 rounded-xl shadow-md text-white flex items-center justify-between">
+                  <div>
+                    <p className="text-green-100 text-sm font-medium mb-1">Aktif Hizmetler</p>
+                    <h3 className="text-3xl font-bold">{services?.filter(s => s.isActive).length || 0}</h3>
+                  </div>
+                  <div className="bg-white/20 p-3 rounded-lg">
+                    <CheckCircle className="w-6 h-6 text-white" />
+                  </div>
+                </div>
+                
+                <div className="bg-gradient-to-r from-amber-500 to-amber-600 p-6 rounded-xl shadow-md text-white flex items-center justify-between">
+                  <div>
+                    <p className="text-amber-100 text-sm font-medium mb-1">Son Güncelleme</p>
+                    <h3 className="text-lg font-bold">{services?.length ? new Date(Math.max(...services.map(s => new Date(s.updatedAt).getTime()))).toLocaleDateString() : "-"}</h3>
+                  </div>
+                  <div className="bg-white/20 p-3 rounded-lg">
+                    <Clock className="w-6 h-6 text-white" />
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300">
+                <div className="p-5 border-b border-gray-100 bg-gray-50">
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div className="relative w-full md:w-64">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                      <input 
+                        type="text" 
+                        placeholder="Hizmet ara..." 
+                        className="pl-10 pr-4 py-2.5 w-full rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white"
+                      />
+                    </div>
+                    <div className="flex items-center flex-wrap gap-3">
+                      <div>
+                        <select className="py-2.5 px-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-700">
+                          <option value="all">Tüm Hizmetler</option>
+                          <option value="active">Aktif</option>
+                          <option value="inactive">Pasif</option>
+                        </select>
+                      </div>
+                      <div>
+                        <select className="py-2.5 px-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white text-gray-700">
+                          <option value="recent">En Yeni</option>
+                          <option value="oldest">En Eski</option>
+                          <option value="a-z">A-Z</option>
+                          <option value="z-a">Z-A</option>
+                        </select>
+                      </div>
+                      <div className="flex border border-gray-200 rounded-lg overflow-hidden">
+                        <button className="p-2.5 bg-white text-gray-600 hover:bg-gray-50 transition-colors border-r border-gray-200">
+                          <LayoutGrid className="w-5 h-5" />
+                        </button>
+                        <button className="p-2.5 bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors">
+                          <LayoutList className="w-5 h-5" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -845,55 +889,70 @@ const AdminDashboard = () => {
                 <div className="p-6">
                   <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
-                      <thead>
+                      <thead className="bg-gray-50">
                         <tr>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hizmet</th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Oluşturulma</th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Durum</th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">İşlemler</th>
+                          <th className="px-5 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hizmet</th>
+                          <th className="px-5 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Açıklama</th>
+                          <th className="px-5 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
+                          <th className="px-5 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Oluşturulma</th>
+                          <th className="px-5 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Durum</th>
+                          <th className="px-5 py-3.5 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">İşlemler</th>
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
                         {services && services.length > 0 ? (
                           services.map((service, index) => (
-                            <tr key={service.id || index} className="hover:bg-gray-50">
-                              <td className="px-4 py-4 whitespace-nowrap">
+                            <tr key={service.id || index} className="hover:bg-gray-50 transition-colors">
+                              <td className="px-5 py-4 whitespace-nowrap">
                                 <div className="flex items-center">
-                                  <div className="flex-shrink-0 h-10 w-10 rounded-md overflow-hidden">
-                                    <img src={service.imageUrl} alt={service.titleTR} className="h-10 w-10 object-cover" />
+                                  <div className="flex-shrink-0 h-12 w-12 rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
+                                    <img 
+                                      src={service.imageUrl} 
+                                      alt={service.titleTR} 
+                                      className="h-12 w-12 object-cover" 
+                                      onError={(e) => {
+                                        e.currentTarget.src = 'https://via.placeholder.com/60?text=No+Image';
+                                      }}
+                                    />
                                   </div>
                                   <div className="ml-4">
-                                    <div className="text-sm font-medium text-gray-900">{service.titleTR}</div>
-                                    <div className="text-xs text-gray-500 truncate max-w-xs">
-                                      {service.descriptionTR.substring(0, 60)}...
-                                    </div>
+                                    <div className="text-sm font-semibold text-gray-900">{service.titleTR}</div>
+                                    <div className="text-xs font-medium text-indigo-600">#{service.id}</div>
                                   </div>
                                 </div>
                               </td>
-                              <td className="px-4 py-4">
-                                <div className="text-sm text-gray-900">{service.slug}</div>
+                              <td className="px-5 py-4">
+                                <div className="text-sm text-gray-900 max-w-xs truncate">{service.descriptionTR}</div>
                               </td>
-                              <td className="px-4 py-4 whitespace-nowrap">
+                              <td className="px-5 py-4">
+                                <div className="text-sm font-medium text-gray-900 bg-gray-100 px-2 py-1 rounded-md w-fit">{service.slug}</div>
+                              </td>
+                              <td className="px-5 py-4 whitespace-nowrap">
                                 <div className="text-sm text-gray-900">{new Date(service.createdAt).toLocaleDateString()}</div>
+                                <div className="text-xs text-gray-500">{new Date(service.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
                               </td>
-                              <td className="px-4 py-4 whitespace-nowrap">
-                                <span className={`px-2 py-1 text-xs rounded-full ${
-                                  service.isActive ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                              <td className="px-5 py-4 whitespace-nowrap">
+                                <div className={`flex items-center ${
+                                  service.isActive ? "text-green-700" : "text-red-700"
                                 }`}>
-                                  {service.isActive ? "Aktif" : "Pasif"}
-                                </span>
+                                  <div className={`w-2.5 h-2.5 rounded-full mr-2 ${
+                                    service.isActive ? "bg-green-500 animate-pulse" : "bg-red-500"
+                                  }`}></div>
+                                  <span className="text-sm font-medium">
+                                    {service.isActive ? "Aktif" : "Pasif"}
+                                  </span>
+                                </div>
                               </td>
-                              <td className="px-4 py-4 whitespace-nowrap">
-                                <div className="flex space-x-2">
-                                  <button className="p-1 text-blue-500 hover:text-blue-700" title="Düzenle">
-                                    <Edit className="w-5 h-5" />
+                              <td className="px-5 py-4 whitespace-nowrap">
+                                <div className="flex items-center space-x-3">
+                                  <button className="p-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors group">
+                                    <Pencil className="w-4 h-4 group-hover:scale-110 transition-transform" />
                                   </button>
-                                  <button className="p-1 text-gray-500 hover:text-gray-700" title="Görüntüle">
-                                    <Eye className="w-5 h-5" />
+                                  <button className="p-1.5 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition-colors group">
+                                    <Eye className="w-4 h-4 group-hover:scale-110 transition-transform" />
                                   </button>
-                                  <button className="p-1 text-red-500 hover:text-red-700" title="Sil">
-                                    <Trash2 className="w-5 h-5" />
+                                  <button className="p-1.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors group">
+                                    <Trash2 className="w-4 h-4 group-hover:scale-110 transition-transform" />
                                   </button>
                                 </div>
                               </td>
@@ -901,25 +960,35 @@ const AdminDashboard = () => {
                           ))
                         ) : (
                           <tr>
-                            <td colSpan={5} className="px-4 py-4 text-center text-sm text-gray-500">
-                              Henüz hizmet bulunmamaktadır.
+                            <td colSpan={6} className="px-5 py-8 text-center">
+                              <div className="flex flex-col items-center">
+                                <Package className="w-12 h-12 text-gray-300 mb-2" />
+                                <h3 className="text-gray-500 text-lg font-medium mb-1">Henüz hizmet bulunmamaktadır</h3>
+                                <p className="text-gray-400 text-sm max-w-sm">Klinik hizmetlerinizi eklemek için yukarıdaki "Yeni Hizmet Ekle" butonunu kullanabilirsiniz.</p>
+                              </div>
                             </td>
                           </tr>
                         )}
                       </tbody>
                     </table>
                   </div>
-                </div>
-                
-                <div className="px-6 py-4 border-t flex items-center justify-between">
-                  <div className="text-sm text-gray-600">
-                    Toplam {services?.length || 0} hizmet
-                  </div>
                   
-                  <div className="flex space-x-2">
-                    <button className="px-3 py-1 border rounded-md text-sm">Önceki</button>
-                    <button className="px-3 py-1 bg-primary text-white rounded-md text-sm">1</button>
-                    <button className="px-3 py-1 border rounded-md text-sm">Sonraki</button>
+                  <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="text-sm text-gray-600 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100">
+                      Toplam <span className="font-semibold text-gray-800">{services?.length || 0}</span> hizmet
+                    </div>
+                    
+                    <div className="inline-flex items-center gap-1 rounded-md">
+                      <button className="px-3 py-1.5 border border-gray-200 rounded-l-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                        <ChevronLeft className="w-4 h-4" />
+                      </button>
+                      <button className="px-3 py-1.5 bg-primary text-white border border-primary rounded-none text-sm font-medium">
+                        1
+                      </button>
+                      <button className="px-3 py-1.5 border border-gray-200 rounded-r-lg text-gray-600 hover:bg-gray-50 text-sm font-medium transition-colors">
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
