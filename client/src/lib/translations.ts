@@ -6,10 +6,6 @@ type LanguageMap = {
   [Language.English]: string;
   [Language.Russian]: string;
   [Language.Georgian]: string;
-  [Language.Azerbaijani]: string;
-  [Language.Persian]: string;
-  [Language.Kazakh]: string;
-  [Language.Ukrainian]: string;
 };
 
 // Our translations object with simple key structure

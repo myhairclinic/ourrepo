@@ -38,38 +38,6 @@ export const ALL_LANGUAGES = [
     nativeName: "ქართული",
     fullName: "საქართველო",
     shortName: "KA" 
-  },
-  { 
-    code: Language.Azerbaijani, 
-    name: "Azərbaycan", 
-    flag: "🇦🇿",
-    nativeName: "Azərbaycan",
-    fullName: "Azərbaycan",
-    shortName: "AZ" 
-  },
-  { 
-    code: Language.Persian, 
-    name: "فارسی", 
-    flag: "🇮🇷",
-    nativeName: "فارسی",
-    fullName: "ایران",
-    shortName: "IR" 
-  },
-  { 
-    code: Language.Kazakh, 
-    name: "Қазақша", 
-    flag: "🇰🇿",
-    nativeName: "Қазақша",
-    fullName: "Қазақстан",
-    shortName: "KZ" 
-  },
-  { 
-    code: Language.Ukrainian, 
-    name: "Українська", 
-    flag: "🇺🇦",
-    nativeName: "Українська",
-    fullName: "Україна",
-    shortName: "UA" 
   }
 ];
 
