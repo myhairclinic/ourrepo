@@ -469,6 +469,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/aftercare-guides/count", adminControllers.getAftercareGuidesCount);
   app.get("/api/admin/analytics", adminControllers.getAnalyticsData);
   app.get("/api/admin/activity", adminControllers.getRecentActivity);
+  app.post("/api/admin/sync-vithair-products", async (req, res) => {
+    try {
+      // Admin yetki kontrolü
+      if (!req.isAuthenticated() || (req.user?.role !== 'admin')) {
+        return res.status(401).json({ success: false, message: "Bu işlem için admin yetkisi gereklidir." });
+      }
+
+      const { syncVithairProducts } = await import("./services/vithair-scraper");
+      const success = await syncVithairProducts();
+      
+      if (success) {
+        // Başarılı ise, mevcut ürün sayısını al
+        const products = await storage.getProducts();
+        return res.status(200).json({ 
+          success: true, 
+          message: "Vithair ürünleri başarıyla senkronize edildi", 
+          count: products.length 
+        });
+      } else {
+        return res.status(500).json({ 
+          success: false, 
+          message: "Vithair ürünleri senkronize edilirken bir hata oluştu" 
+        });
+      }
+    } catch (error) {
+      console.error("Vithair ürünleri senkronizasyon hatası:", error);
+      return res.status(500).json({ 
+        success: false, 
+        message: "Vithair ürünleri senkronize edilirken bir hata oluştu",
+        error: error instanceof Error ? error.message : String(error)
+      });
+    }
+  });
   app.get("/api/seed-packages", (req, res) => res.redirect("/"));
   app.post("/api/seed-packages", seedPackages);
   // Route for adding only new country packages (Azerbaijan and Kazakhstan)
