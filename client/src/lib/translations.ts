@@ -1,7 +1,16 @@
 import { Language } from "@shared/types";
 
-// A simple, non-nested translation record
-type LanguageMap = Record<Language, string>;
+// A simple, non-nested translation record with full language support
+type LanguageMap = {
+  [Language.Turkish]: string;
+  [Language.English]: string;
+  [Language.Russian]: string;
+  [Language.Georgian]: string;
+  [Language.Azerbaijani]: string;
+  [Language.Persian]: string;
+  [Language.Kazakh]: string;
+  [Language.Ukrainian]: string;
+};
 
 // Our translations object with simple key structure
 // Translations object (exported for direct usage in components)
@@ -11,19 +20,31 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Turkish]: "Neden Bizi Seçmelisiniz",
     [Language.English]: "Why Choose Us",
     [Language.Russian]: "Почему Выбирают Нас",
-    [Language.Georgian]: "რატომ უნდა აგვირჩიოთ"
+    [Language.Georgian]: "რატომ უნდა აგვირჩიოთ",
+    [Language.Azerbaijani]: "Bizi Niyə Seçməlisiniz",
+    [Language.Persian]: "چرا ما را انتخاب کنید",
+    [Language.Kazakh]: "Бізді Неге Таңдауыңыз Керек",
+    [Language.Ukrainian]: "Чому Обрати Нас"
   },
   "home.whyChooseUs.subtitle": {
     [Language.Turkish]: "MyHair Tbilisi ile saç ekimi konusunda en iyi hizmeti alın",
     [Language.English]: "Get the best hair transplantation service with MyHair Tbilisi",
     [Language.Russian]: "Получите лучший сервис по трансплантации волос с MyHair Тбилиси",
-    [Language.Georgian]: "მიიღეთ საუკეთესო თმის გადანერგვის სერვისი MyHair თბილისთან ერთად"
+    [Language.Georgian]: "მიიღეთ საუკეთესო თმის გადანერგვის სერვისი MyHair თბილისთან ერთად",
+    [Language.Azerbaijani]: "MyHair Tbilisi ilə ən yaxşı saç köçürmə xidməti alın",
+    [Language.Persian]: "بهترین خدمات کاشت مو را با MyHair تفلیس دریافت کنید",
+    [Language.Kazakh]: "MyHair Тбилисимен бірге ең жақсы шаш көшіру қызметін алыңыз",
+    [Language.Ukrainian]: "Отримайте найкращий сервіс трансплантації волосся з MyHair Тбілісі"
   },
   "home.whyChooseUs.experience.title": {
     [Language.Turkish]: "Uzman Deneyimi",
     [Language.English]: "Expert Experience",
     [Language.Russian]: "Экспертный Опыт",
-    [Language.Georgian]: "ექსპერტული გამოცდილება"
+    [Language.Georgian]: "ექსპერტული გამოცდილება",
+    [Language.Azerbaijani]: "Ekspert Təcrübəsi",
+    [Language.Persian]: "تجربه متخصص",
+    [Language.Kazakh]: "Сарапшы Тәжірибесі",
+    [Language.Ukrainian]: "Експертний Досвід"
   },
   "home.whyChooseUs.experience.description": {
     [Language.Turkish]: "10 yılı aşkın deneyime sahip uzman doktorlarımızla hizmet veriyoruz.",
