@@ -6,6 +6,8 @@ import { z } from "zod";
 import { Product, InsertProduct, insertProductSchema } from "@shared/schema";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { API_ROUTES } from "@/lib/constants";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+
 import AdminLayout from "@/components/admin/AdminLayout";
 import DeleteConfirmDialog from "@/components/admin/DeleteConfirmDialog";
 import { Input } from "@/components/ui/input";
@@ -39,7 +41,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Check, Edit, Plus, Trash2 } from "lucide-react";
+import { Check, Edit, Plus, Trash2, Download, AlertCircle } from "lucide-react";
 
 // Form validation schema for products
 const formSchema = insertProductSchema.extend({
@@ -54,6 +56,7 @@ export default function ProductsManager() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isFetchingVithair, setIsFetchingVithair] = useState(false);
 
   // Fetch all products
   const { data: products = [], isLoading } = useQuery<Product[]>({
