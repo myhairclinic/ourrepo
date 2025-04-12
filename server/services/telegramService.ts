@@ -1,5 +1,6 @@
 import { Appointment } from '@shared/schema';
 import { telegramBotService } from './telegramBotService';
+import { storage } from '../storage';
 
 // Test bildirimleri için Telegram servisi
 export const telegramService = {
@@ -375,7 +376,7 @@ export const scheduleAppointmentReminder = async (appointmentId: number, reminde
         console.log(`Executing reminder for appointment ID: ${appointmentId}`);
         
         // Veritabanından en güncel randevu bilgilerini al
-        const appointment = await telegramBotService.getAppointmentDetails(appointmentId);
+        const appointment = await storage.getAppointmentById(appointmentId);
         
         if (!appointment) {
           console.log(`Appointment ID ${appointmentId} not found, aborting reminder`);

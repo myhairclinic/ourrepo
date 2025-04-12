@@ -259,7 +259,10 @@ export const appointments = pgTable("appointments", {
   serviceId: integer("service_id").notNull(),
   message: text("message"),
   preferredDate: text("preferred_date"),
-  status: text("status").notNull().default("new"), // new, confirmed, completed, cancelled
+  appointmentTime: text("appointment_time"), // "09:30" formatında saat
+  status: text("status").notNull().default("pending"), // pending, confirmed, completed, cancelled
+  notificationScheduled: boolean("notification_scheduled").default(false), // hatırlatma planlandı mı?
+  notificationSent: boolean("notification_sent").default(false), // hatırlatma gönderildi mi?
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
@@ -267,6 +270,9 @@ export const appointments = pgTable("appointments", {
 export const insertAppointmentSchema = createInsertSchema(appointments).omit({
   id: true,
   status: true,
+  appointmentTime: true,
+  notificationScheduled: true,
+  notificationSent: true,
   createdAt: true,
   updatedAt: true,
 });

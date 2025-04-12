@@ -21,6 +21,33 @@ class TelegramBotService {
   }
   
   private _isInitialized = false;
+  
+  // Randevu detaylarını almak için metot
+  async getAppointmentDetails(appointmentId: number): Promise<Appointment | null> {
+    try {
+      const [appointment] = await db.select().from(appointments).where(eq(appointments.id, appointmentId));
+      return appointment || null;
+    } catch (error) {
+      console.error(`Error fetching appointment details: ${error}`);
+      return null;
+    }
+  }
+  
+  // Bildirim gönderildi olarak işaretlemek için metot
+  async markNotificationSent(appointmentId: number): Promise<boolean> {
+    try {
+      await db.update(appointments)
+        .set({ 
+          notificationSent: true,
+          updatedAt: new Date()
+        })
+        .where(eq(appointments.id, appointmentId));
+      return true;
+    } catch (error) {
+      console.error(`Error marking notification as sent: ${error}`);
+      return false;
+    }
+  }
 
   // Bot başlatma fonksiyonu
   async initialize() {
