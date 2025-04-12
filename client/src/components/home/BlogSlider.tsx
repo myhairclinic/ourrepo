@@ -105,25 +105,32 @@ export default function BlogSlider() {
   // Loading state
   if (isLoading) {
     return (
-      <section className="py-12 overflow-hidden bg-[#f9fafc] dark:bg-gray-900">
+      <section className="py-8 overflow-hidden bg-[#f9fafc] dark:bg-gray-900">
         <div className="container mx-auto px-4">
-          <SectionTitle
-            title={t("common.latestFromOurBlog")}
-            subtitle={t("blog.exploreRecentArticles")}
-            centered={true}
-          />
+          <div className="flex flex-col items-start mb-6">
+            <Skeleton className="h-6 w-24 mb-2 rounded-full" />
+            <Skeleton className="h-8 w-64 mb-2" />
+            <div className="flex gap-1.5 mt-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-200"></div>
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-200"></div>
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-200"></div>
+            </div>
+          </div>
           
-          <div className="relative mt-10">
-            <div className="flex gap-6 overflow-hidden">
-              {[1, 2, 3].map((i) => (
-                <Card key={i} className="min-w-[320px] w-full max-w-sm flex-shrink-0">
-                  <Skeleton className="h-48 w-full rounded-t-lg" />
-                  <CardContent className="p-5">
-                    <Skeleton className="h-6 w-3/4 mb-2" />
-                    <Skeleton className="h-4 w-1/4 mb-4" />
-                    <Skeleton className="h-4 w-full mb-2" />
-                    <Skeleton className="h-4 w-full mb-2" />
-                    <Skeleton className="h-4 w-2/3" />
+          <div className="relative mt-4">
+            <div className="flex gap-4 overflow-hidden">
+              {[1, 2, 3, 4].map((i) => (
+                <Card key={i} className="min-w-[270px] w-full flex-shrink-0">
+                  <Skeleton className="h-36 w-full rounded-t-lg" />
+                  <CardContent className="p-3">
+                    <div className="flex gap-3 mb-1">
+                      <Skeleton className="h-3 w-20" />
+                      <Skeleton className="h-3 w-20" />
+                    </div>
+                    <Skeleton className="h-5 w-full mb-1.5" />
+                    <Skeleton className="h-3 w-full mb-1" />
+                    <Skeleton className="h-3 w-full mb-1" />
+                    <Skeleton className="h-3 w-16 mt-2" />
                   </CardContent>
                 </Card>
               ))}
@@ -140,92 +147,88 @@ export default function BlogSlider() {
   }
 
   return (
-    <section className="py-12 overflow-hidden bg-[#f9fafc] dark:bg-gray-900">
+    <section className="py-8 overflow-hidden bg-[#f9fafc] dark:bg-gray-900">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col items-start mb-12">
-          <div className="mb-3 px-4 py-1 text-sm font-medium rounded-full border-primary/30 bg-primary/5 shadow-sm">
+        <div className="flex flex-col items-start mb-6">
+          <div className="mb-2 px-3 py-1 text-xs font-medium rounded-full border-primary/30 bg-primary/5 shadow-sm">
             {t("blog.badge")}
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80 leading-tight">
+          <h2 className="text-3xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80 leading-tight">
             {t("common.latestFromOurBlog")}
           </h2>
-          <p className="text-foreground/70 max-w-xl text-base font-light leading-relaxed">
-            {t("blog.exploreRecentArticles")}
-          </p>
-            
-          <div className="flex gap-2 mt-4">
-            <div className="w-2 h-2 rounded-full bg-primary/30"></div>
-            <div className="w-2 h-2 rounded-full bg-primary/50"></div>
-            <div className="w-2 h-2 rounded-full bg-primary/70"></div>
+          <div className="flex gap-1.5 mt-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-primary/30"></div>
+            <div className="w-1.5 h-1.5 rounded-full bg-primary/50"></div>
+            <div className="w-1.5 h-1.5 rounded-full bg-primary/70"></div>
           </div>
         </div>
         
-        <div className="relative mt-10">
+        <div className="relative mt-4">
           {/* Navigation buttons */}
           <div className="absolute left-0 right-0 top-1/2 transform -translate-y-1/2 flex justify-between z-10 px-2">
             <Button 
               variant="outline" 
               size="icon" 
-              className="bg-white dark:bg-gray-800 shadow-md hover:bg-primary/10 text-primary border border-primary/10"
+              className="bg-white dark:bg-gray-800 shadow-md hover:bg-primary/10 text-primary border border-primary/10 h-8 w-8"
               onClick={prevSlide}
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft className="h-4 w-4" />
             </Button>
             <Button 
               variant="outline" 
               size="icon" 
-              className="bg-white dark:bg-gray-800 shadow-md hover:bg-primary/10 text-primary border border-primary/10"
+              className="bg-white dark:bg-gray-800 shadow-md hover:bg-primary/10 text-primary border border-primary/10 h-8 w-8"
               onClick={nextSlide}
             >
-              <ChevronRight className="h-5 w-5" />
+              <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
           
           {/* Blog cards */}
-          <div className="flex gap-6 overflow-hidden pl-1">
+          <div className="flex gap-4 overflow-hidden">
             {visibleBlogs?.map((blog) => (
-              <Card key={blog.id} className="min-w-[320px] w-full max-w-sm flex-shrink-0 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg border border-gray-100 dark:border-gray-800">
-                <div className="relative h-48 overflow-hidden rounded-t-lg">
+              <Card key={blog.id} className="min-w-[270px] w-full flex-shrink-0 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg border border-gray-100 dark:border-gray-800">
+                <div className="relative h-36 overflow-hidden rounded-t-lg">
                   <img 
                     src={blog.imageUrl} 
                     alt={getBlogTitle(blog)} 
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end p-4">
-                    <div className="flex items-center text-white text-sm gap-2">
-                      <Tag className="h-4 w-4" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end p-2">
+                    <div className="flex items-center text-white text-xs gap-1">
+                      <Tag className="h-3 w-3" />
                       <span>{getBlogCategory(blog)}</span>
                     </div>
                   </div>
                 </div>
                 
-                <CardContent className="p-5">
-                  <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2 gap-4">
+                <CardContent className="p-3">
+                  <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-1 gap-3">
                     <div className="flex items-center gap-1">
-                      <Calendar className="h-4 w-4" />
+                      <Calendar className="h-3 w-3" />
                       <span>{formatBlogDate(blog.createdAt)}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <User className="h-4 w-4" />
+                      <User className="h-3 w-3" />
                       <span>{blog.author}</span>
                     </div>
                   </div>
                   
-                  <h3 className="text-lg font-semibold line-clamp-2 mb-3 hover:text-primary transition-colors">
+                  <h3 className="text-md font-semibold line-clamp-2 mb-1.5 hover:text-primary transition-colors">
                     <a href={`/${language.toLowerCase()}/blog/${blog.slug}`}>{getBlogTitle(blog)}</a>
                   </h3>
                   
-                  <p className="text-gray-600 dark:text-gray-300 text-sm line-clamp-3 leading-relaxed">
+                  <p className="text-gray-600 dark:text-gray-300 text-xs line-clamp-2 leading-relaxed">
                     {getExcerpt(blog)}
                   </p>
                   
-                  <div className="mt-4">
+                  <div className="mt-2">
                     <a 
                       href={`/${language.toLowerCase()}/blog/${blog.slug}`}
-                      className="text-primary hover:text-primary/80 font-medium text-sm flex items-center"
+                      className="text-primary hover:text-primary/80 font-medium text-xs flex items-center"
                     >
                       {t("blog.readMore")}
-                      <ChevronRight className="h-4 w-4 ml-1" />
+                      <ChevronRight className="h-3 w-3 ml-1" />
                     </a>
                   </div>
                 </CardContent>
@@ -235,12 +238,12 @@ export default function BlogSlider() {
           
           {/* Pagination indicators */}
           {blogs.length > itemsPerPage && (
-            <div className="flex justify-start mt-8 gap-2 pl-1">
+            <div className="flex justify-start mt-4 gap-1.5">
               {Array.from({ length: Math.ceil(blogs.length / itemsPerPage) }).map((_, index) => (
                 <button
                   key={index}
-                  className={`w-2.5 h-2.5 rounded-full transition-all ${
-                    currentSlide === index ? "bg-primary w-6" : "bg-gray-300 dark:bg-gray-600"
+                  className={`w-2 h-2 rounded-full transition-all ${
+                    currentSlide === index ? "bg-primary w-5" : "bg-gray-300 dark:bg-gray-600"
                   }`}
                   onClick={() => setCurrentSlide(index)}
                 />
