@@ -128,18 +128,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Vithair ürünlerini çekme endpoint'i
   app.post("/api/products/fetch-vithair", fetchVithairProducts);
   
-  // Tüm ürünleri getiren endpoint
-  app.get("/api/products", async (req, res) => {
-    try {
-      const products = await storage.getProducts();
-      res.json(products);
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Bilinmeyen hata';
-      console.error("Error fetching products:", errorMessage);
-      res.status(500).json({ message: "Failed to fetch products" });
-    }
-  });
-  
   // Tüm ürünleri temizleme endpoint'i için /api/admin/clear-products kullanılmaktadır
 
   // Package routes

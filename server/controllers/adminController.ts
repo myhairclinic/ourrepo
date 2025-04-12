@@ -42,6 +42,8 @@ export const getProducts = async (req: Request, res: Response) => {
     const products = await storage.getProducts();
     res.json(products);
   } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Bilinmeyen hata';
+    console.error("Error fetching products:", errorMessage);
     res.status(500).json({ message: "Failed to fetch products" });
   }
 };
