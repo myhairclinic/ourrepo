@@ -4,7 +4,6 @@ import { useLanguage } from "@/hooks/use-language";
 import { ALL_LANGUAGES } from "@/lib/languages";
 import { PUBLIC_PATHS } from "@/lib/constants";
 import { Globe, ChevronDown, Menu, X, Phone, Calendar, Clock, MapPin, Mail } from "lucide-react";
-import AppLogo from "./AppLogo";
 
 export default function Header() {
   const { language, changeLanguage, addPrefix } = useLanguage();
@@ -93,16 +92,12 @@ export default function Header() {
           <div className="flex justify-between items-center">
             {/* Logo */}
             <Link href={addPrefix("/")} className="flex items-center">
-              <div className="flex items-center">
-                <img 
-                  src="/images/logo.png" 
-                  alt="MyHair Clinic" 
-                  className="h-16 mr-2"
-                />
-                <div className="hidden lg:block">
-                  <AppLogo />
-                </div>
-              </div>
+              <img 
+                src="/images/logo.png" 
+                alt="MyHair Clinic" 
+                className="h-16"
+                style={{ filter: 'drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.1))' }}
+              />
             </Link>
 
             {/* Desktop Navigation */}
