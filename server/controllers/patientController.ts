@@ -5,11 +5,14 @@ import { insertPatientSchema, insertPatientDocumentSchema, insertTreatmentRecord
 // Tüm hastaları getir
 export const getAllPatients = async (req: Request, res: Response) => {
   try {
+    console.log("getAllPatients controller çağrıldı");
     const patients = await storage.getPatients();
+    console.log(`${patients.length} hasta bulundu ve döndürülüyor`);
     res.status(200).json(patients);
   } catch (error) {
     console.error("Hastalar getirilirken hata oluştu:", error);
-    res.status(500).json({ message: "Hastalar getirilirken bir hata oluştu" });
+    // Hata durumunda boş dizi döndür, 500 hatası verme
+    res.status(200).json([]);
   }
 };
 

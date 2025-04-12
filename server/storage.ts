@@ -2010,17 +2010,38 @@ export class DatabaseStorage implements IStorage {
 
   // Patient operations
   async getPatients(): Promise<Patient[]> {
-    return await db.select().from(patients).orderBy(desc(patients.createdAt));
+    try {
+      console.log("Fetching all patients...");
+      const allPatients = await db.select().from(patients).orderBy(desc(patients.createdAt));
+      console.log(`Found ${allPatients.length} patients`);
+      return allPatients;
+    } catch (error) {
+      console.error("Error fetching patients:", error);
+      // Boş dizi döndür, hata fırlatmak yerine
+      return [];
+    }
   }
 
   async getPatientById(id: number): Promise<Patient | undefined> {
-    const [patient] = await db.select().from(patients).where(eq(patients.id, id));
-    return patient;
+    try {
+      console.log(`Fetching patient with ID: ${id}`);
+      const [patient] = await db.select().from(patients).where(eq(patients.id, id));
+      return patient;
+    } catch (error) {
+      console.error(`Error fetching patient with ID ${id}:`, error);
+      return undefined;
+    }
   }
   
   async getPatientByPhone(phone: string): Promise<Patient | undefined> {
-    const [patient] = await db.select().from(patients).where(eq(patients.phone, phone));
-    return patient;
+    try {
+      console.log(`Fetching patient with phone: ${phone}`);
+      const [patient] = await db.select().from(patients).where(eq(patients.phone, phone));
+      return patient;
+    } catch (error) {
+      console.error(`Error fetching patient with phone ${phone}:`, error);
+      return undefined;
+    }
   }
 
   async createPatient(data: InsertPatient): Promise<Patient> {

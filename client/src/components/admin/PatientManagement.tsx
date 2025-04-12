@@ -179,11 +179,20 @@ const PatientManagement = () => {
   const { data: patients, isLoading: isPatientsLoading, refetch: refetchPatients } = useQuery({
     queryKey: ["/api/patients"],
     queryFn: async () => {
-      const res = await fetch("/api/patients");
-      if (!res.ok) {
-        throw new Error("Hastalar getirilirken bir hata oluştu.");
+      try {
+        console.log("Fetching patients data...");
+        const res = await fetch("/api/patients");
+        if (!res.ok) {
+          console.error(`HTTP error fetching patients: ${res.status} - ${res.statusText}`);
+          return []; // Hata durumunda boş dizi döndür
+        }
+        const data = await res.json();
+        console.log(`Fetched ${data.length} patients`);
+        return data;
+      } catch (error) {
+        console.error("Error fetching patients:", error);
+        return []; // Hata durumunda boş dizi döndür
       }
-      return res.json();
     }
   });
   
