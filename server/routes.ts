@@ -469,6 +469,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/aftercare-guides/count", adminControllers.getAftercareGuidesCount);
   app.get("/api/admin/analytics", adminControllers.getAnalyticsData);
   app.get("/api/admin/activity", adminControllers.getRecentActivity);
+  app.post("/api/admin/clear-products", async (req, res) => {
+    try {
+      // Admin yetki kontrolü
+      if (!req.isAuthenticated() || (req.user?.role !== 'admin')) {
+        return res.status(401).json({ success: false, message: "Bu işlem için admin yetkisi gereklidir." });
+      }
+
+      // Tüm ürünleri temizle
+      await storage.clearProducts();
+      
+      return res.status(200).json({ 
+        success: true, 
+        message: "Tüm ürünler başarıyla silindi" 
+      });
+    } catch (error) {
+      console.error("Ürünleri temizleme hatası:", error);
+      return res.status(500).json({ 
+        success: false, 
+        message: "Ürünleri temizlerken bir hata oluştu",
+        error: error instanceof Error ? error.message : String(error)
+      });
+    }
+  });
+  
   app.post("/api/admin/sync-vithair-products", async (req, res) => {
     try {
       // Admin yetki kontrolü

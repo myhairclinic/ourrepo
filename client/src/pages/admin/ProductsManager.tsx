@@ -41,7 +41,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Check, Edit, Plus, Trash2, Download, AlertCircle } from "lucide-react";
+import { Check, Edit, Plus, Trash2, Download, AlertCircle, Eraser } from "lucide-react";
 
 // Form validation schema for products
 const formSchema = insertProductSchema.extend({
@@ -57,6 +57,7 @@ export default function ProductsManager() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isFetchingVithair, setIsFetchingVithair] = useState(false);
+  const [isClearingProducts, setIsClearingProducts] = useState(false);
 
   // Fetch all products
   const { data: products = [], isLoading } = useQuery<Product[]>({
@@ -262,6 +263,54 @@ export default function ProductsManager() {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold">Products</h2>
         <div className="flex space-x-3">
+          <Button 
+            variant="destructive" 
+            onClick={() => {
+              if (confirm("Bu işlem tüm ürünleri silecektir. Devam etmek istiyor musunuz?")) {
+                setIsClearingProducts(true);
+                apiRequest("POST", "/api/admin/clear-products")
+                  .then(async (res) => {
+                    const data = await res.json();
+                    if (res.ok) {
+                      toast({
+                        title: "Başarılı",
+                        description: "Tüm ürünler başarıyla silindi.",
+                      });
+                      queryClient.invalidateQueries({ queryKey: [API_ROUTES.PRODUCTS] });
+                    } else {
+                      toast({
+                        title: "Hata",
+                        description: data.message || "Ürünler silinirken bir hata oluştu",
+                        variant: "destructive",
+                      });
+                    }
+                  })
+                  .catch((error) => {
+                    toast({
+                      title: "Hata",
+                      description: error.message || "Ürünler silinirken bir hata oluştu",
+                      variant: "destructive",
+                    });
+                  })
+                  .finally(() => {
+                    setIsClearingProducts(false);
+                  });
+              }
+            }}
+            disabled={isClearingProducts}
+          >
+            {isClearingProducts ? (
+              <div className="flex items-center">
+                <div className="animate-spin mr-2 h-4 w-4 border-b-2 border-primary"></div>
+                Siliniyor...
+              </div>
+            ) : (
+              <>
+                <Eraser className="mr-2 h-4 w-4" />
+                Tüm Ürünleri Sil
+              </>
+            )}
+          </Button>
           <Button 
             variant="outline" 
             onClick={() => {
