@@ -1836,16 +1836,20 @@ const PatientManagement = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Durum</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select 
+                      onValueChange={field.onChange} 
+                      value={field.value || "planned"}
+                      defaultValue="planned"
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Durum seçin" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="active">Devam Ediyor</SelectItem>
+                        <SelectItem value="planned">Planlandı</SelectItem>
+                        <SelectItem value="in-progress">Devam Ediyor</SelectItem>
                         <SelectItem value="completed">Tamamlandı</SelectItem>
-                        <SelectItem value="pending">Beklemede</SelectItem>
                         <SelectItem value="cancelled">İptal</SelectItem>
                       </SelectContent>
                     </Select>
