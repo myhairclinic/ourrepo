@@ -4,18 +4,9 @@ import { useLanguage } from "@/hooks/use-language";
 import { ALL_LANGUAGES } from "@/lib/languages";
 import { PUBLIC_PATHS } from "@/lib/constants";
 import { Globe, ChevronDown, Menu, X } from "lucide-react";
+import AppLogo from "./AppLogo";
 
-// Logo Component
-const MyHairLogo = () => (
-  <div className="flex items-center">
-    <img 
-      src="/myhair-logo.png" 
-      alt="MyHair Clinic" 
-      className="h-12 md:h-14 mr-2"
-      style={{ filter: 'drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.1))' }}
-    />
-  </div>
-);
+
 
 export default function Header() {
   const { language, changeLanguage } = useLanguage();
@@ -47,7 +38,7 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href={`/${language}`} className="flex items-center">
-            <MyHairLogo />
+            <AppLogo />
           </Link>
 
           {/* Desktop Navigation */}
@@ -158,12 +149,7 @@ export default function Header() {
       } md:hidden`}>
         <div className="flex justify-between items-center p-4 border-b">
           <div className="flex items-center">
-            <img 
-              src="/myhair-logo.png" 
-              alt="MyHair Clinic" 
-              className="h-10"
-              style={{ filter: 'drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.1))' }}
-            />
+            <AppLogo />
           </div>
           <button 
             onClick={toggleMobileMenu}
