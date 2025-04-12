@@ -29,46 +29,12 @@ import SocialMediaPage from "./pages/SocialMediaPage";
 import AftercareGuidesPage from "./pages/AftercareGuidesPage";
 import NotFound from "./pages/not-found";
 
-// Admin Pages
+// Admin Pages - Sadece Login sayfası
 import AdminLoginPage from "@/pages/admin/AdminLoginPage";
-import AdminRegisterPage from "@/pages/admin/AdminRegisterPage";
-import AdminDashboard from "@/pages/admin/AdminDashboard";
-import ServicesManager from "@/pages/admin/ServicesManager";
-import BlogPosts from "@/pages/admin/BlogPosts";
-import GalleryManager from "@/pages/admin/GalleryManager";
-import AppointmentsManager from "@/pages/admin/AppointmentsManager";
-import PackagesManager from "@/pages/admin/PackagesManager";
-import ProductsManager from "@/pages/admin/ProductsManager";
-import SeedProducts from "@/pages/admin/SeedProducts";
-import ReviewsManager from "@/pages/admin/ReviewsManager";
-import FaqsManager from "@/pages/admin/FaqsManager";
-import AftercareGuidesManager from "@/pages/admin/AftercareGuidesManager";
 import BrowserSeedPage from "@/pages/BrowserSeedPage";
 
-// Admin route protection
-import { useAdmin } from "./hooks/use-admin";
+// Admin Context Provider
 import { AdminProvider } from "./context/AdminContext";
-
-function ProtectedAdminRoute({ component: Component }: { component: React.ComponentType }) {
-  const { user, isLoading } = useAdmin();
-  const [, setLocation] = useLocation();
-
-  useEffect(() => {
-    if (!isLoading && !user) {
-      setLocation("/admin/login");
-    }
-  }, [user, isLoading, setLocation]);
-
-  if (isLoading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
-  }
-
-  if (!user) {
-    return null;
-  }
-
-  return <Component />;
-}
 
 function Router() {
   const { language, addPrefix } = useLanguage();
@@ -99,46 +65,18 @@ function Router() {
   
   return (
     <Switch>
-      {/* Admin routes */}
+      {/* Sadece Admin Login rotası */}
       <Route path="/admin/login" component={AdminLoginPage} />
-      <Route path="/admin/register" component={AdminRegisterPage} />
-      <Route path="/admin/dashboard">
-        <ProtectedAdminRoute component={AdminDashboard} />
-      </Route>
-      <Route path="/admin/services">
-        <ProtectedAdminRoute component={ServicesManager} />
-      </Route>
-      <Route path="/admin/blog">
-        <ProtectedAdminRoute component={BlogPosts} />
-      </Route>
-      <Route path="/admin/gallery">
-        <ProtectedAdminRoute component={GalleryManager} />
-      </Route>
-      <Route path="/admin/appointments">
-        <ProtectedAdminRoute component={AppointmentsManager} />
-      </Route>
-      <Route path="/admin/packages">
-        <ProtectedAdminRoute component={PackagesManager} />
-      </Route>
-      <Route path="/admin/products">
-        <ProtectedAdminRoute component={ProductsManager} />
-      </Route>
-      <Route path="/admin/seed-products">
-        <ProtectedAdminRoute component={SeedProducts} />
-      </Route>
-      <Route path="/admin/reviews">
-        <ProtectedAdminRoute component={ReviewsManager} />
-      </Route>
-      <Route path="/admin/faqs">
-        <ProtectedAdminRoute component={FaqsManager} />
-      </Route>
-      <Route path="/admin/aftercare-guides">
-        <ProtectedAdminRoute component={AftercareGuidesManager} />
+      <Route path="/admin" component={AdminLoginPage} />
+      <Route path="/admin/*">
+        {() => {
+          setLocation("/admin/login");
+          return null;
+        }}
       </Route>
       
       {/* Special tool routes */}
       <Route path="/seed-blogs" component={BrowserSeedPage} />
-      <Route path="/seed-vithair-products" component={SeedProducts} />
       
       {/* Public routes with language prefix */}
       <Route path="/:lang" component={HomePage} />
