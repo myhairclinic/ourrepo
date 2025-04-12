@@ -21,6 +21,7 @@ import {
   deleteService
 } from "./controllers/contentController";
 import { telegramBotService } from "./services/telegramBotService";
+import telegramService from "./services/telegramService";
 import { telegramController } from "./controllers/telegramController";
 import { seedServices, seedPackages, seedNewCountryPackages } from "./controllers/seedController";
 import { seedBlogPosts } from "./controllers/seedBlogController";
@@ -59,6 +60,7 @@ import {
   createAppointment,
   getAppointments,
   updateAppointmentStatus,
+  confirmAppointmentWithTime,
   deleteAppointment
 } from "./controllers/appointmentController";
 import { trackAppointment } from "./controllers/appointmentTrackerController";
@@ -117,6 +119,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/appointments", createAppointment);
   app.get("/api/appointments", getAppointments);
   app.get("/api/appointments/track", trackAppointment);
+  app.patch("/api/appointments/:id/status", updateAppointmentStatus);
+  app.patch("/api/appointments/:id/confirm", confirmAppointmentWithTime);
   app.put("/api/appointments/:id", updateAppointmentStatus);
   app.delete("/api/appointments/:id", deleteAppointment);
 
@@ -566,6 +570,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       const result = await telegramBotService.updateContactTags(req.params.chatId, tags);
       res.json(result);
+      
+  // Telegram bildirim gönderme endpoint'i
+  app.post("/api/telegram/send-notification/:appointmentId", async (req, res) => {
+    try {
+      const appointmentId = parseInt(req.params.appointmentId);
+      if (isNaN(appointmentId)) {
+        return res.status(400).json({ error: "Invalid appointment ID" });
+      }
+      
+      // Randevu bilgilerini al
+      const appointment = await storage.getAppointmentById(appointmentId);
+      if (!appointment) {
+        return res.status(404).json({ error: "Appointment not found" });
+      }
+      
+      // Bildirim gönder
+      if (req.query.type === 'reminder') {
+        // Hatırlatma bildirimi
+        // Bu mantıken scheduleAppointmentReminder tarafından otomatik olarak çağrılır,
+        // ama manuel tetikleme için de bir endpoint sağlıyoruz
+        const reminderTime = new Date(Date.now() + 5000); // 5 saniye sonra (test amaçlı)
+        await telegramService.scheduleAppointmentReminder(appointmentId, reminderTime);
+        res.json({ success: true, message: "Reminder notification scheduled" });
+      } else {
+        // Onay bildirimi
+        const appointmentTime = appointment.appointmentTime || "09:00";
+        telegramService.notifyAppointmentConfirmation(appointment, appointmentTime);
+        res.json({ success: true, message: "Confirmation notification sent" });
+      }
+    } catch (error) {
+      console.error("Error sending telegram notification:", error);
+      res.status(500).json({ 
+        error: "Failed to send telegram notification",
+        details: error.message 
+      });
+    }
+  });
     } catch (error) {
       console.error("Error updating contact tags:", error);
       res.status(500).json({ error: "Failed to update contact tags" });

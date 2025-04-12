@@ -296,8 +296,161 @@ export const notifyCustomerAppointmentUpdate = async (appointment: Appointment):
   console.log(`Customer notification is disabled. No message sent for appointment ID: ${appointment.id}`);
 };
 
+/**
+ * Send notification about appointment confirmation with specific time
+ */
+export const notifyAppointmentConfirmation = (appointment: Appointment, appointmentTime: string): void => {
+  try {
+    // telegramBotService başlatılmış mı kontrol et
+    if (!telegramBotService.isInitialized) {
+      console.warn('Telegram bot is not initialized, cannot send confirmation notification');
+      return;
+    }
+    
+    // Randevu tarihi ve saati
+    const appointmentDate = appointment.preferredDate ? new Date(appointment.preferredDate) : new Date();
+    const formattedDate = appointmentDate.toLocaleDateString('tr-TR', {
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric'
+    });
+    
+    // Servis adını al
+    telegramBotService.getServiceNamePublic(appointment.serviceId)
+      .then(serviceName => {
+        const message = `
+✅ *RANDEVU ONAYLANDI*
+
+👤 *Hasta Bilgileri*
+📝 *İsim:* ${appointment.name}
+📧 *E-posta:* ${appointment.email}
+📱 *Telefon:* ${appointment.phone}
+
+💇 *Randevu Detayları*
+🔍 *Hizmet:* ${serviceName}
+📆 *Tarih:* ${formattedDate}
+⏰ *Saat:* ${appointmentTime}
+${appointment.message ? `💬 *Mesaj:* ${appointment.message}` : ''}
+
+✉️ Hasta bilgilendirildi. Randevudan 1 saat önce otomatik hatırlatma yapılacak.
+
+/admin komutunu kullanarak yönetici panelinden randevuyu yönetebilirsiniz.
+`;
+
+        // Tüm operatörlere bildirim gönder
+        return telegramBotService.sendOperatorNotification(message);
+      })
+      .then(() => {
+        console.log(`Appointment confirmation notification sent for ID: ${appointment.id}`);
+      })
+      .catch(error => {
+        console.error(`Error sending confirmation notification: ${error}`);
+      });
+    
+  } catch (error: any) {
+    console.error(`Error sending appointment confirmation notification: ${error.message}`);
+  }
+};
+
+/**
+ * Schedule a reminder for an appointment
+ */
+export const scheduleAppointmentReminder = async (appointmentId: number, reminderTime: Date): Promise<void> => {
+  try {
+    console.log(`Scheduling reminder for appointment ID: ${appointmentId} at ${reminderTime.toISOString()}`);
+    
+    // Zamanı hesapla (şimdiki zaman ile hatırlatma zamanı arasındaki milisaniye farkı)
+    const now = new Date();
+    const timeUntilReminder = reminderTime.getTime() - now.getTime();
+    
+    if (timeUntilReminder <= 0) {
+      console.log(`Reminder time already passed for appointment ID: ${appointmentId}`);
+      return;
+    }
+    
+    // setTimeout ile hatırlatma ayarla
+    setTimeout(async () => {
+      try {
+        console.log(`Executing reminder for appointment ID: ${appointmentId}`);
+        
+        // Veritabanından en güncel randevu bilgilerini al
+        const appointment = await telegramBotService.getAppointmentDetails(appointmentId);
+        
+        if (!appointment) {
+          console.log(`Appointment ID ${appointmentId} not found, aborting reminder`);
+          return;
+        }
+        
+        // Randevunun durumu "confirmed" değilse, hatırlatma gönderme
+        if (appointment.status !== "confirmed") {
+          console.log(`Appointment ID ${appointmentId} status is ${appointment.status}, not sending reminder`);
+          return;
+        }
+        
+        // Servis adını al ve hatırlatma mesajını oluştur
+        const serviceName = await telegramBotService.getServiceNamePublic(appointment.serviceId);
+        
+        // Tarih ve saat formatla
+        const appointmentDate = new Date(appointment.preferredDate);
+        if (appointment.appointmentTime) {
+          const [hours, minutes] = appointment.appointmentTime.split(':').map(Number);
+          appointmentDate.setHours(hours, minutes);
+        }
+        
+        const formattedDate = appointmentDate.toLocaleDateString('tr-TR', {
+          weekday: 'long',
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric'
+        });
+        
+        const formattedTime = appointment.appointmentTime || 
+          appointmentDate.toLocaleTimeString('tr-TR', {
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+        
+        const message = `
+⏰ *RANDEVU HATIRLATMASI*
+
+Aşağıdaki randevunuz 1 saat içinde başlayacak!
+
+👤 *Hasta Bilgileri*
+📝 *İsim:* ${appointment.name}
+📱 *Telefon:* ${appointment.phone}
+
+💇 *Randevu Detayları*
+🔍 *Hizmet:* ${serviceName}
+📆 *Tarih:* ${formattedDate}
+⏰ *Saat:* ${formattedTime}
+
+Lütfen randevu için gerekli hazırlıkları yapın ve hastamızı zamanında karşılayın.
+`;
+        
+        // Operatörlere bildirim gönder
+        await telegramBotService.sendOperatorNotification(message);
+        
+        // Bildirim gönderildi olarak işaretle
+        await telegramBotService.markNotificationSent(appointmentId);
+        
+        console.log(`Reminder sent successfully for appointment ID: ${appointmentId}`);
+      } catch (error) {
+        console.error(`Error sending scheduled reminder for appointment ID: ${appointmentId}:`, error);
+      }
+    }, timeUntilReminder);
+    
+    console.log(`Reminder scheduled successfully for appointment ID: ${appointmentId}`);
+  } catch (error) {
+    console.error(`Error scheduling reminder for appointment ID: ${appointmentId}:`, error);
+  }
+};
+
 export default {
   notifyNewAppointment,
   notifyAppointmentUpdate,
-  notifyCustomerAppointmentUpdate
+  notifyCustomerAppointmentUpdate,
+  notifyAppointmentConfirmation,
+  scheduleAppointmentReminder,
+  ...telegramService // Test fonksiyonlarını dışa aktar
 };
