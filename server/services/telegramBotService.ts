@@ -283,15 +283,25 @@ class TelegramBotService {
           console.warn(`No chat ID found for @${username}`);
           return false;
         }
-      } catch (chatError) {
+      } catch (chatError: any) {
         // Eğer kullanıcı bulunamazsa veya bota mesaj atmamışsa direkt kullanıcı adıyla deneyelim
-        console.log(`Error getting chat, trying direct message to @${username}...`);
+        console.log(`Error getting chat for @${username}:`, chatError?.message || 'Unknown error');
+        
+        if (chatError?.message?.includes('chat not found')) {
+          console.warn(`User @${username} has not started a conversation with the bot yet. They need to send /start command to the bot first.`);
+        }
+        
         try {
           await this.bot.sendMessage(`@${username}`, message, { parse_mode: 'Markdown' });
           console.log(`Successfully sent direct message to @${username}`);
           return true;
-        } catch (directError) {
-          console.error(`Failed to send direct message to @${username}:`, directError);
+        } catch (directError: any) {
+          console.error(`Failed to send direct message to @${username}:`, directError?.message || 'Unknown error');
+          
+          if (directError?.message?.includes('chat not found')) {
+            console.warn(`OPERATOR NOTIFICATION FAILED: User @${username} must first start a conversation with the bot by sending /start command to @MyHairClinicBot`);
+          }
+          
           return false;
         }
       }

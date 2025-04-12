@@ -652,6 +652,14 @@ export default function TelegramBotManagement() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
+                <Alert variant="destructive" className="mb-4">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertTitle>Önemli Uyarı</AlertTitle>
+                  <AlertDescription>
+                    Operatörler Telegram'da botla etkileşime geçmeden bildirim alamazlar. Her operatörün Telegram'da @MyHairClinicBot botunu bulup <strong>/start</strong> komutu göndermesi gerekiyor.
+                  </AlertDescription>
+                </Alert>
+                
                 <div className="flex justify-between items-center">
                   <h3 className="text-lg font-medium">Telegram Operatörleri</h3>
                   <Button size="sm" onClick={() => {
@@ -1100,6 +1108,14 @@ export default function TelegramBotManagement() {
               Telegram bot bildirimleri alacak personel hesabı ekleyin.
             </DialogDescription>
           </DialogHeader>
+          
+          <Alert variant="destructive" className="mb-4">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertTitle>Önemli Bilgi</AlertTitle>
+            <AlertDescription>
+              Operatörlerin Telegram bildirimleri alabilmesi için önce Telegram uygulamasından botu bulup <strong>/start</strong> komutu göndermeleri gerekiyor. Aksi halde "chat not found" hatası oluşacak ve bildirimler iletilemeyecektir.
+            </AlertDescription>
+          </Alert>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="name" className="text-right">
