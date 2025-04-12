@@ -797,9 +797,19 @@ const AdminDashboard = () => {
           
           {activeSection === "services" && (
             <div>
-              <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold text-gray-900">Hizmet Yönetimi</h1>
-                <button className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0 p-2 mr-3 bg-blue-100 rounded-lg">
+                    <Settings className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <div>
+                    <h1 className="text-2xl font-bold text-gray-900">Hizmet Yönetimi</h1>
+                    <p className="text-gray-500 mt-1 text-sm">
+                      Tüm hizmetleri görüntüleyin, düzenleyin ve yenilerini ekleyin
+                    </p>
+                  </div>
+                </div>
+                <button className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center shadow-sm hover:shadow">
                   <PlusCircle className="w-4 h-4 mr-2" />
                   Yeni Hizmet Ekle
                 </button>
