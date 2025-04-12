@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { useAdmin } from "@/hooks/use-admin";
-import { Loader2, Settings, Users, Package, MessageCircle, Calendar, FileText, Image, Star, HelpCircle, BookOpen, Package2, BarChart, ArrowLeft, LogOut, ShoppingBag, Heart, Globe, Search, ChevronDown, Bell, User, Menu, X } from "lucide-react";
+import { Loader2, Settings, Users, Package, MessageCircle, Calendar, FileText, Image, Star, HelpCircle, BookOpen, Package2, BarChart, ArrowLeft, LogOut, ShoppingBag, Heart, Globe, Search, ChevronDown, Bell, User, Menu, X, PlusCircle, Trash2, Edit, Download, Upload, Eye, HardDrive, List, LayoutGrid, LayoutList } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+
+import { 
+  VisitorsChart, 
+  AppointmentsChart, 
+  CountryDistributionChart, 
+  ServiceDistributionChart 
+} from "@/components/admin/DashboardCharts";
 
 import {
   DropdownMenu,
@@ -372,11 +379,25 @@ const AdminDashboard = () => {
                 </div>
               </div>
               
+              {/* İstatistik grafikleri */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <VisitorsChart data={[]} />
+                <AppointmentsChart data={[]} />
+                <CountryDistributionChart data={[]} />
+                <ServiceDistributionChart data={[]} />
+              </div>
+              
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                   <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-semibold text-gray-900">Son Randevular</h2>
-                    <button className="text-primary text-sm font-medium">Tümünü Görüntüle</button>
+                    <button 
+                      onClick={() => setActiveSection("appointments")}
+                      className="text-primary text-sm font-medium hover:underline flex items-center"
+                    >
+                      Tümünü Görüntüle
+                      <ChevronDown className="ml-1 w-4 h-4 rotate-270" />
+                    </button>
                   </div>
                   
                   <div className="overflow-x-auto">
@@ -398,7 +419,9 @@ const AdminDashboard = () => {
                                 <div className="text-xs text-gray-500">{appointment.email}</div>
                               </td>
                               <td className="px-4 py-3 whitespace-nowrap">
-                                <div className="text-sm text-gray-900">{appointment.serviceId}</div>
+                                <div className="text-sm text-gray-900">
+                                  {services?.find(s => s.id === appointment.serviceId)?.titleTR || `Hizmet #${appointment.serviceId}`}
+                                </div>
                               </td>
                               <td className="px-4 py-3 whitespace-nowrap">
                                 <div className="text-sm text-gray-900">{new Date(appointment.createdAt).toLocaleDateString()}</div>
@@ -410,7 +433,10 @@ const AdminDashboard = () => {
                                   appointment.status === "cancelled" ? "bg-red-100 text-red-800" :
                                   "bg-gray-100 text-gray-800"
                                 }`}>
-                                  {appointment.status}
+                                  {appointment.status === "pending" ? "Bekliyor" : 
+                                   appointment.status === "confirmed" ? "Onaylandı" : 
+                                   appointment.status === "cancelled" ? "İptal Edildi" : 
+                                   appointment.status}
                                 </span>
                               </td>
                             </tr>
@@ -603,7 +629,128 @@ const AdminDashboard = () => {
             </div>
           )}
           
-          {activeSection !== "dashboard" && activeSection !== "appointments" && (
+          {activeSection === "services" && (
+            <div>
+              <div className="flex justify-between items-center mb-6">
+                <h1 className="text-2xl font-bold text-gray-900">Hizmet Yönetimi</h1>
+                <button className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center">
+                  <PlusCircle className="w-4 h-4 mr-2" />
+                  Yeni Hizmet Ekle
+                </button>
+              </div>
+              
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <div className="p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b">
+                  <div className="relative w-full md:w-64">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                    <input 
+                      type="text" 
+                      placeholder="Hizmet ara..." 
+                      className="pl-10 pr-4 py-2 w-full rounded-lg border focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <select className="p-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none">
+                      <option value="all">Tüm Hizmetler</option>
+                      <option value="active">Aktif</option>
+                      <option value="inactive">Pasif</option>
+                    </select>
+                    <div className="flex border rounded-lg overflow-hidden">
+                      <button className="p-2 bg-white text-gray-700 hover:bg-gray-50">
+                        <LayoutGrid className="w-5 h-5" />
+                      </button>
+                      <button className="p-2 bg-primary text-white">
+                        <LayoutList className="w-5 h-5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="p-6">
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead>
+                        <tr>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hizmet</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Oluşturulma</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Durum</th>
+                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">İşlemler</th>
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {services && services.length > 0 ? (
+                          services.map((service, index) => (
+                            <tr key={service.id || index} className="hover:bg-gray-50">
+                              <td className="px-4 py-4 whitespace-nowrap">
+                                <div className="flex items-center">
+                                  <div className="flex-shrink-0 h-10 w-10 rounded-md overflow-hidden">
+                                    <img src={service.imageUrl} alt={service.titleTR} className="h-10 w-10 object-cover" />
+                                  </div>
+                                  <div className="ml-4">
+                                    <div className="text-sm font-medium text-gray-900">{service.titleTR}</div>
+                                    <div className="text-xs text-gray-500 truncate max-w-xs">
+                                      {service.descriptionTR.substring(0, 60)}...
+                                    </div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="px-4 py-4">
+                                <div className="text-sm text-gray-900">{service.slug}</div>
+                              </td>
+                              <td className="px-4 py-4 whitespace-nowrap">
+                                <div className="text-sm text-gray-900">{new Date(service.createdAt).toLocaleDateString()}</div>
+                              </td>
+                              <td className="px-4 py-4 whitespace-nowrap">
+                                <span className={`px-2 py-1 text-xs rounded-full ${
+                                  service.isActive ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                                }`}>
+                                  {service.isActive ? "Aktif" : "Pasif"}
+                                </span>
+                              </td>
+                              <td className="px-4 py-4 whitespace-nowrap">
+                                <div className="flex space-x-2">
+                                  <button className="p-1 text-blue-500 hover:text-blue-700" title="Düzenle">
+                                    <Edit className="w-5 h-5" />
+                                  </button>
+                                  <button className="p-1 text-gray-500 hover:text-gray-700" title="Görüntüle">
+                                    <Eye className="w-5 h-5" />
+                                  </button>
+                                  <button className="p-1 text-red-500 hover:text-red-700" title="Sil">
+                                    <Trash2 className="w-5 h-5" />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan={5} className="px-4 py-4 text-center text-sm text-gray-500">
+                              Henüz hizmet bulunmamaktadır.
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                
+                <div className="px-6 py-4 border-t flex items-center justify-between">
+                  <div className="text-sm text-gray-600">
+                    Toplam {services?.length || 0} hizmet
+                  </div>
+                  
+                  <div className="flex space-x-2">
+                    <button className="px-3 py-1 border rounded-md text-sm">Önceki</button>
+                    <button className="px-3 py-1 bg-primary text-white rounded-md text-sm">1</button>
+                    <button className="px-3 py-1 border rounded-md text-sm">Sonraki</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          {activeSection !== "dashboard" && activeSection !== "appointments" && activeSection !== "services" && (
             <div>
               <h1 className="text-2xl font-bold text-gray-900 mb-6">{sidebarItems.find(item => item.id === activeSection)?.label || "İçerik"} Yönetimi</h1>
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
