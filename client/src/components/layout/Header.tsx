@@ -3,8 +3,7 @@ import { Link } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
 import { ALL_LANGUAGES } from "@/lib/languages";
 import { PUBLIC_PATHS } from "@/lib/constants";
-import { Globe, ChevronDown, Menu, X } from "lucide-react";
-
+import { Globe, ChevronDown, Menu, X, Phone, Calendar, Clock, MapPin } from "lucide-react";
 
 
 export default function Header() {

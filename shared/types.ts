@@ -3,7 +3,11 @@ export enum Language {
   Turkish = "tr",
   English = "en",
   Russian = "ru",
-  Georgian = "ka"
+  Georgian = "ka",
+  Azerbaijani = "az",
+  Persian = "ir",
+  Kazakh = "kz",
+  Ukrainian = "ua"
 }
 
 // Service types
@@ -58,6 +62,10 @@ export interface MultiLangContent {
   en: string;
   ru: string;
   ka: string;
+  az: string;
+  ir: string;
+  kz: string;
+  ua: string;
 }
 
 export interface MultiLangText {
@@ -65,6 +73,10 @@ export interface MultiLangText {
   en: string;
   ru: string;
   ka: string;
+  az: string;
+  ir: string;
+  kz: string;
+  ua: string;
 }
 
 // Hero slider item
