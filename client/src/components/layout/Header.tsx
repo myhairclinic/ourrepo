@@ -9,9 +9,9 @@ import { Globe, ChevronDown, Menu, X } from "lucide-react";
 const MyHairLogo = () => (
   <div className="flex items-center">
     <img 
-      src="/images/real-logo.png" 
-      alt="MyHair Clinic Logo" 
-      className="h-10 md:h-11 mr-2"
+      src="/images/new-logo.png" 
+      alt="MyHair Clinic" 
+      className="h-12 md:h-14 mr-2"
       style={{ filter: 'drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.1))' }}
     />
   </div>
@@ -159,9 +159,9 @@ export default function Header() {
         <div className="flex justify-between items-center p-4 border-b">
           <div className="flex items-center">
             <img 
-              src="/images/real-logo.png" 
-              alt="MyHair Clinic Logo" 
-              className="h-8"
+              src="/images/new-logo.png" 
+              alt="MyHair Clinic" 
+              className="h-10"
               style={{ filter: 'drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.1))' }}
             />
           </div>
