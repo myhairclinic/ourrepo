@@ -1126,7 +1126,45 @@ export class MemStorage implements IStorage {
 
   // Patient operations
   async getPatients(): Promise<Patient[]> {
-    return Array.from(this.patients.values()).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    try {
+      console.log("Fetching all patients from MemStorage...");
+      // Test hasta verisi ekleyelim
+      if (this.patients.size === 0) {
+        console.log("No patients found, creating a test patient...");
+        const testPatient: Patient = {
+          id: this.currentPatientId++,
+          fullName: "Test Hasta",
+          email: "test@example.com",
+          phone: "+90123456789",
+          status: "active",
+          gender: "male",
+          nationality: "Turkey",
+          dateOfBirth: null,
+          passportNumber: null,
+          address: null,
+          city: null,
+          country: "Georgia",
+          medicalHistory: null,
+          allergies: null,
+          medications: null,
+          notes: "Test hasta kaydı",
+          serviceId: null,
+          lastVisitDate: null,
+          registrationDate: new Date(),
+          createdAt: new Date(),
+          updatedAt: new Date()
+        };
+        this.patients.set(testPatient.id, testPatient);
+        console.log("Test patient created with ID:", testPatient.id);
+      }
+      
+      const result = Array.from(this.patients.values()).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+      console.log(`Found ${result.length} patients`);
+      return result;
+    } catch (error) {
+      console.error("Error in getPatients:", error);
+      return [];
+    }
   }
 
   async getPatientById(id: number): Promise<Patient | undefined> {
@@ -2011,7 +2049,34 @@ export class DatabaseStorage implements IStorage {
   // Patient operations
   async getPatients(): Promise<Patient[]> {
     try {
-      console.log("Fetching all patients...");
+      console.log("Fetching all patients from database...");
+      // Test için verileri kontrol edelim
+      const existingPatients = await db.select().from(patients);
+      
+      if (existingPatients.length === 0) {
+        console.log("No patients found, adding a test patient for development...");
+        try {
+          const testPatientData = {
+            fullName: "Test Hasta",
+            email: "test@example.com",
+            phone: "+90123456789",
+            status: "active",
+            gender: "male",
+            nationality: "Turkey",
+            country: "Georgia",
+            notes: "Test hasta kaydı",
+            registrationDate: new Date(),
+            createdAt: new Date(),
+            updatedAt: new Date()
+          };
+          
+          const [testPatient] = await db.insert(patients).values(testPatientData).returning();
+          console.log("Test patient added successfully with ID:", testPatient.id);
+        } catch (insertError) {
+          console.error("Error inserting test patient:", insertError);
+        }
+      }
+      
       const allPatients = await db.select().from(patients).orderBy(desc(patients.createdAt));
       console.log(`Found ${allPatients.length} patients`);
       return allPatients;
