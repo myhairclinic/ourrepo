@@ -261,7 +261,8 @@ class TelegramBotService {
       const operators = botSettings?.operators || [];
       for (const appointment of upcomingAppointments) {
         const service = await this.getServiceName(appointment.serviceId);
-        const appointmentDate = appointment.preferredDate ? new Date(appointment.preferredDate) : new Date();
+        const appointmentDate = appointment.appointmentTime ? new Date(`2000-01-01T${appointment.appointmentTime}`) : 
+          (appointment.preferredDate ? new Date(appointment.preferredDate) : new Date());
         
         // Şablon mesajı hazırla
         const reminderMessage = this.formatAppointmentReminderMessage(
@@ -462,9 +463,10 @@ E-posta: ${appointment.email}
       
       for (const appointment of todaysAppointments) {
         const service = await this.getServiceName(appointment.serviceId);
-        const appointmentTime = appointment.preferredDate ? new Date(appointment.preferredDate) : new Date();
-        const hours = appointmentTime.getHours().toString().padStart(2, '0');
-        const minutes = appointmentTime.getMinutes().toString().padStart(2, '0');
+        const timeObj = appointment.appointmentTime ? new Date(`2000-01-01T${appointment.appointmentTime}`) : 
+          (appointment.preferredDate ? new Date(appointment.preferredDate) : new Date());
+        const hours = timeObj.getHours().toString().padStart(2, '0');
+        const minutes = timeObj.getMinutes().toString().padStart(2, '0');
         
         message += `⏰ *${hours}:${minutes}* - ${appointment.name}\n`;
         message += `📞 ${appointment.phone}\n`;
@@ -536,9 +538,10 @@ E-posta: ${appointment.email}
         
         for (const appointment of tomorrowsAppointments) {
           const service = await this.getServiceName(appointment.serviceId);
-          const appointmentTime = appointment.preferredDate ? new Date(appointment.preferredDate) : new Date();
-          const hours = appointmentTime.getHours().toString().padStart(2, '0');
-          const minutes = appointmentTime.getMinutes().toString().padStart(2, '0');
+          const timeObj = appointment.appointmentTime ? new Date(`2000-01-01T${appointment.appointmentTime}`) : 
+            (appointment.preferredDate ? new Date(appointment.preferredDate) : new Date());
+          const hours = timeObj.getHours().toString().padStart(2, '0');
+          const minutes = timeObj.getMinutes().toString().padStart(2, '0');
           
           message += `⏰ *${hours}:${minutes}* - ${appointment.name}\n`;
           message += `📞 ${appointment.phone}\n`;
