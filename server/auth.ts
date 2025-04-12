@@ -7,7 +7,7 @@ import { promisify } from "util";
 import { storage } from "./storage";
 
 // @shared/schema modülü yerine doğrudan User arayüzünü tanımlıyoruz
-interface User {
+export interface AppUser {
   id: number;
   username: string;
   password: string;
@@ -17,7 +17,7 @@ interface User {
 
 declare global {
   namespace Express {
-    interface User extends User {}
+    interface User extends AppUser {}
   }
 }
 
