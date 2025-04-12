@@ -8,7 +8,8 @@ import { Separator } from "@/components/ui/separator";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Progress } from "@/components/ui/progress";
-import { Play, PauseCircle, Image, Clock, Camera, Video, Clapperboard, Split } from 'lucide-react';
+import { Play, PauseCircle, Image as ImageIcon, Clock, Camera, Clapperboard, Split, 
+  Heart, Share2, Download, ChevronRight, Sparkles, Filter, Sun, Award } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
 import PageHeader from '@/components/ui/PageHeader';
 import Container from '@/components/ui/container';
@@ -348,270 +349,288 @@ export default function GalleryPage() {
   };
 
   return (
-    <>
+    <div>
       <PageHeader
         title={t('gallery.pageTitle')}
         description={t('gallery.pageDescription')}
+        isSpecialPage={true}
+        imageUrl="/images/clinic-gallery/IMG-20250325-WA0055.jpg"
       />
 
-      <Container className="py-12">
-        <Tabs defaultValue="clinic" className="w-full" onValueChange={setActiveTab}>
-          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8">
-            <TabsList className="grid grid-cols-3 md:w-auto">
-              <TabsTrigger value="clinic" className="flex items-center gap-1.5">
-                <Camera className="h-4 w-4" />
-                <span>{t('gallery.clinicImages')}</span>
-              </TabsTrigger>
-              <TabsTrigger value="videos" className="flex items-center gap-1.5">
-                <Clapperboard className="h-4 w-4" />
-                <span>{t('gallery.videos')}</span>
-              </TabsTrigger>
-              <TabsTrigger value="beforeAfter" className="flex items-center gap-1.5">
-                <Split className="h-4 w-4" />
-                <span>{t('gallery.beforeAfter')}</span>
-              </TabsTrigger>
-            </TabsList>
-
-            {activeTab === 'clinic' && (
-              <div className="flex gap-2 flex-wrap">
-                <Button
-                  variant={selectedCategory === null ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setSelectedCategory(null)}
-                >
-                  {t('gallery.all')}
-                </Button>
-                <Button
-                  variant={selectedCategory === 'procedure' ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setSelectedCategory('procedure')}
-                >
-                  {t('gallery.procedures')}
-                </Button>
-                <Button
-                  variant={selectedCategory === 'facility' ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setSelectedCategory('facility')}
-                >
-                  {t('gallery.facilities')}
-                </Button>
-                <Button
-                  variant={selectedCategory === 'team' ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setSelectedCategory('team')}
-                >
-                  {t('gallery.team')}
-                </Button>
-              </div>
-            )}
-          </div>
-
-          <TabsContent value="clinic" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredImages.map((image) => (
-                <Dialog key={image.id}>
-                  <DialogTrigger asChild>
-                    <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer group">
-                      <AspectRatio ratio={4/3} className="bg-muted">
-                        <img 
-                          src={image.url} 
-                          alt={image.title}
-                          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
-                        />
-                      </AspectRatio>
-                      <CardContent className="p-4">
-                        <div className="flex items-center justify-between">
-                          <h3 className="font-medium text-base">{image.title}</h3>
-                          <Badge variant="outline" className="text-xs capitalize">
-                            {image.category}
-                          </Badge>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-3xl">
-                    <div className="flex flex-col gap-4">
-                      <AspectRatio ratio={16/9} className="bg-muted rounded-lg overflow-hidden">
-                        <img 
-                          src={image.url} 
-                          alt={image.title}
-                          className="object-contain w-full h-full"
-                        />
-                      </AspectRatio>
-                      <div>
-                        <h3 className="text-lg font-semibold mb-1">{image.title}</h3>
-                        <div className="flex items-center gap-2 text-muted-foreground text-sm">
-                          <Badge variant="outline" className="capitalize">
-                            {image.category}
-                          </Badge>
-                          <p className="flex items-center gap-1">
-                            <Image className="h-3.5 w-3.5" />
-                            {t('gallery.highResolution')}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-              ))}
+      <div className="bg-gradient-to-b from-blue-50 to-white">
+        <Container className="py-16">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center justify-center mb-3">
+              <Sparkles className="h-5 w-5 mr-2 text-blue-500" />
+              <span className="text-sm font-semibold text-blue-500 uppercase tracking-wider">{t('gallery.exploreOurWork')}</span>
             </div>
-          </TabsContent>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{t('gallery.transformationShowcase')}</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">{t('gallery.showcaseDescription')}</p>
+          </div>
+          
+          <Tabs defaultValue="clinic" className="w-full" onValueChange={setActiveTab}>
+            <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-8 bg-white rounded-lg shadow-sm p-4">
+              <TabsList className="grid grid-cols-3 md:w-auto bg-blue-50/80">
+                <TabsTrigger value="clinic" className="flex items-center gap-1.5 data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+                  <Camera className="h-4 w-4" />
+                  <span>{t('gallery.clinicImages')}</span>
+                </TabsTrigger>
+                <TabsTrigger value="videos" className="flex items-center gap-1.5 data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+                  <Clapperboard className="h-4 w-4" />
+                  <span>{t('gallery.videos')}</span>
+                </TabsTrigger>
+                <TabsTrigger value="beforeAfter" className="flex items-center gap-1.5 data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+                  <Split className="h-4 w-4" />
+                  <span>{t('gallery.beforeAfter')}</span>
+                </TabsTrigger>
+              </TabsList>
 
-          <TabsContent value="videos">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {videos.map((video) => (
-                <Dialog key={video.id}>
-                  <DialogTrigger asChild>
-                    <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer group">
-                      <div className="relative">
-                        <AspectRatio ratio={16/9} className="bg-muted">
+              {activeTab === 'clinic' && (
+                <div className="flex gap-2 flex-wrap">
+                  <Button
+                    variant={selectedCategory === null ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedCategory(null)}
+                    className={selectedCategory === null ? "bg-blue-600 hover:bg-blue-700" : ""}
+                  >
+                    <Filter className="h-3.5 w-3.5 mr-1.5" />
+                    {t('gallery.all')}
+                  </Button>
+                  <Button
+                    variant={selectedCategory === 'procedure' ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedCategory('procedure')}
+                    className={selectedCategory === 'procedure' ? "bg-blue-600 hover:bg-blue-700" : ""}
+                  >
+                    {t('gallery.procedures')}
+                  </Button>
+                  <Button
+                    variant={selectedCategory === 'facility' ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedCategory('facility')}
+                    className={selectedCategory === 'facility' ? "bg-blue-600 hover:bg-blue-700" : ""}
+                  >
+                    {t('gallery.facilities')}
+                  </Button>
+                  <Button
+                    variant={selectedCategory === 'team' ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedCategory('team')}
+                    className={selectedCategory === 'team' ? "bg-blue-600 hover:bg-blue-700" : ""}
+                  >
+                    {t('gallery.team')}
+                  </Button>
+                </div>
+              )}
+            </div>
+
+            <TabsContent value="clinic" className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredImages.map((image) => (
+                  <Dialog key={image.id}>
+                    <DialogTrigger asChild>
+                      <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer group">
+                        <AspectRatio ratio={4/3} className="bg-muted">
                           <img 
-                            src={video.thumbnail} 
-                            alt={video.title}
+                            src={image.url} 
+                            alt={image.title}
                             className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
                           />
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="bg-black/50 rounded-full p-3 backdrop-blur-sm">
-                              <Play className="h-8 w-8 text-white" fill="white" />
-                            </div>
-                          </div>
                         </AspectRatio>
-                        <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded backdrop-blur-sm flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          {video.duration}
-                        </div>
-                      </div>
-                      <CardContent className="p-4">
-                        <h3 className="font-medium text-base">{video.title}</h3>
-                      </CardContent>
-                    </Card>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-3xl" onInteractOutside={() => {
-                    if (isPlaying) {
-                      setIsPlaying(false);
-                      if (videoRef.current) {
-                        videoRef.current.pause();
-                      }
-                      if (progressInterval.current) {
-                        clearInterval(progressInterval.current);
-                        progressInterval.current = null;
-                      }
-                    }
-                  }}>
-                    <div className="flex flex-col gap-4">
-                      <div className="relative bg-black rounded-lg overflow-hidden">
-                        <video 
-                          ref={videoRef}
-                          src={video.url} 
-                          className="w-full"
-                          onEnded={() => {
-                            setIsPlaying(false);
-                            if (progressInterval.current) {
-                              clearInterval(progressInterval.current);
-                              progressInterval.current = null;
-                            }
-                          }}
-                        />
-                        {!isPlaying && (
-                          <div className="absolute inset-0 flex items-center justify-center cursor-pointer" onClick={handleVideoPlay}>
-                            <div className="bg-black/30 rounded-full p-3 backdrop-blur-sm">
-                              <Play className="h-12 w-12 text-white" fill="white" />
-                            </div>
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between">
+                            <h3 className="font-medium text-base">{image.title}</h3>
+                            <Badge variant="outline" className="text-xs capitalize">
+                              {image.category}
+                            </Badge>
                           </div>
-                        )}
-                        <div className="absolute bottom-0 left-0 right-0">
-                          <Progress value={currentProgress} className="rounded-none h-1" />
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between">
+                        </CardContent>
+                      </Card>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-3xl">
+                      <div className="flex flex-col gap-4">
+                        <AspectRatio ratio={16/9} className="bg-muted rounded-lg overflow-hidden">
+                          <img 
+                            src={image.url} 
+                            alt={image.title}
+                            className="object-contain w-full h-full"
+                          />
+                        </AspectRatio>
                         <div>
-                          <h3 className="text-lg font-semibold">{video.title}</h3>
-                          <p className="text-muted-foreground text-sm flex items-center gap-1">
-                            <Clock className="h-3.5 w-3.5" />
-                            {video.duration}
-                          </p>
+                          <h3 className="text-lg font-semibold mb-1">{image.title}</h3>
+                          <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                            <Badge variant="outline" className="capitalize">
+                              {image.category}
+                            </Badge>
+                            <p className="flex items-center gap-1">
+                              <ImageIcon className="h-3.5 w-3.5" />
+                              {t('gallery.highResolution')}
+                            </p>
+                          </div>
                         </div>
-                        <Button 
-                          variant="outline" 
-                          size="icon" 
-                          onClick={handleVideoPlay}
-                        >
-                          {isPlaying ? (
-                            <PauseCircle className="h-5 w-5" />
-                          ) : (
-                            <Play className="h-5 w-5" />
-                          )}
-                        </Button>
                       </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-              ))}
-            </div>
-          </TabsContent>
+                    </DialogContent>
+                  </Dialog>
+                ))}
+              </div>
+            </TabsContent>
 
-          <TabsContent value="beforeAfter">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {beforeAfterImages.map((item) => (
-                <Dialog key={item.id}>
-                  <DialogTrigger asChild>
-                    <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer group">
-                      <AspectRatio ratio={1/1} className="bg-muted">
-                        <img 
-                          src={item.imageUrl} 
-                          alt={item.title}
-                          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
-                        />
-                      </AspectRatio>
-                      <CardContent className="p-4">
-                        <div className="flex flex-col gap-1">
-                          <h3 className="font-medium text-base">{item.title}</h3>
-                          <p className="text-xs text-muted-foreground">
-                            {t('gallery.resultAfter')} {item.month} {t('gallery.months')}
-                          </p>
-                          <Badge variant="outline" className="w-fit mt-1 text-xs capitalize">
-                            {item.type === 'hair' ? t('gallery.hairTransplant') : 
-                             item.type === 'beard' ? t('gallery.beardTransplant') : 
-                             t('gallery.eyebrowTransplant')}
-                          </Badge>
+            <TabsContent value="videos">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {videos.map((video) => (
+                  <Dialog key={video.id}>
+                    <DialogTrigger asChild>
+                      <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer group">
+                        <div className="relative">
+                          <AspectRatio ratio={16/9} className="bg-muted">
+                            <img 
+                              src={video.thumbnail} 
+                              alt={video.title}
+                              className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                            />
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <div className="bg-black/50 rounded-full p-3 backdrop-blur-sm">
+                                <Play className="h-8 w-8 text-white" fill="white" />
+                              </div>
+                            </div>
+                          </AspectRatio>
+                          <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded backdrop-blur-sm flex items-center gap-1">
+                            <Clock className="h-3 w-3" />
+                            {video.duration}
+                          </div>
                         </div>
-                      </CardContent>
-                    </Card>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-4xl">
-                    <div className="flex flex-col gap-4">
-                      <AspectRatio ratio={16/9} className="bg-muted rounded-lg overflow-hidden">
-                        <img 
-                          src={item.imageUrl} 
-                          alt={item.title}
-                          className="object-contain w-full h-full"
-                        />
-                      </AspectRatio>
-                      <div>
-                        <h3 className="text-lg font-semibold mb-1">{item.title}</h3>
-                        <p className="text-muted-foreground text-sm mb-2">
-                          {item.description}
-                        </p>
-                        <div className="flex items-center gap-2">
-                          <Badge className="capitalize">
-                            {item.type === 'hair' ? t('gallery.hairTransplant') : 
-                             item.type === 'beard' ? t('gallery.beardTransplant') : 
-                             t('gallery.eyebrowTransplant')}
-                          </Badge>
-                          <Badge variant="outline" className="flex items-center gap-1">
-                            <Clock className="h-3.5 w-3.5" />
-                            {item.month} {t('gallery.months')}
-                          </Badge>
+                        <CardContent className="p-4">
+                          <h3 className="font-medium text-base">{video.title}</h3>
+                        </CardContent>
+                      </Card>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-3xl" onInteractOutside={() => {
+                      if (isPlaying) {
+                        setIsPlaying(false);
+                        if (videoRef.current) {
+                          videoRef.current.pause();
+                        }
+                        if (progressInterval.current) {
+                          clearInterval(progressInterval.current);
+                          progressInterval.current = null;
+                        }
+                      }
+                    }}>
+                      <div className="flex flex-col gap-4">
+                        <div className="relative bg-black rounded-lg overflow-hidden">
+                          <video 
+                            ref={videoRef}
+                            src={video.url} 
+                            className="w-full"
+                            onEnded={() => {
+                              setIsPlaying(false);
+                              if (progressInterval.current) {
+                                clearInterval(progressInterval.current);
+                                progressInterval.current = null;
+                              }
+                            }}
+                          />
+                          {!isPlaying && (
+                            <div className="absolute inset-0 flex items-center justify-center cursor-pointer" onClick={handleVideoPlay}>
+                              <div className="bg-black/30 rounded-full p-3 backdrop-blur-sm">
+                                <Play className="h-12 w-12 text-white" fill="white" />
+                              </div>
+                            </div>
+                          )}
+                          <div className="absolute bottom-0 left-0 right-0">
+                            <Progress value={currentProgress} className="rounded-none h-1" />
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h3 className="text-lg font-semibold">{video.title}</h3>
+                            <p className="text-muted-foreground text-sm flex items-center gap-1">
+                              <Clock className="h-3.5 w-3.5" />
+                              {video.duration}
+                            </p>
+                          </div>
+                          <Button 
+                            variant="outline" 
+                            size="icon" 
+                            onClick={handleVideoPlay}
+                          >
+                            {isPlaying ? (
+                              <PauseCircle className="h-5 w-5" />
+                            ) : (
+                              <Play className="h-5 w-5" />
+                            )}
+                          </Button>
                         </div>
                       </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
-      </Container>
-    </>
+                    </DialogContent>
+                  </Dialog>
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="beforeAfter">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {beforeAfterImages.map((item) => (
+                  <Dialog key={item.id}>
+                    <DialogTrigger asChild>
+                      <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer group">
+                        <AspectRatio ratio={1/1} className="bg-muted">
+                          <img 
+                            src={item.imageUrl} 
+                            alt={item.title}
+                            className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                          />
+                        </AspectRatio>
+                        <CardContent className="p-4">
+                          <div className="flex flex-col gap-1">
+                            <h3 className="font-medium text-base">{item.title}</h3>
+                            <p className="text-xs text-muted-foreground">
+                              {t('gallery.resultAfter')} {item.month} {t('gallery.months')}
+                            </p>
+                            <Badge variant="outline" className="w-fit mt-1 text-xs capitalize">
+                              {item.type === 'hair' ? t('gallery.hairTransplant') : 
+                               item.type === 'beard' ? t('gallery.beardTransplant') : 
+                               t('gallery.eyebrowTransplant')}
+                            </Badge>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-4xl">
+                      <div className="flex flex-col gap-4">
+                        <AspectRatio ratio={16/9} className="bg-muted rounded-lg overflow-hidden">
+                          <img 
+                            src={item.imageUrl} 
+                            alt={item.title}
+                            className="object-contain w-full h-full"
+                          />
+                        </AspectRatio>
+                        <div>
+                          <h3 className="text-lg font-semibold mb-1">{item.title}</h3>
+                          <p className="text-muted-foreground text-sm mb-2">
+                            {item.description}
+                          </p>
+                          <div className="flex items-center gap-2">
+                            <Badge className="capitalize">
+                              {item.type === 'hair' ? t('gallery.hairTransplant') : 
+                               item.type === 'beard' ? t('gallery.beardTransplant') : 
+                               t('gallery.eyebrowTransplant')}
+                            </Badge>
+                            <Badge variant="outline" className="flex items-center gap-1">
+                              <Clock className="h-3.5 w-3.5" />
+                              {item.month} {t('gallery.months')}
+                            </Badge>
+                          </div>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
+        </Container>
+      </div>
+    </div>
   );
 }
