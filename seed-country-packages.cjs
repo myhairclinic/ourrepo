@@ -52,7 +52,20 @@ async function seedCountryPackages() {
         isAllInclusive: true,
         isActive: true,
         isFeatured: true,
-        order: 1
+        order: 1,
+        // Zorunlu alanlar eklenmiş hali
+        accommodationTR: "5 yıldızlı lüks konaklama tesislerimiz Tiflis şehir merkezinde yer almaktadır. Her detayı düşünülmüş modern odalarda konfor ve lüksü bir arada yaşayacaksınız.",
+        accommodationEN: "Our 5-star luxury accommodations are located in the center of Tbilisi. You will experience comfort and luxury together in modern rooms where every detail has been considered.",
+        accommodationRU: "Наши 5-звездочные роскошные гостиницы расположены в центре Тбилиси. Вы будете наслаждаться комфортом и роскошью в современных номерах, где продумана каждая деталь.",
+        accommodationKA: "ჩვენი 5-ვარსკვლავიანი ლუქსის საცხოვრებლები მდებარეობს თბილისის ცენტრში. თქვენ გამოსცდით კომფორტს და ფუფუნებას ერთად თანამედროვე ოთახებში, სადაც ყველა დეტალი გათვალისწინებულია.",
+        transportationTR: "Havalimanı transferleriniz özel lüks araçlarla gerçekleştirilecek. Tiflis içi ulaşımlarınız için de 7/24 özel şoför hizmeti sunulmaktadır.",
+        transportationEN: "Your airport transfers will be carried out with private luxury vehicles. 24/7 private chauffeur service is also provided for your transportation within Tbilisi.",
+        transportationRU: "Ваши трансферы из аэропорта будут осуществляться на частных роскошных автомобилях. Также предоставляется круглосуточная услуга частного шофера для вашего передвижения по Тбилиси.",
+        transportationKA: "თქვენი აეროპორტის ტრანსფერები განხორციელდება კერძო ფეშენებელური მანქანებით. ასევე უზრუნველყოფილია 24/7 კერძო მძღოლის მომსახურება თქვენი ტრანსპორტირებისთვის თბილისში.",
+        activitiesTR: "Paketinize dahil olan aktiviteler: Tiflis Şehir Turu, Mtskheta Antik Kenti Gezisi, Kazbegi Dağ Turu, şarap tadımı ve geleneksel Gürcü mutfağı workshop'ı.",
+        activitiesEN: "Activities included in your package: Tbilisi City Tour, Mtskheta Ancient City Excursion, Kazbegi Mountain Tour, wine tasting, and traditional Georgian cuisine workshop.",
+        activitiesRU: "Мероприятия, включенные в ваш пакет: Обзорная экскурсия по Тбилиси, Экскурсия по древнему городу Мцхета, Горный тур Казбеги, дегустация вин и мастер-класс традиционной грузинской кухни.",
+        activitiesKA: "თქვენს პაკეტში შემავალი აქტივობები: თბილისის საქალაქო ტური, მცხეთის უძველესი ქალაქის ექსკურსია, ყაზბეგის მთის ტური, ღვინის დეგუსტაცია და ტრადიციული ქართული სამზარეულოს სემინარი."
       },
       {
         slug: "rusya-ozel-paketi",
@@ -76,7 +89,20 @@ async function seedCountryPackages() {
         isAllInclusive: true,
         isActive: true,
         isFeatured: true,
-        order: 2
+        order: 2,
+        // Zorunlu alanlar eklenmiş hali
+        accommodationTR: "4 yıldızlı tarihi Tiflis otellerimiz, şehrin eski bölgesinde geleneksel mimari ile modern konforu birleştiriyor. Etrafınızda Rus misafirlerin de konakladığı ortamda kendinizi evinizde hissedeceksiniz.",
+        accommodationEN: "Our 4-star historic Tbilisi hotels combine traditional architecture with modern comfort in the old district of the city. You will feel at home in an environment where Russian guests also stay.",
+        accommodationRU: "Наши 4-звездочные исторические отели в Тбилиси сочетают в себе традиционную архитектуру с современным комфортом в старом районе города. Вы будете чувствовать себя как дома в среде, где также останавливаются российские гости.",
+        accommodationKA: "ჩვენი 4-ვარსკვლავიანი ისტორიული თბილისის სასტუმროები აერთიანებენ ტრადიციულ არქიტექტურას თანამედროვე კომფორტთან ქალაქის ძველ უბანში. თქვენ იგრძნობთ თავს სახლში გარემოში, სადაც რუსი სტუმრებიც რჩებიან.",
+        transportationTR: "Tiflis Havalimanı'ndan özel VIP transferleriniz ve şehir içi ulaşımlarınız lüks araçlarla sağlanacak. Tüm gezilerinizde Rusça konuşan özel rehber hizmeti sunulmaktadır.",
+        transportationEN: "Your private VIP transfers from Tbilisi Airport and your transportation within the city will be provided with luxury vehicles. Special Russian-speaking guide service is offered for all your excursions.",
+        transportationRU: "Ваши частные VIP-трансферы из аэропорта Тбилиси и ваше передвижение по городу будут обеспечены роскошными автомобилями. Для всех ваших экскурсий предлагается услуга специального русскоговорящего гида.",
+        transportationKA: "თქვენი კერძო VIP ტრანსფერები თბილისის აეროპორტიდან და თქვენი ტრანსპორტირება ქალაქში უზრუნველყოფილი იქნება ძვირადღირებული მანქანებით. ყველა თქვენი ექსკურსიისთვის შეთავაზებულია სპეციალური რუსულენოვანი გიდის მომსახურება.",
+        activitiesTR: "Paketiniz kapsamında: Tiflis tarihi merkezinin detaylı turu, Rus-Gürcü dostluğu müzesi ziyareti, Rus kültürel mirasının önemli mekanları, geleneksel Gürcü şarap tadımı ve yerel gastronomide Rus etkisi workshopuna katılım.",
+        activitiesEN: "Within the scope of your package: Detailed tour of Tbilisi historical center, visit to the Russian-Georgian friendship museum, important venues of Russian cultural heritage, traditional Georgian wine tasting, and participation in a workshop on Russian influence in local gastronomy.",
+        activitiesRU: "В рамках вашего пакета: Подробная экскурсия по историческому центру Тбилиси, посещение музея российско-грузинской дружбы, важные места российского культурного наследия, традиционная дегустация грузинских вин и участие в мастер-классе о российском влиянии в местной гастрономии.",
+        activitiesKA: "თქვენი პაკეტის ფარგლებში: თბილისის ისტორიული ცენტრის დეტალური ტური, რუსულ-ქართული მეგობრობის მუზეუმის დათვალიერება, რუსული კულტურული მემკვიდრეობის მნიშვნელოვანი ადგილები, ტრადიციული ქართული ღვინის დეგუსტაცია და ადგილობრივ გასტრონომიაში რუსული გავლენის შესახებ სემინარში მონაწილეობა."
       },
       {
         slug: "azerbaycan-ozel-paketi",
@@ -100,7 +126,20 @@ async function seedCountryPackages() {
         isAllInclusive: true,
         isActive: true,
         isFeatured: true,
-        order: 3
+        order: 3,
+        // Zorunlu alanlar eklenmiş hali
+        accommodationTR: "5 yıldızlı lüks otellerimiz Tiflis'in modern bölgesinde yer almaktadır. Azeri misafirlerimizin özel ihtiyaçlarına göre tasarlanmış odalar ve daireler mevcuttur.",
+        accommodationEN: "Our 5-star luxury hotels are located in the modern district of Tbilisi. Rooms and apartments designed according to the special needs of our Azerbaijani guests are available.",
+        accommodationRU: "Наши 5-звездочные роскошные отели расположены в современном районе Тбилиси. Доступны номера и апартаменты, разработанные в соответствии с особыми потребностями наших азербайджанских гостей.",
+        accommodationKA: "ჩვენი 5-ვარსკვლავიანი ლუქს სასტუმროები მდებარეობს თბილისის თანამედროვე უბანში. ხელმისაწვდომია ოთახები და აპარტამენტები, რომლებიც შექმნილია ჩვენი აზერბაიჯანელი სტუმრების სპეციალური საჭიროებების მიხედვით.",
+        transportationTR: "Lüks araçlarla VIP transfer hizmeti ve tüm şehir içi ulaşımlar. Azeri konuşan özel şoför ve rehber 24 saat hizmetinizdedir.",
+        transportationEN: "VIP transfer service with luxury vehicles and all intra-city transportation. Azerbaijani-speaking private driver and guide are at your service 24 hours a day.",
+        transportationRU: "VIP-трансфер на роскошных автомобилях и весь городской транспорт. Частный водитель и гид, говорящие на азербайджанском языке, к вашим услугам 24 часа в сутки.",
+        transportationKA: "VIP ტრანსფერის სერვისი ძვირადღირებული ავტომობილებით და ყველა შიდა საქალაქო ტრანსპორტირება. აზერბაიჯანულენოვანი კერძო მძღოლი და გიდი თქვენს განკარგულებაშია დღე-ღამის 24 საათის განმავლობაში.",
+        activitiesTR: "Paketinizde yer alan aktiviteler: Tiflis Modern Mimari Turu, Azerbaycan-Gürcistan Dostluk Müzesi, Azerbaycan restoranlarında özel akşam yemekleri, Azerbaycan kültür mirası tanıtımı, Tiflis Güzellik Merkezi'nde cilt bakımı.",
+        activitiesEN: "Activities included in your package: Tbilisi Modern Architecture Tour, Azerbaijan-Georgia Friendship Museum, special dinners at Azerbaijani restaurants, introduction to Azerbaijan cultural heritage, skin care at Tbilisi Beauty Center.",
+        activitiesRU: "Мероприятия, включенные в ваш пакет: Тур по современной архитектуре Тбилиси, Музей дружбы Азербайджан-Грузия, специальные ужины в азербайджанских ресторанах, знакомство с культурным наследием Азербайджана, уход за кожей в Центре красоты Тбилиси.",
+        activitiesKA: "თქვენს პაკეტში შემავალი აქტივობები: თბილისის თანამედროვე არქიტექტურის ტური, აზერბაიჯან-საქართველოს მეგობრობის მუზეუმი, სპეციალური ვახშმები აზერბაიჯანულ რესტორნებში, აზერბაიჯანის კულტურული მემკვიდრეობის გაცნობა, კანის მოვლა თბილისის სილამაზის ცენტრში."
       },
       {
         slug: "kazakistan-ozel-paketi",
@@ -124,7 +163,20 @@ async function seedCountryPackages() {
         isAllInclusive: true,
         isActive: true,
         isFeatured: true,
-        order: 4
+        order: 4,
+        // Zorunlu alanlar eklenmiş hali
+        accommodationTR: "Tiflis'in en lüks semtlerinde deluxe 5 yıldızlı otellerde konaklama. Geniş odalar, spa ve masaj hizmetleri, havuz ve fitness merkezi dahil. Kazak misafirlere özel olarak VIP süitler tahsis edilmektedir.",
+        accommodationEN: "Accommodation in deluxe 5-star hotels in the most luxurious districts of Tbilisi. Spacious rooms, spa and massage services, pool and fitness center included. VIP suites are allocated specially for Kazakh guests.",
+        accommodationRU: "Размещение в роскошных 5-звездочных отелях в самых шикарных районах Тбилиси. Просторные номера, спа и массажные услуги, бассейн и фитнес-центр включены. Специально для казахстанских гостей выделяются VIP-люксы.",
+        accommodationKA: "განთავსება დელუქს 5-ვარსკვლავიან სასტუმროებში თბილისის ყველაზე ფეშენებელურ უბნებში. ფართო ოთახები, სპა და მასაჟის სერვისები, აუზი და ფიტნეს ცენტრი. VIP აპარტამენტები გამოყოფილია სპეციალურად ყაზახი სტუმრებისთვის.",
+        transportationTR: "Premium lüks araçlarla özel VIP transfer. Kişisel şoför hizmeti, özel tur otobüsleri, Kazak konuşan profesyonel rehberler. Şehir turu ve çevre gezileri için premium araç hizmetleri.",
+        transportationEN: "Private VIP transfer with premium luxury vehicles. Personal chauffeur service, private tour buses, Kazakh-speaking professional guides. Premium vehicle services for city tours and excursions.",
+        transportationRU: "Частный VIP-трансфер на премиальных роскошных автомобилях. Услуги личного шофера, частные туристические автобусы, профессиональные гиды, говорящие на казахском языке. Услуги премиум-автомобилей для экскурсий по городу и экскурсий.",
+        transportationKA: "კერძო VIP ტრანსფერი პრემიუმ ლუქს მანქანებით. პირადი მძღოლის მომსახურება, კერძო ტურისტული ავტობუსები, ყაზახურენოვანი პროფესიონალი გიდები. პრემიუმ ავტომობილების მომსახურება საქალაქო ტურებისა და ექსკურსიებისთვის.",
+        activitiesTR: "Paketinize dahil özel aktiviteler: VIP Tiflis şehir turu, Kazak-Gürcü kültürü ortak etkinlikler, geleneksel Kazak yemekleri yapan aşçı ile özel atölye çalışması, özel müze ve sanat galerisi ziyaretleri, yerel zanaatkarlarla VIP görüşmeler, özel alışveriş turu.",
+        activitiesEN: "Special activities included in your package: VIP Tbilisi city tour, Kazakh-Georgian culture joint events, special workshop with a chef making traditional Kazakh dishes, special museum and art gallery visits, VIP meetings with local artisans, special shopping tour.",
+        activitiesRU: "Специальные мероприятия, включенные в ваш пакет: VIP-тур по Тбилиси, совместные мероприятия казахской и грузинской культуры, специальный мастер-класс с шеф-поваром, готовящим традиционные казахские блюда, специальные посещения музеев и художественных галерей, VIP-встречи с местными ремесленниками, специальный шоппинг-тур.",
+        activitiesKA: "თქვენს პაკეტში შემავალი სპეციალური აქტივობები: VIP თბილისის საქალაქო ტური, ყაზახურ-ქართული კულტურის ერთობლივი ღონისძიებები, სპეციალური სემინარი შეფ-მზარეულთან, რომელიც ამზადებს ტრადიციულ ყაზახურ კერძებს, სპეციალური მუზეუმისა და ხელოვნების გალერეის ვიზიტები, VIP შეხვედრები ადგილობრივ ხელოსნებთან, სპეციალური შოპინგის ტური."
       },
       {
         slug: "ukrayna-ozel-paketi",
@@ -148,7 +200,20 @@ async function seedCountryPackages() {
         isAllInclusive: true,
         isActive: true,
         isFeatured: true,
-        order: 5
+        order: 5,
+        // Zorunlu alanlar eklenmiş hali
+        accommodationTR: "Tiflis'in yeşillikler içindeki bölgelerinde yer alan butik otellerde konaklama. Ukraynalı turistlerin tercih ettiği otellerde rahat edecek, kendinizi evinizde hissedeceksiniz.",
+        accommodationEN: "Accommodation in boutique hotels located in the green areas of Tbilisi. You will feel comfortable and at home in hotels preferred by Ukrainian tourists.",
+        accommodationRU: "Размещение в бутик-отелях, расположенных в зеленых районах Тбилиси. Вы будете чувствовать себя комфортно и как дома в отелях, предпочитаемых украинскими туристами.",
+        accommodationKA: "განთავსება ბუტიკის სასტუმროებში, რომლებიც მდებარეობს თბილისის მწვანე უბნებში. თქვენ იგრძნობთ თავს კომფორტულად და სახლში სასტუმროებში, რომლებსაც უპირატესობას ანიჭებენ უკრაინელი ტურისტები.",
+        transportationTR: "Havaalanından doğrudan otelinize özel transfer. Ayrıca tüm şehir içi geziler, doğa turları için araç hizmetleri ve Ukraynaca konuşan profesyonel rehberler eşliğinde ulaşım.",
+        transportationEN: "Special transfer directly from the airport to your hotel. Also, vehicle services for all city trips, nature tours, and transportation accompanied by Ukrainian-speaking professional guides.",
+        transportationRU: "Специальный трансфер прямо из аэропорта в ваш отель. Также услуги автомобилей для всех городских поездок, природных туров и транспорт в сопровождении профессиональных гидов, говорящих по-украински.",
+        transportationKA: "სპეციალური ტრანსფერი პირდაპირ აეროპორტიდან თქვენს სასტუმრომდე. ასევე, სატრანსპორტო საშუალებების მომსახურება ყველა საქალაქო მოგზაურობისთვის, ბუნების ტურებისთვის და ტრანსპორტირება უკრაინულენოვანი პროფესიონალი გიდების თანხლებით.",
+        activitiesTR: "Paketinizde yer alan aktiviteler: Tiflis'in doğal güzelliklerini keşif turu, organik çiftlik ziyareti, Ukrayna-Gürcistan kültürel bağları üzerine interaktif seminer, yerel şarap tadımı, Ukrayna restoranlarında akşam yemeği, doğa sporları aktiviteleri.",
+        activitiesEN: "Activities included in your package: Exploration tour of Tbilisi's natural beauties, organic farm visit, interactive seminar on Ukrainian-Georgian cultural ties, local wine tasting, dinner at Ukrainian restaurants, nature sports activities.",
+        activitiesRU: "Мероприятия, включенные в ваш пакет: Экскурсионный тур по природным красотам Тбилиси, посещение органической фермы, интерактивный семинар по украинско-грузинским культурным связям, дегустация местных вин, ужин в украинских ресторанах, мероприятия природного спорта.",
+        activitiesKA: "თქვენს პაკეტში შემავალი აქტივობები: თბილისის ბუნებრივი სილამაზის აღმოჩენის ტური, ორგანული ფერმის მონახულება, ინტერაქტიული სემინარი უკრაინულ-ქართულ კულტურულ კავშირებზე, ადგილობრივი ღვინის დეგუსტაცია, ვახშამი უკრაინულ რესტორნებში, ბუნებრივი სპორტის აქტივობები."
       }
     ];
 
