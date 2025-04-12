@@ -103,6 +103,7 @@ export interface IStorage {
   getAppointmentsByStatus(status: string): Promise<Appointment[]>;
   createAppointment(appointment: InsertAppointment): Promise<Appointment>;
   updateAppointment(id: number, appointment: Partial<InsertAppointment>): Promise<Appointment | undefined>;
+  updateAppointmentStatus(id: number, status: string): Promise<Appointment | undefined>;
   deleteAppointment(id: number): Promise<boolean>;
 
   // Testimonial operations
@@ -722,6 +723,19 @@ export class MemStorage implements IStorage {
     const updatedAppointment: Appointment = {
       ...existingAppointment,
       ...appointment
+    };
+    this.appointments.set(id, updatedAppointment);
+    return updatedAppointment;
+  }
+  
+  async updateAppointmentStatus(id: number, status: string): Promise<Appointment | undefined> {
+    const existingAppointment = this.appointments.get(id);
+    if (!existingAppointment) return undefined;
+    
+    const updatedAppointment: Appointment = {
+      ...existingAppointment,
+      status,
+      updatedAt: new Date()
     };
     this.appointments.set(id, updatedAppointment);
     return updatedAppointment;
@@ -1558,7 +1572,7 @@ export class DatabaseStorage implements IStorage {
 
   // Appointment operations
   async getAppointments(): Promise<Appointment[]> {
-    return await db.select().from(appointments).orderBy(desc(appointments.appointmentDate));
+    return await db.select().from(appointments).orderBy(desc(appointments.createdAt));
   }
 
   async getAppointmentById(id: number): Promise<Appointment | undefined> {
@@ -1570,7 +1584,7 @@ export class DatabaseStorage implements IStorage {
     return await db.select()
       .from(appointments)
       .where(eq(appointments.status, status))
-      .orderBy(desc(appointments.appointmentDate));
+      .orderBy(desc(appointments.createdAt));
   }
 
   async createAppointment(appointment: InsertAppointment): Promise<Appointment> {
@@ -1581,6 +1595,17 @@ export class DatabaseStorage implements IStorage {
   async updateAppointment(id: number, appointment: Partial<InsertAppointment>): Promise<Appointment | undefined> {
     const [updatedAppointment] = await db.update(appointments)
       .set(appointment)
+      .where(eq(appointments.id, id))
+      .returning();
+    return updatedAppointment;
+  }
+  
+  async updateAppointmentStatus(id: number, status: string): Promise<Appointment | undefined> {
+    const [updatedAppointment] = await db.update(appointments)
+      .set({ 
+        status, 
+        updatedAt: new Date() 
+      })
       .where(eq(appointments.id, id))
       .returning();
     return updatedAppointment;
