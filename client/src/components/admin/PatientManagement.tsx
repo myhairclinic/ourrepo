@@ -622,7 +622,7 @@ const PatientManagement = () => {
                     <SelectValue placeholder="Durum" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Tümü</SelectItem>
+                    <SelectItem value="all">Tümü</SelectItem>
                     <SelectItem value="active">Aktif</SelectItem>
                     <SelectItem value="inactive">Pasif</SelectItem>
                     <SelectItem value="pending">Beklemede</SelectItem>
@@ -635,7 +635,7 @@ const PatientManagement = () => {
                     <SelectValue placeholder="Kaynak" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Tüm Kaynaklar</SelectItem>
+                    <SelectItem value="all">Tüm Kaynaklar</SelectItem>
                     <SelectItem value="appointment">Randevudan Oluşturulan</SelectItem>
                     <SelectItem value="manual">Manuel Eklenen</SelectItem>
                   </SelectContent>
