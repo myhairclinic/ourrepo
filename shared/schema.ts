@@ -186,6 +186,8 @@ export const products = pgTable("products", {
   imageUrl: text("image_url").notNull(),
   price: integer("price").notNull().default(0),
   isNew: boolean("is_new").notNull().default(false),
+  categoryId: text("category_id"),
+  categoryName: text("category_name"),
   order: integer("order").notNull().default(0),
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at").notNull().defaultNow(),
