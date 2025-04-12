@@ -1,4 +1,4 @@
-import { Appointment } from '@shared/schema';
+import { Appointment, Patient } from '@shared/schema';
 import { telegramBotService } from './telegramBotService';
 import { storage } from '../storage';
 
@@ -474,11 +474,69 @@ Lütfen randevu için gerekli hazırlıkları yapın ve hastamızı zamanında k
   }
 };
 
+/**
+ * Send notification when a patient is created from appointment
+ */
+export const notifyPatientCreation = (patient: Patient, appointment: Appointment): void => {
+  try {
+    // telegramBotService başlatılmış mı kontrol et
+    if (!telegramBotService.isInitialized) {
+      console.warn('Telegram bot is not initialized, cannot send patient creation notification');
+      return;
+    }
+    
+    // Randevu detaylarını formatla
+    const appointmentDate = appointment.preferredDate 
+      ? new Date(appointment.preferredDate)
+      : new Date();
+    
+    // Servis ismini al
+    telegramBotService.getServiceNamePublic(appointment.serviceId)
+      .then(serviceName => {
+        const message = `
+✅ *YENİ HASTA KAYDEDİLDİ*
+
+Onaylanan randevudan otomatik olarak hasta kaydı oluşturuldu.
+
+👤 *Hasta Bilgileri*
+📝 *İsim:* ${patient.fullName}
+📧 *E-posta:* ${patient.email || 'Belirtilmemiş'}
+📱 *Telefon:* ${patient.phone}
+
+💇 *Tedavi Bilgileri*
+🔍 *Hizmet:* ${serviceName}
+📆 *Randevu Tarihi:* ${appointmentDate.toLocaleDateString('tr-TR')}
+⏰ *Randevu Saati:* ${appointment.appointmentTime || 'Belirtilmemiş'}
+
+${appointment.message ? `💬 *Notlar:* ${appointment.message}` : ''}
+
+🔷 *Hasta ID:* ${patient.id}
+🔷 *Randevu ID:* ${appointment.id}
+
+/admin komutunu kullanarak yönetici panelinden hastayı yönetebilirsiniz.
+`;
+
+        // Tüm operatörlere bildirim gönder
+        return telegramBotService.sendOperatorNotification(message);
+      })
+      .then(() => {
+        console.log(`Patient creation notification sent for patient ID: ${patient.id}, from appointment ID: ${appointment.id}`);
+      })
+      .catch(error => {
+        console.error(`Error sending patient creation notification: ${error}`);
+      });
+    
+  } catch (error: any) {
+    console.error(`Error sending patient creation notification: ${error.message}`);
+  }
+};
+
 export default {
   notifyNewAppointment,
   notifyAppointmentUpdate,
   notifyCustomerAppointmentUpdate,
   notifyAppointmentConfirmation,
   scheduleAppointmentReminder,
+  notifyPatientCreation,
   ...telegramService // Test fonksiyonlarını dışa aktar
 };

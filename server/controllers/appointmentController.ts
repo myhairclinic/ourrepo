@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { storage } from "../storage";
-import { insertAppointmentSchema } from "@shared/schema";
+import { insertAppointmentSchema, insertPatientSchema, InsertPatient } from "@shared/schema";
 import { z } from "zod";
 import telegramService from "../services/telegramService";
 
@@ -128,6 +128,14 @@ export const confirmAppointmentWithTime = async (req: Request, res: Response) =>
     // Send notification to Telegram about appointment confirmation with time
     telegramService.notifyAppointmentConfirmation(appointment, appointmentTime);
     
+    // Onaylanmış randevu hasta kaydına dönüştürülüyor
+    try {
+      await createPatientFromAppointment(appointment);
+      console.log(`Hasta otomatik olarak oluşturuldu: ${appointment.name}`);
+    } catch (err) {
+      console.error('Randevudan hasta oluşturulurken hata:', err);
+    }
+    
     res.json(appointment);
   } catch (error) {
     console.error('Error confirming appointment with time:', error);
@@ -154,3 +162,43 @@ export const deleteAppointment = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Failed to delete appointment" });
   }
 };
+
+/**
+ * Onaylanmış (saati belirlenmiş) bir randevuyu otomatik olarak hasta kaydına dönüştürür
+ * @param appointment Onaylanmış randevu bilgileri
+ * @returns Oluşturulan hasta kaydı
+ */
+async function createPatientFromAppointment(appointment: any) {
+  try {
+    // Öncelikle bu telefon numarasıyla daha önce kayıtlı bir hasta var mı kontrol ediyoruz
+    const existingPatient = await storage.getPatientByPhone(appointment.phone);
+    
+    // Eğer hasta zaten kayıtlıysa tekrar kayıt oluşturmuyoruz
+    if (existingPatient) {
+      console.log(`Bu telefon numarası ile kayıtlı hasta zaten mevcut: ${appointment.phone}`);
+      return existingPatient;
+    }
+    
+    // Hasta kaydı için gerekli verileri hazırlıyoruz
+    const patientData: InsertPatient = {
+      fullName: appointment.name,
+      email: appointment.email,
+      phone: appointment.phone,
+      serviceId: appointment.serviceId,
+      // Randevu ile ilgili notlar
+      notes: `Otomatik oluşturuldu. Randevu ID: ${appointment.id}, Tarih: ${appointment.preferredDate}, Saat: ${appointment.appointmentTime}`,
+      status: "active"
+    };
+    
+    // Hasta kaydını oluşturuyoruz
+    const patient = await storage.createPatient(patientData);
+    
+    // Telegram'a bildirim gönderiyoruz
+    telegramService.notifyPatientCreation(patient, appointment);
+    
+    return patient;
+  } catch (error) {
+    console.error('Hasta oluşturma hatası:', error);
+    throw error;
+  }
+}

@@ -1095,6 +1095,10 @@ export class MemStorage implements IStorage {
   async getPatientById(id: number): Promise<Patient | undefined> {
     return this.patients.get(id);
   }
+  
+  async getPatientByPhone(phone: string): Promise<Patient | undefined> {
+    return Array.from(this.patients.values()).find(patient => patient.phone === phone);
+  }
 
   async createPatient(data: InsertPatient): Promise<Patient> {
     const id = this.currentPatientId++;
