@@ -114,6 +114,12 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Посмотреть все",
     [Language.Georgian]: "ყველას ნახვა"
   },
+  "common.viewAllBlogs": {
+    [Language.Turkish]: "Tüm Blogları Görüntüle",
+    [Language.English]: "View All Blogs",
+    [Language.Russian]: "Посмотреть все блоги",
+    [Language.Georgian]: "ყველა ბლოგის ნახვა"
+  },
   "common.latestFromOurBlog": {
     [Language.Turkish]: "Blog Yazılarımız",
     [Language.English]: "Our Blog Articles",

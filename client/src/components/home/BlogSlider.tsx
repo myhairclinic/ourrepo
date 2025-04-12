@@ -126,69 +126,96 @@ export default function BlogSlider() {
   }
 
   return (
-    <section className="py-6 bg-[#f9fafc] dark:bg-gray-900">
+    <section className="py-8 bg-[#f9fafc] dark:bg-gray-900">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-6">
           <div>
-            <p className="text-xs text-primary font-medium mb-1">{t("blog.badge")}</p>
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t("common.latestFromOurBlog")}</h2>
+            <div className="inline-block px-2.5 py-1 text-[10px] font-medium rounded-full bg-primary/10 text-primary mb-2">
+              {t("blog.badge")}
+            </div>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+              {t("common.latestFromOurBlog")}
+            </h2>
           </div>
-          <div className="flex gap-1">
-            <Button 
-              variant="outline" 
-              size="icon" 
-              className="h-7 w-7 border-gray-200 hover:bg-primary/5 text-gray-600"
-              onClick={prevSlide}
+          <div className="flex items-center space-x-4">
+            <a 
+              href={`/${language.toLowerCase()}/blog`}
+              className="text-xs text-primary font-medium hidden sm:flex items-center hover:underline"
             >
-              <ChevronLeft className="h-3.5 w-3.5" />
-            </Button>
-            <Button 
-              variant="outline" 
-              size="icon" 
-              className="h-7 w-7 border-gray-200 hover:bg-primary/5 text-gray-600"
-              onClick={nextSlide}
-            >
-              <ChevronRight className="h-3.5 w-3.5" />
-            </Button>
+              {t("common.viewAllBlogs")}
+              <ArrowRight className="h-3 w-3 ml-1" />
+            </a>
+            <div className="flex gap-1.5">
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="h-8 w-8 rounded-full border-gray-200 bg-white hover:bg-primary/5 text-gray-600 shadow-sm"
+                onClick={prevSlide}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="h-8 w-8 rounded-full border-gray-200 bg-white hover:bg-primary/5 text-gray-600 shadow-sm"
+                onClick={nextSlide}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </div>
         
         {/* Responsive grid - 4 per row on desktop, 2 on tablet, 1 on mobile */}
-        <div className="grid grid-cols-4 gap-3 max-md:grid-cols-2 max-sm:grid-cols-1">
+        <div className="grid grid-cols-4 gap-4 max-lg:grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1">
           {visibleBlogs?.map((blog) => (
-            <Card key={blog.id} className="border border-gray-100 h-full dark:border-gray-800 hover:shadow-sm transition-shadow">
+            <Card key={blog.id} className="border border-gray-200/70 dark:border-gray-800 h-full hover:shadow-md transition-all duration-300 hover:border-primary/20 group overflow-hidden">
               <div className="flex flex-col h-full">
-                <div className="relative h-24 overflow-hidden rounded-t-lg">
+                <div className="relative h-36 max-lg:h-28 overflow-hidden">
                   <img 
                     src={blog.imageUrl} 
                     alt={getBlogTitle(blog)} 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute bottom-0 left-0 bg-primary/80 px-1.5 py-0.5 text-[9px] text-white font-medium">
-                    {getBlogCategory(blog)}
+                  <div className="absolute top-0 right-0 m-2">
+                    <div className="bg-primary text-white text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-sm font-semibold shadow-sm">
+                      {getBlogCategory(blog)}
+                    </div>
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <div className="absolute bottom-0 left-0 p-2 w-full flex justify-between items-center">
+                    <div className="text-[9px] text-white/90 flex items-center">
+                      <Calendar className="h-2.5 w-2.5 mr-1 text-white/70" />
+                      {formatBlogDate(blog.createdAt)}
+                    </div>
                   </div>
                 </div>
                 
-                <CardContent className="p-2 flex-1 flex flex-col">
-                  <div className="text-[9px] text-gray-500 mb-1">
-                    {formatBlogDate(blog.createdAt)}
-                  </div>
+                <CardContent className="p-3 flex-1 flex flex-col">
+                  <a href={`/${language.toLowerCase()}/blog/${blog.slug}`} className="group-hover:text-primary transition-colors">
+                    <h3 className="text-sm font-semibold line-clamp-2 mb-1.5">
+                      {getBlogTitle(blog)}
+                    </h3>
+                  </a>
                   
-                  <h3 className="text-xs font-semibold line-clamp-1 mb-1 hover:text-primary transition-colors">
-                    <a href={`/${language.toLowerCase()}/blog/${blog.slug}`}>{getBlogTitle(blog)}</a>
-                  </h3>
-                  
-                  <p className="text-gray-500 text-[9px] line-clamp-2 leading-snug flex-1">
+                  <p className="text-gray-500 dark:text-gray-400 text-[10px] line-clamp-2 leading-normal flex-1">
                     {getExcerpt(blog)}
                   </p>
                   
-                  <a 
-                    href={`/${language.toLowerCase()}/blog/${blog.slug}`}
-                    className="text-primary hover:text-primary/80 text-[9px] font-medium flex items-center mt-1"
-                  >
-                    {t("blog.readMore")}
-                    <ArrowRight className="h-2 w-2 ml-0.5" />
-                  </a>
+                  <div className="flex justify-between items-center mt-2.5 pt-1.5 border-t border-gray-100 dark:border-gray-800">
+                    <span className="text-[9px] text-gray-500 flex items-center">
+                      <User className="h-2.5 w-2.5 mr-1 text-gray-400" />
+                      {blog.author || "MyHair Clinic"}
+                    </span>
+                    
+                    <a 
+                      href={`/${language.toLowerCase()}/blog/${blog.slug}`}
+                      className="text-primary group-hover:text-primary/80 text-[9px] font-medium flex items-center transition-colors"
+                    >
+                      {t("blog.readMore")}
+                      <ArrowRight className="h-2.5 w-2.5 ml-0.5 group-hover:translate-x-0.5 transition-transform" />
+                    </a>
+                  </div>
                 </CardContent>
               </div>
             </Card>
@@ -197,14 +224,17 @@ export default function BlogSlider() {
         
         {/* Pagination indicators */}
         {blogs.length > itemsPerPage && (
-          <div className="flex justify-center mt-4 gap-1">
+          <div className="flex justify-center mt-6 gap-1.5">
             {Array.from({ length: Math.ceil(blogs.length / itemsPerPage) }).map((_, index) => (
               <button
                 key={index}
-                className={`w-1.5 h-1.5 rounded-full transition-all ${
-                  currentSlide === index ? "bg-primary" : "bg-gray-300 dark:bg-gray-600"
+                className={`w-2 h-2 rounded-full transition-all ${
+                  currentSlide === index 
+                    ? "bg-primary w-6" 
+                    : "bg-gray-300 dark:bg-gray-600 hover:bg-primary/50"
                 }`}
                 onClick={() => setCurrentSlide(index)}
+                aria-label={`Go to slide ${index + 1}`}
               />
             ))}
           </div>
