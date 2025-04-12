@@ -184,6 +184,8 @@ export const products = pgTable("products", {
   ingredientsRU: text("ingredients_ru").notNull(),
   ingredientsKA: text("ingredients_ka").notNull(),
   imageUrl: text("image_url").notNull(),
+  price: integer("price").notNull().default(0),
+  isNew: boolean("is_new").notNull().default(false),
   order: integer("order").notNull().default(0),
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at").notNull().defaultNow(),
