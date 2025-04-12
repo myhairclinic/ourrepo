@@ -60,7 +60,11 @@ export const fetchVithairProducts = async (req: Request, res: Response) => {
     const addedProducts = [];
     for (const product of vithairProducts) {
       try {
-        const addedProduct = await storage.createProduct(product);
+        const addedProduct = await storage.createProduct({
+          ...product,
+          price: 0, // Fiyat gösterilmeyecek
+          isActive: true
+        });
         addedProducts.push(addedProduct);
       } catch (error) {
         console.error(`Error adding product ${product.nameTR}:`, error);
@@ -73,11 +77,12 @@ export const fetchVithairProducts = async (req: Request, res: Response) => {
       products: addedProducts
     });
   } catch (error) {
-    console.error("Error fetching products from Vithair:", error);
+    const errorMessage = error instanceof Error ? error.message : 'Bilinmeyen hata';
+    console.error("Error fetching products from Vithair:", errorMessage);
     res.status(500).json({ 
       success: false,
       message: "Vithair ürünleri çekilirken hata oluştu",
-      error: error.message
+      error: errorMessage
     });
   }
 };

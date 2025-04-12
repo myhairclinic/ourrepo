@@ -128,6 +128,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Vithair ürünlerini çekme endpoint'i
   app.post("/api/products/fetch-vithair", fetchVithairProducts);
   
+  // Tüm ürünleri getiren endpoint
+  app.get("/api/products", async (req, res) => {
+    try {
+      const products = await storage.getProducts();
+      res.json(products);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Bilinmeyen hata';
+      console.error("Error fetching products:", errorMessage);
+      res.status(500).json({ message: "Failed to fetch products" });
+    }
+  });
+  
   // Tüm ürünleri temizleme endpoint'i için /api/admin/clear-products kullanılmaktadır
 
   // Package routes
@@ -474,7 +486,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/admin/clear-products", async (req, res) => {
     try {
       // Admin yetki kontrolü
-      if (!req.isAuthenticated() || (req.user?.role !== 'admin')) {
+      if (req.isAuthenticated && typeof req.isAuthenticated === 'function' && 
+          !req.isAuthenticated() || (req.user?.role !== 'admin')) {
         return res.status(401).json({ success: false, message: "Bu işlem için admin yetkisi gereklidir." });
       }
 
@@ -486,7 +499,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         message: "Tüm ürünler başarıyla silindi" 
       });
     } catch (error) {
-      console.error("Ürünleri temizleme hatası:", error);
+      const errorMessage = error instanceof Error ? error.message : 'Bilinmeyen hata';
+      console.error("Ürünleri temizleme hatası:", errorMessage);
       return res.status(500).json({ 
         success: false, 
         message: "Ürünleri temizlerken bir hata oluştu",
@@ -498,7 +512,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/admin/sync-vithair-products", async (req, res) => {
     try {
       // Admin yetki kontrolü
-      if (!req.isAuthenticated() || (req.user?.role !== 'admin')) {
+      if (req.isAuthenticated && typeof req.isAuthenticated === 'function' && 
+          !req.isAuthenticated() || (req.user?.role !== 'admin')) {
         return res.status(401).json({ success: false, message: "Bu işlem için admin yetkisi gereklidir." });
       }
 

@@ -75,7 +75,7 @@ async function scrapeProductsFromCategory(categoryUrl: string, categoryId: strin
     const productLinks: string[] = [];
     
     // Ürün kartlarını bul
-    $('.product-small .product-title a').each((index, element) => {
+    $('.product-small .product-title a').each((index: number, element: any) => {
       const productUrl = $(element).attr('href');
       if (productUrl) {
         productLinks.push(productUrl);
