@@ -5,11 +5,19 @@ import session from "express-session";
 import { scrypt, randomBytes, timingSafeEqual } from "crypto";
 import { promisify } from "util";
 import { storage } from "./storage";
-import { User as UserSchema } from "@shared/schema";
+
+// @shared/schema modülü yerine doğrudan User arayüzünü tanımlıyoruz
+interface User {
+  id: number;
+  username: string;
+  password: string;
+  role: string;
+  createdAt: Date;
+}
 
 declare global {
   namespace Express {
-    interface User extends UserSchema {}
+    interface User extends User {}
   }
 }
 
