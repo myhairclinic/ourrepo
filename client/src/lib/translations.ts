@@ -115,10 +115,16 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Georgian]: "ყველას ნახვა"
   },
   "common.latestFromOurBlog": {
-    [Language.Turkish]: "Blog'dan Son Yazılar",
-    [Language.English]: "Latest From Our Blog",
-    [Language.Russian]: "Последние Статьи из Блога",
-    [Language.Georgian]: "უახლესი ჩვენი ბლოგიდან"
+    [Language.Turkish]: "Blog Yazılarımız",
+    [Language.English]: "Our Blog Articles",
+    [Language.Russian]: "Наши Статьи в Блоге",
+    [Language.Georgian]: "ჩვენი ბლოგის სტატიები"
+  },
+  "blog.badge": {
+    [Language.Turkish]: "Bilgi Kaynağı",
+    [Language.English]: "Knowledge Source",
+    [Language.Russian]: "Источник Знаний",
+    [Language.Georgian]: "ცოდნის წყარო"
   },
   "blog.exploreRecentArticles": {
     [Language.Turkish]: "Saç ekimi ve bakımı hakkında son makaleleri keşfedin",
