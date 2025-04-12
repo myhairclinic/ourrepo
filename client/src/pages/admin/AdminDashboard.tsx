@@ -68,7 +68,14 @@ const AdminDashboard = () => {
     }
   });
   
-  const { data: appointments } = useQuery({
+  // Appointment state management
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [serviceFilter, setServiceFilter] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+  
+  const { data: appointments, isLoading: isAppointmentsLoading, refetch: refetchAppointments } = useQuery({
     queryKey: ["/api/appointments"],
     queryFn: async () => {
       const res = await fetch("/api/appointments");
@@ -76,6 +83,27 @@ const AdminDashboard = () => {
       return res.json();
     }
   });
+  
+  // Filtered appointments
+  const filteredAppointments = appointments ? appointments.filter((appointment: any) => {
+    const matchesSearch = !searchTerm || 
+      appointment.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      appointment.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (appointment.phone && appointment.phone.toLowerCase().includes(searchTerm.toLowerCase()));
+    
+    const matchesStatus = !statusFilter || appointment.status === statusFilter;
+    
+    const matchesService = !serviceFilter || appointment.serviceId.toString() === serviceFilter;
+    
+    return matchesSearch && matchesStatus && matchesService;
+  }) : [];
+  
+  // Pagination logic
+  const totalPages = Math.ceil((filteredAppointments?.length || 0) / itemsPerPage);
+  const paginatedAppointments = filteredAppointments.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   useEffect(() => {
     if (services) {
@@ -743,18 +771,28 @@ const AdminDashboard = () => {
                       <input 
                         type="text" 
                         placeholder="Randevu ara..." 
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                         className="pl-10 pr-4 py-2.5 w-full rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary focus:border-transparent outline-none shadow-sm"
                       />
                     </div>
                     
-                    <select className="p-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none shadow-sm bg-white">
+                    <select 
+                      value={statusFilter}
+                      onChange={(e) => setStatusFilter(e.target.value)}
+                      className="p-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none shadow-sm bg-white"
+                    >
                       <option value="">Tüm Durumlar</option>
                       <option value="pending">Bekleyen</option>
                       <option value="confirmed">Onaylanmış</option>
                       <option value="cancelled">İptal Edilmiş</option>
                     </select>
                     
-                    <select className="p-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none shadow-sm bg-white">
+                    <select 
+                      value={serviceFilter}
+                      onChange={(e) => setServiceFilter(e.target.value)}
+                      className="p-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none shadow-sm bg-white"
+                    >
                       <option value="">Tüm Hizmetler</option>
                       {services?.map(service => (
                         <option key={service.id} value={service.id}>{service.titleTR}</option>
@@ -762,7 +800,13 @@ const AdminDashboard = () => {
                     </select>
                   </div>
                   
-                  <button className="px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 shadow-sm flex items-center">
+                  <button 
+                    onClick={() => {
+                      // Implement new appointment creation
+                      alert('Yeni randevu oluşturma fonksiyonu henüz eklenmedi');
+                    }}
+                    className="px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors duration-300 shadow-sm flex items-center"
+                  >
                     <Plus className="w-4 h-4 mr-2" />
                     Yeni Randevu
                   </button>
@@ -781,8 +825,8 @@ const AdminDashboard = () => {
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {appointments && appointments.length > 0 ? (
-                        appointments.map((appointment, index) => (
+                      {paginatedAppointments && paginatedAppointments.length > 0 ? (
+                        paginatedAppointments.map((appointment, index) => (
                           <tr key={appointment.id || index} className="hover:bg-gray-50 transition-colors">
                             <td className="px-4 py-4 whitespace-nowrap">
                               <div className="flex items-center">
@@ -877,28 +921,40 @@ const AdminDashboard = () => {
                 
                 <div className="flex flex-col sm:flex-row justify-between items-center mt-6 space-y-4 sm:space-y-0">
                   <div className="text-sm text-gray-600">
-                    Toplam <span className="font-medium">{appointments?.length || 0}</span> randevu
+                    Toplam <span className="font-medium">{filteredAppointments?.length || 0}</span> randevu {(filteredAppointments?.length || 0) !== (appointments?.length || 0) && `(Toplam ${appointments?.length || 0} randevudan filtrelenmiş)`}
                   </div>
                   
-                  <div className="flex justify-center">
-                    <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-                      <button className="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                        <ChevronLeft className="h-4 w-4" />
-                      </button>
-                      <button className="relative inline-flex items-center px-4 py-2 border border-primary bg-primary text-sm font-medium text-white">
-                        1
-                      </button>
-                      <button className="relative inline-flex items-center px-4 py-2 border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                        2
-                      </button>
-                      <button className="relative inline-flex items-center px-4 py-2 border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                        3
-                      </button>
-                      <button className="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-200 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                        <ChevronRight className="h-4 w-4" />
-                      </button>
-                    </nav>
-                  </div>
+                  {totalPages > 1 && (
+                    <div className="flex justify-center">
+                      <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                        <button 
+                          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                          disabled={currentPage === 1}
+                          className={`relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-200 bg-white text-sm font-medium ${currentPage === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50'}`}
+                        >
+                          <ChevronLeft className="h-4 w-4" />
+                        </button>
+                        
+                        {[...Array(totalPages)].map((_, i) => (
+                          <button 
+                            key={i}
+                            onClick={() => setCurrentPage(i + 1)}
+                            className={`relative inline-flex items-center px-4 py-2 border ${currentPage === i + 1 ? 'border-primary bg-primary text-white' : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50'} text-sm font-medium`}
+                          >
+                            {i + 1}
+                          </button>
+                        ))}
+                        
+                        <button 
+                          onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                          disabled={currentPage === totalPages}
+                          className={`relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-200 bg-white text-sm font-medium ${currentPage === totalPages ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:bg-gray-50'}`}
+                        >
+                          <ChevronRight className="h-4 w-4" />
+                        </button>
+                      </nav>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
