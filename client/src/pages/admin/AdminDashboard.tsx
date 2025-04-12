@@ -840,7 +840,7 @@ const AdminDashboard = () => {
                               </td>
                               <td className="px-4 py-3.5 whitespace-nowrap">
                                 <div className="text-sm font-medium text-gray-900">
-                                  {services?.find(s => s.id === appointment.serviceId)?.titleTR || `Hizmet #${appointment.serviceId}`}
+                                  {services?.find((s: any) => s.id === appointment.serviceId)?.titleTR || `Hizmet #${appointment.serviceId}`}
                                 </div>
                               </td>
                               <td className="px-4 py-3.5 whitespace-nowrap">
@@ -1226,7 +1226,7 @@ const AdminDashboard = () => {
                     </div>
                     <div className="ml-4 z-10">
                       <h2 className="text-sm font-medium text-gray-500">Bekleyen Randevular</h2>
-                      <p className="text-2xl font-bold text-gray-900">{appointments?.filter(a => a.status === "pending").length || 0}</p>
+                      <p className="text-2xl font-bold text-gray-900">{appointments?.filter((a: any) => a.status === "pending").length || 0}</p>
                     </div>
                   </div>
                 </div>
@@ -1239,7 +1239,7 @@ const AdminDashboard = () => {
                     </div>
                     <div className="ml-4 z-10">
                       <h2 className="text-sm font-medium text-gray-500">Onaylanmış Randevular</h2>
-                      <p className="text-2xl font-bold text-gray-900">{appointments?.filter(a => a.status === "confirmed").length || 0}</p>
+                      <p className="text-2xl font-bold text-gray-900">{appointments?.filter((a: any) => a.status === "confirmed").length || 0}</p>
                     </div>
                   </div>
                 </div>
@@ -1252,7 +1252,7 @@ const AdminDashboard = () => {
                     </div>
                     <div className="ml-4 z-10">
                       <h2 className="text-sm font-medium text-gray-500">İptal Edilen Randevular</h2>
-                      <p className="text-2xl font-bold text-gray-900">{appointments?.filter(a => a.status === "cancelled").length || 0}</p>
+                      <p className="text-2xl font-bold text-gray-900">{appointments?.filter((a: any) => a.status === "cancelled").length || 0}</p>
                     </div>
                   </div>
                 </div>
@@ -1289,7 +1289,7 @@ const AdminDashboard = () => {
                       className="p-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none shadow-sm bg-white"
                     >
                       <option value="">Tüm Hizmetler</option>
-                      {services?.map(service => (
+                      {services?.map((service: any) => (
                         <option key={service.id} value={service.id}>{service.titleTR}</option>
                       ))}
                     </select>
@@ -1345,7 +1345,7 @@ const AdminDashboard = () => {
                             </td>
                             <td className="px-4 py-4 whitespace-nowrap">
                               <div className="text-sm font-medium text-gray-900">
-                                {services?.find(s => s.id === appointment.serviceId)?.titleTR || `Hizmet #${appointment.serviceId}`}
+                                {services?.find((s: any) => s.id === appointment.serviceId)?.titleTR || `Hizmet #${appointment.serviceId}`}
                               </div>
                             </td>
                             <td className="px-4 py-4 whitespace-nowrap">
