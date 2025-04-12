@@ -120,6 +120,15 @@ export default function TelegramBotManagement() {
   const [activeTab, setActiveTab] = useState("staff");
   const [isOperatorDialogOpen, setIsOperatorDialogOpen] = useState(false);
   const [editingOperator, setEditingOperator] = useState<any>(null);
+  
+  // Operatör düzenleme penceresini açarken operatör durumunu ayarla
+  useEffect(() => {
+    if (editingOperator) {
+      setOperatorStatus(editingOperator.isActive);
+    } else {
+      setOperatorStatus(true);
+    }
+  }, [editingOperator]);
   const [selectedContact, setSelectedContact] = useState<any>(null);
   const [messageText, setMessageText] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -127,6 +136,7 @@ export default function TelegramBotManagement() {
   const [selectedPredefinedMessage, setSelectedPredefinedMessage] = useState<any>(null);
   const [editingPredefinedMessage, setEditingPredefinedMessage] = useState<any>(null);
   const [isPredefinedMessageDialogOpen, setIsPredefinedMessageDialogOpen] = useState(false);
+  const [operatorStatus, setOperatorStatus] = useState(true);
   
   // Kişileri getir
   const { 
@@ -1114,7 +1124,8 @@ export default function TelegramBotManagement() {
               <div className="flex items-center space-x-2 col-span-3">
                 <Switch 
                   id="status" 
-                  defaultChecked={editingOperator ? editingOperator.isActive : true} 
+                  checked={operatorStatus}
+                  onCheckedChange={setOperatorStatus}
                 />
                 <Label htmlFor="status">Aktif</Label>
               </div>
@@ -1127,7 +1138,7 @@ export default function TelegramBotManagement() {
             <Button onClick={() => {
               const name = (document.getElementById('name') as HTMLInputElement).value;
               const telegramUsername = (document.getElementById('telegramUsername') as HTMLInputElement).value;
-              const isActive = (document.getElementById('status') as HTMLInputElement).checked;
+              const isActive = operatorStatus;
               
               if (!name || !telegramUsername) {
                 toast({
