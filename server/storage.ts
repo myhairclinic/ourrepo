@@ -1600,9 +1600,14 @@ export class DatabaseStorage implements IStorage {
   }
   
   async getFeaturedPackages(): Promise<Package[]> {
-    return await db.select()
+    const result = await db.select()
       .from(packages)
-      .where(eq(packages.isFeatured, true));
+      .where(eq(packages.isFeatured, true))
+      .where(eq(packages.isActive, true))
+      .orderBy(desc(packages.updatedAt));
+    
+    console.log(`Featured packages found: ${result.length}`);
+    return result;
   }
 
   async getPackageBySlug(slug: string): Promise<Package | undefined> {

@@ -169,6 +169,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/packages/featured", async (req, res) => {
     try {
       const packages = await storage.getFeaturedPackages();
+      console.log("Featured packages fetched:", packages.length);
       res.json(packages);
     } catch (error) {
       console.error("Error fetching featured packages:", error);
