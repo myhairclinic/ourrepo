@@ -1,1142 +1,601 @@
-import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { z } from "zod";
-import { Product, InsertProduct, insertProductSchema } from "@shared/schema";
-import { apiRequest, queryClient } from "@/lib/queryClient";
-import { API_ROUTES } from "@/lib/constants";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-
-import AdminLayout from "@/components/admin/AdminLayout";
-import DeleteConfirmDialog from "@/components/admin/DeleteConfirmDialog";
-import { Input } from "@/components/ui/input";
+import { useState, useEffect } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Loader2, Trash2, Edit, Search, Plus, RefreshCcw } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useToast } from "@/hooks/use-toast";
-import { Check, Edit, Plus, Trash2, Download, AlertCircle, Eraser } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import AdminLayout from "@/components/admin/AdminLayout";
+import { apiRequest } from "@/lib/queryClient";
 
-// Form validation schema for products
-const formSchema = insertProductSchema.extend({
-  imageUrl: z.string().min(1, "Image URL is required"),
-});
+// Ürün tipini tanımlayalım
+interface Product {
+  id: number;
+  nameTR: string;
+  nameEN: string;
+  nameRU: string;
+  nameKA: string;
+  slug: string;
+  descriptionTR: string;
+  descriptionEN: string;
+  descriptionRU: string;
+  descriptionKA: string;
+  imageUrl: string;
+  price: number;
+  isActive: boolean;
+  isNew: boolean;
+}
 
-type FormSchemaType = z.infer<typeof formSchema>;
+// Boş bir ürün şablonu
+const emptyProduct: Partial<Product> = {
+  nameTR: "",
+  nameEN: "",
+  nameRU: "",
+  nameKA: "",
+  slug: "",
+  descriptionTR: "",
+  descriptionEN: "",
+  descriptionRU: "",
+  descriptionKA: "",
+  imageUrl: "",
+  price: 0,
+  isActive: true,
+  isNew: false,
+};
 
 export default function ProductsManager() {
-  const { toast } = useToast();
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [isFetchingVithair, setIsFetchingVithair] = useState(false);
-  const [isClearingProducts, setIsClearingProducts] = useState(false);
+  const queryClient = useQueryClient();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isSyncDialogOpen, setIsSyncDialogOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentProduct, setCurrentProduct] = useState<Partial<Product>>(emptyProduct);
+  const [isEditing, setIsEditing] = useState(false);
 
-  // Fetch all products
-  const { data: products = [], isLoading } = useQuery<Product[]>({
-    queryKey: [API_ROUTES.PRODUCTS],
+  // Ürünleri getir
+  const { data: products = [], isLoading: isLoadingProducts, refetch } = useQuery<Product[]>({
+    queryKey: ["/api/products"],
+    retry: 1,
   });
 
-  // Form for adding new products
-  const form = useForm<FormSchemaType>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      slug: "",
-      nameTR: "",
-      nameEN: "",
-      nameRU: "",
-      nameKA: "",
-      descriptionTR: "",
-      descriptionEN: "",
-      descriptionRU: "",
-      descriptionKA: "",
-      usageTR: "",
-      usageEN: "",
-      usageRU: "",
-      usageKA: "",
-      ingredientsTR: "",
-      ingredientsEN: "",
-      ingredientsRU: "",
-      ingredientsKA: "",
-      imageUrl: "",
-      order: 0,
-      isActive: true,
-    },
-  });
+  // Filtrelenmiş ürünler
+  const filteredProducts = products.filter((product) =>
+    product.nameTR.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    product.nameEN.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    product.slug.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  // Form for editing existing products
-  const editForm = useForm<FormSchemaType>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      slug: "",
-      nameTR: "",
-      nameEN: "",
-      nameRU: "",
-      nameKA: "",
-      descriptionTR: "",
-      descriptionEN: "",
-      descriptionRU: "",
-      descriptionKA: "",
-      usageTR: "",
-      usageEN: "",
-      usageRU: "",
-      usageKA: "",
-      ingredientsTR: "",
-      ingredientsEN: "",
-      ingredientsRU: "",
-      ingredientsKA: "",
-      imageUrl: "",
-      order: 0,
-      isActive: true,
-    },
-  });
-
-  // Add product mutation
-  const addProductMutation = useMutation({
-    mutationFn: async (data: InsertProduct) => {
-      const res = await apiRequest("POST", API_ROUTES.PRODUCTS, data);
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || "Failed to add product");
+  // Ürün ekleme ve güncelleme için mutation
+  const saveProductMutation = useMutation({
+    mutationFn: async (product: Partial<Product>) => {
+      if (isEditing && product.id) {
+        // Ürün güncelleme
+        const res = await apiRequest("PUT", `/api/products/${product.id}`, product);
+        return await res.json();
+      } else {
+        // Yeni ürün ekleme
+        const res = await apiRequest("POST", "/api/products", product);
+        return await res.json();
       }
-      return await res.json();
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/products"] });
       toast({
-        title: "Success",
-        description: "Product added successfully",
+        title: isEditing ? "Ürün güncellendi" : "Ürün eklendi",
+        description: isEditing 
+          ? "Ürün başarıyla güncellendi" 
+          : "Yeni ürün başarıyla eklendi",
       });
-      form.reset();
-      setIsAddDialogOpen(false);
-      queryClient.invalidateQueries({ queryKey: [API_ROUTES.PRODUCTS] });
+      closeDialog();
     },
-    onError: (error: Error) => {
+    onError: (error) => {
       toast({
-        title: "Error",
-        description: error.message,
+        title: "Hata",
+        description: "Ürün kaydedilirken bir hata oluştu: " + (error as Error).message,
         variant: "destructive",
       });
     },
   });
 
-  // Edit product mutation
-  const editProductMutation = useMutation({
-    mutationFn: async ({ id, data }: { id: number; data: Partial<InsertProduct> }) => {
-      const res = await apiRequest("PUT", `${API_ROUTES.PRODUCTS}/${id}`, data);
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || "Failed to update product");
-      }
-      return await res.json();
-    },
-    onSuccess: () => {
-      toast({
-        title: "Success",
-        description: "Product updated successfully",
-      });
-      editForm.reset();
-      setIsEditDialogOpen(false);
-      queryClient.invalidateQueries({ queryKey: [API_ROUTES.PRODUCTS] });
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
-  });
-
-  // Delete product mutation
+  // Ürün silme için mutation
   const deleteProductMutation = useMutation({
     mutationFn: async (id: number) => {
-      const res = await apiRequest("DELETE", `${API_ROUTES.PRODUCTS}/${id}`);
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || "Failed to delete product");
-      }
-      return true;
+      const res = await apiRequest("DELETE", `/api/products/${id}`);
+      return res;
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/products"] });
       toast({
-        title: "Success",
-        description: "Product deleted successfully",
+        title: "Ürün silindi",
+        description: "Ürün başarıyla silindi",
       });
-      setIsDeleteDialogOpen(false);
-      queryClient.invalidateQueries({ queryKey: [API_ROUTES.PRODUCTS] });
     },
-    onError: (error: Error) => {
+    onError: (error) => {
       toast({
-        title: "Error",
-        description: error.message,
+        title: "Hata",
+        description: "Ürün silinirken bir hata oluştu: " + (error as Error).message,
         variant: "destructive",
       });
     },
   });
 
-  // Open add dialog
-  const handleOpenAddDialog = () => {
-    form.reset();
-    setIsAddDialogOpen(true);
+  // Vithair ürünlerini senkronize etme için mutation
+  const syncVithairProductsMutation = useMutation({
+    mutationFn: async () => {
+      const res = await apiRequest("POST", "/api/admin/sync-vithair-products");
+      return await res.json();
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["/api/products"] });
+      toast({
+        title: "Vithair ürünleri senkronize edildi",
+        description: `${data.count} ürün başarıyla senkronize edildi`,
+      });
+      setIsSyncDialogOpen(false);
+    },
+    onError: (error) => {
+      toast({
+        title: "Hata",
+        description: "Ürünler senkronize edilirken bir hata oluştu: " + (error as Error).message,
+        variant: "destructive",
+      });
+      setIsSyncDialogOpen(false);
+    },
+  });
+
+  // Tüm ürünleri temizleme için mutation
+  const clearProductsMutation = useMutation({
+    mutationFn: async () => {
+      const res = await apiRequest("POST", "/api/admin/clear-products");
+      return await res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/products"] });
+      toast({
+        title: "Ürünler temizlendi",
+        description: "Tüm ürünler başarıyla silindi",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Hata",
+        description: "Ürünler temizlenirken bir hata oluştu: " + (error as Error).message,
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Dialog açma fonksiyonu
+  const openDialog = (product?: Product) => {
+    if (product) {
+      setCurrentProduct(product);
+      setIsEditing(true);
+    } else {
+      setCurrentProduct(emptyProduct);
+      setIsEditing(false);
+    }
+    setIsDialogOpen(true);
   };
 
-  // Open edit dialog
-  const handleOpenEditDialog = (product: Product) => {
-    setSelectedProduct(product);
-    editForm.reset({
-      slug: product.slug,
-      nameTR: product.nameTR,
-      nameEN: product.nameEN,
-      nameRU: product.nameRU,
-      nameKA: product.nameKA,
-      descriptionTR: product.descriptionTR,
-      descriptionEN: product.descriptionEN,
-      descriptionRU: product.descriptionRU,
-      descriptionKA: product.descriptionKA,
-      usageTR: product.usageTR,
-      usageEN: product.usageEN,
-      usageRU: product.usageRU,
-      usageKA: product.usageKA,
-      ingredientsTR: product.ingredientsTR,
-      ingredientsEN: product.ingredientsEN,
-      ingredientsRU: product.ingredientsRU,
-      ingredientsKA: product.ingredientsKA,
-      imageUrl: product.imageUrl,
-      order: product.order,
-      isActive: product.isActive,
+  // Dialog kapatma fonksiyonu
+  const closeDialog = () => {
+    setIsDialogOpen(false);
+    setCurrentProduct(emptyProduct);
+    setIsEditing(false);
+  };
+
+  // Form değişikliklerini izleme
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    setCurrentProduct({
+      ...currentProduct,
+      [name]: type === "checkbox" ? checked : value,
     });
-    setIsEditDialogOpen(true);
   };
 
-  // Open delete dialog
-  const handleOpenDeleteDialog = (product: Product) => {
-    setSelectedProduct(product);
-    setIsDeleteDialogOpen(true);
+  // Ürün kaydetme
+  const handleSaveProduct = (e: React.FormEvent) => {
+    e.preventDefault();
+    saveProductMutation.mutate(currentProduct);
   };
 
-  // Form submission handlers
-  const onSubmit = (data: FormSchemaType) => {
-    addProductMutation.mutate(data);
-  };
-
-  const onSubmitEdit = (data: FormSchemaType) => {
-    if (selectedProduct) {
-      editProductMutation.mutate({ id: selectedProduct.id, data });
+  // Ürün silme
+  const handleDeleteProduct = (id: number) => {
+    if (window.confirm("Bu ürünü silmek istediğinizden emin misiniz?")) {
+      deleteProductMutation.mutate(id);
     }
   };
 
-  const onConfirmDelete = () => {
-    if (selectedProduct) {
-      deleteProductMutation.mutate(selectedProduct.id);
+  // Vithair ürünlerini senkronize etme
+  const handleSyncVithairProducts = () => {
+    setIsSyncDialogOpen(true);
+  };
+
+  // Tüm ürünleri temizleme
+  const handleClearProducts = () => {
+    if (window.confirm("TÜM ürünleri silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!")) {
+      clearProductsMutation.mutate();
     }
+  };
+
+  // Ürün formunu gönder
+  const startSyncProducts = () => {
+    syncVithairProductsMutation.mutate();
   };
 
   return (
-    <AdminLayout title="Products Management">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">Products</h2>
-        <div className="flex space-x-3">
-          <Button 
-            variant="destructive" 
-            onClick={() => {
-              if (confirm("Bu işlem tüm ürünleri silecektir. Devam etmek istiyor musunuz?")) {
-                setIsClearingProducts(true);
-                apiRequest("POST", "/api/admin/clear-products")
-                  .then(async (res) => {
-                    const data = await res.json();
-                    if (res.ok) {
-                      toast({
-                        title: "Başarılı",
-                        description: "Tüm ürünler başarıyla silindi.",
-                      });
-                      queryClient.invalidateQueries({ queryKey: [API_ROUTES.PRODUCTS] });
-                    } else {
-                      toast({
-                        title: "Hata",
-                        description: data.message || "Ürünler silinirken bir hata oluştu",
-                        variant: "destructive",
-                      });
-                    }
-                  })
-                  .catch((error) => {
-                    toast({
-                      title: "Hata",
-                      description: error.message || "Ürünler silinirken bir hata oluştu",
-                      variant: "destructive",
-                    });
-                  })
-                  .finally(() => {
-                    setIsClearingProducts(false);
-                  });
-              }
-            }}
-            disabled={isClearingProducts}
-          >
-            {isClearingProducts ? (
-              <div className="flex items-center">
-                <div className="animate-spin mr-2 h-4 w-4 border-b-2 border-primary"></div>
-                Siliniyor...
-              </div>
-            ) : (
-              <>
-                <Eraser className="mr-2 h-4 w-4" />
-                Tüm Ürünleri Sil
-              </>
-            )}
-          </Button>
-          <Button 
-            variant="outline" 
-            onClick={() => {
-              setIsFetchingVithair(true);
-              apiRequest("POST", "/api/admin/sync-vithair-products")
-                .then(async (res) => {
-                  const data = await res.json();
-                  if (res.ok) {
-                    toast({
-                      title: "Success",
-                      description: `${data.count || 0} Vithair products synced successfully.`,
-                    });
-                    queryClient.invalidateQueries({ queryKey: [API_ROUTES.PRODUCTS] });
-                  } else {
-                    toast({
-                      title: "Error",
-                      description: data.message || "Failed to sync Vithair products",
-                      variant: "destructive",
-                    });
-                  }
-                })
-                .catch((error) => {
-                  toast({
-                    title: "Error",
-                    description: error.message || "Failed to sync Vithair products",
-                    variant: "destructive",
-                  });
-                })
-                .finally(() => {
-                  setIsFetchingVithair(false);
-                });
-            }}
-            disabled={isFetchingVithair}
-          >
-            {isFetchingVithair ? (
-              <div className="flex items-center">
-                <div className="animate-spin mr-2 h-4 w-4 border-b-2 border-primary"></div>
-                Syncing...
-              </div>
-            ) : (
-              <>
-                <Download className="mr-2 h-4 w-4" />
-                Sync Vithair Products
-              </>
-            )}
-          </Button>
-          <Button onClick={handleOpenAddDialog}>
-            <Plus className="mr-2 h-4 w-4" />
-            Add Product
-          </Button>
+    <AdminLayout title="Ürün Yönetimi">
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Ürün Yönetimi</h1>
+          <div className="flex gap-2">
+            <Button 
+              size="sm" 
+              variant="outline" 
+              onClick={handleSyncVithairProducts}
+              disabled={syncVithairProductsMutation.isPending}
+            >
+              {syncVithairProductsMutation.isPending ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : (
+                <RefreshCcw className="h-4 w-4 mr-2" />
+              )}
+              Vithair Ürünlerini Senkronize Et
+            </Button>
+            <Button 
+              size="sm" 
+              variant="destructive" 
+              onClick={handleClearProducts}
+              disabled={clearProductsMutation.isPending}
+            >
+              {clearProductsMutation.isPending ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : (
+                <Trash2 className="h-4 w-4 mr-2" />
+              )}
+              Tüm Ürünleri Temizle
+            </Button>
+            <Button 
+              size="sm" 
+              onClick={() => openDialog()}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Yeni Ürün Ekle
+            </Button>
+          </div>
         </div>
-      </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Products List</CardTitle>
-          <CardDescription>Manage hair care and treatment products</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {isLoading ? (
-            <div className="flex justify-center p-8">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        <Card>
+          <CardHeader className="p-4">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-lg">Ürünler ({filteredProducts.length})</CardTitle>
+              <div className="relative w-64">
+                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Ürün ara..."
+                  className="pl-8"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
             </div>
-          ) : products.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
-              No products found. Add a new product to get started.
-            </div>
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead className="hidden md:table-cell">Slug</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {products.map((product) => (
-                  <TableRow key={product.id}>
-                    <TableCell>
-                      {product.isActive ? (
-                        <div className="flex items-center space-x-2">
-                          <Check className="h-4 w-4 text-green-500" />
-                          <span className="text-sm">Active</span>
-                        </div>
-                      ) : (
-                        <span className="text-sm text-muted-foreground">Inactive</span>
-                      )}
-                    </TableCell>
-                    <TableCell className="font-medium">
-                      <div className="flex items-center space-x-2">
-                        <img 
-                          src={product.imageUrl} 
-                          alt={product.nameTR} 
-                          className="w-10 h-10 rounded-full object-cover border"
-                        />
-                        <div>
-                          <div>{product.nameTR}</div>
-                          <div className="text-xs text-muted-foreground truncate max-w-[200px]">
-                            {product.descriptionTR.substring(0, 50)}...
+          </CardHeader>
+          <CardContent className="p-0">
+            {isLoadingProducts ? (
+              <div className="flex justify-center items-center p-8">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+            ) : filteredProducts.length > 0 ? (
+              <div className="overflow-auto max-h-[600px]">
+                <Table>
+                  <TableHeader className="sticky top-0 bg-card">
+                    <TableRow>
+                      <TableHead>Resim</TableHead>
+                      <TableHead>Ürün Adı</TableHead>
+                      <TableHead>Slug</TableHead>
+                      <TableHead className="w-20 text-center">Aktif</TableHead>
+                      <TableHead className="w-20 text-center">Yeni</TableHead>
+                      <TableHead className="w-40 text-right">İşlemler</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredProducts.map((product) => (
+                      <TableRow key={product.id}>
+                        <TableCell>
+                          {product.imageUrl ? (
+                            <img
+                              src={product.imageUrl}
+                              alt={product.nameTR}
+                              className="w-12 h-12 object-cover rounded-md"
+                            />
+                          ) : (
+                            <div className="w-12 h-12 bg-muted rounded-md flex items-center justify-center text-muted-foreground">
+                              No img
+                            </div>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <div className="font-medium">{product.nameTR}</div>
+                          <div className="text-sm text-muted-foreground">{product.nameEN}</div>
+                        </TableCell>
+                        <TableCell>{product.slug}</TableCell>
+                        <TableCell className="text-center">
+                          {product.isActive ? "✓" : "✗"}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          {product.isNew ? "✓" : "✗"}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex justify-end gap-2">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => openDialog(product)}
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleDeleteProduct(product.id)}
+                              disabled={deleteProductMutation.isPending}
+                            >
+                              <Trash2 className="h-4 w-4 text-destructive" />
+                            </Button>
                           </div>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden md:table-cell">{product.slug}</TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end space-x-2">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => handleOpenEditDialog(product)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="text-destructive"
-                          onClick={() => handleOpenDeleteDialog(product)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Add Product Dialog */}
-      <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Add New Product</DialogTitle>
-            <DialogDescription>
-              Fill in the details below to add a new product to the catalog.
-            </DialogDescription>
-          </DialogHeader>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField
-                  control={form.control}
-                  name="slug"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Slug</FormLabel>
-                      <FormControl>
-                        <Input placeholder="product-slug" {...field} />
-                      </FormControl>
-                      <FormDescription>
-                        URL-friendly identifier (e.g., hair-shampoo)
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="imageUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Image URL</FormLabel>
-                      <FormControl>
-                        <Input placeholder="/images/products/image.jpg" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </div>
+            ) : (
+              <div className="text-center py-8 text-muted-foreground">
+                {searchTerm ? (
+                  <p>Aranan kriterlere uygun ürün bulunamadı</p>
+                ) : (
+                  <p>Henüz ürün eklenmemiş</p>
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
-              {/* Turkish Content */}
-              <div className="border p-4 rounded-md">
-                <h3 className="font-medium mb-4">Turkish Content</h3>
-                <div className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="nameTR"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name (TR)</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Product name in Turkish" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+        {/* Ürün Ekleme/Düzenleme Dialog */}
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>
+                {isEditing ? "Ürün Düzenle" : "Yeni Ürün Ekle"}
+              </DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleSaveProduct}>
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label htmlFor="nameTR" className="text-sm font-medium">Türkçe Adı*</label>
+                    <Input
+                      id="nameTR"
+                      name="nameTR"
+                      value={currentProduct.nameTR}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label htmlFor="nameEN" className="text-sm font-medium">İngilizce Adı*</label>
+                    <Input
+                      id="nameEN"
+                      name="nameEN"
+                      value={currentProduct.nameEN}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label htmlFor="nameRU" className="text-sm font-medium">Rusça Adı*</label>
+                    <Input
+                      id="nameRU"
+                      name="nameRU"
+                      value={currentProduct.nameRU}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label htmlFor="nameKA" className="text-sm font-medium">Gürcüce Adı*</label>
+                    <Input
+                      id="nameKA"
+                      name="nameKA"
+                      value={currentProduct.nameKA}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="slug" className="text-sm font-medium">Slug*</label>
+                  <Input
+                    id="slug"
+                    name="slug"
+                    value={currentProduct.slug}
+                    onChange={handleInputChange}
+                    required
                   />
-                  <FormField
-                    control={form.control}
+                  <p className="text-xs text-muted-foreground">
+                    URL için kullanılacak benzersiz tanımlayıcı (örn: vithair-shampoo)
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="imageUrl" className="text-sm font-medium">Resim URL*</label>
+                  <Input
+                    id="imageUrl"
+                    name="imageUrl"
+                    value={currentProduct.imageUrl}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Ürün resmi için URL (örn: https://www.example.com/image.jpg)
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <label htmlFor="price" className="text-sm font-medium">Fiyat (Opsiyonel)</label>
+                    <Input
+                      id="price"
+                      name="price"
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={currentProduct.price}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      id="isActive"
+                      name="isActive"
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-gray-300"
+                      checked={currentProduct.isActive}
+                      onChange={handleInputChange}
+                    />
+                    <label htmlFor="isActive" className="text-sm font-medium">
+                      Aktif
+                    </label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      id="isNew"
+                      name="isNew"
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-gray-300"
+                      checked={currentProduct.isNew}
+                      onChange={handleInputChange}
+                    />
+                    <label htmlFor="isNew" className="text-sm font-medium">
+                      Yeni Ürün
+                    </label>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="descriptionTR" className="text-sm font-medium">Türkçe Açıklama*</label>
+                  <Input
+                    id="descriptionTR"
                     name="descriptionTR"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Description (TR)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Product description in Turkish" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="usageTR"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Usage (TR)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Usage instructions in Turkish" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="ingredientsTR"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Ingredients (TR)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Ingredients list in Turkish" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    value={currentProduct.descriptionTR}
+                    onChange={handleInputChange}
+                    required
                   />
                 </div>
-              </div>
 
-              {/* English Content */}
-              <div className="border p-4 rounded-md">
-                <h3 className="font-medium mb-4">English Content</h3>
-                <div className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="nameEN"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name (EN)</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Product name in English" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
+                <div className="space-y-2">
+                  <label htmlFor="descriptionEN" className="text-sm font-medium">İngilizce Açıklama*</label>
+                  <Input
+                    id="descriptionEN"
                     name="descriptionEN"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Description (EN)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Product description in English" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="usageEN"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Usage (EN)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Usage instructions in English" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="ingredientsEN"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Ingredients (EN)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Ingredients list in English" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    value={currentProduct.descriptionEN}
+                    onChange={handleInputChange}
+                    required
                   />
                 </div>
-              </div>
 
-              {/* Russian Content */}
-              <div className="border p-4 rounded-md">
-                <h3 className="font-medium mb-4">Russian Content</h3>
-                <div className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="nameRU"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name (RU)</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Product name in Russian" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
+                <div className="space-y-2">
+                  <label htmlFor="descriptionRU" className="text-sm font-medium">Rusça Açıklama*</label>
+                  <Input
+                    id="descriptionRU"
                     name="descriptionRU"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Description (RU)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Product description in Russian" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="usageRU"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Usage (RU)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Usage instructions in Russian" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="ingredientsRU"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Ingredients (RU)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Ingredients list in Russian" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    value={currentProduct.descriptionRU}
+                    onChange={handleInputChange}
+                    required
                   />
                 </div>
-              </div>
 
-              {/* Georgian Content */}
-              <div className="border p-4 rounded-md">
-                <h3 className="font-medium mb-4">Georgian Content</h3>
-                <div className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="nameKA"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name (KA)</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Product name in Georgian" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
+                <div className="space-y-2">
+                  <label htmlFor="descriptionKA" className="text-sm font-medium">Gürcüce Açıklama*</label>
+                  <Input
+                    id="descriptionKA"
                     name="descriptionKA"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Description (KA)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Product description in Georgian" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="usageKA"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Usage (KA)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Usage instructions in Georgian" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="ingredientsKA"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Ingredients (KA)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Ingredients list in Georgian" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    value={currentProduct.descriptionKA}
+                    onChange={handleInputChange}
+                    required
                   />
                 </div>
               </div>
-
-              {/* Settings */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField
-                  control={form.control}
-                  name="order"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Display Order</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          placeholder="0"
-                          {...field}
-                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                        />
-                      </FormControl>
-                      <FormDescription>Lower numbers appear first</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="isActive"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 mt-8">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <div className="space-y-1 leading-none">
-                        <FormLabel>Active</FormLabel>
-                        <FormDescription>
-                          Inactive products won't be displayed on the website
-                        </FormDescription>
-                      </div>
-                    </FormItem>
-                  )}
-                />
-              </div>
-
               <DialogFooter>
-                <Button
+                <Button 
+                  variant="outline" 
+                  onClick={closeDialog}
                   type="button"
-                  variant="outline"
-                  onClick={() => setIsAddDialogOpen(false)}
                 >
-                  Cancel
+                  İptal
                 </Button>
-                <Button type="submit" disabled={addProductMutation.isPending}>
-                  {addProductMutation.isPending && (
-                    <div className="mr-2 animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground"></div>
-                  )}
-                  Add Product
+                <Button 
+                  type="submit"
+                  disabled={saveProductMutation.isPending}
+                >
+                  {saveProductMutation.isPending ? (
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  ) : null}
+                  {isEditing ? "Güncelle" : "Ekle"}
                 </Button>
               </DialogFooter>
             </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
+          </DialogContent>
+        </Dialog>
 
-      {/* Edit Product Dialog */}
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Edit Product</DialogTitle>
-            <DialogDescription>
-              Update the details for this product.
-            </DialogDescription>
-          </DialogHeader>
-          <Form {...editForm}>
-            <form onSubmit={editForm.handleSubmit(onSubmitEdit)} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField
-                  control={editForm.control}
-                  name="slug"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Slug</FormLabel>
-                      <FormControl>
-                        <Input placeholder="product-slug" {...field} />
-                      </FormControl>
-                      <FormDescription>
-                        URL-friendly identifier (e.g., hair-shampoo)
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={editForm.control}
-                  name="imageUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Image URL</FormLabel>
-                      <FormControl>
-                        <Input placeholder="/images/products/image.jpg" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              {/* Turkish Content */}
-              <div className="border p-4 rounded-md">
-                <h3 className="font-medium mb-4">Turkish Content</h3>
-                <div className="space-y-4">
-                  <FormField
-                    control={editForm.control}
-                    name="nameTR"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name (TR)</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Product name in Turkish" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={editForm.control}
-                    name="descriptionTR"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Description (TR)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Product description in Turkish" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={editForm.control}
-                    name="usageTR"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Usage (TR)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Usage instructions in Turkish" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={editForm.control}
-                    name="ingredientsTR"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Ingredients (TR)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Ingredients list in Turkish" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-
-              {/* English Content */}
-              <div className="border p-4 rounded-md">
-                <h3 className="font-medium mb-4">English Content</h3>
-                <div className="space-y-4">
-                  <FormField
-                    control={editForm.control}
-                    name="nameEN"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name (EN)</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Product name in English" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={editForm.control}
-                    name="descriptionEN"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Description (EN)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Product description in English" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={editForm.control}
-                    name="usageEN"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Usage (EN)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Usage instructions in English" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={editForm.control}
-                    name="ingredientsEN"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Ingredients (EN)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Ingredients list in English" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-
-              {/* Russian Content */}
-              <div className="border p-4 rounded-md">
-                <h3 className="font-medium mb-4">Russian Content</h3>
-                <div className="space-y-4">
-                  <FormField
-                    control={editForm.control}
-                    name="nameRU"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name (RU)</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Product name in Russian" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={editForm.control}
-                    name="descriptionRU"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Description (RU)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Product description in Russian" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={editForm.control}
-                    name="usageRU"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Usage (RU)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Usage instructions in Russian" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={editForm.control}
-                    name="ingredientsRU"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Ingredients (RU)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Ingredients list in Russian" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-
-              {/* Georgian Content */}
-              <div className="border p-4 rounded-md">
-                <h3 className="font-medium mb-4">Georgian Content</h3>
-                <div className="space-y-4">
-                  <FormField
-                    control={editForm.control}
-                    name="nameKA"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name (KA)</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Product name in Georgian" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={editForm.control}
-                    name="descriptionKA"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Description (KA)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Product description in Georgian" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={editForm.control}
-                    name="usageKA"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Usage (KA)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Usage instructions in Georgian" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={editForm.control}
-                    name="ingredientsKA"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Ingredients (KA)</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="Ingredients list in Georgian" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-
-              {/* Settings */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <FormField
-                  control={editForm.control}
-                  name="order"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Display Order</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          placeholder="0"
-                          {...field}
-                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                        />
-                      </FormControl>
-                      <FormDescription>Lower numbers appear first</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={editForm.control}
-                  name="isActive"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 mt-8">
-                      <FormControl>
-                        <Checkbox
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <div className="space-y-1 leading-none">
-                        <FormLabel>Active</FormLabel>
-                        <FormDescription>
-                          Inactive products won't be displayed on the website
-                        </FormDescription>
-                      </div>
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <DialogFooter>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setIsEditDialogOpen(false)}
-                >
-                  Cancel
-                </Button>
-                <Button type="submit" disabled={editProductMutation.isPending}>
-                  {editProductMutation.isPending && (
-                    <div className="mr-2 animate-spin rounded-full h-4 w-4 border-b-2 border-primary-foreground"></div>
-                  )}
-                  Update Product
-                </Button>
-              </DialogFooter>
-            </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
-
-      {/* Delete Confirmation Dialog */}
-      <DeleteConfirmDialog
-        isOpen={isDeleteDialogOpen}
-        onClose={() => setIsDeleteDialogOpen(false)}
-        onConfirm={onConfirmDelete}
-        title="Delete Product"
-        description={`Are you sure you want to delete the product "${selectedProduct?.nameTR}"? This action cannot be undone.`}
-        isPending={deleteProductMutation.isPending}
-      />
+        {/* Vithair Senkronizasyon Dialog */}
+        <Dialog open={isSyncDialogOpen} onOpenChange={setIsSyncDialogOpen}>
+          <DialogContent className="sm:max-w-[500px]">
+            <DialogHeader>
+              <DialogTitle>Vithair Ürünlerini Senkronize Et</DialogTitle>
+            </DialogHeader>
+            <div className="py-4">
+              <p className="text-sm text-muted-foreground mb-4">
+                Bu işlem, vithair.com.tr sitesinden ürünleri otomatik olarak çekecek ve veritabanına ekleyecektir. 
+                Mevcut ürünler silinmeyecek, yalnızca yeni ürünler eklenecektir.
+              </p>
+              <p className="text-sm font-medium mb-2">Bu işlem:</p>
+              <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
+                <li>Mevcut ürünleri korur</li>
+                <li>Vithair web sitesinden ürünleri otomatik olarak çeker</li>
+                <li>Sitede bulunan tüm ürünleri veritabanına ekler</li>
+                <li>İnternet bağlantısı ve site erişilebilirliğine bağlıdır</li>
+              </ul>
+            </div>
+            <DialogFooter>
+              <Button 
+                variant="outline" 
+                onClick={() => setIsSyncDialogOpen(false)}
+                disabled={syncVithairProductsMutation.isPending}
+              >
+                İptal
+              </Button>
+              <Button 
+                onClick={startSyncProducts}
+                disabled={syncVithairProductsMutation.isPending}
+              >
+                {syncVithairProductsMutation.isPending ? (
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                ) : (
+                  <RefreshCcw className="h-4 w-4 mr-2" />
+                )}
+                Senkronizasyonu Başlat
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
     </AdminLayout>
   );
 }

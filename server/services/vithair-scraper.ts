@@ -3,6 +3,8 @@ import { products } from '@shared/schema';
 import { eq } from 'drizzle-orm';
 import * as fs from 'fs';
 import * as path from 'path';
+import axios from 'axios';
+import * as cheerio from 'cheerio';
 
 // Vithair web sitesi URL'leri
 const BASE_URL = 'https://www.vithair.com.tr';
@@ -51,7 +53,7 @@ async function scrapeCategories(html: string): Promise<VithairCategory[]> {
   // Kategori menüsünü bul
   const categoryLinks = $('.product-categories a');
   
-  categoryLinks.each((index, element) => {
+  categoryLinks.each((index: number, element: any) => {
     const name = $(element).text().trim();
     const url = $(element).attr('href') || '';
     const id = url.split('/').pop() || '';
