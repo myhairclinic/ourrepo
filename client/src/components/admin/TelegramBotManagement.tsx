@@ -149,18 +149,26 @@ export default function TelegramBotManagement() {
   // Test bildirimi gönderme mutasyonu
   const sendTestNotificationMutation = useMutation({
     mutationFn: async ({type, chatId}: {type: string, chatId: string}) => {
+      // Validate chatId
+      if (!chatId || chatId.trim() === '') {
+        throw new Error("Lütfen bir Chat ID veya Telegram kullanıcı adı girin");
+      }
+      
+      console.log(`Test bildirimi gönderiliyor: ${type} -> ${chatId}`);
+      
       const res = await fetch("/api/telegram/test-notification", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ type, chatId })
       });
       
+      const data = await res.json();
+      
       if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.message || "Bildirim gönderilirken bir hata oluştu");
+        throw new Error(data.message || "Bildirim gönderilirken bir hata oluştu");
       }
       
-      return res.json();
+      return data;
     },
     onSuccess: (data) => {
       toast({
