@@ -108,7 +108,7 @@ const AdminDashboard = () => {
       toast({
         title: "Başarılı",
         description: `Randevu durumu "${status === 'confirmed' ? 'onaylandı' : status === 'cancelled' ? 'iptal edildi' : status}" olarak güncellendi.`,
-        variant: "success",
+        variant: "default",
       });
       
     } catch (error) {
@@ -978,7 +978,7 @@ const AdminDashboard = () => {
                                       toast({
                                         title: "Bildirim Gönderildi",
                                         description: `${appointment.name} için Telegram bildirimi başarıyla gönderildi.`,
-                                        variant: "success",
+                                        variant: "default",
                                       });
                                     } catch (error) {
                                       console.error('Telegram bildirimi gönderme hatası:', error);
