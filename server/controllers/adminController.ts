@@ -1,7 +1,145 @@
 import { Request, Response } from "express";
 import { storage } from "../storage";
-import { updateClinicInfoSchema, insertProductSchema, insertPackageSchema, insertTestimonialSchema, insertFaqSchema, insertMessageSchema } from "@shared/schema";
 import { z } from "zod";
+
+// Doğrudan şema tiplerini dahil etmek yerine local tipleri tanımlıyoruz
+// Bu, @shared/schema modülünden gelen bağımlılığı kaldırmak için yapılmıştır
+
+// Clinic Info şeması
+const updateClinicInfoSchema = z.object({
+  aboutTR: z.string(),
+  aboutEN: z.string(),
+  aboutRU: z.string(),
+  aboutKA: z.string(),
+  addressTR: z.string(),
+  addressEN: z.string(),
+  addressRU: z.string(),
+  addressKA: z.string(),
+  email: z.string().email(),
+  phone: z.string(),
+  whatsapp: z.string(),
+  instagram: z.string().optional(),
+  facebook: z.string().optional(),
+  youtube: z.string().optional(),
+  workingHoursTR: z.string(),
+  workingHoursEN: z.string(),
+  workingHoursRU: z.string(),
+  workingHoursKA: z.string(),
+  googleMapsUrl: z.string(),
+});
+
+// Product şeması
+const insertProductSchema = z.object({
+  slug: z.string(),
+  nameTR: z.string(),
+  nameEN: z.string(),
+  nameRU: z.string(),
+  nameKA: z.string(),
+  descriptionTR: z.string(),
+  descriptionEN: z.string(),
+  descriptionRU: z.string(),
+  descriptionKA: z.string(),
+  usageTR: z.string(),
+  usageEN: z.string(),
+  usageRU: z.string(),
+  usageKA: z.string(),
+  ingredientsTR: z.string(),
+  ingredientsEN: z.string(),
+  ingredientsRU: z.string(),
+  ingredientsKA: z.string(),
+  imageUrl: z.string(),
+  price: z.number().default(0),
+  isNew: z.boolean().default(false),
+  categoryId: z.string().optional(),
+  categoryName: z.string().optional(),
+  order: z.number().default(0),
+  isActive: z.boolean().default(true),
+});
+
+// Package şeması
+const insertPackageSchema = z.object({
+  slug: z.string(),
+  titleTR: z.string(),
+  titleEN: z.string(),
+  titleRU: z.string(),
+  titleKA: z.string(),
+  descriptionTR: z.string(),
+  descriptionEN: z.string(),
+  descriptionRU: z.string(),
+  descriptionKA: z.string(),
+  contentTR: z.string(),
+  contentEN: z.string(),
+  contentRU: z.string(),
+  contentKA: z.string(),
+  countryOrigin: z.string(),
+  accommodationTR: z.string(),
+  accommodationEN: z.string(),
+  accommodationRU: z.string(),
+  accommodationKA: z.string(),
+  transportationTR: z.string(),
+  transportationEN: z.string(),
+  transportationRU: z.string(),
+  transportationKA: z.string(),
+  activitiesTR: z.string(),
+  activitiesEN: z.string(),
+  activitiesRU: z.string(),
+  activitiesKA: z.string(),
+  durationDays: z.number().default(3),
+  includesServiceIds: z.string().optional(),
+  highlights: z.string().optional(),
+  imageUrl: z.string(),
+  galleryImages: z.string().optional(),
+  price: z.number().default(0),
+  order: z.number().default(0),
+  isActive: z.boolean().default(true),
+  isFeatured: z.boolean().default(false),
+  packageType: z.enum(["standard", "premium", "luxury", "budget"]).default("standard"),
+  isAllInclusive: z.boolean().default(false),
+});
+
+// Testimonial şeması
+const insertTestimonialSchema = z.object({
+  nameTR: z.string(),
+  nameEN: z.string(),
+  nameRU: z.string(),
+  nameKA: z.string(),
+  locationTR: z.string(),
+  locationEN: z.string(),
+  locationRU: z.string(),
+  locationKA: z.string(),
+  commentTR: z.string(),
+  commentEN: z.string(),
+  commentRU: z.string(),
+  commentKA: z.string(),
+  rating: z.number().default(5),
+  imageUrl: z.string().optional(),
+  videoUrl: z.string().optional(),
+  order: z.number().default(0),
+  isActive: z.boolean().default(true),
+});
+
+// FAQ şeması
+const insertFaqSchema = z.object({
+  serviceId: z.number().optional(),
+  questionTR: z.string(),
+  questionEN: z.string(),
+  questionRU: z.string(),
+  questionKA: z.string(),
+  answerTR: z.string(),
+  answerEN: z.string(),
+  answerRU: z.string(),
+  answerKA: z.string(),
+  order: z.number().default(0),
+  isActive: z.boolean().default(true),
+});
+
+// Message şeması
+const insertMessageSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  phone: z.string().optional(),
+  message: z.string(),
+});
 
 // Clinic Info Controller
 export const getClinicInfo = async (req: Request, res: Response) => {

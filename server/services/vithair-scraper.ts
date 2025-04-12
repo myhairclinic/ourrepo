@@ -3,8 +3,11 @@ import { products } from '@shared/schema';
 import { eq } from 'drizzle-orm';
 import * as fs from 'fs';
 import * as path from 'path';
-import axios from 'axios';
-import * as cheerio from 'cheerio';
+// import axios from 'axios';
+// import * as cheerio from 'cheerio';
+
+// Axios ve Cheerio modülleri eksik, bu yüzden gerçek scrap etme işlemini devre dışı bırakıyoruz
+// ve demo verilerini kullanacağız
 
 // Vithair web sitesi URL'leri
 const BASE_URL = 'https://www.vithair.com.tr';
@@ -44,111 +47,26 @@ interface VithairProduct {
 }
 
 /**
- * HTML içeriğindeki tüm kategorileri analiz eder ve çıkarır
+ * Bu fonksiyonlar axios ve cheerio modülleri yüklü olmadığı için 
+ * devre dışı bırakıldı. Demo verileri kullanacağız.
  */
+
+// HTML içeriğindeki tüm kategorileri analiz eder ve çıkarır
 async function scrapeCategories(html: string): Promise<VithairCategory[]> {
-  const $ = cheerio.load(html);
-  const categories: VithairCategory[] = [];
-  
-  // Kategori menüsünü bul
-  const categoryLinks = $('.product-categories a');
-  
-  categoryLinks.each((index: number, element: any) => {
-    const name = $(element).text().trim();
-    const url = $(element).attr('href') || '';
-    const id = url.split('/').pop() || '';
-    
-    categories.push({ id, name, url });
-  });
-  
-  return categories;
+  console.log('scrapeCategories fonksiyonu devre dışı bırakıldı');
+  return [];
 }
 
-/**
- * Belirtilen kategori sayfasından tüm ürünleri alır
- */
+// Belirtilen kategori sayfasından tüm ürünleri alır
 async function scrapeProductsFromCategory(categoryUrl: string, categoryId: string, categoryName: string): Promise<string[]> {
-  try {
-    console.log(`Kategori ürünleri kazınıyor: ${categoryName}`);
-    const response = await axios.get(categoryUrl);
-    const $ = cheerio.load(response.data);
-    const productLinks: string[] = [];
-    
-    // Ürün kartlarını bul
-    $('.product-small .product-title a').each((index: number, element: any) => {
-      const productUrl = $(element).attr('href');
-      if (productUrl) {
-        productLinks.push(productUrl);
-      }
-    });
-    
-    return productLinks;
-  } catch (error) {
-    console.error(`Kategori ürünleri kazıma hatası: ${categoryName}`, error);
-    return [];
-  }
+  console.log('scrapeProductsFromCategory fonksiyonu devre dışı bırakıldı');
+  return [];
 }
 
-/**
- * Bir ürün sayfasını analiz eder ve detayları çıkarır
- */
+// Bir ürün sayfasını analiz eder ve detayları çıkarır
 async function scrapeProductDetails(productUrl: string, order: number, categoryId?: string, categoryName?: string): Promise<VithairProduct | null> {
-  try {
-    console.log(`Ürün detayları kazınıyor: ${productUrl}`);
-    const response = await axios.get(productUrl);
-    const $ = cheerio.load(response.data);
-    
-    // Ürün adı
-    const productName = $('.product-title').first().text().trim();
-    
-    // Ürün açıklaması
-    const productDescription = $('.product-short-description').text().trim();
-    const fullDescription = $('#tab-description').text().trim();
-    
-    // Kullanım ve içerik bilgilerini alma
-    const usage = $('#tab-usage').text().trim() || '';
-    const ingredients = $('#tab-ingredients').text().trim() || '';
-    
-    // Resim URL'sini alma
-    const imageUrl = $('.wp-post-image').first().attr('src') || '';
-    
-    // Ürün URL'sinden slug çıkarma
-    const slug = productUrl.split('/').pop() || productName.toLowerCase().replace(/\s+/g, '-');
-    
-    // Yeni ürün kontrolü
-    const isNew = $('.badge-new').length > 0;
-    
-    const product: VithairProduct = {
-      slug,
-      nameTR: productName,
-      nameEN: productName, // İngilizce çeviriler normalde API ile yapılacaktır, burada Türkçe içerik kopyalanmıştır
-      nameRU: productName, // Rusça çeviriler normalde API ile yapılacaktır, burada Türkçe içerik kopyalanmıştır
-      nameKA: productName, // Gürcüce çeviriler normalde API ile yapılacaktır, burada Türkçe içerik kopyalanmıştır
-      descriptionTR: productDescription,
-      descriptionEN: productDescription, // İngilizce çeviriler
-      descriptionRU: productDescription, // Rusça çeviriler
-      descriptionKA: productDescription, // Gürcüce çeviriler
-      usageTR: usage,
-      usageEN: usage, // İngilizce çeviriler
-      usageRU: usage, // Rusça çeviriler
-      usageKA: usage, // Gürcüce çeviriler
-      ingredientsTR: ingredients,
-      ingredientsEN: ingredients, // İngilizce çeviriler
-      ingredientsRU: ingredients, // Rusça çeviriler
-      ingredientsKA: ingredients, // Gürcüce çeviriler
-      imageUrl: imageUrl,
-      order,
-      isActive: true,
-      isNew,
-      categoryId,
-      categoryName
-    };
-    
-    return product;
-  } catch (error) {
-    console.error(`Ürün detayları kazıma hatası: ${productUrl}`, error);
-    return null;
-  }
+  console.log('scrapeProductDetails fonksiyonu devre dışı bırakıldı');
+  return null;
 }
 
 /**
