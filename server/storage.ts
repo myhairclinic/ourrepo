@@ -2063,8 +2063,26 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createPatientDocument(data: InsertPatientDocument): Promise<PatientDocument> {
-    const [document] = await db.insert(patientDocuments).values(data).returning();
-    return document;
+    try {
+      console.log("Creating patient document with data:", JSON.stringify(data));
+      
+      // Ensure required fields have default values if missing
+      const documentData = {
+        ...data,
+        uploadDate: new Date(),
+        isConfidential: data.isConfidential ?? false,
+        description: data.description || null,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      
+      const [document] = await db.insert(patientDocuments).values(documentData).returning();
+      console.log("Patient document created successfully:", document);
+      return document;
+    } catch (error) {
+      console.error("Error creating patient document:", error);
+      throw error;
+    }
   }
 
   async updatePatientDocument(id: number, data: Partial<InsertPatientDocument>): Promise<PatientDocument | undefined> {
@@ -2097,8 +2115,26 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createTreatmentRecord(data: InsertTreatmentRecord): Promise<TreatmentRecord> {
-    const [record] = await db.insert(treatmentRecords).values(data).returning();
-    return record;
+    try {
+      console.log("Creating treatment record with data:", JSON.stringify(data));
+      
+      // Ensure required fields have default values if missing
+      const recordData = {
+        ...data,
+        status: data.status || "completed",
+        notes: data.notes || null,
+        followUpDate: data.followUpDate || null,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      
+      const [record] = await db.insert(treatmentRecords).values(recordData).returning();
+      console.log("Treatment record created successfully:", record);
+      return record;
+    } catch (error) {
+      console.error("Error creating treatment record:", error);
+      throw error;
+    }
   }
 
   async updateTreatmentRecord(id: number, data: Partial<InsertTreatmentRecord>): Promise<TreatmentRecord | undefined> {
