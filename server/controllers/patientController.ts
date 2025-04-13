@@ -324,8 +324,17 @@ export const updateTreatmentRecord = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Tedavi kaydı bulunamadı" });
     }
 
-    // Tedavi kaydı verilerini doğrula
-    const validatedData = insertTreatmentRecordSchema.partial().parse(req.body);
+    // Tarih alanlarını düzenle ve tedavi kaydı verilerini doğrula
+    const formData = {
+      ...req.body,
+      treatmentDate: req.body.treatmentDate ? new Date(req.body.treatmentDate) : undefined,
+      followUpDate: req.body.followUpDate ? new Date(req.body.followUpDate) : null,
+      nextTreatmentDate: req.body.nextTreatmentDate ? new Date(req.body.nextTreatmentDate) : null
+    };
+    
+    console.log("Tedavi kaydı güncelleme için formatlanmış veriler:", formData);
+    
+    const validatedData = insertTreatmentRecordSchema.partial().parse(formData);
     console.log(`Tedavi kaydı ID ${recordId} güncelleniyor:`, validatedData);
     
     // Tedavi kaydını güncelle
@@ -492,7 +501,15 @@ export const updatePatientProgressImage = async (req: Request, res: Response) =>
       return res.status(400).json({ message: "Geçersiz görsel ID" });
     }
 
-    const validatedData = insertPatientProgressImageSchema.partial().parse(req.body);
+    // Tarih alanlarını düzenle
+    const formData = {
+      ...req.body,
+      captureDate: req.body.captureDate ? new Date(req.body.captureDate) : undefined
+    };
+    
+    console.log("İlerleme görseli güncelleme için formatlanmış veriler:", formData);
+    
+    const validatedData = insertPatientProgressImageSchema.partial().parse(formData);
     const image = await storage.getPatientProgressImageById(imageId);
     
     if (!image) {
