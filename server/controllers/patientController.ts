@@ -442,7 +442,18 @@ export const deleteTreatmentRecord = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error(`Tedavi kaydı ID ${req.params.recordId} silinirken hata oluştu:`, error);
-    res.status(500).json({ message: "Hasta tedavi kaydı silinirken bir hata oluştu" });
+    
+    // Daha detaylı hata mesajları
+    let errorMessage = "Hasta tedavi kaydı silinirken bir hata oluştu";
+    if (error instanceof Error) {
+      errorMessage = `Tedavi kaydı silinirken hata: ${error.message}`;
+      console.error("Hata detayları:", error.stack);
+    }
+    
+    res.status(500).json({ 
+      message: errorMessage,
+      error: error instanceof Error ? error.message : String(error)
+    });
   }
 };
 

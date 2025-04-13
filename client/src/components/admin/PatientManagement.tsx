@@ -521,11 +521,22 @@ const PatientManagement = () => {
         method: "DELETE",
       });
       
-      if (!res.ok) {
-        throw new Error("Tedavi kaydı silinirken bir hata oluştu.");
-      }
+      const responseText = await res.text();
       
-      return res.json();
+      // Yanıtın JSON olup olmadığını kontrol et
+      try {
+        const responseData = responseText ? JSON.parse(responseText) : {};
+        if (!res.ok) {
+          throw new Error(responseData.message || responseData.error || "Tedavi kaydı silinirken bir hata oluştu.");
+        }
+        return responseData;
+      } catch (parseError) {
+        console.error("Yanıt JSON ayrıştırma hatası:", parseError, "Ham yanıt:", responseText);
+        if (!res.ok) {
+          throw new Error(`Tedavi kaydı silinirken bir hata oluştu. Sunucu yanıtı: ${responseText}`);
+        }
+        return { message: "Başarılı" };
+      }
     },
     onSuccess: () => {
       setIsDeleteConfirmDialogOpen(false);
@@ -536,11 +547,26 @@ const PatientManagement = () => {
         description: "Tedavi kaydı başarıyla silindi.",
       });
     },
-    onError: (error) => {
+    onError: (error: any) => {
       console.error("Tedavi kaydı silme hatası:", error);
+      
+      // Daha detaylı hata gösterimi
+      let errorMessage = "Tedavi kaydı silinirken bir hata oluştu.";
+      
+      if (error.response) {
+        try {
+          // Sunucu yanıtından detaylı hata mesajı almaya çalış
+          const responseData = error.response.data || {};
+          errorMessage = responseData.message || responseData.error || errorMessage;
+          console.log("Sunucu hata detayları:", responseData);
+        } catch (e) {
+          console.error("Hata mesajı ayrıştırma hatası:", e);
+        }
+      }
+      
       toast({
         title: "Hata",
-        description: "Tedavi kaydı silinirken bir hata oluştu.",
+        description: errorMessage,
         variant: "destructive",
       });
     },
