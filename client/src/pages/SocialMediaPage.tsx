@@ -623,7 +623,7 @@ export default function SocialMediaPage() {
                     ))
                 ) : (
                   <div className="col-span-3 py-16 text-center">
-                    <p className="text-muted-foreground">{t('socialMedia.noPostsYet')}</p>
+                    <p className="text-muted-foreground">Henüz paylaşım yok</p>
                   </div>
                 )}
               </div>
@@ -692,10 +692,10 @@ export default function SocialMediaPage() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
             <div>
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                {t('socialMedia.socialReviews')}
+                Sosyal Medya Yorumları
               </h2>
               <p className="text-muted-foreground max-w-2xl">
-                {t('socialMedia.testimonialDescription')}
+                Müşterilerimizin sosyal medya platformlarında bizimle ilgili deneyimlerini ve yorumlarını inceleyin.
               </p>
             </div>
             <div className="mt-4 md:mt-0">
@@ -785,10 +785,10 @@ export default function SocialMediaPage() {
                   <Share2 className="h-8 w-8 text-primary" />
                 </div>
                 <h2 className="text-2xl md:text-3xl font-bold mb-4 text-primary">
-                  {t('socialMedia.ctaTitle')}
+                  Sosyal Medyada Bizi Takip Edin
                 </h2>
                 <p className="text-lg opacity-90 max-w-2xl mx-auto mb-8">
-                  {t('socialMedia.ctaDescription')}
+                  En son güncellemelerimizi, hasta başarı hikayelerini ve özel tekliflerimizi takip etmek için sosyal medya hesaplarımıza göz atın.
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 w-full max-w-3xl mx-auto">
                   {socialPlatforms.map((platform, index) => (
