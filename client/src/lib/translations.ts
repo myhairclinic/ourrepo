@@ -326,6 +326,14 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Georgian]: "MyHair კლინიკაში ჩვენ გთავაზობთ პერსონალიზებულ მიდგომას თითოეული პაციენტისთვის. ჩვენი მიზანია არა მხოლოდ თმის გადანერგვა, არამედ პაციენტების დახმარება თვითრწმენის დაბრუნებაში."
   },
   
+  // Location Section
+  "home.location.weekdaysLabel": {
+    [Language.Turkish]: "Pazartesi - Cumartesi",
+    [Language.English]: "Monday - Saturday",
+    [Language.Russian]: "Понедельник - Суббота",
+    [Language.Georgian]: "ორშაბათი - შაბათი"
+  },
+  
   // Other sections
   "gallery.patientJourney": {
     [Language.Turkish]: "Hasta Yolculuğu",

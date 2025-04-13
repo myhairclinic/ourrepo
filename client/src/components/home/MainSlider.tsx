@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useLanguage } from "@/hooks/use-language";
-import { useTranslation } from "@/lib/translations";
+import { useTranslation } from "@/hooks/use-translation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
