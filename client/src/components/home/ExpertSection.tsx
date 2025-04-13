@@ -13,17 +13,17 @@ export default function ExpertSection() {
   const expertStats = [
     {
       icon: <CheckCircle className="h-5 w-5 text-primary" />,
-      value: "15+",
+      value: "18+",
       label: t("home.expertSection.stats.years") || "Yıllık Deneyim",
     },
     {
       icon: <Award className="h-5 w-5 text-primary" />,
-      value: "7.000+",
+      value: "10.000+",
       label: t("home.expertSection.stats.procedures") || "Başarılı İşlem",
     },
     {
       icon: <UserCheck className="h-5 w-5 text-primary" />,
-      value: "98%",
+      value: "99%",
       label: t("home.expertSection.stats.satisfaction") || "Hasta Memnuniyeti",
     },
     {
@@ -69,15 +69,15 @@ export default function ExpertSection() {
               
               {/* Expert Image */}
               <img 
-                src="/images/experts/hair-transplant-expert.jpg" 
-                alt="Saç Ekimi Uzmanı" 
+                src="/images/experts/ali-caliskan.png" 
+                alt="Ali Çalışkan - Saç Ekimi Uzmanı" 
                 className="w-full h-auto object-cover aspect-[3/4]"
               />
               
               {/* Expert Credentials */}
               <div className="absolute bottom-0 left-0 right-0 p-6 z-20 text-white">
-                <h3 className="text-2xl font-bold mb-1">Dr. Ahmet Karasu</h3>
-                <p className="text-white/90 mb-3">Baş Cerrah, Saç Ekimi Uzmanı</p>
+                <h3 className="text-2xl font-bold mb-1">Ali Çalışkan</h3>
+                <p className="text-white/90 mb-3">Saç Ekimi Uzmanı</p>
                 
                 {/* Expert Stats */}
                 <div className="flex flex-wrap gap-3">
@@ -137,8 +137,8 @@ export default function ExpertSection() {
                     <UserCheck className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <p className="font-semibold">Dr. Ahmet Karasu</p>
-                    <p className="text-xs text-gray-600">MyHair Clinic Baş Cerrahı</p>
+                    <p className="font-semibold">Ali Çalışkan</p>
+                    <p className="text-xs text-gray-600">Saç Ekimi Uzmanı</p>
                   </div>
                 </div>
               </CardContent>
