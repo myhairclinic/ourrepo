@@ -831,12 +831,12 @@ export default function ServicePage() {
                              service.slug === 'hair-mesotherapy' ? 'Mezoterapi Karışımı / Mesotherapy Mixture' :
                              service.slug === 'eyebrow-transplantation' ? 'Donör Bölge Hazırlığı / Donor Area Preparation' :
                              service.slug === 'beard-transplantation' ? 'Donör Bölge Hazırlığı / Donor Area Preparation' :
-                             t("services.timeline.step2Title"),
+                             safeString(t("services.timeline.step2Title")),
                       description: service.slug === 'prp-treatment' ? 'Alınan kan trombositleri ayırmak için santrifüj edilir / Blood is centrifuged to separate platelets' :
                                   service.slug === 'hair-mesotherapy' ? 'Vitaminden zengin mezoterapi karışımı hazırlanır / Vitamin-rich mesotherapy mixture is prepared' :
                                   service.slug === 'eyebrow-transplantation' ? 'Ense bölgesinden alınacak greftler belirlenir / Grafts to be taken from the nape area are determined' :
                                   service.slug === 'beard-transplantation' ? 'Sakal için uygun greftler belirlenir / Suitable grafts for beard are determined' :
-                                  t("services.timeline.step2Description"),
+                                  safeString(t("services.timeline.step2Description")),
                       duration: service.slug === 'prp-treatment' ? "5-10 min" : 
                                service.slug === 'hair-mesotherapy' ? "10-15 min" : "1-3 hours",
                       highlights: [
@@ -844,13 +844,13 @@ export default function ServicePage() {
                         service.slug === 'hair-mesotherapy' ? 'Vitamin ve peptit karışımı / Vitamin and peptide mixture' :
                         service.slug === 'eyebrow-transplantation' ? 'Sağlıklı ve kaliteli greftler / Healthy and quality grafts' :
                         service.slug === 'beard-transplantation' ? 'Doğal büyüme açılarına uygun greftler / Grafts suitable for natural growth angles' :
-                        t("services.timeline.step2Highlight1"),
+                        safeString(t("services.timeline.step2Highlight1")),
                         
                         service.slug === 'prp-treatment' ? 'Yüksek konsantrasyonlu plazma / High concentration plasma' : 
                         service.slug === 'hair-mesotherapy' ? 'Kişiye özel formülasyon / Personalized formulation' :
                         service.slug === 'eyebrow-transplantation' ? 'Minimum travma ile toplama / Collection with minimal trauma' :
                         service.slug === 'beard-transplantation' ? 'Ağrısız toplama işlemi / Painless collection procedure' :
-                        t("services.timeline.step2Highlight2")
+                        safeString(t("services.timeline.step2Highlight2"))
                       ],
                       icon: "Zap"
                     },
@@ -860,7 +860,7 @@ export default function ServicePage() {
                              service.slug === 'hair-mesotherapy' ? 'Mezoterapi Uygulaması / Mesotherapy Application' :
                              service.slug === 'eyebrow-transplantation' ? 'Kaş Çizimi ve Kanalların Açılması / Eyebrow Drawing and Channel Opening' :
                              service.slug === 'beard-transplantation' ? 'Sakal Çizimi ve Kanalların Açılması / Beard Drawing and Channel Opening' :
-                             t("services.timeline.step3Title"),
+                             safeString(t("services.timeline.step3Title")),
                       description: service.slug === 'prp-treatment' ? 'Hazırlanan trombositten zengin plazma saç derisine enjekte edilir / Platelet-rich plasma is injected into the scalp' :
                                   service.slug === 'hair-mesotherapy' ? 'Vitamin kokteyli saç derisine ince iğnelerle uygulanır / Vitamin cocktail is applied to the scalp with fine needles' :
                                   service.slug === 'eyebrow-transplantation' ? 'Kaş şekli çizilir ve greftlerin yerleştirileceği kanallar açılır / Eyebrow shape is drawn and channels are opened for grafts' :
@@ -955,65 +955,65 @@ export default function ServicePage() {
               service.slug === 'prp-treatment' || 
               service.slug === 'hair-mesotherapy') ? (
               <div className="mb-24">
-                <h2 className="text-3xl font-bold text-center mb-6">{t("services.faqsTitle")}</h2>
+                <h2 className="text-3xl font-bold text-center mb-6">{safeString(t("services.faqsTitle"))}</h2>
                 <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-12">
-                  {t("services.faqsDescription")}
+                  {safeString(t("services.faqsDescription"))}
                 </p>
                 
                 <EnhancedFAQs 
                   faqs={[
                     {
                       id: 1,
-                      question: t("services.faqs.question1"),
-                      answer: t("services.faqs.answer1"),
+                      question: safeString(t("services.faqs.question1")),
+                      answer: safeString(t("services.faqs.answer1")),
                       category: "general"
                     },
                     {
                       id: 2,
-                      question: t("services.faqs.question2"),
-                      answer: t("services.faqs.answer2"),
+                      question: safeString(t("services.faqs.question2")),
+                      answer: safeString(t("services.faqs.answer2")),
                       category: "procedure"
                     },
                     {
                       id: 3,
-                      question: t("services.faqs.question3"),
-                      answer: t("services.faqs.answer3"),
+                      question: safeString(t("services.faqs.question3")),
+                      answer: safeString(t("services.faqs.answer3")),
                       category: "recovery"
                     },
                     {
                       id: 4,
-                      question: t("services.faqs.question4"),
-                      answer: t("services.faqs.answer4"),
+                      question: safeString(t("services.faqs.question4")),
+                      answer: safeString(t("services.faqs.answer4")),
                       category: "general"
                     },
                     {
                       id: 5,
-                      question: t("services.faqs.question5"),
-                      answer: t("services.faqs.answer5"),
+                      question: safeString(t("services.faqs.question5")),
+                      answer: safeString(t("services.faqs.answer5")),
                       category: "procedure"
                     },
                     {
                       id: 6,
-                      question: t("services.faqs.question6"),
-                      answer: t("services.faqs.answer6"),
+                      question: safeString(t("services.faqs.question6")),
+                      answer: safeString(t("services.faqs.answer6")),
                       category: "recovery"
                     },
                     {
                       id: 7,
-                      question: t("services.faqs.question7"),
-                      answer: t("services.faqs.answer7"),
+                      question: safeString(t("services.faqs.question7")),
+                      answer: safeString(t("services.faqs.answer7")),
                       category: "general"
                     },
                     {
                       id: 8,
-                      question: t("services.faqs.question8"),
-                      answer: t("services.faqs.answer8"),
+                      question: safeString(t("services.faqs.question8")),
+                      answer: safeString(t("services.faqs.answer8")),
                       category: "procedure"
                     }
                   ]}
                   categories={true}
-                  title={t("services.faqsTitle")}
-                  subtitle={t("services.faqsDescription")}
+                  title={safeString(t("services.faqsTitle"))}
+                  subtitle={safeString(t("services.faqsDescription"))}
                 />
               </div>
             ) : (
@@ -1034,13 +1034,13 @@ export default function ServicePage() {
               <div className="mb-24">
                 <div className="text-center mb-12">
                   <Badge variant="outline" className="mb-4 border-primary/30 text-primary">
-                    {t("services.results")}
+                    {safeString(t("services.results"))}
                   </Badge>
                   <h2 className="text-3xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
-                    {t("services.beforeAfter")}
+                    {safeString(t("services.beforeAfter"))}
                   </h2>
                   <p className="text-muted-foreground max-w-2xl mx-auto">
-                    {t("services.beforeAfterDescription")}
+                    {safeString(t("services.beforeAfterDescription"))}
                   </p>
                 </div>
                 
@@ -1093,12 +1093,12 @@ export default function ServicePage() {
                     
                     <div className="mt-8 text-center">
                       <p className="text-sm text-muted-foreground mb-4">
-                        {t("services.beforeAfterDisclaimer")}
+                        {safeString(t("services.beforeAfterDisclaimer"))}
                       </p>
                       <Link href={addPrefix("/gallery")}>
                         <Button variant="outline" size="sm" className="group">
                           <span className="flex items-center">
-                            {t("services.viewMoreResults")}
+                            {safeString(t("services.viewMoreResults"))}
                             <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                           </span>
                         </Button>
