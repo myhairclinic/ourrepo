@@ -115,6 +115,7 @@ const PatientManagement = () => {
   const [isDeleteConfirmDialogOpen, setIsDeleteConfirmDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<{ type: string; id: number } | null>(null);
   const [viewMode, setViewMode] = useState<"list" | "grid">("list"); // Görünüm modu: liste veya grid
+  const [nationalityFilter, setNationalityFilter] = useState("all"); // Uyruk filtresi ekledik
   
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -571,6 +572,29 @@ const PatientManagement = () => {
     setIsNewTreatmentDialogOpen(true);
   };
   
+  // Filtreleme işlevi
+  const handleFilterChange = (type: string, value: string) => {
+    // Filtre değiştiğinde sayfa numarasını sıfırla
+    setCurrentPage(1);
+    
+    switch (type) {
+      case "search":
+        setSearchTerm(value);
+        break;
+      case "status":
+        setStatusFilter(value);
+        break;
+      case "source":
+        setSourceFilter(value);
+        break;
+      case "nationality":
+        setNationalityFilter(value);
+        break;
+      default:
+        break;
+    }
+  };
+  
   // FILTERS & PAGINATION
   const filteredPatients = patients ? patients.filter((patient: any) => {
     const matchesSearch = !searchTerm || 
@@ -584,7 +608,10 @@ const PatientManagement = () => {
       (sourceFilter === "appointment" && patient.notes && patient.notes.includes("Otomatik oluşturuldu. Randevu ID:")) ||
       (sourceFilter === "manual" && (!patient.notes || !patient.notes.includes("Otomatik oluşturuldu. Randevu ID:")));
     
-    return matchesSearch && matchesStatus && matchesSource;
+    const matchesNationality = nationalityFilter === "all" || 
+      (patient.nationality && patient.nationality.toLowerCase() === nationalityFilter.toLowerCase());
+    
+    return matchesSearch && matchesStatus && matchesSource && matchesNationality;
   }) : [];
   
   const totalPages = Math.ceil((filteredPatients?.length || 0) / itemsPerPage);
@@ -620,7 +647,7 @@ const PatientManagement = () => {
                 </div>
                 
                 <div className="flex items-center gap-2 flex-wrap">
-                  <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <Select value={statusFilter} onValueChange={(value) => handleFilterChange("status", value)}>
                     <SelectTrigger className="w-full sm:w-40">
                       <SelectValue placeholder="Durum" />
                     </SelectTrigger>
@@ -633,7 +660,7 @@ const PatientManagement = () => {
                     </SelectContent>
                   </Select>
                   
-                  <Select value={sourceFilter} onValueChange={setSourceFilter}>
+                  <Select value={sourceFilter} onValueChange={(value) => handleFilterChange("source", value)}>
                     <SelectTrigger className="w-full sm:w-52">
                       <SelectValue placeholder="Kaynak" />
                     </SelectTrigger>
@@ -641,6 +668,22 @@ const PatientManagement = () => {
                       <SelectItem value="all">Tüm Kaynaklar</SelectItem>
                       <SelectItem value="appointment">Randevudan Oluşturulan</SelectItem>
                       <SelectItem value="manual">Manuel Eklenen</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  
+                  <Select value={nationalityFilter} onValueChange={(value) => handleFilterChange("nationality", value)}>
+                    <SelectTrigger className="w-full sm:w-48">
+                      <SelectValue placeholder="Uyruk" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Tüm Uyrruklar</SelectItem>
+                      <SelectItem value="turkey">Türkiye</SelectItem>
+                      <SelectItem value="georgia">Gürcistan</SelectItem>
+                      <SelectItem value="russia">Rusya</SelectItem>
+                      <SelectItem value="azerbaijan">Azerbaycan</SelectItem>
+                      <SelectItem value="kazakhstan">Kazakistan</SelectItem>
+                      <SelectItem value="iran">İran</SelectItem>
+                      <SelectItem value="ukraine">Ukrayna</SelectItem>
                     </SelectContent>
                   </Select>
                   
@@ -874,7 +917,161 @@ const PatientManagement = () => {
                   </div>
                 )}
               </div>
-                ) : null}
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                    {currentPatients.map((patient: any) => (
+                      <Card key={patient.id} className="overflow-hidden">
+                        <CardHeader className="pb-2">
+                          <div className="flex justify-between items-start mb-2">
+                            <CardTitle className="text-base font-semibold">
+                              <button 
+                                onClick={() => {
+                                  setSelectedPatient(patient);
+                                  setActiveTab("patient-details");
+                                }}
+                                className="text-left hover:text-primary"
+                              >
+                                {patient.fullName}
+                              </button>
+                            </CardTitle>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="icon" className="h-8 w-8">
+                                  <ChevronDown className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={() => {
+                                  setSelectedPatient(patient);
+                                  setActiveTab("patient-details");
+                                }}>
+                                  Detayları Görüntüle
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleEditPatient(patient)}>
+                                  Düzenle
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                  onClick={() => {
+                                    setItemToDelete({ type: "patient", id: patient.id });
+                                    setIsDeleteConfirmDialogOpen(true);
+                                  }}
+                                  className="text-red-600"
+                                >
+                                  Sil
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-2 text-sm">
+                            <div className="flex items-center text-muted-foreground">
+                              <Badge variant={
+                                patient.status === "active" ? "default" :
+                                patient.status === "pending" ? "outline" :
+                                patient.status === "completed" ? "secondary" :
+                                "destructive"
+                              } className="mr-2">
+                                {patient.status === "active" && "Aktif"}
+                                {patient.status === "inactive" && "Pasif"}
+                                {patient.status === "pending" && "Beklemede"}
+                                {patient.status === "completed" && "Tamamlandı"}
+                              </Badge>
+                              {patient.notes && patient.notes.includes("Otomatik oluşturuldu. Randevu ID:") && (
+                                <span className="text-xs flex items-center">
+                                  <CheckCircle className="h-3 w-3 mr-1 text-green-500" />
+                                  Randevudan
+                                </span>
+                              )}
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <span className="font-medium">Telefon:</span>
+                              <span>{patient.phone}</span>
+                            </div>
+                            {patient.email && (
+                              <div className="flex items-center space-x-1 truncate">
+                                <span className="font-medium">E-posta:</span>
+                                <span className="truncate">{patient.email}</span>
+                              </div>
+                            )}
+                            <div className="flex items-center space-x-1">
+                              <span className="font-medium">Son Ziyaret:</span>
+                              <span>{patient.lastVisitDate ? new Date(patient.lastVisitDate).toLocaleDateString('tr-TR') : '-'}</span>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+                
+                {/* Pagination - Grid görünümü için de aynı sayfalama */}
+                {totalPages > 1 && (
+                  <div className="mt-6 flex items-center justify-between">
+                    <div className="flex-1 flex justify-between sm:hidden">
+                      <Button
+                        variant="outline"
+                        disabled={currentPage === 1}
+                        onClick={() => setCurrentPage(currentPage - 1)}
+                      >
+                        Önceki
+                      </Button>
+                      <Button
+                        variant="outline"
+                        disabled={currentPage === totalPages}
+                        onClick={() => setCurrentPage(currentPage + 1)}
+                      >
+                        Sonraki
+                      </Button>
+                    </div>
+                    <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                      <div>
+                        <p className="text-sm text-gray-700">
+                          Toplam <span className="font-medium">{filteredPatients.length}</span> hastadan{" "}
+                          <span className="font-medium">{(currentPage - 1) * itemsPerPage + 1}</span>-
+                          <span className="font-medium">
+                            {Math.min(currentPage * itemsPerPage, filteredPatients.length)}
+                          </span>{" "}
+                          arası gösteriliyor
+                        </p>
+                      </div>
+                      <div>
+                        <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                          <Button
+                            variant="outline"
+                            className="rounded-l-md"
+                            disabled={currentPage === 1}
+                            onClick={() => setCurrentPage(currentPage - 1)}
+                          >
+                            <span className="sr-only">Önceki</span>
+                            <ChevronLeft className="h-5 w-5" aria-hidden="true" />
+                          </Button>
+                          
+                          {Array.from({ length: totalPages }).map((_, index) => (
+                            <Button
+                              key={index}
+                              variant={currentPage === index + 1 ? "default" : "outline"}
+                              onClick={() => setCurrentPage(index + 1)}
+                            >
+                              {index + 1}
+                            </Button>
+                          ))}
+                          
+                          <Button
+                            variant="outline"
+                            className="rounded-r-md"
+                            disabled={currentPage === totalPages}
+                            onClick={() => setCurrentPage(currentPage + 1)}
+                          >
+                            <span className="sr-only">Sonraki</span>
+                            <ChevronRight className="h-5 w-5" aria-hidden="true" />
+                          </Button>
+                        </nav>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </>
             )}
           </div>
