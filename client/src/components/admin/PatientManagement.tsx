@@ -451,7 +451,7 @@ const PatientManagement = () => {
   
   const deleteDocumentMutation = useMutation({
     mutationFn: async (id: number) => {
-      const res = await fetch(`/api/patients/documents/${id}`, {
+      const res = await fetch(`/api/documents/${id}`, {
         method: "DELETE",
       });
       
