@@ -11,22 +11,23 @@ export default function Footer() {
 
   // Sayfa linkleri
   const footerLinks = [
-    { name: t("common.home"), path: "" },
-    { name: t("common.services"), path: "services" },
-    { name: t("common.packages"), path: "packages" },
-    { name: t("common.gallery"), path: "gallery" },
-    { name: t("common.blog"), path: "blog" },
-    { name: t("common.about"), path: "about" },
-    { name: t("common.contact"), path: "contact" },
+    { name: t("common.home") || "Anasayfa", path: "" },
+    { name: t("common.services") || "Hizmetler", path: "services" },
+    { name: t("common.packages") || "Paketler", path: "packages" },
+    { name: t("common.gallery") || "Galeri", path: "gallery" },
+    { name: t("common.blog") || "Blog", path: "blog" },
+    { name: t("common.about") || "Hakkımızda", path: "about" },
+    { name: t("common.contact") || "İletişim", path: "contact" },
+    { name: t("common.appointment") || "Randevu", path: "appointment" },
   ];
 
   // Hizmetler
   const serviceLinks = [
-    { name: t("services.hairTransplant"), path: "services/hair-transplantation" },
-    { name: t("services.beardTransplant"), path: "services/beard-transplantation" },
-    { name: t("services.eyebrowTransplant"), path: "services/eyebrow-transplantation" },
-    { name: t("services.prpTreatment"), path: "services/prp-treatment" },
-    { name: t("services.mesotherapy"), path: "services/hair-mesotherapy" },
+    { name: t("services.hairTransplant") || "Saç Ekimi", path: "services/hair-transplantation" },
+    { name: t("services.beardTransplant") || "Sakal Ekimi", path: "services/beard-transplantation" },
+    { name: t("services.eyebrowTransplant") || "Kaş Ekimi", path: "services/eyebrow-transplantation" },
+    { name: t("services.prpTreatment") || "PRP Tedavisi", path: "services/prp-treatment" },
+    { name: t("services.mesotherapy") || "Saç Mezoterapisi", path: "services/hair-mesotherapy" },
   ];
   
   // Adres alma
