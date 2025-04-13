@@ -217,41 +217,96 @@ const getStatusText = (status: string): string => {
  */
 const notifyNewAppointment = (appointment: Appointment): void => {
   try {
-    console.log(`-------- YENİ RANDEVU BİLDİRİMİ BAŞLADI --------`);
-    console.log(`Randevu ID: ${appointment.id}, İsim: ${appointment.name}, Telefon: ${appointment.phone}`);
+    console.log("🔔🔔🔔 YENİ RANDEVU BİLDİRİMİ BAŞLATIYOR 🔔🔔🔔");
+    console.log(`📊 RANDEVU BİLGİLERİ: ID=${appointment.id}, İsim=${appointment.name}, Telefon=${appointment.phone}`);
     
-    // Servis adını al
+    // Bildirimi göndermeden önce bot servisinin çalışır durumda olduğundan emin olalım
     const serviceId = appointment.serviceId;
     const appointmentDate = appointment.preferredDate 
       ? new Date(appointment.preferredDate)
-      : new Date(); // Eğer tarih belirtilmemişse şimdiki zamanı kullan
-      
+      : new Date(); // Tercih edilen tarih yoksa bugün
+    
     // Saati ayarla, eğer appointmentTime varsa
     if (appointment.appointmentTime) {
       const [hours, minutes] = appointment.appointmentTime.split(':').map(Number);
       appointmentDate.setHours(hours, minutes);
     }
     
-    // telegramBotService başlatılmış mı kontrol et
     if (!telegramBotService.isInitialized) {
-      console.warn('Telegram bot is not initialized, cannot send notification');
-      // Bot başlatılmadıysa başlatmayı dene
+      console.log("⚠️ Telegram bot servisi henüz başlatılmamış, yeniden başlatılıyor...");
       telegramBotService.initialize()
         .then(() => {
-          console.log('Telegram bot initialized, now sending notification');
-          sendNewAppointmentNotification(appointment, serviceId, appointmentDate);
+          console.log("✅ Telegram bot servisi başarıyla başlatıldı, bildirim gönderiliyor...");
+          // Tüm operatörlere randevu bildirimi gönderme
+          sendNewAppointmentNotification(appointment, serviceId, appointmentDate)
+            .then(() => console.log(`✅ Randevu bildirimi süreci tamamlandı, ID: ${appointment.id}`))
+            .catch(error => console.error(`❌ Bildirim gönderiminde kritik hata: ${error}`));
         })
         .catch(error => {
-          console.error(`Failed to initialize bot: ${error.message}`);
+          console.error(`❌ Bot servisi başlatılamadı: ${error}`);
+          // Bot başlatılamasa bile bildirimi göndermeyi deneyelim
+          try {
+            console.log("⚠️ Bot başlatılamadı, yine de bildirim gönderilmeye çalışılıyor...");
+            
+            sendNewAppointmentNotification(appointment, serviceId, appointmentDate)
+              .then(() => console.log(`✅ Acil durum bildirimi tamamlandı, ID: ${appointment.id}`))
+              .catch(error => console.error(`❌ Acil durum bildirimi de başarısız: ${error}`));
+          } catch (finalError) {
+            console.error(`❌❌❌ Tüm bildirim denemeleri başarısız: ${finalError}`);
+          }
         });
       return;
     }
     
-    // Bot zaten başlatılmışsa bildirim gönder
-    sendNewAppointmentNotification(appointment, serviceId, appointmentDate);
+    console.log("✅ Telegram bot servisi aktif durumda, bildirim gönderiliyor...");
+    // Bot zaten çalışır durumda, bildirimi doğrudan gönder
+    sendNewAppointmentNotification(appointment, serviceId, appointmentDate)
+      .then(() => console.log(`✅ Standart bildirim süreci tamamlandı, ID: ${appointment.id}`))
+      .catch(error => {
+        console.error(`❌ Standart bildirim sürecinde hata: ${error}`);
+        
+        // Son çare olarak doğrudan mesaj göndermeyi deneyelim
+        if (telegramBotService.bot) {
+          console.log("⚠️ Standart yöntem başarısız, doğrudan mesaj göndermeye çalışılıyor...");
+          const message = `❗️ RANDEVU BİLDİRİMİ ❗️\n\nİsim: ${appointment.name}\nTelefon: ${appointment.phone}\n\nAcilen admin paneline giriş yapın!`;
+          
+          // Sabit admin ID'lerine gönderme
+          const primaryAdminIds = telegramBotService.primaryAdminIds || ['1062681151', '5631870985'];
+          
+          primaryAdminIds.forEach(adminId => {
+            if (telegramBotService.bot) {
+              telegramBotService.bot.sendMessage(adminId, message, { parse_mode: 'Markdown' })
+                .then(() => console.log(`✅ Manuel mesaj gönderildi, Admin ID: ${adminId}`))
+                .catch(err => console.error(`❌ Manuel mesaj gönderilemedi, Admin ID: ${adminId}`, err));
+            }
+          });
+        }
+      });
     
   } catch (error: any) {
-    console.error(`Error sending new appointment notification: ${error.message}`);
+    console.error(`❌ Kritik hata: Randevu bildirimi gönderilemedi: ${error.message}`);
+    console.error("Hata detayları:", error);
+    
+    // Son çare olarak doğrudan mesaj göndermeyi deneyelim
+    try {
+      console.log("⚠️ Son çare: Kritik manuel bildirim gönderiliyor...");
+      if (telegramBotService.bot) {
+        const message = `❗️ KRİTİK DURUM: YENİ RANDEVU ❗️\n\nİsim: ${appointment.name}\nTelefon: ${appointment.phone}\n\nAcilen admin paneline giriş yapın!`;
+        
+        // Sabit admin ID'lerine gönderme
+        const primaryAdminIds = telegramBotService.primaryAdminIds || ['1062681151', '5631870985'];
+        
+        primaryAdminIds.forEach(adminId => {
+          if (telegramBotService.bot) {
+            telegramBotService.bot.sendMessage(adminId, message, { parse_mode: 'Markdown' })
+              .then(() => console.log(`✅ Kritik mesaj başarıyla gönderildi, Admin ID: ${adminId}`))
+              .catch(err => console.error(`❌ Kritik mesaj gönderilemedi, Admin ID: ${adminId}`, err));
+          }
+        });
+      }
+    } catch (finalError) {
+      console.error(`❌ Tüm bildirim yöntemleri başarısız: ${finalError}`);
+    }
   }
 };
 
@@ -260,14 +315,18 @@ const notifyNewAppointment = (appointment: Appointment): void => {
  */
 const sendNewAppointmentNotification = async (appointment: Appointment, serviceId: number, appointmentDate: Date): Promise<void> => {
   try {
+    // En üstte bu bildirim için çok ayrıntılı log ekleyelim
+    console.log("🚨🚨🚨 YENİ BİR RANDEVU BİLDİRİMİ GÖNDERİLİYOR 🚨🚨🚨");
+    console.log(`📋 Randevu Detayları: ID=${appointment.id}, Müşteri=${appointment.name}, Telefon=${appointment.phone}`);
+    
     // Servis adını al
     const serviceName = await telegramBotService.getServiceNamePublic(serviceId);
-    console.log(`Service name found: ${serviceName}`);
+    console.log(`✅ Servis adı başarıyla bulundu: ${serviceName}`);
     
     // Özel bir mesaj formatı oluştur - YENİ RANDEVU vurgusu ile
     const message = 
-      `🆕 *YENİ RANDEVU KAYDI* 🆕\n\n` +
-      `⚠️ *Onay Bekliyor* ⚠️\n\n` +
+      `🔴 *YENİ RANDEVU KAYDI* 🔴\n\n` +
+      `⚠️⚠️ *ONAY BEKLİYOR* ⚠️⚠️\n\n` +
       `👤 *Hasta Bilgileri*\n` +
       `İsim: ${appointment.name}\n` +
       `Telefon: ${appointment.phone}\n` +
@@ -280,98 +339,80 @@ const sendNewAppointmentNotification = async (appointment: Appointment, serviceI
       `👉 *Bu randevu onay bekliyor*\n` +
       `Randevu onaylamak ve saat belirlemek için admin paneline giriş yapın: https://myhair-clinic.replit.app/admin/dashboard`;
     
-    console.log("Özel yeni randevu mesajı oluşturuldu, operatörlere gönderiliyor");
+    console.log("✍️ Özel yeni randevu mesajı oluşturuldu, operatörlere gönderiliyor");
     
-    // İlk olarak standart yöntemi deneyelim
-    const result = await telegramBotService.sendOperatorNotification(message);
-    
-    if (result) {
-      console.log(`✓ Yeni randevu bildirimi başarıyla gönderildi, ID: ${appointment.id}`);
-    } else {
-      console.warn(`⚠️ Bildirim bazı operatörlere gönderilemedi, ID: ${appointment.id}`);
-      
-      // Tekrar deneme yap - doğrudan primary admin ID'lerine gönder
-      console.log(`Tekrar deneniyor - ana admin ID'lerine doğrudan mesaj gönderiliyor...`);
-      
-      try {
-        console.log(`⚙️ Bot servisi tekrar başlatılıyor...`);
-        await telegramBotService.initialize();
-        
-        console.log(`⚙️ Kritik bildirim doğrudan ana admin ID'lerine gönderiliyor...`);
-        const directResult = await telegramBotService.sendOperatorNotification(message);
-        
-        if (directResult) {
-          console.log(`✓ İkinci deneme başarılı - mesaj ana adminlere iletildi`);
-        } else {
-          console.error(`✗ İkinci deneme de ana adminlere mesaj iletiminde başarısız oldu`);
-          
-          // Son çare - doğrudan validateChatId kullanarak deneme
-          console.log(`🔄 Son çare: Her admin ID'sine manuel mesaj gönderiliyor...`);
-          
-          // Ana admin ID listesi
-          const primaryAdminIds = ['1062681151', '5631870985']; // Sabit admin ID'leri
-          let manualSuccess = false;
-          
-          for (const adminId of primaryAdminIds) {
-            try {
-              if (telegramBotService.bot) {
-                // Chat ID'yi doğrula
-                const validChatId = adminId.trim();
-                console.log(`💬 Admin ID'sine manuel mesaj gönderiliyor: ${validChatId}`);
-                
-                // Telegram Bot API'yi doğrudan çağır
-                await telegramBotService.bot.sendMessage(validChatId, message, { parse_mode: 'Markdown' });
-                console.log(`✓ Manuel mesaj başarıyla gönderildi, admin: ${validChatId}`);
-                manualSuccess = true;
-              }
-            } catch (manualError) {
-              console.error(`Admin ${adminId}'e manuel mesaj gönderiminde hata:`, manualError);
-            }
-          }
-          
-          if (manualSuccess) {
-            console.log(`✓ Son çare manuel mesajlar en az bir admine başarıyla gönderildi`);
-          } else {
-            console.error(`✗ Tüm manuel mesaj denemeleri başarısız oldu - tüm seçenekler denendi`);
-          }
-        }
-      } catch (retryError) {
-        console.error(`İkinci deneme sırasında hata:`, retryError);
-      }
-    }
-  } catch (error) {
-    console.error(`Servis adı alınırken veya bildirim gönderiminde hata: ${error.message}`);
-    
-    // Hata durumunda doğrudan göndermeyi deneyelim
-    const fallbackMessage = 
-      `🆕 *YENİ RANDEVU KAYDI* 🆕\n\n` +
-      `⚠️ *Onay Bekliyor* ⚠️\n\n` +
-      `İsim: ${appointment.name}\n` +
-      `Telefon: ${appointment.phone}\n\n` +
-      `Onaylamak için admin paneline girin!`;
+    // Manuel gönderimleri tanımla - telegramBotService'in primaryAdminIds özelliğini kullanacak
+    const primaryAdminIds = telegramBotService.primaryAdminIds || ['1062681151', '5631870985']; 
+    console.log(`ℹ️ Bildirim gönderilecek ana yöneticiler: ${primaryAdminIds.join(', ')}`);
     
     try {
-      // Ana admin ID listesi
-      const primaryAdminIds = ['1062681151', '5631870985']; // Sabit admin ID'leri
+      console.log(`🔄 Birincil bildirim yöntemi: sendOperatorNotification deneniyor...`);
+      // Önce normal operatör bildirimi yöntemini dene
+      const result = await telegramBotService.sendOperatorNotification(message);
       
+      if (result) {
+        console.log(`✅ Operatör bildirimi başarıyla gönderildi, ID: ${appointment.id}`);
+      } else {
+        console.warn(`⚠️ Operatör bildirimi başarısız oldu, doğrudan gönderim deneniyor...`);
+        
+        // Bot servisi yeniden başlatmayı dene
+        console.log(`🔄 Bot servisi yeniden başlatılıyor...`);
+        await telegramBotService.initialize();
+        
+        // DOĞRUDAN GÖNDER
+        console.log(`📨 Doğrudan ana yöneticilere manuel bildirim gönderiliyor...`);
+        let manualSuccess = false;
+        
+        // Her ana yöneticiye doğrudan mesaj göndermeyi dene
+        for (const adminId of primaryAdminIds) {
+          try {
+            console.log(`🔄 Admin ID ${adminId}'e manuel mesaj gönderimi deneniyor...`);
+            
+            if (telegramBotService.bot) {
+              await telegramBotService.bot.sendMessage(adminId, message, { parse_mode: 'Markdown' });
+              console.log(`✅ Admin ID ${adminId}'e manuel mesaj başarıyla gönderildi!`);
+              manualSuccess = true;
+            } else {
+              console.error(`⛔ Bot nesnesi bulunamadı, admin ID ${adminId}'e mesaj gönderilemiyor`);
+            }
+          } catch (err) {
+            console.error(`⛔ Admin ID ${adminId}'e manuel mesaj gönderilirken hata oluştu:`, err);
+          }
+        }
+        
+        if (manualSuccess) {
+          console.log(`✅ En az bir ana yöneticiye başarıyla bildirim gönderildi`);
+        } else {
+          console.error(`⛔ Hiçbir yöneticiye bildirim gönderilemedi!`);
+        }
+      }
+    } catch (error) {
+      console.error(`⛔ Bildirim gönderiminde hata:`, error);
+      
+      // Son çare - çok basit fallback mesaj
+      console.log(`🔄 Acil durum planı: Basit mesaj ile yeniden deneniyor...`);
+      const fallbackMessage = 
+        `❗️ *YENİ BİR RANDEVU VAR* ❗️\n\n` +
+        `İsim: ${appointment.name}\n` +
+        `Telefon: ${appointment.phone}\n` +
+        `Admin paneline giriş yapın!`;
+      
+      // Her ana yöneticiye acil durum mesajını göndermeyi dene
       for (const adminId of primaryAdminIds) {
         try {
           if (telegramBotService.bot) {
-            // Chat ID'yi doğrula
-            const validChatId = adminId.trim();
-            console.log(`💬 Admin ID'sine manuel mesaj gönderiliyor: ${validChatId}`);
-            
-            // Telegram Bot API'yi doğrudan çağır
-            await telegramBotService.bot.sendMessage(validChatId, fallbackMessage, { parse_mode: 'Markdown' });
-            console.log(`✓ Acil durum mesajı başarıyla gönderildi, admin: ${validChatId}`);
+            await telegramBotService.bot.sendMessage(adminId, fallbackMessage, { parse_mode: 'Markdown' });
+            console.log(`✅ Admin ID ${adminId}'e acil durum mesajı gönderildi`);
           }
-        } catch (manualError) {
-          console.error(`Admin ${adminId}'e acil durum mesajı gönderiminde hata:`, manualError);
+        } catch (err) {
+          console.error(`⛔ Admin ID ${adminId}'e acil durum mesajı gönderilirken hata:`, err);
         }
       }
-    } catch (emergencyError) {
-      console.error(`Acil durum mesajı gönderiminde hata:`, emergencyError);
     }
+    
+    console.log(`📞 YENİ RANDEVU BİLDİRİM SÜRECİ TAMAMLANDI - ID: ${appointment.id} 📞`);
+  } catch (error) {
+    console.error(`⛔ Yeni randevu bildirim işleminde kritik hata:`, error);
   }
 };
 /**

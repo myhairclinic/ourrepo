@@ -13,7 +13,8 @@ import { Appointment } from '@shared/schema';
 
 // Telegram Bot işlemleri için servis
 class TelegramBotService {
-  private bot: TelegramBot | null = null;
+  // Bot nesnesini public yapıyoruz ama hala null olabilir
+  bot: TelegramBot | null = null;
   
   // Sabit admin ID'leri (her zaman bildirim alması gereken kişiler)
   readonly primaryAdminIds: string[] = ['1062681151', '5631870985'];

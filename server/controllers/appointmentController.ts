@@ -13,8 +13,16 @@ export const createAppointment = async (req: Request, res: Response) => {
     // Create appointment in storage
     const appointment = await storage.createAppointment(validData);
     
-    // Send notification to Telegram
-    telegramService.notifyNewAppointment(appointment);
+    // Send notification to Telegram with extra logging
+    console.log("⚠️ YENİ RANDEVU GÖNDERİLİYOR - CONTROLLER");
+    console.log(`Randevu detayları: ID=${appointment.id}, İsim=${appointment.name}`);
+    
+    try {
+      telegramService.notifyNewAppointment(appointment);
+      console.log("✓ Telegram bildirimi başarıyla çağrıldı");
+    } catch (notifyError) {
+      console.error(`❌ Telegram bildirimi gönderilirken hata oluştu: ${notifyError}`);
+    }
     
     res.status(201).json(appointment);
   } catch (error) {
