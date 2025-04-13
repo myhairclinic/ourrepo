@@ -161,59 +161,74 @@ export default function Footer() {
             <div className="lg:col-span-2">
               <div className="mb-6">
                 <h3 className="text-lg font-bold text-white">{t("footer.quickLinks")}</h3>
-                <div className="h-0.5 w-12 bg-blue-500 mt-2 rounded-full"></div>
+                <div className="h-0.5 w-16 bg-blue-500 mt-2 rounded-full"></div>
               </div>
               
-              <ul className="space-y-3">
-                {footerLinks.map((link, index) => (
-                  <li key={index} className="group">
-                    <Link href={addPrefix(`/${link.path}`)} className="flex items-center text-white hover:text-blue-200 transition-colors duration-200">
-                      <ArrowRight size={14} className="mr-2 text-blue-400" />
-                      <span className="text-sm font-medium">{link.name}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <div className="bg-gray-800 bg-opacity-30 rounded-lg p-2 shadow-inner">
+                <ul className="grid grid-cols-2 gap-1">
+                  {footerLinks.map((link, index) => (
+                    <li key={index} className="group">
+                      <Link 
+                        href={addPrefix(`/${link.path}`)} 
+                        className="flex items-center text-white hover:text-blue-300 py-1 px-2 rounded transition-colors duration-200 hover:bg-gray-700"
+                      >
+                        <ArrowRight size={12} className="mr-1 text-blue-400" />
+                        <span className="text-xs font-medium">{link.name}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
             
             {/* Hizmetler */}
             <div className="lg:col-span-3">
               <div className="mb-6">
                 <h3 className="text-lg font-bold text-white">{t("footer.ourServices")}</h3>
-                <div className="h-0.5 w-12 bg-blue-500 mt-2 rounded-full"></div>
+                <div className="h-0.5 w-16 bg-blue-500 mt-2 rounded-full"></div>
               </div>
               
-              <ul className="space-y-3">
-                {serviceLinks.map((link, index) => (
-                  <li key={index} className="group">
-                    <Link href={addPrefix(`/${link.path}`)} className="flex items-center text-white hover:text-blue-200 transition-colors duration-200">
-                      <ArrowRight size={14} className="mr-2 text-blue-400" />
-                      <span className="text-sm font-medium">{link.name}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <div className="bg-gray-800 bg-opacity-30 rounded-lg p-2 shadow-inner">
+                <ul className="grid grid-cols-1 gap-1">
+                  {serviceLinks.map((link, index) => (
+                    <li key={index} className="group">
+                      <Link 
+                        href={addPrefix(`/${link.path}`)} 
+                        className="flex items-center text-white hover:text-blue-300 py-1 px-2 rounded transition-colors duration-200 hover:bg-gray-700"
+                      >
+                        <ArrowRight size={12} className="mr-1 text-blue-400" />
+                        <span className="text-xs font-medium">{link.name}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
             
             {/* Çalışma Saatleri + Harita */}
             <div className="lg:col-span-3">
               <div className="mb-6">
                 <h3 className="text-lg font-bold text-white">{t("footer.workingHours")}</h3>
-                <div className="h-0.5 w-12 bg-blue-500 mt-2 rounded-full"></div>
+                <div className="h-0.5 w-16 bg-blue-500 mt-2 rounded-full"></div>
               </div>
               
-              <div className="text-white space-y-3 mb-6">
-                <div className="flex justify-between items-center border-b border-gray-800 pb-2">
-                  <span className="text-sm">{t("home.location.weekdaysLabel")}</span>
-                  <span className="text-sm">09:00 - 18:00</span>
-                </div>
-                <div className="flex justify-between items-center border-b border-gray-800 pb-2">
-                  <span className="text-sm">{t("home.location.saturdayLabel") || "Cumartesi"}</span>
-                  <span className="text-sm">10:00 - 16:00</span>
-                </div>
-                <div className="flex justify-between items-center border-b border-gray-800 pb-2">
-                  <span className="text-sm">{t("home.location.sundayLabel") || "Pazar"}</span>
-                  <span className="text-sm">{t("home.location.closed") || "Kapalı"}</span>
+              <div className="bg-gray-800 bg-opacity-30 rounded-lg p-2 text-white mb-3 shadow-inner">
+                <div className="grid grid-cols-2 gap-1">
+                  <div className="flex items-center text-xs bg-gray-700 bg-opacity-50 rounded p-1">
+                    <div className="w-2 h-2 bg-green-500 rounded-full mr-1"></div>
+                    <span>{t("home.location.weekdaysLabel") || "Hafta İçi"}</span>
+                    <span className="ml-auto bg-blue-600 px-1 py-0.5 rounded text-[10px]">09:00-18:00</span>
+                  </div>
+                  <div className="flex items-center text-xs bg-gray-700 bg-opacity-50 rounded p-1">
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full mr-1"></div>
+                    <span>{t("home.location.saturdayLabel") || "Cumartesi"}</span>
+                    <span className="ml-auto bg-blue-600 px-1 py-0.5 rounded text-[10px]">10:00-16:00</span>
+                  </div>
+                  <div className="flex items-center text-xs bg-gray-700 bg-opacity-50 rounded p-1 col-span-2">
+                    <div className="w-2 h-2 bg-red-500 rounded-full mr-1"></div>
+                    <span>{t("home.location.sundayLabel") || "Pazar"}</span>
+                    <span className="ml-auto bg-gray-700 px-1 py-0.5 rounded text-[10px]">{t("home.location.closed") || "Kapalı"}</span>
+                  </div>
                 </div>
               </div>
               
@@ -234,9 +249,9 @@ export default function Footer() {
                 href={`https://maps.google.com/?q=${getAddress()}`}
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="mt-3 inline-flex items-center text-white hover:text-blue-200 text-sm font-medium transition-colors"
+                className="mt-2 inline-flex items-center justify-center text-white hover:text-blue-300 text-xs font-medium transition-colors bg-blue-700 hover:bg-blue-600 rounded-full px-3 py-1.5 w-full"
               >
-                <ExternalLink size={14} className="mr-1" />
+                <ExternalLink size={12} className="mr-1" />
                 <span>{t("footer.getDirections")}</span>
               </a>
             </div>
@@ -246,16 +261,17 @@ export default function Footer() {
       
       {/* Alt kısım - telif hakkı ve politikalar */}
       <div className="bg-gray-950 border-t border-gray-800">
-        <div className="container mx-auto px-4 py-6">
+        <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-white text-sm">
+            <p className="text-white text-xs">
               &copy; {new Date().getFullYear()} MyHair Clinic. {t("footer.allRightsReserved")}
             </p>
-            <div className="mt-4 md:mt-0 flex space-x-6">
-              <Link href={addPrefix("/privacy")} className="text-white text-sm hover:text-blue-200 transition-colors">
+            <div className="mt-3 md:mt-0 flex space-x-4">
+              <Link href={addPrefix("/privacy")} className="text-gray-400 text-xs hover:text-blue-300 transition-colors">
                 {t("footer.privacyPolicy")}
               </Link>
-              <Link href={addPrefix("/terms")} className="text-white text-sm hover:text-blue-200 transition-colors">
+              <span className="text-gray-600">|</span>
+              <Link href={addPrefix("/terms")} className="text-gray-400 text-xs hover:text-blue-300 transition-colors">
                 {t("footer.termsOfUse")}
               </Link>
             </div>
