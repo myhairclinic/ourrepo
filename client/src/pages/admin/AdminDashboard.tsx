@@ -1185,7 +1185,7 @@ const AdminDashboard = () => {
                     
                     <div className="mt-6 flex flex-col space-y-3">
                       <div className="flex items-start gap-2 text-sm text-red-600 bg-red-50 p-3 rounded-md border border-red-100">
-                        <AlertTriangle className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                        <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
                         <div>
                           <p className="font-medium">Önemli: Telegram Bildirimleri Hakkında</p>
                           <p className="mt-1">Telegram bildirimleri alabilmek için, operatörlerin Telegram'da <strong>@MyHairClinicBot</strong> botunu bulup <strong>/start</strong> komutu göndermeleri gerekiyor. Aksi halde bildirimler iletilemez.</p>
