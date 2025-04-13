@@ -128,7 +128,7 @@ export default function ServicePage() {
     );
   }
 
-  const pageTitle = `${getLocalizedTitle(service)} ${META.TITLE_SUFFIX}`;
+  const pageTitle = `${getLocalizedTitle(service)}${META.TITLE_SUFFIX[language]}`;
 
   // Helper function to get localized content
   const getLocalizedContent = (service: Service, field: string) => {
