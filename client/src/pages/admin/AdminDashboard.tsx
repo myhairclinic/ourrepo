@@ -1183,7 +1183,14 @@ const AdminDashboard = () => {
                       ))}
                     </div>
                     
-                    <div className="mt-6 flex flex-col space-y-2">
+                    <div className="mt-6 flex flex-col space-y-3">
+                      <div className="flex items-start gap-2 text-sm text-red-600 bg-red-50 p-3 rounded-md border border-red-100">
+                        <AlertTriangle className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                        <div>
+                          <p className="font-medium">Önemli: Telegram Bildirimleri Hakkında</p>
+                          <p className="mt-1">Telegram bildirimleri alabilmek için, operatörlerin Telegram'da <strong>@MyHairClinicBot</strong> botunu bulup <strong>/start</strong> komutu göndermeleri gerekiyor. Aksi halde bildirimler iletilemez.</p>
+                        </div>
+                      </div>
                       <div className="flex items-center gap-2 text-sm text-amber-600">
                         <AlertCircle className="h-4 w-4" />
                         <p>Randevu onaylandıktan sonra hasta ve personelinize Telegram üzerinden bildirim gönderilecektir.</p>

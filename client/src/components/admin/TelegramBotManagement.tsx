@@ -712,7 +712,14 @@ export default function TelegramBotManagement() {
                   <AlertTriangle className="h-4 w-4" />
                   <AlertTitle>Önemli Uyarı</AlertTitle>
                   <AlertDescription>
-                    Operatörler Telegram'da botla etkileşime geçmeden bildirim alamazlar. Her operatörün Telegram'da @MyHairClinicBot botunu bulup <strong>/start</strong> komutu göndermesi gerekiyor.
+                    <p className="mb-2">Operatörler Telegram'da botla etkileşime geçmeden bildirim alamazlar. Her operatörün Telegram'da @MyHairClinicBot botunu bulup <strong>/start</strong> komutu göndermesi gerekiyor.</p>
+                    <p className="font-medium">Bildirimler iletilemediğinde yapılacak adımlar:</p>
+                    <ol className="list-decimal list-inside mt-1 space-y-1">
+                      <li>Telegram uygulamasını açın</li>
+                      <li>Arama çubuğuna "@MyHairClinicBot" yazın</li>
+                      <li>Bot ile konuşma başlatın ve "/start" komutunu gönderin</li>
+                      <li>Artık bildirimler operatörlere iletilecektir</li>
+                    </ol>
                   </AlertDescription>
                 </Alert>
                 
