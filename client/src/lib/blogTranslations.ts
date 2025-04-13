@@ -71,172 +71,115 @@ export const blogTranslations: Record<string, LanguageMap> = {
     [Language.Turkish]: "Kategoriler",
     [Language.English]: "Categories",
     [Language.Russian]: "Категории",
-    [Language.Georgian]: "კატეგორიები",
-    [Language.Azerbaijani]: "Kateqoriyalar",
-    [Language.Kazakh]: "Санаттар",
-    [Language.Persian]: "دسته‌بندی‌ها"
+    [Language.Georgian]: "კატეგორიები"
   },
   "blog.allCategories": {
     [Language.Turkish]: "Tüm Kategoriler",
     [Language.English]: "All Categories",
     [Language.Russian]: "Все Категории",
-    [Language.Georgian]: "ყველა კატეგორია",
-    [Language.Azerbaijani]: "Bütün Kateqoriyalar",
-    [Language.Kazakh]: "Барлық санаттар",
-    [Language.Persian]: "همه دسته‌بندی‌ها"
+    [Language.Georgian]: "ყველა კატეგორია"
   },
   "blog.newest": {
     [Language.Turkish]: "En Yeni",
     [Language.English]: "Newest",
     [Language.Russian]: "Новейшие",
-    [Language.Georgian]: "უახლესი",
-    [Language.Azerbaijani]: "Ən Yeni",
-    [Language.Kazakh]: "Ең жаңа",
-    [Language.Persian]: "جدیدترین"
+    [Language.Georgian]: "უახლესი"
   },
   "blog.oldest": {
     [Language.Turkish]: "En Eski",
     [Language.English]: "Oldest",
     [Language.Russian]: "Старейшие",
-    [Language.Georgian]: "უძველესი",
-    [Language.Azerbaijani]: "Ən Köhnə",
-    [Language.Kazakh]: "Ең ескі",
-    [Language.Persian]: "قدیمی‌ترین"
+    [Language.Georgian]: "უძველესი"
   },
   "blog.mostPopular": {
     [Language.Turkish]: "En Popüler",
     [Language.English]: "Most Popular",
     [Language.Russian]: "Самые Популярные",
-    [Language.Georgian]: "ყველაზე პოპულარული",
-    [Language.Azerbaijani]: "Ən Populyar",
-    [Language.Kazakh]: "Ең танымал",
-    [Language.Persian]: "محبوب‌ترین"
+    [Language.Georgian]: "ყველაზე პოპულარული"
   },
   "blog.featuredPosts": {
     [Language.Turkish]: "Öne Çıkan Yazılar",
     [Language.English]: "Featured Posts",
     [Language.Russian]: "Избранные Статьи",
-    [Language.Georgian]: "გამორჩეული პოსტები",
-    [Language.Azerbaijani]: "Seçilmiş Yazılar",
-    [Language.Kazakh]: "Таңдаулы Посттар",
-    [Language.Persian]: "نوشته‌های برگزیده"
+    [Language.Georgian]: "გამორჩეული პოსტები"
   },
   "blog.search": {
     [Language.Turkish]: "Ara",
     [Language.English]: "Search",
     [Language.Russian]: "Поиск",
-    [Language.Georgian]: "ძიება",
-    [Language.Azerbaijani]: "Axtar",
-    [Language.Kazakh]: "Іздеу",
-    [Language.Persian]: "جستجو"
+    [Language.Georgian]: "ძიება"
   },
   "blog.searchPlaceholder": {
     [Language.Turkish]: "Blog yazılarında ara...",
     [Language.English]: "Search blog posts...",
     [Language.Russian]: "Искать в блоге...",
-    [Language.Georgian]: "ბლოგის პოსტების ძიება...",
-    [Language.Azerbaijani]: "Bloq yazılarında axtar...",
-    [Language.Kazakh]: "Блог жазбаларын іздеу...",
-    [Language.Persian]: "جستجو در پست‌های وبلاگ..."
+    [Language.Georgian]: "ბლოგის პოსტების ძიება..."
   },
   "blog.popularTags": {
     [Language.Turkish]: "Popüler Etiketler",
     [Language.English]: "Popular Tags",
     [Language.Russian]: "Популярные Теги",
-    [Language.Georgian]: "პოპულარული ტეგები",
-    [Language.Azerbaijani]: "Populyar Teqlər",
-    [Language.Kazakh]: "Танымал Тегтер",
-    [Language.Persian]: "برچسب‌های محبوب"
+    [Language.Georgian]: "პოპულარული ტეგები"
   },
   "blog.featuredAuthors": {
     [Language.Turkish]: "Öne Çıkan Yazarlar",
     [Language.English]: "Featured Authors",
     [Language.Russian]: "Избранные Авторы",
-    [Language.Georgian]: "გამორჩეული ავტორები",
-    [Language.Azerbaijani]: "Seçilmiş Müəlliflər",
-    [Language.Kazakh]: "Таңдаулы Авторлар",
-    [Language.Persian]: "نویسندگان برجسته"
+    [Language.Georgian]: "გამორჩეული ავტორები"
   },
   "blog.newsletter": {
     [Language.Turkish]: "Bültenimize Abone Olun",
     [Language.English]: "Subscribe to Our Newsletter",
     [Language.Russian]: "Подпишитесь на Нашу Рассылку",
-    [Language.Georgian]: "გამოიწერეთ ჩვენი საინფორმაციო ბიულეტენი",
-    [Language.Azerbaijani]: "Bülletenimizə Abunə Olun",
-    [Language.Kazakh]: "Бюллетенімізге Жазылыңыз",
-    [Language.Persian]: "در خبرنامه ما مشترک شوید"
+    [Language.Georgian]: "გამოიწერეთ ჩვენი საინფორმაციო ბიულეტენი"
   },
   "blog.newsletterDescription": {
     [Language.Turkish]: "En son blog yazılarımız ve saç ekimi hakkındaki güncellemeler direkt e-posta adresinize gelsin.",
     [Language.English]: "Get our latest blog posts and updates about hair transplantation directly to your email.",
     [Language.Russian]: "Получайте наши последние сообщения в блоге и обновления о трансплантации волос прямо на вашу электронную почту.",
-    [Language.Georgian]: "მიიღეთ ჩვენი უახლესი ბლოგის პოსტები და განახლებები თმის გადანერგვის შესახებ პირდაპირ თქვენს ელფოსტაზე.",
-    [Language.Azerbaijani]: "Ən son bloq yazılarımızı və saç əkimi haqqında yenilikləri birbaşa e-poçt ünvanınıza alın.",
-    [Language.Kazakh]: "Біздің соңғы блог жазбаларымыз және шаш трансплантациясы туралы жаңартуларды тікелей электрондық поштаңызға алыңыз.",
-    [Language.Persian]: "آخرین پست‌های وبلاگ ما و به‌روزرسانی‌های مربوط به کاشت مو را مستقیماً در ایمیل خود دریافت کنید."
+    [Language.Georgian]: "მიიღეთ ჩვენი უახლესი ბლოგის პოსტები და განახლებები თმის გადანერგვის შესახებ პირდაპირ თქვენს ელფოსტაზე."
   },
   "blog.subscribe": {
     [Language.Turkish]: "Abone Ol",
     [Language.English]: "Subscribe",
     [Language.Russian]: "Подписаться",
-    [Language.Georgian]: "გამოწერა",
-    [Language.Azerbaijani]: "Abunə Ol",
-    [Language.Kazakh]: "Жазылу",
-    [Language.Persian]: "مشترک شوید"
+    [Language.Georgian]: "გამოწერა"
   },
   "blog.minutes": {
     [Language.Turkish]: "dk okuma",
     [Language.English]: "min read",
     [Language.Russian]: "мин чтения",
-    [Language.Georgian]: "წთ წაკითხვა",
-    [Language.Azerbaijani]: "dəq oxuma",
-    [Language.Kazakh]: "мин оқу",
-    [Language.Persian]: "دقیقه مطالعه"
+    [Language.Georgian]: "წთ წაკითხვა"
   },
   "blog.views": {
     [Language.Turkish]: "görüntülenme",
     [Language.English]: "views",
     [Language.Russian]: "просмотров",
-    [Language.Georgian]: "ნახვა",
-    [Language.Azerbaijani]: "baxış",
-    [Language.Kazakh]: "қарау",
-    [Language.Persian]: "بازدید"
+    [Language.Georgian]: "ნახვა"
   },
   "common.readMore": {
     [Language.Turkish]: "Devamını Oku",
     [Language.English]: "Read More",
     [Language.Russian]: "Читать Далее",
-    [Language.Georgian]: "მეტის წაკითხვა",
-    [Language.Azerbaijani]: "Daha Ətraflı",
-    [Language.Kazakh]: "Толығырақ Оқу",
-    [Language.Persian]: "بیشتر بخوانید"
+    [Language.Georgian]: "მეტის წაკითხვა"
   },
   "common.emailPlaceholder": {
     [Language.Turkish]: "E-posta adresiniz",
     [Language.English]: "Your email address",
     [Language.Russian]: "Ваш адрес электронной почты",
-    [Language.Georgian]: "თქვენი ელფოსტის მისამართი",
-    [Language.Azerbaijani]: "E-poçt ünvanınız",
-    [Language.Kazakh]: "Электрондық пошта мекенжайыңыз",
-    [Language.Persian]: "آدرس ایمیل شما"
+    [Language.Georgian]: "თქვენი ელფოსტის მისამართი"
   },
   "blog.author": {
     [Language.Turkish]: "Yazar",
     [Language.English]: "Author",
     [Language.Russian]: "Автор",
-    [Language.Georgian]: "ავტორი",
-    [Language.Azerbaijani]: "Müəllif",
-    [Language.Kazakh]: "Автор",
-    [Language.Persian]: "نویسنده"
+    [Language.Georgian]: "ავტორი"
   },
   "blog.category": {
     [Language.Turkish]: "Kategori",
     [Language.English]: "Category",
     [Language.Russian]: "Категория",
-    [Language.Georgian]: "კატეგორია",
-    [Language.Azerbaijani]: "Kateqoriya",
-    [Language.Kazakh]: "Санат",
-    [Language.Persian]: "دسته‌بندی"
+    [Language.Georgian]: "კატეგორია"
   },
   "blog.publishedDate": {
     [Language.Turkish]: "Yayınlanma Tarihi",
