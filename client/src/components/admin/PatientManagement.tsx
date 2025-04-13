@@ -98,6 +98,14 @@ const treatmentFormSchema = z.object({
   notes: z.string().nullable().optional(),
   status: z.string().default("completed"),
   followUpDate: z.string().nullable().optional(),
+  // Yeni alanlar
+  graftsCount: z.number().nullable().optional(),
+  treatmentArea: z.string().nullable().optional(),
+  technicUsed: z.string().nullable().optional(),
+  medicationsProvided: z.string().nullable().optional(),
+  complicationNotes: z.string().nullable().optional(),
+  nextTreatmentDate: z.string().nullable().optional(),
+  progressRating: z.number().nullable().optional(),
 });
 
 const progressImageFormSchema = z.object({
@@ -189,6 +197,14 @@ const PatientManagement = () => {
       notes: null,
       status: "completed",
       followUpDate: null,
+      // Yeni alanlar için varsayılan değerler
+      graftsCount: null,
+      treatmentArea: null,
+      technicUsed: null,
+      medicationsProvided: null,
+      complicationNotes: null,
+      nextTreatmentDate: null,
+      progressRating: null,
     }
   });
   
