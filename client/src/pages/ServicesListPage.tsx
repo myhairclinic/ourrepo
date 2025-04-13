@@ -169,16 +169,13 @@ export default function ServicesListPage() {
       
       <main className="py-20 bg-gradient-to-b from-white via-gray-50/50 to-white overflow-hidden" ref={sectionRef}>
         {/* Modern decorative background elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -left-40 -top-40 w-[500px] h-[500px] rounded-full bg-primary/5 blur-[100px] animate-blob"></div>
-          <div className="absolute right-10 top-1/3 w-[600px] h-[600px] rounded-full bg-blue-300/5 blur-[120px] animate-blob animation-delay-2000"></div>
-          <div className="absolute left-1/4 bottom-1/4 w-[400px] h-[400px] rounded-full bg-blue-100/10 blur-[80px] animate-blob animation-delay-4000"></div>
+        <div className="relative">
+          <div className="absolute -left-40 -top-40 w-[500px] h-[500px] rounded-full bg-primary/5 blur-[100px] animate-blob opacity-30"></div>
+          <div className="absolute right-10 top-1/3 w-[600px] h-[600px] rounded-full bg-blue-300/5 blur-[120px] animate-blob animation-delay-2000 opacity-30"></div>
+          <div className="absolute left-1/4 bottom-1/4 w-[400px] h-[400px] rounded-full bg-blue-100/10 blur-[80px] animate-blob animation-delay-4000 opacity-30"></div>
         </div>
         
-        {/* Decorative shapes */}
-        <div className="absolute top-20 left-10 w-16 h-16 border-2 border-primary/10 rounded-full opacity-50 animate-spin-slow"></div>
-        <div className="absolute bottom-40 right-20 w-24 h-24 border-2 border-primary/10 rounded-lg rotate-12 opacity-40"></div>
-        <div className="absolute top-1/3 right-1/4 w-12 h-12 border-2 border-primary/10 rounded-full opacity-30"></div>
+        {/* Decorative shapes (removed to fix overlapping issues) */}
 
         <div className="container mx-auto px-4 relative z-10 mt-12">
 
@@ -330,24 +327,7 @@ export default function ServicesListPage() {
         </div>
       </main>
       
-      {/* Decorative elements */}
-      <div className="fixed top-0 right-0 -z-10 overflow-hidden opacity-40">
-        <div className="animate-blob animation-delay-2000">
-          <div className="absolute top-0 -right-4 w-72 h-72 bg-primary/10 rounded-full blur-xl"></div>
-        </div>
-        <div className="animate-blob animation-delay-4000">
-          <div className="absolute top-40 -right-10 w-72 h-72 bg-primary/10 rounded-full blur-xl"></div>
-        </div>
-      </div>
-      
-      <div className="fixed bottom-0 left-0 -z-10 overflow-hidden opacity-40">
-        <div className="animate-blob">
-          <div className="absolute bottom-0 -left-4 w-72 h-72 bg-primary/10 rounded-full blur-xl"></div>
-        </div>
-        <div className="animate-blob animation-delay-2000">
-          <div className="absolute bottom-40 -left-10 w-72 h-72 bg-primary/10 rounded-full blur-xl"></div>
-        </div>
-      </div>
+      {/* Fixed decorative elements removed to fix overlapping issues */}
       
       {/* Global CSS animations */}
       <style dangerouslySetInnerHTML={{
