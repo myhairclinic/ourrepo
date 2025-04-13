@@ -1708,9 +1708,7 @@ const PatientManagement = () => {
                             patientId: selectedPatient.id,
                             imageUrl: "",
                             captureDate: new Date().toISOString().split('T')[0],
-                            stage: "pre-op",
-                            notes: "",
-                            isVisible: true
+                            stage: "pre-op"
                           });
                           setIsNewProgressImageDialogOpen(true);
                         }} 
@@ -2522,7 +2520,7 @@ const PatientManagement = () => {
                         />
                       </div>
                     </FormControl>
-                    <FormDescription>Hasta için bir görsel yükleyin</FormDescription>
+                    <FormDescription>Hasta için bir ilerleme görseli yükleyin</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
