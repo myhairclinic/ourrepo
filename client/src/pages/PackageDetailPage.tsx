@@ -205,7 +205,7 @@ export default function PackageDetailPage() {
                 <div className="bg-muted rounded-xl p-6">
                   <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
                     <Star className="w-5 h-5 text-amber-500" />
-                    {getTranslation("packages.whyChoose", language)}
+                    {getPackageTranslation("packages.whyChoose", language)}
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="flex gap-3">
@@ -213,8 +213,8 @@ export default function PackageDetailPage() {
                         <HeartPulse className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                       </div>
                       <div>
-                        <h4 className="font-medium text-base">{getTranslation("packages.medicalExcellence", language)}</h4>
-                        <p className="text-sm text-muted-foreground">{getTranslation("packages.medicalExcellenceDesc", language)}</p>
+                        <h4 className="font-medium text-base">{getPackageTranslation("packages.medicalExcellence", language)}</h4>
+                        <p className="text-sm text-muted-foreground">{getPackageTranslation("packages.medicalExcellenceDesc", language)}</p>
                       </div>
                     </div>
                     <div className="flex gap-3">
@@ -222,8 +222,8 @@ export default function PackageDetailPage() {
                         <Users className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                       </div>
                       <div>
-                        <h4 className="font-medium text-base">{getTranslation("packages.personalizedCare", language)}</h4>
-                        <p className="text-sm text-muted-foreground">{getTranslation("packages.personalizedCareDesc", language)}</p>
+                        <h4 className="font-medium text-base">{getPackageTranslation("packages.personalizedCare", language)}</h4>
+                        <p className="text-sm text-muted-foreground">{getPackageTranslation("packages.personalizedCareDesc", language)}</p>
                       </div>
                     </div>
                     <div className="flex gap-3">
@@ -231,8 +231,8 @@ export default function PackageDetailPage() {
                         <Globe className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                       </div>
                       <div>
-                        <h4 className="font-medium text-base">{getTranslation("packages.internationalSupport", language)}</h4>
-                        <p className="text-sm text-muted-foreground">{getTranslation("packages.internationalSupportDesc", language)}</p>
+                        <h4 className="font-medium text-base">{getPackageTranslation("packages.internationalSupport", language)}</h4>
+                        <p className="text-sm text-muted-foreground">{getPackageTranslation("packages.internationalSupportDesc", language)}</p>
                       </div>
                     </div>
                     <div className="flex gap-3">
@@ -240,8 +240,8 @@ export default function PackageDetailPage() {
                         <Coffee className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                       </div>
                       <div>
-                        <h4 className="font-medium text-base">{getTranslation("packages.comfortableExperience", language)}</h4>
-                        <p className="text-sm text-muted-foreground">{getTranslation("packages.comfortableExperienceDesc", language)}</p>
+                        <h4 className="font-medium text-base">{getPackageTranslation("packages.comfortableExperience", language)}</h4>
+                        <p className="text-sm text-muted-foreground">{getPackageTranslation("packages.comfortableExperienceDesc", language)}</p>
                       </div>
                     </div>
                   </div>
@@ -251,7 +251,7 @@ export default function PackageDetailPage() {
                   <div className="bg-white dark:bg-transparent border border-border rounded-xl p-6">
                     <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
                       <Check className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                      {getTranslation("packages.highlights", language)}
+                      {getPackageTranslation("packages.highlights", language)}
                     </h3>
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {highlights.map((highlight: string, index: number) => (
@@ -270,12 +270,12 @@ export default function PackageDetailPage() {
                 <div className="bg-gradient-to-r from-emerald-600 to-emerald-800 text-white rounded-xl p-6 mt-8">
                   <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                     <div>
-                      <h3 className="text-xl font-semibold mb-2">{getTranslation("packages.readyToBook", language)}</h3>
-                      <p className="text-emerald-50 max-w-md">{getTranslation("packages.contactUsNow", language)}</p>
+                      <h3 className="text-xl font-semibold mb-2">{getPackageTranslation("packages.readyToBook", language)}</h3>
+                      <p className="text-emerald-50 max-w-md">{getPackageTranslation("packages.contactUsNow", language)}</p>
                     </div>
                     <Button size="lg" variant="secondary" className="whitespace-nowrap">
                       <AtSign className="mr-2 h-4 w-4" />
-                      {getTranslation("packages.contactNow", language)}
+                      {getPackageTranslation("packages.contactNow", language)}
                     </Button>
                   </div>
                 </div>
@@ -284,8 +284,8 @@ export default function PackageDetailPage() {
               <TabsContent value="details" className="space-y-8">
                 {/* Introduction */}
                 <div className="bg-gradient-to-r from-emerald-50 to-emerald-100 dark:from-emerald-950/30 dark:to-emerald-900/30 p-5 rounded-xl">
-                  <h3 className="text-xl font-semibold mb-2">{getTranslation("packages.completePackage", language)}</h3>
-                  <p className="text-muted-foreground">{getTranslation("packages.experienceDesc", language)}</p>
+                  <h3 className="text-xl font-semibold mb-2">{getPackageTranslation("packages.completePackage", language)}</h3>
+                  <p className="text-muted-foreground">{getPackageTranslation("packages.experienceDesc", language)}</p>
                 </div>
 
                 {/* Accommodation */}
@@ -293,7 +293,7 @@ export default function PackageDetailPage() {
                   <div className="bg-emerald-100 dark:bg-emerald-900/30 p-4 border-b border-emerald-200 dark:border-emerald-800/30">
                     <div className="flex items-center gap-2">
                       <HotelIcon className="w-5 h-5 text-emerald-700 dark:text-emerald-400" />
-                      <h3 className="font-semibold text-lg">{getTranslation("packages.luxuryAccommodation", language)}</h3>
+                      <h3 className="font-semibold text-lg">{getPackageTranslation("packages.luxuryAccommodation", language)}</h3>
                     </div>
                   </div>
                   <CardContent className="pt-6">
@@ -306,25 +306,25 @@ export default function PackageDetailPage() {
                         <div className="w-8 h-8 bg-emerald-100 dark:bg-emerald-900/50 rounded-full flex items-center justify-center shrink-0">
                           <Check className="w-4 h-4 text-emerald-600" />
                         </div>
-                        <span>{getTranslation("packages.centralLocation", language)}</span>
+                        <span>{getPackageTranslation("packages.centralLocation", language)}</span>
                       </div>
                       <div className="flex items-center gap-3 bg-muted p-3 rounded-lg">
                         <div className="w-8 h-8 bg-emerald-100 dark:bg-emerald-900/50 rounded-full flex items-center justify-center shrink-0">
                           <Check className="w-4 h-4 text-emerald-600" />
                         </div>
-                        <span>{getTranslation("packages.freeWifi", language)}</span>
+                        <span>{getPackageTranslation("packages.freeWifi", language)}</span>
                       </div>
                       <div className="flex items-center gap-3 bg-muted p-3 rounded-lg">
                         <div className="w-8 h-8 bg-emerald-100 dark:bg-emerald-900/50 rounded-full flex items-center justify-center shrink-0">
                           <Check className="w-4 h-4 text-emerald-600" />
                         </div>
-                        <span>{getTranslation("packages.breakfast", language)}</span>
+                        <span>{getPackageTranslation("packages.breakfast", language)}</span>
                       </div>
                       <div className="flex items-center gap-3 bg-muted p-3 rounded-lg">
                         <div className="w-8 h-8 bg-emerald-100 dark:bg-emerald-900/50 rounded-full flex items-center justify-center shrink-0">
                           <Check className="w-4 h-4 text-emerald-600" />
                         </div>
-                        <span>{getTranslation("packages.conciergeService", language)}</span>
+                        <span>{getPackageTranslation("packages.conciergeService", language)}</span>
                       </div>
                     </div>
                   </CardContent>
@@ -335,7 +335,7 @@ export default function PackageDetailPage() {
                   <div className="bg-emerald-100 dark:bg-emerald-900/30 p-4 border-b border-emerald-200 dark:border-emerald-800/30">
                     <div className="flex items-center gap-2">
                       <Plane className="w-5 h-5 text-emerald-700 dark:text-emerald-400" />
-                      <h3 className="font-semibold text-lg">{getTranslation("packages.transportation", language)}</h3>
+                      <h3 className="font-semibold text-lg">{getPackageTranslation("packages.transportation", language)}</h3>
                     </div>
                   </div>
                   <CardContent className="pt-6">
@@ -346,15 +346,15 @@ export default function PackageDetailPage() {
                     <div className="flex flex-wrap gap-3 mt-6">
                       <Badge variant="outline" className="bg-emerald-50/50 dark:bg-emerald-900/10 text-foreground border-emerald-200 dark:border-emerald-800/30">
                         <Car className="w-3.5 h-3.5 mr-1 text-emerald-600 dark:text-emerald-400" />
-                        {getTranslation("packages.airportTransfer", language)}
+                        {getPackageTranslation("packages.airportTransfer", language)}
                       </Badge>
                       <Badge variant="outline" className="bg-emerald-50/50 dark:bg-emerald-900/10 text-foreground border-emerald-200 dark:border-emerald-800/30">
                         <Car className="w-3.5 h-3.5 mr-1 text-emerald-600 dark:text-emerald-400" />
-                        {getTranslation("packages.clinicTransfer", language)}
+                        {getPackageTranslation("packages.clinicTransfer", language)}
                       </Badge>
                       <Badge variant="outline" className="bg-emerald-50/50 dark:bg-emerald-900/10 text-foreground border-emerald-200 dark:border-emerald-800/30">
                         <Car className="w-3.5 h-3.5 mr-1 text-emerald-600 dark:text-emerald-400" />
-                        {getTranslation("packages.cityTour", language)}
+                        {getPackageTranslation("packages.cityTour", language)}
                       </Badge>
                     </div>
                   </CardContent>
@@ -365,7 +365,7 @@ export default function PackageDetailPage() {
                   <div className="bg-emerald-100 dark:bg-emerald-900/30 p-4 border-b border-emerald-200 dark:border-emerald-800/30">
                     <div className="flex items-center gap-2">
                       <Sun className="w-5 h-5 text-emerald-700 dark:text-emerald-400" />
-                      <h3 className="font-semibold text-lg">{getTranslation("packages.leisureActivities", language)}</h3>
+                      <h3 className="font-semibold text-lg">{getPackageTranslation("packages.leisureActivities", language)}</h3>
                     </div>
                   </div>
                   <CardContent className="pt-6">
@@ -377,13 +377,13 @@ export default function PackageDetailPage() {
                       <div className="bg-muted overflow-hidden rounded-lg relative h-48">
                         <img src="/images/activities/tbilisi-night.webp" alt="Tbilisi night view" className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
-                          <span className="text-white font-medium">{getTranslation("packages.cityTours", language)}</span>
+                          <span className="text-white font-medium">{getPackageTranslation("packages.cityTours", language)}</span>
                         </div>
                       </div>
                       <div className="bg-muted overflow-hidden rounded-lg relative h-48">
                         <img src="/images/activities/georgian-cuisine.jpg" alt="Georgian cuisine" className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
-                          <span className="text-white font-medium">{getTranslation("packages.traditionalCuisine", language)}</span>
+                          <span className="text-white font-medium">{getPackageTranslation("packages.traditionalCuisine", language)}</span>
                         </div>
                       </div>
                     </div>
@@ -394,7 +394,7 @@ export default function PackageDetailPage() {
                 <div className="bg-white dark:bg-transparent border border-border rounded-xl p-6">
                   <h3 className="text-xl font-semibold mb-6 flex items-center gap-2">
                     <Clock className="w-5 h-5 text-emerald-600" />
-                    {getTranslation("packages.itinerary", language)}
+                    {getPackageTranslation("packages.itinerary", language)}
                   </h3>
                   
                   <div className="space-y-6">
@@ -404,8 +404,8 @@ export default function PackageDetailPage() {
                         <div className="w-0.5 h-full bg-emerald-200 dark:bg-emerald-800/30 mt-2"></div>
                       </div>
                       <div className="pb-6">
-                        <h4 className="font-medium">{getTranslation("packages.arrivalDay", language)}</h4>
-                        <p className="text-muted-foreground text-sm mt-1">{getTranslation("packages.arrivalDayDesc", language)}</p>
+                        <h4 className="font-medium">{getPackageTranslation("packages.arrivalDay", language)}</h4>
+                        <p className="text-muted-foreground text-sm mt-1">{getPackageTranslation("packages.arrivalDayDesc", language)}</p>
                       </div>
                     </div>
                     
@@ -415,8 +415,8 @@ export default function PackageDetailPage() {
                         <div className="w-0.5 h-full bg-emerald-200 dark:bg-emerald-800/30 mt-2"></div>
                       </div>
                       <div className="pb-6">
-                        <h4 className="font-medium">{getTranslation("packages.consultationDay", language)}</h4>
-                        <p className="text-muted-foreground text-sm mt-1">{getTranslation("packages.consultationDayDesc", language)}</p>
+                        <h4 className="font-medium">{getPackageTranslation("packages.consultationDay", language)}</h4>
+                        <p className="text-muted-foreground text-sm mt-1">{getPackageTranslation("packages.consultationDayDesc", language)}</p>
                       </div>
                     </div>
                     
@@ -426,8 +426,8 @@ export default function PackageDetailPage() {
                         <div className="w-0.5 h-full bg-emerald-200 dark:bg-emerald-800/30 mt-2"></div>
                       </div>
                       <div className="pb-6">
-                        <h4 className="font-medium">{getTranslation("packages.procedureDay", language)}</h4>
-                        <p className="text-muted-foreground text-sm mt-1">{getTranslation("packages.procedureDayDesc", language)}</p>
+                        <h4 className="font-medium">{getPackageTranslation("packages.procedureDay", language)}</h4>
+                        <p className="text-muted-foreground text-sm mt-1">{getPackageTranslation("packages.procedureDayDesc", language)}</p>
                       </div>
                     </div>
                     
@@ -436,8 +436,8 @@ export default function PackageDetailPage() {
                         <div className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-700 dark:text-emerald-400 font-medium text-sm">4</div>
                       </div>
                       <div>
-                        <h4 className="font-medium">{getTranslation("packages.departureDay", language)}</h4>
-                        <p className="text-muted-foreground text-sm mt-1">{getTranslation("packages.departureDayDesc", language)}</p>
+                        <h4 className="font-medium">{getPackageTranslation("packages.departureDay", language)}</h4>
+                        <p className="text-muted-foreground text-sm mt-1">{getPackageTranslation("packages.departureDayDesc", language)}</p>
                       </div>
                     </div>
                   </div>
@@ -448,9 +448,9 @@ export default function PackageDetailPage() {
                 <div className="bg-gradient-to-r from-emerald-50 to-emerald-100 dark:from-emerald-950/30 dark:to-emerald-900/30 p-5 rounded-xl mb-6">
                   <div className="flex items-center gap-2 mb-1">
                     <Camera className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                    <h3 className="font-semibold text-lg">{getTranslation("packages.visualExperience", language)}</h3>
+                    <h3 className="font-semibold text-lg">{getPackageTranslation("packages.visualExperience", language)}</h3>
                   </div>
-                  <p className="text-muted-foreground">{getTranslation("packages.visualExperienceDesc", language)}</p>
+                  <p className="text-muted-foreground">{getPackageTranslation("packages.visualExperienceDesc", language)}</p>
                 </div>
                 
                 {galleryImages && galleryImages.length > 0 ? (
@@ -467,13 +467,13 @@ export default function PackageDetailPage() {
                       >
                         <img
                           src={img}
-                          alt={`${title} ${img.includes('clinic-procedures') ? '- ' + getTranslation("packages.clinicProcedure", language) : ''} ${index + 1}`}
+                          alt={`${title} ${img.includes('clinic-procedures') ? '- ' + getPackageTranslation("packages.clinicProcedure", language) : ''} ${index + 1}`}
                           className="object-cover h-full w-full group-hover:scale-105 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                           <div className="text-white">
-                            <span className="text-sm font-medium">{img.includes('clinic-procedures') ? getTranslation("packages.clinicProcedure", language) : ''}</span>
-                            <p className="text-xs text-white/80">{getTranslation("packages.clickToExpand", language)}</p>
+                            <span className="text-sm font-medium">{img.includes('clinic-procedures') ? getPackageTranslation("packages.clinicProcedure", language) : ''}</span>
+                            <p className="text-xs text-white/80">{getPackageTranslation("packages.clickToExpand", language)}</p>
                           </div>
                         </div>
                       </div>
@@ -482,20 +482,20 @@ export default function PackageDetailPage() {
                 ) : (
                   <div className="text-center py-12 px-4 border border-dashed border-border rounded-xl">
                     <Camera className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                    <h4 className="text-lg font-medium mb-2">{getTranslation("packages.comingSoon", language)}</h4>
-                    <p className="text-muted-foreground max-w-md mx-auto">{getTranslation("packages.noGalleryImages", language)}</p>
+                    <h4 className="text-lg font-medium mb-2">{getPackageTranslation("packages.comingSoon", language)}</h4>
+                    <p className="text-muted-foreground max-w-md mx-auto">{getPackageTranslation("packages.noGalleryImages", language)}</p>
                   </div>
                 )}
                 
                 <div className="mt-8 p-5 bg-muted rounded-xl">
                   <h4 className="font-medium text-lg mb-3 flex items-center gap-2">
                     <Globe className="w-5 h-5 text-emerald-600" />
-                    {getTranslation("packages.virtualTour", language)}
+                    {getPackageTranslation("packages.virtualTour", language)}
                   </h4>
-                  <p className="text-muted-foreground mb-4">{getTranslation("packages.virtualTourDesc", language)}</p>
+                  <p className="text-muted-foreground mb-4">{getPackageTranslation("packages.virtualTourDesc", language)}</p>
                   <Button variant="outline" className="gap-2">
                     <Globe className="w-4 h-4" />
-                    {getTranslation("packages.startVirtualTour", language)}
+                    {getPackageTranslation("packages.startVirtualTour", language)}
                   </Button>
                 </div>
               </TabsContent>
@@ -506,9 +506,9 @@ export default function PackageDetailPage() {
             <div className="bg-white dark:bg-transparent border border-border shadow-sm p-6 rounded-xl sticky top-24">
               <div className="flex flex-col">
                 <Badge className="w-fit mb-2 text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 hover:bg-emerald-100">
-                  {getTranslation("packages.travelMedical", language)}
+                  {getPackageTranslation("packages.travelMedical", language)}
                 </Badge>
-                <h3 className="text-xl font-semibold mb-4">{getTranslation("packages.packageDetails", language)}</h3>
+                <h3 className="text-xl font-semibold mb-4">{getPackageTranslation("packages.packageDetails", language)}</h3>
               </div>
               
               <div className="space-y-5">
@@ -517,7 +517,7 @@ export default function PackageDetailPage() {
                     <MapPin className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                   </div>
                   <div>
-                    <div className="text-sm text-muted-foreground">{getTranslation("packages.fromCountry", language)}</div>
+                    <div className="text-sm text-muted-foreground">{getPackageTranslation("packages.fromCountry", language)}</div>
                     <div className="font-medium">{getTranslation(`countries.${packageData.countryOrigin.toLowerCase()}`, language)}</div>
                   </div>
                 </div>
@@ -527,8 +527,8 @@ export default function PackageDetailPage() {
                     <Calendar className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                   </div>
                   <div>
-                    <div className="text-sm text-muted-foreground">{getTranslation("packages.duration", language)}</div>
-                    <div className="font-medium">{packageData.durationDays} {getTranslation("packages.days", language)}</div>
+                    <div className="text-sm text-muted-foreground">{getPackageTranslation("packages.duration", language)}</div>
+                    <div className="font-medium">{packageData.durationDays} {getPackageTranslation("packages.days", language)}</div>
                   </div>
                 </div>
                 
@@ -537,51 +537,51 @@ export default function PackageDetailPage() {
                     <Users className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                   </div>
                   <div>
-                    <div className="text-sm text-muted-foreground">{getTranslation("packages.groupSize", language)}</div>
-                    <div className="font-medium">{getTranslation("packages.individual", language)}</div>
+                    <div className="text-sm text-muted-foreground">{getPackageTranslation("packages.groupSize", language)}</div>
+                    <div className="font-medium">{getPackageTranslation("packages.individual", language)}</div>
                   </div>
                 </div>
                 
                 <Separator className="my-2" />
 
                 <div>
-                  <h4 className="font-medium text-lg mb-3">{getTranslation("packages.includes", language)}:</h4>
+                  <h4 className="font-medium text-lg mb-3">{getPackageTranslation("packages.includes", language)}:</h4>
                   <ul className="space-y-3">
                     <li className="flex items-start gap-2">
                       <div className="mt-1 w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center shrink-0">
                         <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                       </div>
-                      <span>{getTranslation("packages.hairTransplantationService", language)}</span>
+                      <span>{getPackageTranslation("packages.hairTransplantationService", language)}</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <div className="mt-1 w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center shrink-0">
                         <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                       </div>
-                      <span>{getTranslation("packages.luxuryAccommodation", language)}</span>
+                      <span>{getPackageTranslation("packages.luxuryAccommodation", language)}</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <div className="mt-1 w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center shrink-0">
                         <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                       </div>
-                      <span>{getTranslation("packages.privateTransportation", language)}</span>
+                      <span>{getPackageTranslation("packages.privateTransportation", language)}</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <div className="mt-1 w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center shrink-0">
                         <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                       </div>
-                      <span>{getTranslation("packages.tourismActivities", language)}</span>
+                      <span>{getPackageTranslation("packages.tourismActivities", language)}</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <div className="mt-1 w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center shrink-0">
                         <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                       </div>
-                      <span>{getTranslation("packages.translationServices", language)}</span>
+                      <span>{getPackageTranslation("packages.translationServices", language)}</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <div className="mt-1 w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center shrink-0">
                         <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                       </div>
-                      <span>{getTranslation("packages.aftercareProducts", language)}</span>
+                      <span>{getPackageTranslation("packages.aftercareProducts", language)}</span>
                     </li>
                   </ul>
                 </div>
@@ -589,16 +589,16 @@ export default function PackageDetailPage() {
                 <div className="py-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg px-4 mt-4 border border-emerald-100 dark:border-emerald-900/30">
                   <h4 className="flex items-center gap-2 font-medium mb-2">
                     <HeartPulse className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                    {getTranslation("packages.satisfaction", language)}
+                    {getPackageTranslation("packages.satisfaction", language)}
                   </h4>
-                  <p className="text-sm text-muted-foreground">{getTranslation("packages.satisfactionDesc", language)}</p>
+                  <p className="text-sm text-muted-foreground">{getPackageTranslation("packages.satisfactionDesc", language)}</p>
                 </div>
 
                 <div className="pt-4">
                   <Button className="w-full" size="lg">
-                    {getTranslation("packages.requestInfo", language)}
+                    {getPackageTranslation("packages.requestInfo", language)}
                   </Button>
-                  <p className="text-xs text-center text-muted-foreground mt-2">{getTranslation("packages.noCommitment", language)}</p>
+                  <p className="text-xs text-center text-muted-foreground mt-2">{getPackageTranslation("packages.noCommitment", language)}</p>
                 </div>
               </div>
             </div>
