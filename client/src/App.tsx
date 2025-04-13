@@ -32,6 +32,7 @@ import NotFound from "./pages/not-found";
 // Admin Pages
 import AdminLoginPage from "@/pages/admin/AdminLoginPage";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
+import BlogManagementPage from "@/pages/admin/BlogManagementPage";
 import BrowserSeedPage from "@/pages/BrowserSeedPage";
 
 // Admin Context Provider
