@@ -120,10 +120,10 @@ const PackagesPage: React.FC = () => {
         <Container>
           <div className="max-w-3xl mx-auto text-center relative">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-primary via-purple-500 to-pink-500 text-transparent bg-clip-text">
-              {getTranslation("packages.completeExperience", language)}
+              {getPackageTranslation("packages.completeExperience", language)}
             </h2>
             <p className="text-lg text-gray-700 dark:text-gray-300 mb-10">
-              {getTranslation("packages.completeExperienceDesc", language)}
+              {getPackageTranslation("packages.completeExperienceDesc", language)}
             </p>
           </div>
         </Container>
@@ -138,8 +138,8 @@ const PackagesPage: React.FC = () => {
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-pink-100 to-purple-100 dark:from-pink-900/30 dark:to-purple-900/30 flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform duration-300">
                 <HeartPulse className="h-7 w-7 text-pink-500" />
               </div>
-              <h3 className="font-semibold text-lg mb-3">{getTranslation("packages.medicalExcellence", language)}</h3>
-              <p className="text-muted-foreground">{getTranslation("packages.medicalExcellenceDesc", language)}</p>
+              <h3 className="font-semibold text-lg mb-3">{getPackageTranslation("packages.medicalExcellence", language)}</h3>
+              <p className="text-muted-foreground">{getPackageTranslation("packages.medicalExcellenceDesc", language)}</p>
             </CardContent>
           </Card>
           
@@ -149,8 +149,8 @@ const PackagesPage: React.FC = () => {
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-900/30 dark:to-cyan-900/30 flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform duration-300">
                 <LucideHotel className="h-7 w-7 text-blue-500" />
               </div>
-              <h3 className="font-semibold text-lg mb-3">{getTranslation("packages.luxuryAccommodation", language)}</h3>
-              <p className="text-muted-foreground">{getTranslation("packages.accommodationDesc", language)}</p>
+              <h3 className="font-semibold text-lg mb-3">{getPackageTranslation("packages.luxuryAccommodation", language)}</h3>
+              <p className="text-muted-foreground">{getPackageTranslation("packages.accommodationDesc", language)}</p>
             </CardContent>
           </Card>
           
@@ -160,8 +160,8 @@ const PackagesPage: React.FC = () => {
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-teal-100 to-green-100 dark:from-teal-900/30 dark:to-green-900/30 flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform duration-300">
                 <Plane className="h-7 w-7 text-teal-500" />
               </div>
-              <h3 className="font-semibold text-lg mb-3">{getTranslation("packages.tourism", language)}</h3>
-              <p className="text-muted-foreground">{getTranslation("packages.tourismDesc", language)}</p>
+              <h3 className="font-semibold text-lg mb-3">{getPackageTranslation("packages.tourism", language)}</h3>
+              <p className="text-muted-foreground">{getPackageTranslation("packages.tourismDesc", language)}</p>
             </CardContent>
           </Card>
         </div>
@@ -173,7 +173,7 @@ const PackagesPage: React.FC = () => {
             <div className="h-10 w-10 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full flex items-center justify-center shadow-md">
               <Shield className="h-5 w-5 text-white" />
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">{getTranslation("packages.whyOurPackages", language)}</h2>
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">{getPackageTranslation("packages.whyOurPackages", language)}</h2>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-8 relative">
@@ -182,8 +182,8 @@ const PackagesPage: React.FC = () => {
                 <Clock className="h-5 w-5 text-blue-500" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg mb-2 text-gray-800 dark:text-white">{getTranslation("packages.saveTime", language)}</h3>
-                <p className="text-gray-600 dark:text-gray-300">{getTranslation("packages.saveTimeDesc", language)}</p>
+                <h3 className="font-semibold text-lg mb-2 text-gray-800 dark:text-white">{getPackageTranslation("packages.saveTime", language)}</h3>
+                <p className="text-gray-600 dark:text-gray-300">{getPackageTranslation("packages.saveTimeDesc", language)}</p>
               </div>
             </div>
             
