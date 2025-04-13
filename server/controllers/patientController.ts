@@ -264,11 +264,18 @@ export const createTreatmentRecord = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Hasta bulunamadı" });
     }
 
-    // Tedavi kaydı verilerini doğrula
-    const validatedData = insertTreatmentRecordSchema.parse({
+    // Tarih alanlarını düzenle ve tedavi kaydı verilerini doğrula
+    const formData = {
       ...req.body,
-      patientId
-    });
+      patientId,
+      treatmentDate: req.body.treatmentDate ? new Date(req.body.treatmentDate) : undefined,
+      followUpDate: req.body.followUpDate ? new Date(req.body.followUpDate) : null,
+      nextTreatmentDate: req.body.nextTreatmentDate ? new Date(req.body.nextTreatmentDate) : null
+    };
+    
+    console.log("Tedavi kaydı formatlanmış veriler:", formData);
+    
+    const validatedData = insertTreatmentRecordSchema.parse(formData);
 
     // Tedavi kaydını oluştur
     console.log(`Hasta ID ${patientId} için tedavi kaydı oluşturuluyor:`, validatedData);
