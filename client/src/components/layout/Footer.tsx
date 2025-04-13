@@ -92,9 +92,9 @@ export default function Footer() {
       </div>
       
       {/* Ana footer alanı */}
-      <div className="bg-gradient-to-b from-gray-900 via-gray-900 to-gray-950 text-white pt-20 pb-16 border-t-4 border-blue-600">
+      <div className="bg-gradient-to-b from-gray-900 via-gray-900 to-gray-950 text-white pt-16 pb-14 border-t-4 border-blue-600">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 py-5">
             {/* Klinik Bilgileri */}
             <div className="lg:col-span-4 space-y-6">
               <div className="flex flex-col">
@@ -102,12 +102,12 @@ export default function Footer() {
                   <img 
                     src="/images/logo.png" 
                     alt="MyHair Clinic Logo" 
-                    className="h-16 object-contain"
+                    className="h-24 object-contain"
                   />
                 </Link>
               </div>
               
-              <p className="text-gray-300 text-sm leading-relaxed">
+              <p className="text-white text-sm leading-relaxed">
                 {t("footer.description") || "MyHair Clinic, saç ekimi ve restorasyon konusunda uzmanlaşmış öncü bir kliniktir. Yüksek kaliteli bakım, ileri teknoloji ve kişiselleştirilmiş tedavi yaklaşımı sunuyoruz."}
               </p>
               
@@ -115,19 +115,19 @@ export default function Footer() {
               <div className="space-y-4 pt-2 pb-3">
                 <div className="flex items-start">
                   <MapPin className="h-5 w-5 text-blue-400 mr-3 shrink-0 mt-0.5" />
-                  <span className="text-gray-300">{getAddress()}</span>
+                  <span className="text-white">{getAddress()}</span>
                 </div>
                 
                 <div className="flex items-center">
                   <Phone className="h-5 w-5 text-blue-400 mr-3 shrink-0" />
-                  <a href={`tel:${CONTACT.PHONE}`} className="text-gray-300 hover:text-white transition-colors">
+                  <a href={`tel:${CONTACT.PHONE}`} className="text-white hover:text-blue-200 transition-colors">
                     {CONTACT.PHONE}
                   </a>
                 </div>
                 
                 <div className="flex items-center">
                   <Mail className="h-5 w-5 text-blue-400 mr-3 shrink-0" />
-                  <a href={`mailto:${CONTACT.EMAIL}`} className="text-gray-300 hover:text-white transition-colors">
+                  <a href={`mailto:${CONTACT.EMAIL}`} className="text-white hover:text-blue-200 transition-colors">
                     {CONTACT.EMAIL}
                   </a>
                 </div>
@@ -202,7 +202,7 @@ export default function Footer() {
                 <div className="h-0.5 w-12 bg-blue-500 mt-2 rounded-full"></div>
               </div>
               
-              <div className="text-gray-300 space-y-3 mb-6">
+              <div className="text-white space-y-3 mb-6">
                 <div className="flex justify-between items-center border-b border-gray-800 pb-2">
                   <span className="text-sm">{t("home.location.weekdaysLabel")}</span>
                   <span className="text-sm">09:00 - 18:00</span>
