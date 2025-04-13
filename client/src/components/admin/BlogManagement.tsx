@@ -390,9 +390,9 @@ export default function BlogManagement() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="">Tüm Kategoriler</SelectItem>
-                {categories.map((category: string) => (
-                  <SelectItem key={category} value={category}>
-                    {category}
+                {categories.map((category) => (
+                  <SelectItem key={category as string} value={category as string}>
+                    {category as string}
                   </SelectItem>
                 ))}
               </SelectContent>

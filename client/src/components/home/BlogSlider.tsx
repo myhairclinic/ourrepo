@@ -174,14 +174,15 @@ export default function BlogSlider() {
               <div className="flex flex-col h-full">
                 <div className="relative h-36 max-lg:h-28 overflow-hidden">
                   <img 
-                    src={blog.imageUrl && blog.imageUrl.startsWith('/attached_assets') ? blog.imageUrl : blog.imageUrl} 
+                    src={blog.imageUrl} 
                     alt={getBlogTitle(blog)} 
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     onError={(e) => {
-                      // Görsel yüklenemezse varsayılan görsel göster
+                      // Görsel yüklenemezse PrimeHealth görsellerini göster
                       const target = e.target as HTMLImageElement;
                       console.log('Görsel yüklenemedi:', target.src);
-                      target.src = '/images/blog/default-blog.jpg';
+                      const blogId = blog.id % 5 + 1; // 1-5 arası döngü için
+                      target.src = `/attached_assets/primehealth${blogId}.png`;
                     }}
                   />
                   <div className="absolute top-0 right-0 m-2">
