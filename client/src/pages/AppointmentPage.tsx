@@ -122,8 +122,8 @@ export default function AppointmentPage() {
   return (
     <>
       <Helmet>
-        <title>{t('appointment.title') + META.TITLE_SUFFIX}</title>
-        <meta name="description" content={t('appointment.description')} />
+        <title>Randevu Al | MyHair Clinic</title>
+        <meta name="description" content="MyHair Clinic'te ücretsiz saç analizi ve saç ekimi randevusu alın. Uzman ekibimiz en son teknoloji ile kişiselleştirilmiş çözümler sunuyor." />
         <link rel="canonical" href={window.location.origin + addPrefix("/appointment")} />
         <link rel="alternate" hrefLang="tr" href={window.location.origin + "/tr/appointment"} />
         <link rel="alternate" hrefLang="en" href={window.location.origin + "/en/appointment"} />
@@ -134,8 +134,8 @@ export default function AppointmentPage() {
       <main className="py-16">
         <div className="container mx-auto px-4">
           <SectionTitle 
-            title={t('appointment.title')}
-            description={t('appointment.description')}
+            title="Randevu Al"
+            description="Saç ekimi ve tedavileri için uzman ekibimizle görüşmek üzere randevu alabilirsiniz. Size özel çözümler için ilk adımı atın."
           />
           
           <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
@@ -149,16 +149,16 @@ export default function AppointmentPage() {
               </div>
               <div className="md:col-span-3 p-8">
                 <h2 className="font-heading text-2xl md:text-3xl font-bold text-secondary mb-4">
-                  {t('appointment.formTitle')}
+                  Online Randevu Formu
                 </h2>
                 <p className="text-neutral-600 mb-6">
-                  {t('appointment.formDescription')}
+                  Aşağıdaki formu doldurarak saç ekimi için ücretsiz konsültasyon randevusu alabilirsiniz. Uzmanlarımız en kısa sürede sizinle iletişime geçecektir.
                 </p>
                 <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-neutral-600 mb-1" htmlFor="name">
-                        {t('common.name')} {t('common.surname')}*
+                        Adınız Soyadınız*
                       </label>
                       <input 
                         type="text" 
@@ -171,7 +171,7 @@ export default function AppointmentPage() {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-neutral-600 mb-1" htmlFor="phone">
-                        {t('common.phoneNumber')}*
+                        Telefon Numaranız*
                       </label>
                       <input 
                         type="tel" 
@@ -185,7 +185,7 @@ export default function AppointmentPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-neutral-600 mb-1" htmlFor="email">
-                      {t('common.email')}*
+                      E-posta Adresiniz*
                     </label>
                     <input 
                       type="email" 
@@ -198,14 +198,14 @@ export default function AppointmentPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-neutral-600 mb-1" htmlFor="serviceId">
-                      {t('common.selectService')}*
+                      Hizmet Seçiniz*
                     </label>
                     <select 
                       id="serviceId" 
                       className={`w-full rounded-md border ${errors.serviceId ? 'border-red-500' : 'border-neutral-300'} px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary`}
                       {...register("serviceId")}
                     >
-                      <option value="">{t('home.appointment.servicePlaceholder')}</option>
+                      <option value="">Lütfen bir hizmet seçin</option>
                       {services && services.map((service: any) => (
                         <option key={service.id} value={service.id}>
                           {service[`title${language.toUpperCase()}`]}
@@ -225,7 +225,7 @@ export default function AppointmentPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-neutral-600 mb-1" htmlFor="preferredDate">
-                      {t('appointment.preferredDate')}
+                      Tercih Ettiğiniz Tarih
                     </label>
                     <input 
                       type="date" 
