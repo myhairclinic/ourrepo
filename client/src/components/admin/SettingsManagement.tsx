@@ -78,7 +78,9 @@ import {
   BookOpen,
   Calendar,
   Map,
-  Link
+  Link,
+  BarChart,
+  Send
 } from "lucide-react";
 
 // Şema tanımlamaları
@@ -1475,7 +1477,7 @@ const SettingsManagement = () => {
                           <div className="space-y-2">
                             <div className="flex flex-wrap gap-2">
                               {['tr', 'en', 'ru', 'ka', 'az', 'kz', 'ir'].map((lang) => {
-                                const isSelected = field.value?.includes(lang);
+                                const isSelected = field.value && field.value.includes(lang);
                                 return (
                                   <div 
                                     key={lang}
@@ -1485,12 +1487,14 @@ const SettingsManagement = () => {
                                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                     }`}
                                     onClick={() => {
-                                      if (isSelected) {
+                                      if (isSelected && field.value) {
                                         if (field.value.length > 1) { // En az bir dil seçili olmalı
                                           field.onChange(field.value.filter(value => value !== lang));
                                         }
-                                      } else {
+                                      } else if (field.value) {
                                         field.onChange([...field.value, lang]);
+                                      } else {
+                                        field.onChange([lang]);
                                       }
                                     }}
                                   >
@@ -1744,12 +1748,14 @@ const SettingsManagement = () => {
                                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                     }`}
                                     onClick={() => {
-                                      if (isSelected) {
+                                      if (isSelected && field.value) {
                                         if (field.value.length > 1) {
                                           field.onChange(field.value.filter(value => value !== day.value));
                                         }
-                                      } else {
+                                      } else if (field.value) {
                                         field.onChange([...field.value, day.value]);
+                                      } else {
+                                        field.onChange([day.value]);
                                       }
                                     }}
                                   >

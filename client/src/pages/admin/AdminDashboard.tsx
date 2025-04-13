@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { useAdmin } from "@/hooks/use-admin";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Settings, Users, Package, MessageCircle, Calendar, FileText, Image, Star, HelpCircle, BookOpen, Package2, BarChart, ArrowLeft, LogOut, ShoppingBag, Heart, Globe, Search, ChevronDown, Bell, User, Menu, X, PlusCircle, Trash2, Edit, Download, Upload, Eye, HardDrive, List, LayoutGrid, LayoutList, Shield, Send, ChevronLeft, ChevronRight, CheckCircle, XCircle, Clock, Pencil, Activity, Layers, Plus, Edit2, Mail, Phone, Check, AlertCircle, Info, UserPlus } from "lucide-react";
+import { Loader2, Settings, Users, Package, MessageCircle, Calendar, FileText, Image, Star, HelpCircle, BookOpen, Package2, BarChart, ArrowLeft, LogOut, ShoppingBag, Heart, Globe, Search, ChevronDown, Bell, User, Menu, X, PlusCircle, Trash2, Edit, Download, Upload, Eye, HardDrive, List, LayoutGrid, LayoutList, Shield, Send, ChevronLeft, ChevronRight, CheckCircle, XCircle, Clock, Pencil, Activity, Layers, Plus, Edit2, Mail, Phone, Check, AlertCircle, Info, UserPlus, Sliders } from "lucide-react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -393,6 +393,7 @@ const AdminDashboard = () => {
     { id: "aftercare", label: "Bakım Rehberleri", icon: <BookOpen className="w-5 h-5" /> },
     { id: "messages", label: "Mesajlar", icon: <MessageCircle className="w-5 h-5" /> },
     { id: "telegram", label: "Telegram Bot", icon: <Send className="w-5 h-5" /> },
+    { id: "settings", label: "Ayarlar", icon: <Sliders className="w-5 h-5" /> },
     { id: "users", label: "Kullanıcılar", icon: <Users className="w-5 h-5" /> },
     { id: "seo", label: "SEO Ayarları", icon: <Globe className="w-5 h-5" /> },
   ];
