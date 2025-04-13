@@ -114,7 +114,7 @@ export default function ExpertSection() {
               
               {/* Expert Credentials */}
               <div className="absolute bottom-0 left-0 right-0 p-6 z-20 text-white">
-                <Badge className="bg-primary mb-3 hover:bg-primary">Baş Cerrah & Klinik Direktörü</Badge>
+                <Badge className="bg-primary mb-3 hover:bg-primary">Baş Saç Ekimi Uzmanı & Klinik Direktörü</Badge>
                 <h3 className="text-2xl font-bold mb-1">Ali Çalışkan</h3>
                 <p className="text-white/90 mb-3">Saç Ekimi Uzmanı</p>
                 

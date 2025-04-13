@@ -86,7 +86,7 @@ export default function PatientJourney() {
           centered
         />
         
-        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {journeySteps.map((step) => (
             <div 
               key={step.id}
@@ -97,7 +97,7 @@ export default function PatientJourney() {
                 <div className={`absolute inset-0 ${step.color.split(' ')[0]}`} style={{ width: `${(step.id / journeySteps.length) * 100}%` }}></div>
               </div>
               
-              <div className="p-6 flex-grow flex flex-col">
+              <div className="px-6 py-5 md:p-6 flex-grow flex flex-col">
                 {/* Icon and Step Number */}
                 <div className="flex items-start justify-between mb-4">
                   <div className={cn("p-3 rounded-lg", step.color)}>
@@ -113,7 +113,7 @@ export default function PatientJourney() {
                 {/* Success indicator */}
                 <div className="mt-4 flex items-center text-sm text-gray-500">
                   <Check className="h-4 w-4 mr-1 text-green-500" />
-                  <span>{t("home.patientJourney.satisfaction") || "98% Hasta Memnuniyeti"}</span>
+                  <span>{t("home.patientJourney.satisfaction") || "99% Hasta Memnuniyeti"}</span>
                 </div>
               </div>
             </div>
@@ -121,13 +121,13 @@ export default function PatientJourney() {
         </div>
         
         {/* Call to action section */}
-        <div className="mt-12 text-center">
+        <div className="mt-14 text-center">
           <p className="text-gray-600 max-w-2xl mx-auto mb-6">
             {t("home.patientJourney.cta.description") || "Saç ekimi yolculuğunuza ilk adımı atmak ve ücretsiz olarak değerlendirme almak için hemen bize ulaşın. Uzmanlarımız sizinle ilgilenecektir."}
           </p>
           <a 
             href="/appointment" 
-            className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-full hover:bg-primary-dark transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-full hover:bg-blue-700 shadow-sm hover:shadow-md transition-all"
           >
             <CalendarDays className="h-5 w-5" />
             {t("home.patientJourney.cta.button") || "Ücretsiz Danışma Randevusu Alın"}
