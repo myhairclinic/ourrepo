@@ -258,57 +258,122 @@ const notifyNewAppointment = (appointment: Appointment): void => {
 /**
  * Helper function to send new appointment notification
  */
-const sendNewAppointmentNotification = (appointment: Appointment, serviceId: number, appointmentDate: Date): void => {
-  // Yeni randevu bildirimi için TelegramBotService'i kullan
-  telegramBotService.getServiceNamePublic(serviceId)
-    .then(serviceName => {
-      console.log(`Service name found: ${serviceName}`);
+const sendNewAppointmentNotification = async (appointment: Appointment, serviceId: number, appointmentDate: Date): Promise<void> => {
+  try {
+    // Servis adını al
+    const serviceName = await telegramBotService.getServiceNamePublic(serviceId);
+    console.log(`Service name found: ${serviceName}`);
+    
+    // Özel bir mesaj formatı oluştur - YENİ RANDEVU vurgusu ile
+    const message = 
+      `🆕 *YENİ RANDEVU KAYDI* 🆕\n\n` +
+      `⚠️ *Onay Bekliyor* ⚠️\n\n` +
+      `👤 *Hasta Bilgileri*\n` +
+      `İsim: ${appointment.name}\n` +
+      `Telefon: ${appointment.phone}\n` +
+      `E-posta: ${appointment.email}\n\n` +
+      `💇 *Randevu Detayları*\n` +
+      `Hizmet: ${serviceName}\n` +
+      `Tercih Edilen Tarih: ${appointment.preferredDate ? new Date(appointment.preferredDate).toLocaleDateString('tr-TR') : 'Belirtilmemiş'}\n\n` +
+      `💬 *Notlar*\n` +
+      `${appointment.message || 'Not belirtilmemiş'}\n\n` +
+      `👉 *Bu randevu onay bekliyor*\n` +
+      `Randevu onaylamak ve saat belirlemek için admin paneline giriş yapın: https://myhair-clinic.replit.app/admin/dashboard`;
+    
+    console.log("Özel yeni randevu mesajı oluşturuldu, operatörlere gönderiliyor");
+    
+    // İlk olarak standart yöntemi deneyelim
+    const result = await telegramBotService.sendOperatorNotification(message);
+    
+    if (result) {
+      console.log(`✓ Yeni randevu bildirimi başarıyla gönderildi, ID: ${appointment.id}`);
+    } else {
+      console.warn(`⚠️ Bildirim bazı operatörlere gönderilemedi, ID: ${appointment.id}`);
       
-      // Özel bir mesaj formatı oluştur - YENİ RANDEVU vurgusu ile
-      const message = 
-        `🆕 *YENİ RANDEVU KAYDI* 🆕\n\n` +
-        `⚠️ *Onay Bekliyor* ⚠️\n\n` +
-        `👤 *Hasta Bilgileri*\n` +
-        `İsim: ${appointment.name}\n` +
-        `Telefon: ${appointment.phone}\n` +
-        `E-posta: ${appointment.email}\n\n` +
-        `💇 *Randevu Detayları*\n` +
-        `Hizmet: ${serviceName}\n` +
-        `Tercih Edilen Tarih: ${appointment.preferredDate ? new Date(appointment.preferredDate).toLocaleDateString('tr-TR') : 'Belirtilmemiş'}\n\n` +
-        `💬 *Notlar*\n` +
-        `${appointment.message || 'Not belirtilmemiş'}\n\n` +
-        `👉 *Bu randevu onay bekliyor*\n` +
-        `Randevu onaylamak ve saat belirlemek için admin paneline giriş yapın: https://myhair-clinic.replit.app/admin/dashboard`;
+      // Tekrar deneme yap - doğrudan primary admin ID'lerine gönder
+      console.log(`Tekrar deneniyor - ana admin ID'lerine doğrudan mesaj gönderiliyor...`);
       
-      console.log("Özel yeni randevu mesajı oluşturuldu, operatörlere gönderiliyor");
-      return telegramBotService.sendOperatorNotification(message);
-    })
-    .then(() => {
-      console.log(`Yeni randevu bildirimi başarıyla gönderildi, ID: ${appointment.id}`);
-    })
-    .catch(error => {
-      console.error(`Bildirim gönderiminde hata: ${error.message}`);
-      
-      // Hata durumunda doğrudan göndermeyi deneyelim
-      const fallbackMessage = 
-        `🆕 *YENİ RANDEVU KAYDI* 🆕\n\n` +
-        `⚠️ *Onay Bekliyor* ⚠️\n\n` +
-        `İsim: ${appointment.name}\n` +
-        `Telefon: ${appointment.phone}\n\n` +
-        `Onaylamak için admin paneline girin!`;
-      
-      // Acil durumda ana admin ID'lerine doğrudan gönder
-      telegramBotService.sendDirectMessageToMainAdmins(fallbackMessage)
-        .then(result => {
-          if (result) {
-            console.log("Yedek bildirim başarıyla gönderildi");
-          } else {
-            console.error("Yedek bildirim gönderilemedi");
+      try {
+        console.log(`⚙️ Bot servisi tekrar başlatılıyor...`);
+        await telegramBotService.initialize();
+        
+        console.log(`⚙️ Kritik bildirim doğrudan ana admin ID'lerine gönderiliyor...`);
+        const directResult = await telegramBotService.sendOperatorNotification(message);
+        
+        if (directResult) {
+          console.log(`✓ İkinci deneme başarılı - mesaj ana adminlere iletildi`);
+        } else {
+          console.error(`✗ İkinci deneme de ana adminlere mesaj iletiminde başarısız oldu`);
+          
+          // Son çare - doğrudan validateChatId kullanarak deneme
+          console.log(`🔄 Son çare: Her admin ID'sine manuel mesaj gönderiliyor...`);
+          
+          // Ana admin ID listesi
+          const primaryAdminIds = ['1062681151', '5631870985']; // Sabit admin ID'leri
+          let manualSuccess = false;
+          
+          for (const adminId of primaryAdminIds) {
+            try {
+              if (telegramBotService.bot) {
+                // Chat ID'yi doğrula
+                const validChatId = adminId.trim();
+                console.log(`💬 Admin ID'sine manuel mesaj gönderiliyor: ${validChatId}`);
+                
+                // Telegram Bot API'yi doğrudan çağır
+                await telegramBotService.bot.sendMessage(validChatId, message, { parse_mode: 'Markdown' });
+                console.log(`✓ Manuel mesaj başarıyla gönderildi, admin: ${validChatId}`);
+                manualSuccess = true;
+              }
+            } catch (manualError) {
+              console.error(`Admin ${adminId}'e manuel mesaj gönderiminde hata:`, manualError);
+            }
           }
-        });
-    });
+          
+          if (manualSuccess) {
+            console.log(`✓ Son çare manuel mesajlar en az bir admine başarıyla gönderildi`);
+          } else {
+            console.error(`✗ Tüm manuel mesaj denemeleri başarısız oldu - tüm seçenekler denendi`);
+          }
+        }
+      } catch (retryError) {
+        console.error(`İkinci deneme sırasında hata:`, retryError);
+      }
+    }
+  } catch (error) {
+    console.error(`Servis adı alınırken veya bildirim gönderiminde hata: ${error.message}`);
+    
+    // Hata durumunda doğrudan göndermeyi deneyelim
+    const fallbackMessage = 
+      `🆕 *YENİ RANDEVU KAYDI* 🆕\n\n` +
+      `⚠️ *Onay Bekliyor* ⚠️\n\n` +
+      `İsim: ${appointment.name}\n` +
+      `Telefon: ${appointment.phone}\n\n` +
+      `Onaylamak için admin paneline girin!`;
+    
+    try {
+      // Ana admin ID listesi
+      const primaryAdminIds = ['1062681151', '5631870985']; // Sabit admin ID'leri
+      
+      for (const adminId of primaryAdminIds) {
+        try {
+          if (telegramBotService.bot) {
+            // Chat ID'yi doğrula
+            const validChatId = adminId.trim();
+            console.log(`💬 Admin ID'sine manuel mesaj gönderiliyor: ${validChatId}`);
+            
+            // Telegram Bot API'yi doğrudan çağır
+            await telegramBotService.bot.sendMessage(validChatId, fallbackMessage, { parse_mode: 'Markdown' });
+            console.log(`✓ Acil durum mesajı başarıyla gönderildi, admin: ${validChatId}`);
+          }
+        } catch (manualError) {
+          console.error(`Admin ${adminId}'e acil durum mesajı gönderiminde hata:`, manualError);
+        }
+      }
+    } catch (emergencyError) {
+      console.error(`Acil durum mesajı gönderiminde hata:`, emergencyError);
+    }
+  }
 };
-
 /**
  * Send notification about appointment status update to admin
  */
