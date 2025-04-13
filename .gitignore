@@ -4,3 +4,16 @@ dist
 server/public
 vite.config.ts.*
 *.tar.gz
+.env
+.env.*
+.cache
+.upm
+.replit
+replit.nix
+.config
+.local
+.vscode
+.idea
+*.log
+uploads/*
+!uploads/.gitkeep
