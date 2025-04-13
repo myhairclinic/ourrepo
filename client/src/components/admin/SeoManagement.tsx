@@ -82,6 +82,25 @@ const languages = [
   { id: "KA", name: "Gürcüce" },
 ];
 
+interface SeoSettingPage {
+  id?: number;
+  page: string;
+  canonicalUrl?: string;
+  indexable: boolean;
+  titleTR: string;
+  titleEN: string;
+  titleRU: string;
+  titleKA: string;
+  descriptionTR: string;
+  descriptionEN: string;
+  descriptionRU: string;
+  descriptionKA: string;
+  keywordsTR?: string;
+  keywordsEN?: string;
+  keywordsRU?: string;
+  keywordsKA?: string;
+}
+
 interface SeoManagementProps {
   // Gerekli olduğunda, gerçek veriler için prop'lar ekleyebilirsiniz
 }
@@ -511,7 +530,7 @@ const SeoManagement: React.FC<SeoManagementProps> = () => {
                                 variant="outline" 
                                 size="sm"
                                 onClick={() => {
-                                  const matchingPage = pageSeoSettings.find((page_setting) => page_setting.canonicalUrl === page.url || page_setting.page === page.url);
+                                  const matchingPage = pageSeoSettings.find((page_setting: SeoSettingPage) => page_setting.canonicalUrl === page.url || page_setting.page === page.url);
                                   if (matchingPage) {
                                     openDetailModal(matchingPage);
                                   } else {
@@ -1001,7 +1020,7 @@ const SeoManagement: React.FC<SeoManagementProps> = () => {
                           <span className="text-xs">Yükleniyor...</span>
                         </div>
                       ) : allPages && allPages.length > 0 ? (
-                        allPages.map((page: any) => (
+                        allPages.map((page: { url: string, title: string }) => (
                           <SelectItem key={page.url} value={page.url}>
                             {page.title}
                           </SelectItem>
