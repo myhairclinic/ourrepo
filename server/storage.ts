@@ -1381,6 +1381,60 @@ export class DatabaseStorage implements IStorage {
       createTableIfMissing: true
     });
   }
+  
+  // Site Settings operations
+  async getSettings(section: string): Promise<SiteSetting[]> {
+    return await db.select().from(siteSettings).where(eq(siteSettings.section, section));
+  }
+
+  async getSettingsByKey(section: string, key: string): Promise<SiteSetting | undefined> {
+    const [setting] = await db.select().from(siteSettings)
+      .where(sql`${siteSettings.section} = ${section} AND ${siteSettings.key} = ${key}`);
+    return setting;
+  }
+
+  async saveSetting(setting: InsertSiteSetting): Promise<SiteSetting> {
+    const [existingSetting] = await db.select().from(siteSettings)
+      .where(sql`${siteSettings.section} = ${setting.section} AND ${siteSettings.key} = ${setting.key}`);
+    
+    if (existingSetting) {
+      // Update
+      const [updatedSetting] = await db.update(siteSettings)
+        .set({ 
+          value: setting.value,
+          updatedAt: new Date()
+        })
+        .where(eq(siteSettings.id, existingSetting.id))
+        .returning();
+      return updatedSetting;
+    } else {
+      // Insert
+      const [newSetting] = await db.insert(siteSettings)
+        .values({
+          ...setting,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        })
+        .returning();
+      return newSetting;
+    }
+  }
+
+  async updateSettings(settings: InsertSiteSetting[]): Promise<SiteSetting[]> {
+    const result: SiteSetting[] = [];
+    
+    for (const setting of settings) {
+      const savedSetting = await this.saveSetting(setting);
+      result.push(savedSetting);
+    }
+    
+    return result;
+  }
+
+  async deleteSetting(id: number): Promise<boolean> {
+    const result = await db.delete(siteSettings).where(eq(siteSettings.id, id));
+    return !!result;
+  }
 
   // User operations
   async getUser(id: number): Promise<User | undefined> {

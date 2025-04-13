@@ -39,6 +39,14 @@ import {
   deleteBlogPost as deleteLegacyBlogPost
 } from "./controllers/blogController";
 
+import {
+  getSettingsBySection,
+  getSettingByKey,
+  saveSetting,
+  updateSettings,
+  deleteSetting
+} from "./controllers/settingsController";
+
 import { 
   getAllBlogPosts, 
   getBlogPostById, 
@@ -486,6 +494,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Blog admin features
   app.patch("/api/blog/:id/feature", toggleFeatured);
   app.patch("/api/blog/:id/publish", togglePublished);
+
+  // Site Settings Routes
+  app.get("/api/settings/:section", getSettingsBySection);
+  app.get("/api/settings/:section/:key", getSettingByKey);
+  app.post("/api/settings", saveSetting);
+  app.post("/api/settings/batch", updateSettings);
+  app.delete("/api/settings/:id", deleteSetting);
 
   // Telegram Bot API Routes
   app.get("/api/telegram/contacts", async (req, res) => {
