@@ -1418,10 +1418,221 @@ export const translations: Record<string, LanguageMap> = {
   "common.appointment": {
     [Language.Turkish]: "Randevu",
     [Language.English]: "Appointment",
-    [Language.Russian]: "Запись",
-    [Language.Georgian]: "ჯავშანი"
+    [Language.Russian]: "Назначение",
+    [Language.Georgian]: "დანიშნულება",
   },
-  "common.track.appointment": {
+  
+  "common.bookAppointment": {
+    [Language.Turkish]: "Randevu Al",
+    [Language.English]: "Book Appointment",
+    [Language.Russian]: "Записаться на прием",
+    [Language.Georgian]: "დაჯავშნეთ ვიზიტი"
+  },
+  
+  "appointment.title": {
+    [Language.Turkish]: "Randevu Oluştur",
+    [Language.English]: "Make an Appointment",
+    [Language.Russian]: "Записаться на прием",
+    [Language.Georgian]: "დანიშნეთ შეხვედრა"
+  },
+  
+  "appointment.description": {
+    [Language.Turkish]: "Ücretsiz konsültasyon ve hizmetlerimiz hakkında daha fazla bilgi için randevu oluşturun.",
+    [Language.English]: "Schedule an appointment for a free consultation and to learn more about our services.",
+    [Language.Russian]: "Запишитесь на прием для бесплатной консультации и чтобы узнать больше о наших услугах.",
+    [Language.Georgian]: "დაჯავშნეთ ვიზიტი უფასო კონსულტაციისთვის და ჩვენი სერვისების შესახებ მეტი ინფორმაციის მისაღებად."
+  },
+  
+  "appointment.formTitle": {
+    [Language.Turkish]: "Randevu Formu",
+    [Language.English]: "Appointment Form",
+    [Language.Russian]: "Форма записи",
+    [Language.Georgian]: "ჯავშნის ფორმა"
+  },
+  
+  "appointment.formDescription": {
+    [Language.Turkish]: "Lütfen aşağıdaki formu doldurun ve size en kısa sürede dönüş yapalım.",
+    [Language.English]: "Please fill out the form below and we will get back to you as soon as possible.",
+    [Language.Russian]: "Пожалуйста, заполните форму ниже, и мы свяжемся с вами в ближайшее время.",
+    [Language.Georgian]: "გთხოვთ, შეავსოთ ქვემოთ მოცემული ფორმა და დაგიკავშირდებით რაც შეიძლება მალე."
+  },
+  
+  "appointment.preferredDate": {
+    [Language.Turkish]: "Tercih Edilen Tarih",
+    [Language.English]: "Preferred Date",
+    [Language.Russian]: "Предпочтительная дата",
+    [Language.Georgian]: "სასურველი თარიღი"
+  },
+  
+  "appointment.success": {
+    [Language.Turkish]: "Randevunuz Alındı",
+    [Language.English]: "Appointment Received",
+    [Language.Russian]: "Запись получена",
+    [Language.Georgian]: "ჯავშანი მიღებულია"
+  },
+  
+  "appointment.successMessage": {
+    [Language.Turkish]: "Randevunuz başarıyla alındı. En kısa sürede sizinle iletişime geçeceğiz.",
+    [Language.English]: "Your appointment was successfully received. We will contact you as soon as possible.",
+    [Language.Russian]: "Ваша запись успешно получена. Мы свяжемся с вами в ближайшее время.",
+    [Language.Georgian]: "თქვენი ჯავშანი წარმატებით იქნა მიღებული. დაგიკავშირდებით რაც შეიძლება მალე."
+  },
+  
+  "appointment.error": {
+    [Language.Turkish]: "Hata",
+    [Language.English]: "Error",
+    [Language.Russian]: "Ошибка",
+    [Language.Georgian]: "შეცდომა"
+  },
+  
+  "appointment.errorMessage": {
+    [Language.Turkish]: "Randevunuz alınırken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+    [Language.English]: "There was an error processing your appointment. Please try again later.",
+    [Language.Russian]: "Произошла ошибка при обработке вашей записи. Пожалуйста, попробуйте позже.",
+    [Language.Georgian]: "თქვენი ჯავშნის დამუშავებისას მოხდა შეცდომა. გთხოვთ, სცადოთ მოგვიანებით."
+  },
+  
+  "appointment.sending": {
+    [Language.Turkish]: "Gönderiliyor...",
+    [Language.English]: "Sending...",
+    [Language.Russian]: "Отправка...",
+    [Language.Georgian]: "იგზავნება..."
+  },
+  
+  "appointment.localPatients": {
+    [Language.Turkish]: "Yerel Hastalar İçin",
+    [Language.English]: "For Local Patients",
+    [Language.Russian]: "Для местных пациентов",
+    [Language.Georgian]: "ადგილობრივი პაციენტებისთვის"
+  },
+  
+  "appointment.internationalPatients": {
+    [Language.Turkish]: "Uluslararası Hastalar İçin",
+    [Language.English]: "For International Patients",
+    [Language.Russian]: "Для международных пациентов",
+    [Language.Georgian]: "საერთაშორისო პაციენტებისთვის"
+  },
+  
+  "appointment.localInfo1": {
+    [Language.Turkish]: "Tiflis'te yaşayan hastalarımız için randevu süreci hızlı ve kolaydır.",
+    [Language.English]: "The appointment process is quick and easy for our patients living in Tbilisi.",
+    [Language.Russian]: "Процесс записи быстрый и простой для наших пациентов, проживающих в Тбилиси.",
+    [Language.Georgian]: "ჯავშნის პროცესი სწრაფი და მარტივია ჩვენი პაციენტებისთვის, რომლებიც ცხოვრობენ თბილისში."
+  },
+  
+  "appointment.localInfo2": {
+    [Language.Turkish]: "Randevunuzu oluşturduktan sonra, kliniğimize gelmeden önce bilmeniz gerekenler:",
+    [Language.English]: "After booking your appointment, here's what you need to know before coming to our clinic:",
+    [Language.Russian]: "После бронирования приема, вот что вам нужно знать перед посещением нашей клиники:",
+    [Language.Georgian]: "ჯავშნის შემდეგ, აი რა უნდა იცოდეთ ჩვენს კლინიკაში მოსვლამდე:"
+  },
+  
+  "appointment.localPoint1": {
+    [Language.Turkish]: "Randevu saatinizden 15 dakika önce gelmenizi rica ederiz.",
+    [Language.English]: "Please arrive 15 minutes before your appointment time.",
+    [Language.Russian]: "Пожалуйста, приходите за 15 минут до назначенного времени.",
+    [Language.Georgian]: "გთხოვთ, მობრძანდეთ 15 წუთით ადრე დანიშნული დროის."
+  },
+  
+  "appointment.localPoint2": {
+    [Language.Turkish]: "Güncel sağlık durumunuz ve kullandığınız ilaçlar hakkında bilgi getirin.",
+    [Language.English]: "Bring information about your current health status and medications you are taking.",
+    [Language.Russian]: "Принесите информацию о вашем текущем состоянии здоровья и принимаемых лекарствах.",
+    [Language.Georgian]: "მოიტანეთ ინფორმაცია თქვენი ჯანმრთელობის მდგომარეობისა და მედიკამენტების შესახებ."
+  },
+  
+  "appointment.localPoint3": {
+    [Language.Turkish]: "Konsültasyon için herhangi bir ücret alınmamaktadır.",
+    [Language.English]: "There is no fee for the consultation.",
+    [Language.Russian]: "Консультация предоставляется бесплатно.",
+    [Language.Georgian]: "კონსულტაცია უფასოა."
+  },
+  
+  "appointment.internationalInfo1": {
+    [Language.Turkish]: "Yurtdışından gelecek hastalarımız için özel destek sunuyoruz.",
+    [Language.English]: "We offer special support for our patients coming from abroad.",
+    [Language.Russian]: "Мы предлагаем специальную поддержку для наших пациентов из-за рубежа.",
+    [Language.Georgian]: "ჩვენ ვთავაზობთ სპეციალურ მხარდაჭერას ჩვენს პაციენტებს, რომლებიც საზღვარგარეთიდან ჩამოდიან."
+  },
+  
+  "appointment.internationalInfo2": {
+    [Language.Turkish]: "Uluslararası hastalar için sağladığımız ek hizmetler:",
+    [Language.English]: "Additional services we provide for international patients:",
+    [Language.Russian]: "Дополнительные услуги, которые мы предоставляем международным пациентам:",
+    [Language.Georgian]: "დამატებითი სერვისები, რომლებსაც ვუზრუნველყოფთ საერთაშორისო პაციენტებისთვის:"
+  },
+  
+  "appointment.internationalPoint1": {
+    [Language.Turkish]: "Havalimanından karşılama ve ulaşım organizasyonu.",
+    [Language.English]: "Airport pickup and transportation arrangements.",
+    [Language.Russian]: "Встреча в аэропорту и организация транспорта.",
+    [Language.Georgian]: "აეროპორტიდან დახვედრა და ტრანსპორტირების ორგანიზება."
+  },
+  
+  "appointment.internationalPoint2": {
+    [Language.Turkish]: "Konaklama seçenekleri ve rezervasyon konusunda yardım.",
+    [Language.English]: "Assistance with accommodation options and reservations.",
+    [Language.Russian]: "Помощь с вариантами проживания и бронированием.",
+    [Language.Georgian]: "დახმარება საცხოვრებელი ვარიანტებისა და ჯავშნებისთვის."
+  },
+  
+  "appointment.internationalPoint3": {
+    [Language.Turkish]: "Prosedür sonrası takip ve destek.",
+    [Language.English]: "Post-procedure follow-up and support.",
+    [Language.Russian]: "Послепроцедурное наблюдение и поддержка.",
+    [Language.Georgian]: "პროცედურის შემდგომი მეთვალყურეობა და მხარდაჭერა."
+  },
+  
+  "home.appointment.namePlaceholder": {
+    [Language.Turkish]: "Adınız ve soyadınız",
+    [Language.English]: "Your full name",
+    [Language.Russian]: "Ваше полное имя",
+    [Language.Georgian]: "თქვენი სრული სახელი"
+  },
+  
+  "home.appointment.phonePlaceholder": {
+    [Language.Turkish]: "Telefon numaranız",
+    [Language.English]: "Your phone number",
+    [Language.Russian]: "Ваш номер телефона",
+    [Language.Georgian]: "თქვენი ტელეფონის ნომერი"
+  },
+  
+  "home.appointment.emailPlaceholder": {
+    [Language.Turkish]: "E-posta adresiniz",
+    [Language.English]: "Your email address",
+    [Language.Russian]: "Ваш адрес электронной почты",
+    [Language.Georgian]: "თქვენი ელ.ფოსტის მისამართი"
+  },
+  
+  "home.appointment.messagePlaceholder": {
+    [Language.Turkish]: "Mesajınız veya özel istekleriniz...",
+    [Language.English]: "Your message or special requests...",
+    [Language.Russian]: "Ваше сообщение или особые пожелания...",
+    [Language.Georgian]: "თქვენი შეტყობინება ან სპეციალური მოთხოვნები..."
+  },
+  
+  "home.appointment.servicePlaceholder": {
+    [Language.Turkish]: "Hizmet seçin",
+    [Language.English]: "Select a service",
+    [Language.Russian]: "Выберите услугу",
+    [Language.Georgian]: "აირჩიეთ სერვისი"
+  },
+  
+  "common.selectService": {
+    [Language.Turkish]: "Hizmet Seçin",
+    [Language.English]: "Select Service",
+    [Language.Russian]: "Выберите Услугу",
+    [Language.Georgian]: "აირჩიეთ სერვისი"
+  },
+  
+  "common.consentText": {
+    [Language.Turkish]: "Kişisel verilerimin işlenmesini ve benimle iletişime geçilmesini kabul ediyorum",
+    [Language.English]: "I agree to the processing of my personal data and to be contacted",
+    [Language.Russian]: "Я согласен на обработку моих персональных данных и на то, чтобы со мной связались",
+    [Language.Georgian]: "ვეთანხმები ჩემი პერსონალური მონაცემების დამუშავებას და დაკავშირებას"
+  },
+  
+  "common.trackAppointment": {
     [Language.Turkish]: "Randevu Sorgulama",
     [Language.English]: "Track Appointment",
     [Language.Russian]: "Отслеживание записи",
