@@ -702,7 +702,7 @@ const PatientManagement = () => {
       doctorName: "",
       procedureDetails: "",
       graftsCount: null,
-      techniqueUsed: "",
+      technicUsed: "",
       serviceId: null,
       notes: null,
       status: "completed",
