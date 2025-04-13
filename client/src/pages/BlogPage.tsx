@@ -358,26 +358,26 @@ export default function BlogPage() {
           {/* Ana içerik bölümü */}
           <div className="lg:col-span-8">
             {/* Arama ve Filtreler */}
-            <div className="mb-8 flex flex-col sm:flex-row gap-4">
+            <div className="mb-4 md:mb-8 flex flex-col sm:flex-row gap-2 md:gap-4">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Search className="absolute left-2 md:left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 md:h-4 md:w-4 text-muted-foreground" />
                 <Input 
                   placeholder={getBlogTranslation('blog.searchPosts', language as Language)}
-                  className="pl-10"
+                  className="pl-8 md:pl-10 py-1 md:py-2 text-xs md:text-sm h-8 md:h-10"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
               
-              <div className="flex gap-2">
+              <div className="flex gap-1 md:gap-2">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm" className="flex items-center gap-1">
-                      <Filter className="h-4 w-4" />
+                    <Button variant="outline" size="sm" className="flex items-center gap-1 h-8 md:h-10 px-2 md:px-3 text-xs md:text-sm">
+                      <Filter className="h-3 w-3 md:h-4 md:w-4" />
                       <span className="hidden sm:inline">{getBlogTranslation('blog.categoriesTitle', language as Language)}</span>
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent>
+                  <DropdownMenuContent className="text-xs md:text-sm">
                     <DropdownMenuItem onClick={() => setSelectedCategory(null)}>
                       {getBlogTranslation('blog.allCategories', language as Language)}
                     </DropdownMenuItem>
@@ -395,10 +395,10 @@ export default function BlogPage() {
                 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm" className="flex items-center gap-1">
-                      {activeSort === 'date-desc' ? <SortDesc className="h-4 w-4" /> : 
-                       activeSort === 'date-asc' ? <SortAsc className="h-4 w-4" /> : 
-                       <SortDesc className="h-4 w-4" />}
+                    <Button variant="outline" size="sm" className="flex items-center gap-1 h-8 md:h-10 px-2 md:px-3 text-xs md:text-sm">
+                      {activeSort === 'date-desc' ? <SortDesc className="h-3 w-3 md:h-4 md:w-4" /> : 
+                       activeSort === 'date-asc' ? <SortAsc className="h-3 w-3 md:h-4 md:w-4" /> : 
+                       <SortDesc className="h-3 w-3 md:h-4 md:w-4" />}
                       <span className="hidden sm:inline">
                         {activeSort === 'date-desc' ? getBlogTranslation('blog.newest', language as Language) : 
                          activeSort === 'date-asc' ? getBlogTranslation('blog.oldest', language as Language) : 
@@ -406,17 +406,17 @@ export default function BlogPage() {
                       </span>
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent>
+                  <DropdownMenuContent className="text-xs md:text-sm">
                     <DropdownMenuItem onClick={() => setActiveSort('date-desc')}>
-                      <SortDesc className="h-4 w-4 mr-2" />
+                      <SortDesc className="h-3 w-3 md:h-4 md:w-4 mr-1.5 md:mr-2" />
                       {getBlogTranslation('blog.newest', language as Language)}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setActiveSort('date-asc')}>
-                      <SortAsc className="h-4 w-4 mr-2" />
+                      <SortAsc className="h-3 w-3 md:h-4 md:w-4 mr-1.5 md:mr-2" />
                       {getBlogTranslation('blog.oldest', language as Language)}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setActiveSort('popular')}>
-                      <Users className="h-4 w-4 mr-2" />
+                      <Users className="h-3 w-3 md:h-4 md:w-4 mr-1.5 md:mr-2" />
                       {getBlogTranslation('blog.mostPopular', language as Language)}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
