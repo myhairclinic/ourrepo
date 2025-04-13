@@ -766,6 +766,260 @@ export const translations: Record<string, LanguageMap> = {
     [Language.English]: "Facility Tour",
     [Language.Russian]: "Тур по объекту",
     [Language.Georgian]: "ობიექტის ტური"
+  },
+  
+  // Temel UI çevirileri
+  "All": {
+    [Language.Turkish]: "Tümü",
+    [Language.English]: "All",
+    [Language.Russian]: "Все",
+    [Language.Georgian]: "ყველა"
+  },
+  "Start": {
+    [Language.Turkish]: "Başlangıç",
+    [Language.English]: "Start",
+    [Language.Russian]: "Начало",
+    [Language.Georgian]: "დაწყება"
+  },
+  "Complete": {
+    [Language.Turkish]: "Tamamlandı",
+    [Language.English]: "Complete",
+    [Language.Russian]: "Завершено",
+    [Language.Georgian]: "დასრულებულია"
+  },
+  "Search FAQs...": {
+    [Language.Turkish]: "SSS'larda Ara...",
+    [Language.English]: "Search FAQs...",
+    [Language.Russian]: "Поиск в часто задаваемых вопросах...",
+    [Language.Georgian]: "FAQ-ში ძიება..."
+  },
+  "No FAQs Found": {
+    [Language.Turkish]: "SSS Bulunamadı",
+    [Language.English]: "No FAQs Found",
+    [Language.Russian]: "Часто задаваемые вопросы не найдены",
+    [Language.Georgian]: "FAQ არ მოიძებნა"
+  },
+  "Try adjusting your search or filter criteria": {
+    [Language.Turkish]: "Arama veya filtre kriterlerinizi ayarlamayı deneyin",
+    [Language.English]: "Try adjusting your search or filter criteria",
+    [Language.Russian]: "Попробуйте изменить критерии поиска или фильтрации",
+    [Language.Georgian]: "სცადეთ თქვენი ძიების ან ფილტრის კრიტერიუმების შეცვლა"
+  },
+  
+  // Hizmet detay sayfası çevirileri
+  "services.faqsTitle": {
+    [Language.Turkish]: "Sık Sorulan Sorular",
+    [Language.English]: "Frequently Asked Questions",
+    [Language.Russian]: "Часто Задаваемые Вопросы",
+    [Language.Georgian]: "ხშირად დასმული შეკითხვები"
+  },
+  "services.faqsDescription": {
+    [Language.Turkish]: "Bu işlem hakkında en çok sorulan soruları ve uzmanlarımızın yanıtlarını burada bulabilirsiniz.",
+    [Language.English]: "Here you can find the most common questions about this procedure and answers from our experts.",
+    [Language.Russian]: "Здесь вы можете найти наиболее распространенные вопросы об этой процедуре и ответы от наших экспертов.",
+    [Language.Georgian]: "აქ შეგიძლიათ იხილოთ ყველაზე გავრცელებული შეკითხვები ამ პროცედურის შესახებ და პასუხები ჩვენი ექსპერტებისგან."
+  },
+  "services.timelineDescription": {
+    [Language.Turkish]: "İşlem adımları ve iyileşme süreci",
+    [Language.English]: "Procedure steps and recovery process",
+    [Language.Russian]: "Этапы процедуры и процесс восстановления",
+    [Language.Georgian]: "პროცედურის ეტაპები და აღდგენის პროცესი"
+  },
+  "services.timeline.step1Title": {
+    [Language.Turkish]: "Ücretsiz Konsültasyon",
+    [Language.English]: "Free Consultation",
+    [Language.Russian]: "Бесплатная консультация",
+    [Language.Georgian]: "უფასო კონსულტაცია"
+  },
+  "services.beforeAfter": {
+    [Language.Turkish]: "Öncesi ve Sonrası",
+    [Language.English]: "Before & After",
+    [Language.Russian]: "До и После",
+    [Language.Georgian]: "მკურნალობამდე და მკურნალობის შემდეგ"
+  },
+  "services.beforeAfterDescription": {
+    [Language.Turkish]: "Gerçek hasta sonuçlarımızdan bazı örnekler",
+    [Language.English]: "Some examples from our real patient results",
+    [Language.Russian]: "Некоторые примеры из результатов наших реальных пациентов",
+    [Language.Georgian]: "რამდენიმე მაგალითი ჩვენი რეალური პაციენტების შედეგებიდან"
+  },
+  "services.beforeAfterDisclaimer": {
+    [Language.Turkish]: "* Sonuçlar kişiden kişiye değişiklik gösterebilir",
+    [Language.English]: "* Results may vary from person to person",
+    [Language.Russian]: "* Результаты могут отличаться в зависимости от человека",
+    [Language.Georgian]: "* შედეგები შეიძლება განსხვავდებოდეს პიროვნებიდან პიროვნებამდე"
+  },
+  "services.viewMoreResults": {
+    [Language.Turkish]: "Daha Fazla Sonuç Gör",
+    [Language.English]: "View More Results",
+    [Language.Russian]: "Посмотреть Больше Результатов",
+    [Language.Georgian]: "მეტი შედეგის ნახვა"
+  },
+  "Before": {
+    [Language.Turkish]: "Öncesi",
+    [Language.English]: "Before",
+    [Language.Russian]: "До",
+    [Language.Georgian]: "მანამდე"
+  },
+  "After": {
+    [Language.Turkish]: "Sonrası",
+    [Language.English]: "After",
+    [Language.Russian]: "После",
+    [Language.Georgian]: "შემდეგ"
+  },
+  "Before & After Results": {
+    [Language.Turkish]: "Öncesi ve Sonrası Sonuçları",
+    [Language.English]: "Before & After Results",
+    [Language.Russian]: "Результаты До и После",
+    [Language.Georgian]: "შედეგები მკურნალობამდე და მკურნალობის შემდეგ"
+  },
+  "Grid View": {
+    [Language.Turkish]: "Izgara Görünümü",
+    [Language.English]: "Grid View",
+    [Language.Russian]: "Вид Сетки",
+    [Language.Georgian]: "ბადის ხედი"
+  },
+  "Slider View": {
+    [Language.Turkish]: "Kaydırıcı Görünümü",
+    [Language.English]: "Slider View",
+    [Language.Russian]: "Вид Слайдера",
+    [Language.Georgian]: "სლაიდერის ხედი"
+  },
+  
+  // İnceleme bölümü çevirileri
+  "reviews": {
+    [Language.Turkish]: "İncelemeler",
+    [Language.English]: "Reviews",
+    [Language.Russian]: "Отзывы",
+    [Language.Georgian]: "მიმოხილვები"
+  },
+  "reviews.title": {
+    [Language.Turkish]: "Hasta İncelemeleri",
+    [Language.English]: "Patient Reviews",
+    [Language.Russian]: "Отзывы Пациентов",
+    [Language.Georgian]: "პაციენტების მიმოხილვები"
+  },
+  "reviews.subtitle": {
+    [Language.Turkish]: "Gerçek hastaların deneyimleri",
+    [Language.English]: "Real patients' experiences",
+    [Language.Russian]: "Опыт реальных пациентов",
+    [Language.Georgian]: "რეალური პაციენტების გამოცდილება"
+  },
+  "reviews.basedOn": {
+    [Language.Turkish]: "Toplam değerlendirme puanı",
+    [Language.English]: "Based on",
+    [Language.Russian]: "На основе",
+    [Language.Georgian]: "ეფუძნება"
+  },
+  "reviews.satisfactionGuarantee": {
+    [Language.Turkish]: "Memnuniyet Garantisi",
+    [Language.English]: "Satisfaction Guarantee",
+    [Language.Russian]: "Гарантия Удовлетворения",
+    [Language.Georgian]: "კმაყოფილების გარანტია"
+  },
+  "reviews.experienceRating": {
+    [Language.Turkish]: "Genel Deneyim",
+    [Language.English]: "Overall Experience",
+    [Language.Russian]: "Общий Опыт",
+    [Language.Georgian]: "საერთო გამოცდილება"
+  },
+  "reviews.staffRating": {
+    [Language.Turkish]: "Personel",
+    [Language.English]: "Staff",
+    [Language.Russian]: "Персонал",
+    [Language.Georgian]: "პერსონალი"
+  },
+  "reviews.facilityRating": {
+    [Language.Turkish]: "Tesis",
+    [Language.English]: "Facility",
+    [Language.Russian]: "Учреждение",
+    [Language.Georgian]: "ობიექტი"
+  },
+  "reviews.valueRating": {
+    [Language.Turkish]: "Fiyat/Değer",
+    [Language.English]: "Value",
+    [Language.Russian]: "Ценность",
+    [Language.Georgian]: "ღირებულება"
+  },
+  "Loading reviews...": {
+    [Language.Turkish]: "İncelemeler yükleniyor...",
+    [Language.English]: "Loading reviews...",
+    [Language.Russian]: "Загрузка отзывов...",
+    [Language.Georgian]: "მიმოხილვების ჩატვირთვა..."
+  },
+  "All Reviews": {
+    [Language.Turkish]: "Tüm İncelemeler",
+    [Language.English]: "All Reviews",
+    [Language.Russian]: "Все Отзывы",
+    [Language.Georgian]: "ყველა მიმოხილვა"
+  },
+  "5 Stars": {
+    [Language.Turkish]: "5 Yıldız",
+    [Language.English]: "5 Stars",
+    [Language.Russian]: "5 Звезд",
+    [Language.Georgian]: "5 ვარსკვლავი"
+  },
+  "4 Stars": {
+    [Language.Turkish]: "4 Yıldız",
+    [Language.English]: "4 Stars",
+    [Language.Russian]: "4 Звезды",
+    [Language.Georgian]: "4 ვარსკვლავი"
+  },
+  "3 Stars & Below": {
+    [Language.Turkish]: "3 Yıldız ve Altı",
+    [Language.English]: "3 Stars & Below",
+    [Language.Russian]: "3 Звезды и Ниже",
+    [Language.Georgian]: "3 ვარსკვლავი და ქვემოთ"
+  },
+  "Sort by": {
+    [Language.Turkish]: "Sırala",
+    [Language.English]: "Sort by",
+    [Language.Russian]: "Сортировать по",
+    [Language.Georgian]: "დალაგება"
+  },
+  "reviews.recentlyAdded": {
+    [Language.Turkish]: "En Yeniler",
+    [Language.English]: "Recently Added",
+    [Language.Russian]: "Недавно Добавленные",
+    [Language.Georgian]: "ახლახანს დამატებული"
+  },
+  
+  // Sonuç istatistikleri ve değerler bölümü
+  "services.resultsStats": {
+    [Language.Turkish]: "Sonuçlarımızla Gurur Duyuyoruz",
+    [Language.English]: "We Take Pride in Our Results",
+    [Language.Russian]: "Мы Гордимся Нашими Результатами",
+    [Language.Georgian]: "ჩვენ ვამაყობთ ჩვენი შედეგებით"
+  },
+  "services.resultsDescription": {
+    [Language.Turkish]: "Yüksek müşteri memnuniyetiyle saç ekimi alanında kendimizi kanıtladık",
+    [Language.English]: "We've proven ourselves in the field of hair transplantation with high customer satisfaction",
+    [Language.Russian]: "Мы доказали себя в области трансплантации волос с высокой степенью удовлетворенности клиентов",
+    [Language.Georgian]: "ჩვენ დავამტკიცეთ თავი თმის გადანერგვის სფეროში მომხმარებელთა მაღალი კმაყოფილებით"
+  },
+  "services.statHappyPatients": {
+    [Language.Turkish]: "Mutlu Hastalar",
+    [Language.English]: "Happy Patients",
+    [Language.Russian]: "Довольные Пациенты",
+    [Language.Georgian]: "კმაყოფილი პაციენტები"
+  },
+  "services.statSuccessRate": {
+    [Language.Turkish]: "Başarı Oranı",
+    [Language.English]: "Success Rate",
+    [Language.Russian]: "Коэффициент Успеха",
+    [Language.Georgian]: "წარმატების მაჩვენებელი"
+  },
+  "services.statYearsExperience": {
+    [Language.Turkish]: "Yıllık Tecrübe",
+    [Language.English]: "Years Experience",
+    [Language.Russian]: "Лет Опыта",
+    [Language.Georgian]: "წლების გამოცდილება"
+  },
+  "services.statCountries": {
+    [Language.Turkish]: "Ülkeden Hasta",
+    [Language.English]: "Countries",
+    [Language.Russian]: "Стран",
+    [Language.Georgian]: "ქვეყნები"
   }
 };
 

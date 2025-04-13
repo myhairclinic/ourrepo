@@ -50,9 +50,9 @@ export function EnhancedFAQs({
 
   // Filter FAQs based on search query and selected category
   const filteredFaqs = faqs.filter(faq => {
-    const matchesSearch =
-      faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      faq.answer.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = searchQuery === "" ? true : 
+      (faq.question && faq.question.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (faq.answer && faq.answer.toLowerCase().includes(searchQuery.toLowerCase()));
     
     const matchesCategory = 
       !selectedCategory || faq.category === selectedCategory;
