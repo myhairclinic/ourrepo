@@ -1,0 +1,85 @@
+  // Expert Section Translations
+  "home.expertSection.title": {
+    [Language.Turkish]: "Saç Ekimi Uzmanları",
+    [Language.English]: "Hair Transplantation Experts",
+    [Language.Russian]: "Эксперты по Трансплантации Волос",
+    [Language.Georgian]: "თმის გადანერგვის ექსპერტები"
+  },
+  "home.expertSection.subtitle": {
+    [Language.Turkish]: "MyHair Clinic'in deneyimli ve uzman kadrosuyla tanışın",
+    [Language.English]: "Meet the experienced and expert team of MyHair Clinic",
+    [Language.Russian]: "Познакомьтесь с опытной и экспертной командой клиники MyHair",
+    [Language.Georgian]: "გაიცანით MyHair კლინიკის გამოცდილი და ექსპერტული გუნდი"
+  },
+  "home.expertSection.stats.years": {
+    [Language.Turkish]: "Yıllık Deneyim",
+    [Language.English]: "Years of Experience",
+    [Language.Russian]: "Лет Опыта",
+    [Language.Georgian]: "წლიანი გამოცდილება"
+  },
+  "home.expertSection.stats.procedures": {
+    [Language.Turkish]: "Başarılı İşlem",
+    [Language.English]: "Successful Procedures",
+    [Language.Russian]: "Успешных Процедур",
+    [Language.Georgian]: "წარმატებული პროცედურები"
+  },
+  "home.expertSection.stats.satisfaction": {
+    [Language.Turkish]: "Hasta Memnuniyeti",
+    [Language.English]: "Patient Satisfaction",
+    [Language.Russian]: "Удовлетворенность Пациентов",
+    [Language.Georgian]: "პაციენტთა კმაყოფილება"
+  },
+  "home.expertSection.stats.rating": {
+    [Language.Turkish]: "Uzman Değerlendirmesi",
+    [Language.English]: "Expert Rating",
+    [Language.Russian]: "Экспертная Оценка",
+    [Language.Georgian]: "ექსპერტული შეფასება"
+  },
+  "home.expertSection.features.technique.title": {
+    [Language.Turkish]: "İleri DHI ve FUE Teknikleri",
+    [Language.English]: "Advanced DHI and FUE Techniques",
+    [Language.Russian]: "Продвинутые Техники DHI и FUE",
+    [Language.Georgian]: "უახლესი DHI და FUE ტექნიკები"
+  },
+  "home.expertSection.features.technique.description": {
+    [Language.Turkish]: "Doğal görünümlü sonuçlar için son teknoloji yöntemler kullanıyoruz.",
+    [Language.English]: "We use state-of-the-art methods for natural-looking results.",
+    [Language.Russian]: "Мы используем современные методы для естественно выглядящих результатов.",
+    [Language.Georgian]: "ჩვენ ვიყენებთ უახლეს მეთოდებს ბუნებრივი გარეგნობის შედეგებისთვის."
+  },
+  "home.expertSection.features.painless.title": {
+    [Language.Turkish]: "Ağrısız Prosedür",
+    [Language.English]: "Painless Procedure",
+    [Language.Russian]: "Безболезненная Процедура",
+    [Language.Georgian]: "უმტკივნეულო პროცედურა"
+  },
+  "home.expertSection.features.painless.description": {
+    [Language.Turkish]: "Konforlu ve minimum rahatsızlık sağlayan özel anestezi protokolü.",
+    [Language.English]: "Special anesthesia protocol providing comfort and minimal discomfort.",
+    [Language.Russian]: "Специальный протокол анестезии, обеспечивающий комфорт и минимальный дискомфорт.",
+    [Language.Georgian]: "სპეციალური ანესთეზიის პროტოკოლი, რომელიც უზრუნველყოფს კომფორტს და მინიმალურ დისკომფორტს."
+  },
+  "home.expertSection.features.natural.title": {
+    [Language.Turkish]: "Doğal Saç Çizgisi Tasarımı",
+    [Language.English]: "Natural Hairline Design",
+    [Language.Russian]: "Естественный Дизайн Линии Роста Волос",
+    [Language.Georgian]: "ბუნებრივი თმის ხაზის დიზაინი"
+  },
+  "home.expertSection.features.natural.description": {
+    [Language.Turkish]: "Yüz şeklinize ve yaşınıza uygun kişiselleştirilmiş ve doğal görünümlü tasarım.",
+    [Language.English]: "Personalized and natural-looking design suitable for your face shape and age.",
+    [Language.Russian]: "Индивидуальный и естественно выглядящий дизайн, подходящий для формы вашего лица и возраста.",
+    [Language.Georgian]: "პერსონალიზებული და ბუნებრივი გარეგნობის დიზაინი, რომელიც შეესაბამება თქვენი სახის ფორმას და ასაკს."
+  },
+  "home.expertSection.consultationCta": {
+    [Language.Turkish]: "Ücretsiz Konsültasyon Alın",
+    [Language.English]: "Get a Free Consultation",
+    [Language.Russian]: "Получить Бесплатную Консультацию",
+    [Language.Georgian]: "მიიღეთ უფასო კონსულტაცია"
+  },
+  "home.expertSection.quote": {
+    [Language.Turkish]: "MyHair Clinic'te her hasta için kişiselleştirilmiş yaklaşım sunuyoruz. Amacımız sadece saç ekimi yapmak değil, hastalarımızın özgüvenlerini yeniden kazanmalarına yardımcı olmaktır.",
+    [Language.English]: "At MyHair Clinic, we offer a personalized approach for each patient. Our goal is not just to perform hair transplantation, but to help our patients regain their self-confidence.",
+    [Language.Russian]: "В клинике MyHair мы предлагаем индивидуальный подход к каждому пациенту. Наша цель не просто провести трансплантацию волос, а помочь нашим пациентам вернуть уверенность в себе.",
+    [Language.Georgian]: "MyHair კლინიკაში ჩვენ გთავაზობთ პერსონალიზებულ მიდგომას თითოეული პაციენტისთვის. ჩვენი მიზანია არა მხოლოდ თმის გადანერგვა, არამედ პაციენტების დახმარება თვითრწმენის დაბრუნებაში."
+  },

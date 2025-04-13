@@ -1,0 +1,127 @@
+  // Patient Journey Section Translations
+  "home.patientJourney.title": {
+    [Language.Turkish]: "Hasta Yolculuğu",
+    [Language.English]: "Patient Journey",
+    [Language.Russian]: "Путь Пациента",
+    [Language.Georgian]: "პაციენტის მოგზაურობა"
+  },
+  "home.patientJourney.subtitle": {
+    [Language.Turkish]: "MyHair Clinic'te saç ekimi süreciniz nasıl ilerleyecek?",
+    [Language.English]: "How will your hair transplantation process proceed at MyHair Clinic?",
+    [Language.Russian]: "Как будет проходить процесс пересадки волос в клинике MyHair?",
+    [Language.Georgian]: "როგორ წარიმართება თქვენი თმის გადანერგვის პროცესი MyHair კლინიკაში?"
+  },
+  "home.patientJourney.steps.consultation.title": {
+    [Language.Turkish]: "İlk Konsültasyon",
+    [Language.English]: "Initial Consultation",
+    [Language.Russian]: "Первичная Консультация",
+    [Language.Georgian]: "საწყისი კონსულტაცია"
+  },
+  "home.patientJourney.steps.consultation.description": {
+    [Language.Turkish]: "Online görüşme ile saç kaybınızın değerlendirilmesi ve kişisel tedavi planı oluşturulması.",
+    [Language.English]: "Evaluation of your hair loss through an online consultation and creation of a personalized treatment plan.",
+    [Language.Russian]: "Оценка выпадения волос посредством онлайн-консультации и создание персонализированного плана лечения.",
+    [Language.Georgian]: "თმის ცვენის შეფასება ონლაინ კონსულტაციის მეშვეობით და პერსონალიზებული მკურნალობის გეგმის შექმნა."
+  },
+  "home.patientJourney.steps.scheduling.title": {
+    [Language.Turkish]: "Randevu Planlaması",
+    [Language.English]: "Appointment Scheduling",
+    [Language.Russian]: "Планирование Встречи",
+    [Language.Georgian]: "შეხვედრის დაგეგმვა"
+  },
+  "home.patientJourney.steps.scheduling.description": {
+    [Language.Turkish]: "Size en uygun tarihin belirlenmesi ve operasyon için randevunun oluşturulması.",
+    [Language.English]: "Determining the most suitable date for you and creating an appointment for the operation.",
+    [Language.Russian]: "Определение наиболее подходящей для вас даты и назначение встречи для проведения операции.",
+    [Language.Georgian]: "თქვენთვის ყველაზე შესაფერისი თარიღის განსაზღვრა და ოპერაციის ჩატარების შეხვედრის დანიშვნა."
+  },
+  "home.patientJourney.steps.travel.title": {
+    [Language.Turkish]: "Tiflis'e Seyahat",
+    [Language.English]: "Travel to Tbilisi",
+    [Language.Russian]: "Поездка в Тбилиси",
+    [Language.Georgian]: "მოგზაურობა თბილისში"
+  },
+  "home.patientJourney.steps.travel.description": {
+    [Language.Turkish]: "Gürcistan'a varışınızda, havalimanından kliniğe veya otelinize özel transfer hizmeti.",
+    [Language.English]: "Upon your arrival in Georgia, special transfer service from the airport to the clinic or your hotel.",
+    [Language.Russian]: "По прибытии в Грузию, специальный трансфер из аэропорта в клинику или ваш отель.",
+    [Language.Georgian]: "საქართველოში ჩამოსვლისას, სპეციალური ტრანსფერი აეროპორტიდან კლინიკაში ან თქვენს სასტუმროში."
+  },
+  "home.patientJourney.steps.preOp.title": {
+    [Language.Turkish]: "Operasyon Öncesi Değerlendirme",
+    [Language.English]: "Pre-Operation Assessment",
+    [Language.Russian]: "Предоперационная Оценка",
+    [Language.Georgian]: "ოპერაციამდელი შეფასება"
+  },
+  "home.patientJourney.steps.preOp.description": {
+    [Language.Turkish]: "Yüz yüze konsültasyon, saç çizgisi tasarımı ve operasyon öncesi son hazırlıklar.",
+    [Language.English]: "Face-to-face consultation, hairline design, and final preparations before the operation.",
+    [Language.Russian]: "Личная консультация, дизайн линии роста волос и окончательная подготовка перед операцией.",
+    [Language.Georgian]: "პირისპირ კონსულტაცია, თმის ხაზის დიზაინი და საბოლოო მომზადება ოპერაციამდე."
+  },
+  "home.patientJourney.steps.procedure.title": {
+    [Language.Turkish]: "Saç Ekimi İşlemi",
+    [Language.English]: "Hair Transplantation Procedure",
+    [Language.Russian]: "Процедура Трансплантации Волос",
+    [Language.Georgian]: "თმის გადანერგვის პროცედურა"
+  },
+  "home.patientJourney.steps.procedure.description": {
+    [Language.Turkish]: "Konforlu bir ortamda DHI veya FUE yöntemiyle saç ekimi operasyonunun gerçekleştirilmesi.",
+    [Language.English]: "Performing the hair transplantation operation with DHI or FUE method in a comfortable environment.",
+    [Language.Russian]: "Проведение операции по трансплантации волос методом DHI или FUE в комфортной обстановке.",
+    [Language.Georgian]: "თმის გადანერგვის ოპერაციის ჩატარება DHI ან FUE მეთოდით კომფორტულ გარემოში."
+  },
+  "home.patientJourney.steps.postOp.title": {
+    [Language.Turkish]: "Operasyon Sonrası Bakım",
+    [Language.English]: "Post-Operation Care",
+    [Language.Russian]: "Послеоперационный Уход",
+    [Language.Georgian]: "ოპერაციის შემდგომი მოვლა"
+  },
+  "home.patientJourney.steps.postOp.description": {
+    [Language.Turkish]: "İlk gün sonrası kontrolü ve detaylı bakım talimatlarının verilmesi.",
+    [Language.English]: "First day follow-up check and providing detailed care instructions.",
+    [Language.Russian]: "Контрольный осмотр в первый день и предоставление подробных инструкций по уходу.",
+    [Language.Georgian]: "პირველი დღის შემდგომი შემოწმება და დეტალური მოვლის ინსტრუქციების მიწოდება."
+  },
+  "home.patientJourney.steps.tourism.title": {
+    [Language.Turkish]: "Tiflis'i Keşfedin",
+    [Language.English]: "Explore Tbilisi",
+    [Language.Russian]: "Исследуйте Тбилиси",
+    [Language.Georgian]: "თბილისის გაცნობა"
+  },
+  "home.patientJourney.steps.tourism.description": {
+    [Language.Turkish]: "İyileşme sürecinde Tiflis'in güzelliklerini keşfetme fırsatı ve şehir turu.",
+    [Language.English]: "Opportunity to explore the beauties of Tbilisi and city tour during the recovery process.",
+    [Language.Russian]: "Возможность изучить красоты Тбилиси и экскурсия по городу во время процесса восстановления.",
+    [Language.Georgian]: "თბილისის სილამაზის შესწავლის შესაძლებლობა და ქალაქის ტური აღდგენის პროცესში."
+  },
+  "home.patientJourney.steps.followUp.title": {
+    [Language.Turkish]: "Uzun Dönem Takip",
+    [Language.English]: "Long-Term Follow-up",
+    [Language.Russian]: "Долгосрочное Наблюдение",
+    [Language.Georgian]: "გრძელვადიანი მეთვალყურეობა"
+  },
+  "home.patientJourney.steps.followUp.description": {
+    [Language.Turkish]: "Ülkenize döndükten sonra düzenli online kontroller ve süreç takibi.",
+    [Language.English]: "Regular online check-ups and process monitoring after returning to your country.",
+    [Language.Russian]: "Регулярные онлайн-проверки и мониторинг процесса после возвращения в вашу страну.",
+    [Language.Georgian]: "რეგულარული ონლაინ შემოწმებები და პროცესის მონიტორინგი თქვენს ქვეყანაში დაბრუნების შემდეგ."
+  },
+  "home.patientJourney.satisfaction": {
+    [Language.Turkish]: "98% Hasta Memnuniyeti",
+    [Language.English]: "98% Patient Satisfaction",
+    [Language.Russian]: "98% Удовлетворенность Пациентов",
+    [Language.Georgian]: "98% პაციენტთა კმაყოფილება"
+  },
+  "home.patientJourney.cta.description": {
+    [Language.Turkish]: "Saç ekimi yolculuğunuza ilk adımı atmak ve ücretsiz olarak değerlendirme almak için hemen bize ulaşın. Uzmanlarımız sizinle ilgilenecektir.",
+    [Language.English]: "Contact us right away to take the first step in your hair transplantation journey and get a free evaluation. Our experts will assist you.",
+    [Language.Russian]: "Свяжитесь с нами прямо сейчас, чтобы сделать первый шаг в вашем пути к трансплантации волос и получить бесплатную оценку. Наши эксперты помогут вам.",
+    [Language.Georgian]: "დაგვიკავშირდით ახლავე, რათა გადადგათ პირველი ნაბიჯი თქვენს თმის გადანერგვის გზაზე და მიიღოთ უფასო შეფასება. ჩვენი ექსპერტები დაგეხმარებიან."
+  },
+  "home.patientJourney.cta.button": {
+    [Language.Turkish]: "Ücretsiz Danışma Randevusu Alın",
+    [Language.English]: "Get a Free Consultation Appointment",
+    [Language.Russian]: "Получить Бесплатную Консультацию",
+    [Language.Georgian]: "მიიღეთ უფასო საკონსულტაციო შეხვედრა"
+  },
