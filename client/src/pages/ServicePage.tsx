@@ -69,34 +69,38 @@ export default function ServicePage() {
   });
 
   // Helper function to get the localized title based on current language
-  const getLocalizedTitle = (service: Service) => {
+  const getLocalizedTitle = (service: Service): string => {
+    if (!service) return '';
+    
     switch (language) {
       case Language.Turkish:
-        return service.titleTR;
+        return service.titleTR || '';
       case Language.English:
-        return service.titleEN;
+        return service.titleEN || '';
       case Language.Russian:
-        return service.titleRU;
+        return service.titleRU || '';
       case Language.Georgian:
-        return service.titleKA;
+        return service.titleKA || '';
       default:
-        return service.titleEN;
+        return service.titleEN || '';
     }
   };
 
   // Helper function to get the localized description based on current language
-  const getLocalizedDescription = (service: Service) => {
+  const getLocalizedDescription = (service: Service): string => {
+    if (!service) return '';
+    
     switch (language) {
       case Language.Turkish:
-        return service.descriptionTR;
+        return service.descriptionTR || '';
       case Language.English:
-        return service.descriptionEN;
+        return service.descriptionEN || '';
       case Language.Russian:
-        return service.descriptionRU;
+        return service.descriptionRU || '';
       case Language.Georgian:
-        return service.descriptionKA;
+        return service.descriptionKA || '';
       default:
-        return service.descriptionEN;
+        return service.descriptionEN || '';
     }
   };
 
@@ -128,7 +132,9 @@ export default function ServicePage() {
     );
   }
 
-  const pageTitle = `${getLocalizedTitle(service)}${META.TITLE_SUFFIX[language]}`;
+  // Dil kodunu constants.ts içindeki anahtarlara uygun şekilde dönüştür (tr -> TR, en -> EN, vb.)
+  const languageKey = language.toUpperCase() as keyof typeof META.TITLE_SUFFIX;
+  const pageTitle = `${getLocalizedTitle(service)}${META.TITLE_SUFFIX[languageKey]}`;
 
   // Helper function to get localized content
   const getLocalizedContent = (service: Service, field: string) => {
