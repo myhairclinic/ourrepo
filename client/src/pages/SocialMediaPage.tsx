@@ -223,8 +223,8 @@ export default function SocialMediaPage() {
   return (
     <>
       <Helmet>
-        <title>{t('socialMedia.pageTitle')} | MyHair Clinic</title>
-        <meta name="description" content={t('socialMedia.metaDescription')} />
+        <title>Sosyal Medya | MyHair Clinic</title>
+        <meta name="description" content="MyHair Clinic'in sosyal medya sayfalarını takip edin ve en son güncellemelerden haberdar olun." />
       </Helmet>
 
       <main className="container mx-auto px-4 py-8 max-w-7xl">
@@ -247,10 +247,10 @@ export default function SocialMediaPage() {
               <div className="flex flex-col md:flex-row items-center justify-between">
                 <div className="mb-8 md:mb-0 md:w-3/5">
                   <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-                    {t('socialMedia.heroTitle')}
+                    Sosyal Medyada Bizi Takip Edin
                   </h1>
                   <p className="text-lg md:text-xl opacity-90 max-w-3xl mb-8">
-                    {t('socialMedia.heroDescription')}
+                    En son haberleri, saç ekimi ipuçlarını ve özel tekliflerimizi sosyal medya hesaplarımızdan takip edebilirsiniz. Sorularınızı sosyal medya üzerinden hızlıca yanıtlıyoruz.
                   </p>
                   <div className="flex flex-wrap gap-3">
                     {socialPlatforms.map((platform, index) => (
@@ -292,7 +292,7 @@ export default function SocialMediaPage() {
         <section className="mb-16">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">
-              {t('socialMedia.followUs')}
+              Bizi Takip Edin
             </h2>
           </div>
 
@@ -322,7 +322,7 @@ export default function SocialMediaPage() {
                     className="w-full"
                   >
                     <Button variant="outline" className="w-full" size="sm">
-                      {t('socialMedia.follow')}
+                      Takip Et
                     </Button>
                   </a>
                 </CardContent>
@@ -335,17 +335,17 @@ export default function SocialMediaPage() {
         <section className="mb-16">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">
-              {t('socialMedia.featuredPosts')}
+              Öne Çıkan Gönderiler
             </h2>
             <Button variant="ghost" className="gap-1">
-              {t('socialMedia.viewAllPosts')}
+              Tüm Gönderileri Görüntüle
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
 
           <Tabs defaultValue="all" className="mb-8">
             <TabsList className="mb-6">
-              <TabsTrigger value="all">{t('socialMedia.allPosts')}</TabsTrigger>
+              <TabsTrigger value="all">Tüm Gönderiler</TabsTrigger>
               <TabsTrigger value="instagram">Instagram</TabsTrigger>
               <TabsTrigger value="facebook">Facebook</TabsTrigger>
               <TabsTrigger value="youtube">YouTube</TabsTrigger>
