@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 import {
   Globe,
   Search,
@@ -17,7 +20,8 @@ import {
   Link,
   ExternalLink,
   AlertTriangle,
-  Info
+  Info,
+  Loader2
 } from "lucide-react";
 
 import {
@@ -314,6 +318,95 @@ const SeoManagement: React.FC<SeoManagementProps> = () => {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isAddPageModalOpen, setIsAddPageModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("pages");
+  
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  
+  // SEO Ayarlarını getir
+  const { isLoading: isGeneralSettingsLoading, data: generalSettings } = useQuery({
+    queryKey: ['/api/settings/general'],
+    queryFn: async () => {
+      try {
+        const response = await fetch('/api/settings/section/general');
+        if (!response.ok) {
+          throw new Error('Genel SEO ayarları alınamadı');
+        }
+        return await response.json();
+      } catch (error) {
+        console.error('Genel ayarlar yüklenirken hata:', error);
+        return [];
+      }
+    }
+  });
+  
+  // SEO ayarlarını kaydet
+  const saveSettingsMutation = useMutation({
+    mutationFn: async (settings: any[]) => {
+      const response = await apiRequest('POST', '/api/settings/batch', settings);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Ayarlar kaydedilemedi');
+      }
+      return await response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: 'Başarılı',
+        description: 'SEO ayarları başarıyla kaydedildi',
+        variant: 'success',
+      });
+      queryClient.invalidateQueries({ queryKey: ['/api/settings/general'] });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: 'Hata',
+        description: `SEO ayarları kaydedilemedi: ${error.message}`,
+        variant: 'destructive',
+      });
+    }
+  });
+  
+  // Ayarları formatlayarak hazırla
+  const prepareSettingsForSave = () => {
+    const settings = [
+      { section: 'general', key: 'siteName', value: generalSeoSettings.siteName },
+      { section: 'general', key: 'defaultLanguage', value: generalSeoSettings.defaultLanguage },
+      { section: 'general', key: 'supportedLanguages', value: generalSeoSettings.supportedLanguages },
+      { section: 'general', key: 'robotsTxt', value: generalSeoSettings.robotsTxt },
+      { section: 'general', key: 'googleAnalyticsId', value: generalSeoSettings.googleAnalyticsId },
+      { section: 'general', key: 'googleTagManagerId', value: generalSeoSettings.googleTagManagerId },
+      { section: 'general', key: 'facebookPixelId', value: generalSeoSettings.facebookPixelId },
+      { section: 'general', key: 'openGraphImage', value: generalSeoSettings.openGraphImage },
+      { section: 'general', key: 'twitterCardType', value: generalSeoSettings.twitterCardType },
+      { section: 'general', key: 'twitterUsername', value: generalSeoSettings.twitterUsername },
+      { section: 'general', key: 'structuredData', value: generalSeoSettings.structuredData },
+    ];
+    
+    return settings;
+  };
+  
+  // Genel SEO ayarlarını kaydet
+  const handleSaveGeneralSettings = () => {
+    const settings = prepareSettingsForSave();
+    saveSettingsMutation.mutate(settings);
+  };
+  
+  // Genel ayarlar yüklendiğinde state'i güncelle
+  useEffect(() => {
+    if (generalSettings && generalSettings.length > 0) {
+      // Ayarları düzenli bir obje haline getir
+      const settingsObj: any = {};
+      generalSettings.forEach((setting: any) => {
+        settingsObj[setting.key] = setting.value;
+      });
+      
+      // State'i güncelle (mevcut default değerlerle birleştir)
+      setGeneralSeoSettings(prev => ({
+        ...prev,
+        ...settingsObj
+      }));
+    }
+  }, [generalSettings]);
   
   // Filtreleme
   const filteredPages = pageSeoSettings.filter(page => {
@@ -949,10 +1042,16 @@ const SeoManagement: React.FC<SeoManagementProps> = () => {
               <CardFooter className="flex justify-end">
                 <button
                   type="button"
-                  onClick={() => alert("Ayarlar kaydedildi!")}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-blue-700 focus:outline-none"
+                  onClick={handleSaveGeneralSettings}
+                  disabled={saveSettingsMutation.isPending}
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-blue-700 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Ayarları Kaydet
+                  {saveSettingsMutation.isPending ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Kaydediliyor...
+                    </>
+                  ) : "Ayarları Kaydet"}
                 </button>
               </CardFooter>
             </Card>
