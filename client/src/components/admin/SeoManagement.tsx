@@ -308,9 +308,44 @@ interface SeoManagementProps {
 }
 
 const SeoManagement: React.FC<SeoManagementProps> = () => {
-  const [pageSeoSettings, setPageSeoSettings] = useState(mockPageSeoSettings);
+  const [pageSeoSettings, setPageSeoSettings] = useState<any[]>([]);
   const [generalSeoSettings, setGeneralSeoSettings] = useState(mockGeneralSeoSettings);
   const [seoAnalysisData, setSeoAnalysisData] = useState(mockSeoAnalysisData);
+  
+  // SEO sayfalarını getir
+  const { isLoading: isPagesLoading, data: seoPages } = useQuery({
+    queryKey: ['/api/seo/pages'],
+    queryFn: async () => {
+      try {
+        const response = await fetch('/api/seo/pages');
+        if (!response.ok) {
+          throw new Error('SEO sayfaları alınamadı');
+        }
+        return await response.json();
+      } catch (error) {
+        console.error('SEO sayfaları yüklenirken hata:', error);
+        return [];
+      }
+    }
+  });
+  
+  // SEO Analiz verilerini getir
+  const { isLoading: isAnalysisLoading, data: analysisData } = useQuery({
+    queryKey: ['/api/seo/analyze'],
+    queryFn: async () => {
+      try {
+        const response = await fetch('/api/seo/analyze');
+        if (!response.ok) {
+          throw new Error('SEO analiz verileri alınamadı');
+        }
+        return await response.json();
+      } catch (error) {
+        console.error('SEO analiz verileri yüklenirken hata:', error);
+        return null;
+      }
+    },
+    enabled: activeTab === 'analysis' // Sadece analysis tabı açıkken çalıştır
+  });
   
   const [activeLanguage, setActiveLanguage] = useState<string>("TR");
   const [searchQuery, setSearchQuery] = useState("");
@@ -353,7 +388,7 @@ const SeoManagement: React.FC<SeoManagementProps> = () => {
       toast({
         title: 'Başarılı',
         description: 'SEO ayarları başarıyla kaydedildi',
-        variant: 'success',
+        variant: 'default',
       });
       queryClient.invalidateQueries({ queryKey: ['/api/settings/general'] });
     },
@@ -361,6 +396,90 @@ const SeoManagement: React.FC<SeoManagementProps> = () => {
       toast({
         title: 'Hata',
         description: `SEO ayarları kaydedilemedi: ${error.message}`,
+        variant: 'destructive',
+      });
+    }
+  });
+  
+  // SEO sayfası kaydetme
+  const savePageMutation = useMutation({
+    mutationFn: async (pageData: any) => {
+      const response = await apiRequest('POST', '/api/seo/pages', pageData);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'SEO sayfası kaydedilemedi');
+      }
+      return await response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: 'Başarılı',
+        description: 'SEO sayfası başarıyla kaydedildi',
+        variant: 'default',
+      });
+      queryClient.invalidateQueries({ queryKey: ['/api/seo/pages'] });
+      setIsDetailModalOpen(false);
+      setIsAddPageModalOpen(false);
+    },
+    onError: (error: Error) => {
+      toast({
+        title: 'Hata',
+        description: `SEO sayfası kaydedilemedi: ${error.message}`,
+        variant: 'destructive',
+      });
+    }
+  });
+  
+  // SEO sayfası silme
+  const deletePageMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const response = await apiRequest('DELETE', `/api/seo/pages/${id}`);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'SEO sayfası silinemedi');
+      }
+      return await response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: 'Başarılı',
+        description: 'SEO sayfası başarıyla silindi',
+        variant: 'default',
+      });
+      queryClient.invalidateQueries({ queryKey: ['/api/seo/pages'] });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: 'Hata',
+        description: `SEO sayfası silinemedi: ${error.message}`,
+        variant: 'destructive',
+      });
+    }
+  });
+  
+  // Sitemap oluşturma
+  const generateSitemapMutation = useMutation({
+    mutationFn: async () => {
+      const response = await apiRequest('POST', '/api/seo/generate-sitemap');
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Sitemap oluşturulamadı');
+      }
+      return await response.json();
+    },
+    onSuccess: (data) => {
+      toast({
+        title: 'Başarılı',
+        description: 'Sitemap başarıyla oluşturuldu',
+        variant: 'default',
+      });
+      // İsteğe bağlı olarak burada sitemap dosyasını açabilirsiniz
+      window.open('/sitemap.xml', '_blank');
+    },
+    onError: (error: Error) => {
+      toast({
+        title: 'Hata',
+        description: `Sitemap oluşturulamadı: ${error.message}`,
         variant: 'destructive',
       });
     }

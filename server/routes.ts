@@ -47,6 +47,15 @@ import {
   deleteSetting
 } from "./controllers/settingsController";
 
+import {
+  getAllSeoPages,
+  getSeoPageById,
+  saveSeoPage,
+  deleteSeoPage,
+  generateSitemap,
+  analyzeSeo
+} from "./controllers/seoController";
+
 import { 
   getAllBlogPosts, 
   getBlogPostById, 
@@ -501,6 +510,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/settings", saveSetting);
   app.post("/api/settings/batch", updateSettings);
   app.delete("/api/settings/:id", deleteSetting);
+  
+  // SEO Routes
+  app.get("/api/seo/pages", getAllSeoPages);
+  app.get("/api/seo/pages/:id", getSeoPageById);
+  app.post("/api/seo/pages", saveSeoPage);
+  app.delete("/api/seo/pages/:id", deleteSeoPage);
+  app.post("/api/seo/generate-sitemap", generateSitemap);
+  app.get("/api/seo/analyze", analyzeSeo);
 
   // Telegram Bot API Routes
   app.get("/api/telegram/contacts", async (req, res) => {
