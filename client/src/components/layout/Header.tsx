@@ -193,92 +193,121 @@ export default function Header() {
       </div>
 
       {/* Mobile Menu - Slide from right */}
-      <div className={`fixed inset-y-0 right-0 z-50 w-72 bg-white shadow-xl transform transition-transform duration-300 ease-in-out ${
+      <div className={`fixed inset-y-0 right-0 z-50 w-[88%] max-w-xs bg-white shadow-xl transform transition-transform duration-300 ease-in-out ${
         isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
       } md:hidden`}>
-        <div className="flex justify-between items-center p-4 border-b">
-          <div className="w-56 h-full flex items-center justify-start">
+        <div className="flex justify-between items-center p-3 border-b border-gray-100">
+          <div className="w-48 h-full flex items-center justify-start">
             <img 
               src="/images/logo.png" 
               alt="MyHair Clinic" 
-              className="max-h-20 w-auto object-contain"
+              className="max-h-16 w-auto object-contain"
               style={{ filter: 'drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.1))' }}
             />
           </div>
           <button 
             onClick={toggleMobileMenu}
-            className="text-neutral-600 p-2"
+            className="text-neutral-600 bg-gray-50 p-2 rounded-full hover:bg-gray-100 transition-colors"
             aria-label="Menüyü Kapat"
           >
-            <X size={20} />
+            <X size={18} />
           </button>
         </div>
         
-        <div className="p-4">
-          <nav className="flex flex-col">
-            <Link href={`/${language}`} className="text-neutral-700 py-3 hover:text-primary transition-colors">
-              Ana Sayfa
-            </Link>
-            <Link href={`/${language}/services`} className="text-neutral-700 py-3 hover:text-primary transition-colors">
-              Hizmetlerimiz
-            </Link>
-            <Link href={`/${language}/packages`} className="text-neutral-700 py-3 hover:text-primary transition-colors">
-              Paketler
-            </Link>
-            <Link href={`/${language}/gallery`} className="text-neutral-700 py-3 hover:text-primary transition-colors">
-              Galeri
-            </Link>
-            <Link href={`/${language}/blog`} className="text-neutral-700 py-3 hover:text-primary transition-colors">
-              Blog
-            </Link>
-            <Link href={`/${language}/social-media`} className="text-neutral-700 py-3 hover:text-primary transition-colors">
-              Sosyal Medya
-            </Link>
-            <Link href={`/${language}/products`} className="text-neutral-700 py-3 hover:text-primary transition-colors">
-              Ürünler
-            </Link>
-            <Link href={`/${language}/contact`} className="text-neutral-700 py-3 hover:text-primary transition-colors">
-              İletişim
-            </Link>
-          </nav>
-          
-          {/* Mobile Language Selector */}
-          <div className="mt-6 border-t pt-4">
-            <p className="text-neutral-600 text-sm font-medium mb-3 flex items-center">
-              <Globe size={16} className="mr-2 text-primary" />
-              Dil Seçimi:
-            </p>
-            <div className="grid grid-cols-2 gap-2">
-              {ALL_LANGUAGES.map((lang) => (
-                <button
-                  key={lang.code}
-                  onClick={() => {
-                    changeLanguage(lang.code);
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className={`flex items-center justify-center px-3 py-2 text-sm rounded-md ${
-                    language === lang.code 
-                      ? "bg-primary/10 text-primary font-medium border border-primary/20" 
-                      : "bg-gray-50 hover:bg-gray-100 border border-gray-100"
-                  }`}
-                >
-                  <div className="w-6 h-4 mr-2 overflow-hidden rounded shadow-sm border border-gray-100">
-                    <FlagIcon code={lang.code} />
-                  </div>
-                  <span>{lang.name}</span>
-                </button>
-              ))}
+        <div className="overflow-y-auto max-h-[calc(100vh-70px)]">
+          {/* İletişim Bilgileri (Mobil) */}
+          <div className="bg-blue-50/50 p-3 border-b border-blue-100/50">
+            <div className="flex flex-col space-y-2 text-xs">
+              <a href="tel:+995555003044" className="flex items-center text-neutral-700 hover:text-primary transition-colors">
+                <Phone size={14} className="mr-2 text-primary" />
+                <span>+995 555 003044</span>
+              </a>
+              <a href="mailto:myhairtbilisi@gmail.com" className="flex items-center text-neutral-700 hover:text-primary transition-colors">
+                <Mail size={14} className="mr-2 text-primary" />
+                <span>myhairtbilisi@gmail.com</span>
+              </a>
+              <div className="flex items-center text-neutral-700">
+                <MapPin size={14} className="mr-2 text-primary" />
+                <span>Tsotne Dadiani 59, Tbilisi</span>
+              </div>
             </div>
           </div>
+        
+          <div className="p-3">
+            <nav className="flex flex-col">
+              <Link href={addPrefix("/")} 
+                    className="flex items-center text-neutral-700 py-2.5 px-2 hover:text-primary hover:bg-blue-50/50 rounded-md transition-colors">
+                <span>Ana Sayfa</span>
+              </Link>
+              <Link href={addPrefix("/services")} 
+                    className="flex items-center text-neutral-700 py-2.5 px-2 hover:text-primary hover:bg-blue-50/50 rounded-md transition-colors">
+                <span>Hizmetlerimiz</span>
+              </Link>
+              <Link href={addPrefix("/packages")} 
+                    className="flex items-center text-neutral-700 py-2.5 px-2 hover:text-primary hover:bg-blue-50/50 rounded-md transition-colors">
+                <span>Paketler</span>
+              </Link>
+              <Link href={addPrefix("/gallery")} 
+                    className="flex items-center text-neutral-700 py-2.5 px-2 hover:text-primary hover:bg-blue-50/50 rounded-md transition-colors">
+                <span>Galeri</span>
+              </Link>
+              <Link href={addPrefix("/blog")} 
+                    className="flex items-center text-neutral-700 py-2.5 px-2 hover:text-primary hover:bg-blue-50/50 rounded-md transition-colors">
+                <span>Blog</span>
+              </Link>
+              <Link href={addPrefix("/social-media")} 
+                    className="flex items-center text-neutral-700 py-2.5 px-2 hover:text-primary hover:bg-blue-50/50 rounded-md transition-colors">
+                <span>Sosyal Medya</span>
+              </Link>
+              <Link href={addPrefix("/products")} 
+                    className="flex items-center text-neutral-700 py-2.5 px-2 hover:text-primary hover:bg-blue-50/50 rounded-md transition-colors">
+                <span>Ürünler</span>
+              </Link>
+              <Link href={addPrefix("/contact")} 
+                    className="flex items-center text-neutral-700 py-2.5 px-2 hover:text-primary hover:bg-blue-50/50 rounded-md transition-colors">
+                <span>İletişim</span>
+              </Link>
+            </nav>
           
-          <div className="mt-6">
-            <Link
-              href={`/${language}/appointment`}
-              className="bg-primary text-white w-full py-3 rounded-md text-sm font-medium flex items-center justify-center space-x-2 hover:bg-primary/90 transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              <span>Randevu Al</span>
-            </Link>
+            {/* Mobile Language Selector */}
+            <div className="mt-5 border-t pt-4">
+              <p className="text-neutral-600 text-xs font-medium mb-3 flex items-center">
+                <Globe size={14} className="mr-2 text-primary" />
+                Dil Seçimi:
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                {ALL_LANGUAGES.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => {
+                      changeLanguage(lang.code);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className={`flex items-center justify-center px-2 py-1.5 text-xs rounded-md ${
+                      language === lang.code 
+                        ? "bg-primary/10 text-primary font-medium border border-primary/20" 
+                        : "bg-gray-50 hover:bg-gray-100 border border-gray-100"
+                    }`}
+                  >
+                    <div className="w-5 h-3.5 mr-1.5 overflow-hidden rounded shadow-sm border border-gray-100">
+                      <FlagIcon code={lang.code} />
+                    </div>
+                    <span>{lang.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          
+            <div className="mt-5 mb-4">
+              <Link
+                href={addPrefix("/appointment")}
+                className="bg-primary text-white w-full py-2.5 rounded-md text-sm font-medium flex items-center justify-center space-x-2 hover:bg-primary/90 transition-colors shadow-sm"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Calendar size={16} className="mr-1.5" />
+                <span>Randevu Al</span>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
