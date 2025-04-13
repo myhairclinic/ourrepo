@@ -229,8 +229,8 @@ export function BeforeAfterGallery({
       
       {/* Slider View */}
       {viewMode === "slider" && items.length > 0 && (
-        <div className="bg-card rounded-xl overflow-hidden border shadow-md">
-          <div className="relative w-full h-[500px]">
+        <div className="bg-card rounded-lg md:rounded-xl overflow-hidden border shadow-md">
+          <div className="relative w-full h-[300px] md:h-[500px]">
             {/* Image slider */}
             <div className="relative w-full h-full overflow-hidden">
               <div className="relative h-full">
@@ -263,13 +263,13 @@ export function BeforeAfterGallery({
                 
                 {/* Slider handle */}
                 <div 
-                  className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize z-10"
+                  className="absolute top-0 bottom-0 w-0.5 md:w-1 bg-white cursor-ew-resize z-10"
                   style={{ left: `${sliderPosition}%` }}
                 >
-                  <div className="absolute h-8 w-8 bg-white rounded-full -translate-x-1/2 top-1/2 -translate-y-1/2 border-2 border-primary flex items-center justify-center">
-                    <div className="relative w-4 h-4">
-                      <ChevronLeft className="absolute top-0 left-0 h-4 w-4 text-primary" />
-                      <ChevronRight className="absolute top-0 left-0 h-4 w-4 text-primary" />
+                  <div className="absolute h-6 w-6 md:h-8 md:w-8 bg-white rounded-full -translate-x-1/2 top-1/2 -translate-y-1/2 border-2 border-primary flex items-center justify-center shadow-md">
+                    <div className="relative w-3 h-3 md:w-4 md:h-4">
+                      <ChevronLeft className="absolute top-0 left-0 h-3 w-3 md:h-4 md:w-4 text-primary" />
+                      <ChevronRight className="absolute top-0 left-0 h-3 w-3 md:h-4 md:w-4 text-primary" />
                     </div>
                   </div>
                 </div>
@@ -281,14 +281,14 @@ export function BeforeAfterGallery({
                   max="100"
                   value={sliderPosition}
                   onChange={handleSliderChange}
-                  className="absolute bottom-4 left-1/2 -translate-x-1/2 w-3/4 z-20 opacity-0 cursor-pointer h-8"
+                  className="absolute bottom-4 left-1/2 -translate-x-1/2 w-[85%] md:w-3/4 z-20 opacity-0 cursor-pointer h-8"
                 />
                 
                 {/* Labels */}
-                <div className="absolute top-4 left-4 bg-black/70 text-white text-sm px-3 py-1 rounded">
+                <div className="absolute top-2 md:top-4 left-2 md:left-4 bg-black/70 text-white text-xs md:text-sm px-2 md:px-3 py-0.5 md:py-1 rounded">
                   {t("Before")}
                 </div>
-                <div className="absolute top-4 right-4 bg-primary text-white text-sm px-3 py-1 rounded">
+                <div className="absolute top-2 md:top-4 right-2 md:right-4 bg-primary text-white text-xs md:text-sm px-2 md:px-3 py-0.5 md:py-1 rounded">
                   {t("After")}
                 </div>
               </div>
@@ -298,44 +298,44 @@ export function BeforeAfterGallery({
             <Button
               variant="outline"
               size="icon"
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white z-10 rounded-full h-10 w-10"
+              className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white z-10 rounded-full h-8 w-8 md:h-10 md:w-10"
               onClick={goToPrevious}
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
             </Button>
             
             <Button
               variant="outline"
               size="icon"
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white z-10 rounded-full h-10 w-10"
+              className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white z-10 rounded-full h-8 w-8 md:h-10 md:w-10"
               onClick={goToNext}
             >
-              <ChevronRight className="h-5 w-5" />
+              <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
             </Button>
             
             <Button
               variant="outline"
               size="icon"
-              className="absolute right-4 bottom-4 bg-white/70 hover:bg-white z-10 rounded-full h-10 w-10"
+              className="absolute right-2 md:right-4 bottom-2 md:bottom-4 bg-white/70 hover:bg-white z-10 rounded-full h-8 w-8 md:h-10 md:w-10"
               onClick={() => setSelectedItem(items[currentIndex])}
             >
-              <ZoomIn className="h-5 w-5" />
+              <ZoomIn className="h-4 w-4 md:h-5 md:w-5" />
             </Button>
           </div>
           
-          <div className="p-6">
-            <p className="text-muted-foreground">
+          <div className="p-3 md:p-6">
+            <p className="text-muted-foreground text-xs md:text-sm">
               {getLocalizedDescription(items[currentIndex])}
             </p>
           </div>
           
           {/* Thumbnails */}
-          <div className="p-4 border-t">
-            <div className="flex overflow-x-auto gap-3 pb-1 px-1">
+          <div className="p-3 md:p-4 border-t">
+            <div className="flex overflow-x-auto gap-2 md:gap-3 pb-1 px-1">
               {items.map((item, index) => (
                 <div 
                   key={item.id}
-                  className={`flex-shrink-0 w-24 h-24 rounded-md cursor-pointer overflow-hidden border-2 transition-all duration-200
+                  className={`flex-shrink-0 w-16 h-16 md:w-24 md:h-24 rounded-md cursor-pointer overflow-hidden border-2 transition-all duration-200
                     ${currentIndex === index ? 'border-primary' : 'border-transparent'}`}
                   onClick={() => setCurrentIndex(index)}
                 >
@@ -360,7 +360,7 @@ export function BeforeAfterGallery({
         {selectedItem && (
           <Dialog open={!!selectedItem} onOpenChange={() => setSelectedItem(null)}>
             <DialogContent className="max-w-4xl p-0">
-              <div className="relative w-full h-[80vh] max-h-[80vh]">
+              <div className="relative w-full h-[60vh] md:h-[80vh] max-h-[80vh]">
                 <div className="relative h-full overflow-hidden">
                   {/* Before image - full width, will be clipped by the container */}
                   <img 
@@ -383,13 +383,13 @@ export function BeforeAfterGallery({
                   
                   {/* Slider handle */}
                   <div 
-                    className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize z-10"
+                    className="absolute top-0 bottom-0 w-0.5 md:w-1 bg-white cursor-ew-resize z-10"
                     style={{ left: `${sliderPosition}%` }}
                   >
-                    <div className="absolute h-8 w-8 bg-white rounded-full -translate-x-1/2 top-1/2 -translate-y-1/2 border-2 border-primary flex items-center justify-center">
-                      <div className="relative w-4 h-4">
-                        <ChevronLeft className="absolute top-0 left-0 h-4 w-4 text-primary" />
-                        <ChevronRight className="absolute top-0 left-0 h-4 w-4 text-primary" />
+                    <div className="absolute h-6 w-6 md:h-8 md:w-8 bg-white rounded-full -translate-x-1/2 top-1/2 -translate-y-1/2 border-2 border-primary flex items-center justify-center shadow-md">
+                      <div className="relative w-3 h-3 md:w-4 md:h-4">
+                        <ChevronLeft className="absolute top-0 left-0 h-3 w-3 md:h-4 md:w-4 text-primary" />
+                        <ChevronRight className="absolute top-0 left-0 h-3 w-3 md:h-4 md:w-4 text-primary" />
                       </div>
                     </div>
                   </div>
@@ -401,14 +401,14 @@ export function BeforeAfterGallery({
                     max="100"
                     value={sliderPosition}
                     onChange={handleSliderChange}
-                    className="absolute bottom-8 left-1/2 -translate-x-1/2 w-3/4 z-20 opacity-0 cursor-pointer h-8"
+                    className="absolute bottom-8 left-1/2 -translate-x-1/2 w-[85%] md:w-3/4 z-20 opacity-0 cursor-pointer h-8"
                   />
                   
                   {/* Labels */}
-                  <div className="absolute top-4 left-4 bg-black/70 text-white text-sm px-3 py-1 rounded">
+                  <div className="absolute top-2 md:top-4 left-2 md:left-4 bg-black/70 text-white text-xs md:text-sm px-2 md:px-3 py-0.5 md:py-1 rounded">
                     {t("Before")}
                   </div>
-                  <div className="absolute top-4 right-4 bg-primary text-white text-sm px-3 py-1 rounded">
+                  <div className="absolute top-2 md:top-4 right-2 md:right-4 bg-primary text-white text-xs md:text-sm px-2 md:px-3 py-0.5 md:py-1 rounded">
                     {t("After")}
                   </div>
                 </div>
