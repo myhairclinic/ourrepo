@@ -414,6 +414,50 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Georgian]: "კლიენტის კმაყოფილება"
   },
   
+  // Eksik olan çeviriler
+  "services.features.noSideEffects": {
+    [Language.Turkish]: "Yan Etki Yok",
+    [Language.English]: "No Side Effects",
+    [Language.Russian]: "Отсутствие Побочных Эффектов",
+    [Language.Georgian]: "არანაირი გვერდითი ეფექტი"
+  },
+  "services.features.quickRecovery": {
+    [Language.Turkish]: "Hızlı İyileşme",
+    [Language.English]: "Quick Recovery",
+    [Language.Russian]: "Быстрое Восстановление",
+    [Language.Georgian]: "სწრაფი აღდგენა"
+  },
+  "common.duration": {
+    [Language.Turkish]: "Süre",
+    [Language.English]: "Duration",
+    [Language.Russian]: "Продолжительность",
+    [Language.Georgian]: "ხანგრძლივობა"
+  },
+  "services.features.permanentSolution": {
+    [Language.Turkish]: "Kalıcı Çözüm",
+    [Language.English]: "Permanent Solution",
+    [Language.Russian]: "Постоянное Решение",
+    [Language.Georgian]: "მუდმივი გადაწყვეტა"
+  },
+  "services.features.naturalAppearance": {
+    [Language.Turkish]: "Doğal Görünüm",
+    [Language.English]: "Natural Appearance",
+    [Language.Russian]: "Натуральный Вид",
+    [Language.Georgian]: "ბუნებრივი გარეგნობა"
+  },
+  "services.features.facialHarmony": {
+    [Language.Turkish]: "Yüz Uyumu",
+    [Language.English]: "Facial Harmony",
+    [Language.Russian]: "Гармония Лица",
+    [Language.Georgian]: "სახის ჰარმონია"
+  },
+  "common.contactUs": {
+    [Language.Turkish]: "Bize Ulaşın",
+    [Language.English]: "Contact Us",
+    [Language.Russian]: "Свяжитесь с Нами",
+    [Language.Georgian]: "დაგვიკავშირდით"
+  },
+  
   // Package section
   "packages.home.tagline": {
     [Language.Turkish]: "ÜLKELERE ÖZEL PAKETLER",
@@ -578,6 +622,116 @@ export const translations: Record<string, LanguageMap> = {
     [Language.English]: "Our Services",
     [Language.Russian]: "Наши Услуги",
     [Language.Georgian]: "ჩვენი სერვისები"
+  },
+  
+  // Menü ve kısımlar için çeviriler
+  "common.home": {
+    [Language.Turkish]: "Anasayfa",
+    [Language.English]: "Home",
+    [Language.Russian]: "Главная",
+    [Language.Georgian]: "მთავარი"
+  },
+  "common.services": {
+    [Language.Turkish]: "Hizmetler",
+    [Language.English]: "Services",
+    [Language.Russian]: "Услуги",
+    [Language.Georgian]: "სერვისები"
+  },
+  "common.packages": {
+    [Language.Turkish]: "Paketler",
+    [Language.English]: "Packages",
+    [Language.Russian]: "Пакеты",
+    [Language.Georgian]: "პაკეტები"
+  },
+  "common.gallery": {
+    [Language.Turkish]: "Galeri",
+    [Language.English]: "Gallery",
+    [Language.Russian]: "Галерея",
+    [Language.Georgian]: "გალერეა"
+  },
+  "common.blog": {
+    [Language.Turkish]: "Blog",
+    [Language.English]: "Blog",
+    [Language.Russian]: "Блог",
+    [Language.Georgian]: "ბლოგი"
+  },
+  "common.about": {
+    [Language.Turkish]: "Hakkımızda",
+    [Language.English]: "About",
+    [Language.Russian]: "О нас",
+    [Language.Georgian]: "ჩვენ შესახებ"
+  },
+  "common.contact": {
+    [Language.Turkish]: "İletişim",
+    [Language.English]: "Contact",
+    [Language.Russian]: "Контакты",
+    [Language.Georgian]: "კონტაქტი"
+  },
+  "common.appointment": {
+    [Language.Turkish]: "Randevu",
+    [Language.English]: "Appointment",
+    [Language.Russian]: "Запись",
+    [Language.Georgian]: "შეხვედრა"
+  },
+  
+  // Hizmet çevirileri
+  "services.hairTransplant": {
+    [Language.Turkish]: "Saç Ekimi",
+    [Language.English]: "Hair Transplantation",
+    [Language.Russian]: "Трансплантация Волос",
+    [Language.Georgian]: "თმის გადანერგვა"
+  },
+  "services.beardTransplant": {
+    [Language.Turkish]: "Sakal Ekimi",
+    [Language.English]: "Beard Transplantation",
+    [Language.Russian]: "Трансплантация Бороды",
+    [Language.Georgian]: "წვერის გადანერგვა"
+  },
+  "services.eyebrowTransplant": {
+    [Language.Turkish]: "Kaş Ekimi",
+    [Language.English]: "Eyebrow Transplantation",
+    [Language.Russian]: "Трансплантация Бровей",
+    [Language.Georgian]: "წარბების გადანერგვა"
+  },
+  "services.prpTreatment": {
+    [Language.Turkish]: "PRP Tedavisi",
+    [Language.English]: "PRP Treatment",
+    [Language.Russian]: "PRP-терапия",
+    [Language.Georgian]: "PRP მკურნალობა"
+  },
+  "services.mesotherapy": {
+    [Language.Turkish]: "Saç Mezoterapisi",
+    [Language.English]: "Hair Mesotherapy",
+    [Language.Russian]: "Мезотерапия Волос",
+    [Language.Georgian]: "თმის მეზოთერაპია"
+  },
+  
+  // Hata mesajları
+  "errors.loading_services": {
+    [Language.Turkish]: "Hizmetler yüklenirken bir hata oluştu",
+    [Language.English]: "An error occurred while loading services",
+    [Language.Russian]: "Произошла ошибка при загрузке услуг",
+    [Language.Georgian]: "სერვისების ჩატვირთვისას მოხდა შეცდომა"
+  },
+  
+  // Blog çevirileri
+  "blog.readMore": {
+    [Language.Turkish]: "Devamını Oku",
+    [Language.English]: "Read More",
+    [Language.Russian]: "Читать Далее",
+    [Language.Georgian]: "მეტის წაკითხვა"
+  },
+  "blog.latestFromOurBlog": {
+    [Language.Turkish]: "Blogdan Son Yazılar",
+    [Language.English]: "Latest From Our Blog",
+    [Language.Russian]: "Последние Записи из Нашего Блога",
+    [Language.Georgian]: "უახლესი ჩვენი ბლოგიდან"
+  },
+  "common.viewAllBlogs": {
+    [Language.Turkish]: "Tüm Blog Yazılarını Görüntüle",
+    [Language.English]: "View All Blog Posts",
+    [Language.Russian]: "Просмотреть Все Записи Блога",
+    [Language.Georgian]: "ყველა ბლოგის ნახვა"
   },
   
   // Other sections
