@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Package } from "@shared/schema";
 import { getTranslation } from "@/lib/translations";
+import { getPackageTranslation } from "@/lib/packageTranslations";
 import { Button } from "@/components/ui/button";
 import { Loader2, Star, Check, Clock, AtSign } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -177,9 +178,9 @@ export default function PackageDetailPage() {
           <div className="lg:col-span-2">
             <Tabs defaultValue="overview" className="w-full" onValueChange={setActiveTab}>
               <TabsList className="w-full grid grid-cols-3 mb-6">
-                <TabsTrigger value="overview">{getTranslation("packages.overview", language)}</TabsTrigger>
-                <TabsTrigger value="details">{getTranslation("packages.details", language)}</TabsTrigger>
-                <TabsTrigger value="gallery">{getTranslation("packages.gallery", language)}</TabsTrigger>
+                <TabsTrigger value="overview">{getPackageTranslation("packages.overview", language)}</TabsTrigger>
+                <TabsTrigger value="details">{getPackageTranslation("packages.details", language)}</TabsTrigger>
+                <TabsTrigger value="gallery">{getPackageTranslation("packages.gallery", language)}</TabsTrigger>
               </TabsList>
 
               <TabsContent value="overview" className="space-y-8">
@@ -188,10 +189,10 @@ export default function PackageDetailPage() {
                   <div>
                     <Badge variant="outline" className="bg-white/80 dark:bg-black/30 text-emerald-700 dark:text-emerald-400 mb-2 border-emerald-200 dark:border-emerald-800 px-3 py-1">
                       <Sparkles className="h-3.5 w-3.5 mr-1" />
-                      {getTranslation("packages.exclusive", language)}
+                      {getPackageTranslation("packages.exclusive", language)}
                     </Badge>
-                    <h3 className="text-xl font-semibold">{getTranslation("packages.allInclusive", language)}</h3>
-                    <p className="text-muted-foreground text-sm mt-1">{getTranslation("packages.limitedTimeOffer", language)}</p>
+                    <h3 className="text-xl font-semibold">{getPackageTranslation("packages.allInclusive", language)}</h3>
+                    <p className="text-muted-foreground text-sm mt-1">{getPackageTranslation("packages.limitedTimeOffer", language)}</p>
                   </div>
                 </div>
 
