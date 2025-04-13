@@ -2308,6 +2308,147 @@ const PatientManagement = () => {
         </DialogContent>
       </Dialog>
       
+      {/* İlerleme Görseli Dialog */}
+      <Dialog open={isNewProgressImageDialogOpen} onOpenChange={setIsNewProgressImageDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Yeni İlerleme Görseli</DialogTitle>
+            <DialogDescription>
+              Hastanın tedavi sürecindeki ilerlemesini göstermek için yeni bir görsel ekleyin.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <Form {...progressImageForm}>
+            <form onSubmit={progressImageForm.handleSubmit(onSubmitProgressImage)} className="space-y-4">
+              <FormField
+                control={progressImageForm.control}
+                name="imageUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Görsel URL</FormLabel>
+                    <FormControl>
+                      <Input placeholder="https://example.com/image.jpg" {...field} />
+                    </FormControl>
+                    <FormDescription>Görselin tam URL'sini girin</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={progressImageForm.control}
+                name="captureDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Çekim Tarihi</FormLabel>
+                    <FormControl>
+                      <Input type="date" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={progressImageForm.control}
+                name="stage"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Aşama</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Aşama seçin" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="pre-op">Operasyon Öncesi</SelectItem>
+                        <SelectItem value="post-op">Operasyon Sonrası</SelectItem>
+                        <SelectItem value="1-month">1. Ay</SelectItem>
+                        <SelectItem value="3-month">3. Ay</SelectItem>
+                        <SelectItem value="6-month">6. Ay</SelectItem>
+                        <SelectItem value="1-year">1. Yıl</SelectItem>
+                        <SelectItem value="18-month">18. Ay</SelectItem>
+                        <SelectItem value="2-year">2. Yıl</SelectItem>
+                        <SelectItem value="other">Diğer</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={progressImageForm.control}
+                name="notes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Notlar</FormLabel>
+                    <FormControl>
+                      <Textarea 
+                        placeholder="Görsel hakkında notlar..."
+                        className="min-h-[80px]"
+                        {...field}
+                        value={field.value || ""}
+                        onChange={(e) => field.onChange(e.target.value || null)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={progressImageForm.control}
+                name="isVisible"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <div className="space-y-1 leading-none">
+                      <FormLabel>Görsel Görünürlüğü</FormLabel>
+                      <FormDescription>
+                        Bu görsel hastaya gösterilsin mi?
+                      </FormDescription>
+                    </div>
+                  </FormItem>
+                )}
+              />
+              
+              <DialogFooter>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsNewProgressImageDialogOpen(false)}
+                >
+                  İptal
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={createProgressImageMutation.isPending}
+                >
+                  {createProgressImageMutation.isPending ? (
+                    <>
+                      <RotateCcw className="mr-2 h-4 w-4 animate-spin" />
+                      Kaydediliyor...
+                    </>
+                  ) : (
+                    "Görsel Ekle"
+                  )}
+                </Button>
+              </DialogFooter>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+      
       {/* Silme Onay Dialog */}
       <Dialog open={isDeleteConfirmDialogOpen} onOpenChange={setIsDeleteConfirmDialogOpen}>
         <DialogContent>
@@ -2317,6 +2458,7 @@ const PatientManagement = () => {
               {itemToDelete?.type === "patient" && "Bu hastayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."}
               {itemToDelete?.type === "document" && "Bu belgeyi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."}
               {itemToDelete?.type === "treatment" && "Bu tedavi kaydını silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."}
+              {itemToDelete?.type === "progressImage" && "Bu ilerleme görselini silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -2329,10 +2471,11 @@ const PatientManagement = () => {
               disabled={
                 deletePatientMutation.isPending || 
                 deleteDocumentMutation.isPending || 
-                deleteTreatmentMutation.isPending
+                deleteTreatmentMutation.isPending ||
+                deleteProgressImageMutation.isPending
               }
             >
-              {(deletePatientMutation.isPending || deleteDocumentMutation.isPending || deleteTreatmentMutation.isPending) ? (
+              {(deletePatientMutation.isPending || deleteDocumentMutation.isPending || deleteTreatmentMutation.isPending || deleteProgressImageMutation.isPending) ? (
                 <>
                   <RotateCcw className="mr-2 h-4 w-4 animate-spin" />
                   Siliniyor...
