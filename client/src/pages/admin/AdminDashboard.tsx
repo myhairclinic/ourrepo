@@ -2049,7 +2049,13 @@ const AdminDashboard = () => {
             </div>
           )}
           
-          {activeSection !== "dashboard" && activeSection !== "appointments" && activeSection !== "services" && activeSection !== "packages" && activeSection !== "blog" && activeSection !== "users" && activeSection !== "gallery" && activeSection !== "reviews" && activeSection !== "faqs" && activeSection !== "aftercare" && activeSection !== "seo" && activeSection !== "messages" && activeSection !== "telegram" && activeSection !== "patients" && (
+          {activeSection === "products" && (
+            <div className="bg-white rounded-lg shadow-sm p-6">
+              <ProductManagement />
+            </div>
+          )}
+          
+          {activeSection !== "dashboard" && activeSection !== "appointments" && activeSection !== "services" && activeSection !== "packages" && activeSection !== "blog" && activeSection !== "users" && activeSection !== "gallery" && activeSection !== "reviews" && activeSection !== "faqs" && activeSection !== "aftercare" && activeSection !== "seo" && activeSection !== "messages" && activeSection !== "telegram" && activeSection !== "patients" && activeSection !== "products" && (
             <div>
               <h1 className="text-2xl font-bold text-gray-900 mb-6">{sidebarItems.find(item => item.id === activeSection)?.label || "İçerik"} Yönetimi</h1>
               <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
