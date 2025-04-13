@@ -133,13 +133,13 @@ export default function ContactPage() {
           <div className="container mx-auto px-4 py-16 md:py-24 relative z-10 max-w-7xl">
             <div className="max-w-3xl mx-auto text-center">
               <Badge variant="outline" className="rounded-full border-white border-opacity-50 text-white px-4 py-1 text-sm mb-4 backdrop-blur-sm bg-white/10">
-                {t('contact.getInTouch')}
+                Bizimle İletişime Geçin
               </Badge>
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 drop-shadow-md">
-                {t('contact.title')}
+                İletişim
               </h1>
               <p className="text-lg md:text-xl opacity-90 max-w-2xl mx-auto mb-10">
-                {t('contact.description')}
+                Saç ekimi ve diğer hizmetlerimizle ilgili sorularınız için tüm iletişim kanallarımızdan bizimle iletişime geçebilirsiniz.
               </p>
               
               {/* Quick Contact Buttons */}
@@ -159,7 +159,7 @@ export default function ContactPage() {
                   {CONTACT.EMAIL}
                 </a>
                 <a 
-                  href={`https://wa.me/${CONTACT.WHATSAPP.replace(/\D/g, '')}?text=${encodeURIComponent(t('contact.whatsappMessage'))}`}
+                  href={`https://wa.me/${CONTACT.WHATSAPP.replace(/\D/g, '')}?text=${encodeURIComponent("Merhaba, MyHair Clinic hakkında bilgi almak istiyorum.")}`}
                   className="flex items-center gap-2 bg-[#25D366] hover:bg-[#25D366]/90 px-4 py-2 rounded-full transition-all duration-300 text-sm font-medium"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -197,7 +197,7 @@ export default function ContactPage() {
                         <MapPin className="h-6 w-6" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-lg mb-2">{t('home.location.address')}</h3>
+                        <h3 className="font-semibold text-lg mb-2">Adres</h3>
                         <p className="text-muted-foreground">{CONTACT.ADDRESS[language.toUpperCase() as keyof typeof CONTACT.ADDRESS]}</p>
                       </div>
                     </div>
@@ -210,7 +210,7 @@ export default function ContactPage() {
                         <Phone className="h-6 w-6" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-lg mb-2">{t('home.location.phone')}</h3>
+                        <h3 className="font-semibold text-lg mb-2">Telefon</h3>
                         <p className="text-muted-foreground mb-1">{CONTACT.PHONE}</p>
                       </div>
                     </div>
@@ -295,7 +295,7 @@ export default function ContactPage() {
                     </a>
                     {/* WhatsApp button removed to avoid duplication as it exists below */}
                     <a 
-                      href={`https://wa.me/${CONTACT.WHATSAPP.replace(/\D/g, '')}?text=${encodeURIComponent(t('contact.whatsappMessage'))}`}
+                      href={`https://wa.me/${CONTACT.WHATSAPP.replace(/\D/g, '')}?text=${encodeURIComponent("Merhaba, MyHair Clinic hakkında bilgi almak istiyorum.")}`}
                       className="h-10 w-10 flex items-center justify-center rounded-full bg-[#25D366] text-white hover:opacity-90 transition-opacity"
                       target="_blank"
                       rel="noopener noreferrer"
