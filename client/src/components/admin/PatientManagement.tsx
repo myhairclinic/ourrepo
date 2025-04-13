@@ -1261,7 +1261,7 @@ const PatientManagement = () => {
                     <Users className="h-4 w-4" />
                     Kişisel Bilgiler
                   </TabsTrigger>
-                  <TabsTrigger value="medical-records" className="flex items-center gap-2">
+                  <TabsTrigger value="treatments" className="flex items-center gap-2">
                     <ClipboardList className="h-4 w-4" />
                     Tedavi Kayıtları
                   </TabsTrigger>
