@@ -1587,47 +1587,55 @@ const PatientManagement = () => {
                             </tr>
                           </thead>
                           <tbody className="bg-white divide-y divide-gray-200">
-                            {treatmentRecords.map((treatment: any) => (
-                              <tr key={treatment.id} className="hover:bg-gray-50">
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                  {new Date(treatment.treatmentDate).toLocaleDateString('tr-TR')}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                  {treatment.doctorName}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                  {treatment.procedureDetails}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                  <Badge variant={
-                                    treatment.status === "completed" ? "secondary" :
-                                    treatment.status === "scheduled" ? "default" :
-                                    treatment.status === "cancelled" ? "destructive" :
-                                    "outline"
-                                  }>
-                                    {treatment.status === "completed" && "Tamamlandı"}
-                                    {treatment.status === "scheduled" && "Planlandı"}
-                                    {treatment.status === "cancelled" && "İptal"}
-                                    {treatment.status === "pending" && "Beklemede"}
-                                  </Badge>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                  {treatment.followUpDate ? new Date(treatment.followUpDate).toLocaleDateString('tr-TR') : '-'}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    onClick={() => {
-                                      setItemToDelete({ type: "treatment", id: treatment.id });
-                                      setIsDeleteConfirmDialogOpen(true);
-                                    }}
-                                  >
-                                    <Trash2 className="h-4 w-4 text-red-600" />
-                                  </Button>
+                            {treatmentRecords && treatmentRecords.length > 0 ? (
+                              treatmentRecords.map((treatment: any) => (
+                                <tr key={treatment.id} className="hover:bg-gray-50">
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    {new Date(treatment.treatmentDate).toLocaleDateString('tr-TR')}
+                                  </td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    {treatment.doctorName}
+                                  </td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    {treatment.procedureDetails}
+                                  </td>
+                                  <td className="px-6 py-4 whitespace-nowrap">
+                                    <Badge variant={
+                                      treatment.status === "completed" ? "secondary" :
+                                      treatment.status === "scheduled" ? "default" :
+                                      treatment.status === "cancelled" ? "destructive" :
+                                      "outline"
+                                    }>
+                                      {treatment.status === "completed" && "Tamamlandı"}
+                                      {treatment.status === "scheduled" && "Planlandı"}
+                                      {treatment.status === "cancelled" && "İptal"}
+                                      {treatment.status === "pending" && "Beklemede"}
+                                    </Badge>
+                                  </td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {treatment.followUpDate ? new Date(treatment.followUpDate).toLocaleDateString('tr-TR') : '-'}
+                                  </td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      onClick={() => {
+                                        setItemToDelete({ type: "treatment", id: treatment.id });
+                                        setIsDeleteConfirmDialogOpen(true);
+                                      }}
+                                    >
+                                      <Trash2 className="h-4 w-4 text-red-600" />
+                                    </Button>
+                                  </td>
+                                </tr>
+                              ))
+                            ) : (
+                              <tr>
+                                <td colSpan={7} className="px-6 py-4 text-center text-sm text-gray-500">
+                                  Tedavi kaydı bulunamadı
                                 </td>
                               </tr>
-                            ))}
+                            )}
                           </tbody>
                         </table>
                       </div>
