@@ -173,6 +173,8 @@ export const confirmAppointmentWithTime = async (req: Request, res: Response) =>
       // Başarısız olursa tekrar deneme (bir acil durum önlemi)
       try {
         console.log(`Retrying to send appointment confirmation notification for ID: ${finalAppointment.id}`);
+        // TelegramBotService'i import ediyoruz
+        const { telegramBotService } = await import('../services/telegramBotService');
         await telegramBotService.initialize(); // Bot servisini yeniden başlatmaya çalış
         await telegramService.notifyAppointmentConfirmation(finalAppointment, appointmentTime);
       } catch (retryError) {

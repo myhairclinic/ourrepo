@@ -18,6 +18,23 @@ class TelegramBotService {
   // Sabit admin ID'leri (her zaman bildirim alması gereken kişiler)
   readonly primaryAdminIds: string[] = ['1062681151', '5631870985'];
   
+  // Telegram chat ID'sinin doğru formatlı olduğunu kontrol et
+  private validateChatId(chatId: any): string {
+    // Eğer sayı ise string'e çevir
+    if (typeof chatId === 'number') {
+      return chatId.toString();
+    }
+    
+    // Eğer string ise direkt kullan
+    if (typeof chatId === 'string') {
+      return chatId;
+    }
+    
+    // Diğer tipleri kontrol et ve hata raporla
+    console.error(`Invalid chat ID type: ${typeof chatId}, value: ${chatId}`);
+    throw new Error(`Invalid chat ID: ${chatId}`);
+  }
+  
   // isInitialized özelliğini dışarıdan erişilebilir yap
   get isInitialized(): boolean {
     return this._isInitialized;
@@ -291,7 +308,7 @@ class TelegramBotService {
     }
   }
   
-  // Operatöre kullanıcı adı ile mesaj gönder
+  // Operatöre kullanıcı adı veya chat ID ile mesaj gönder
   async sendMessageToOperator(username: string, message: string) {
     try {
       // Bot initialized check ve auto-initialize ekliyoruz
