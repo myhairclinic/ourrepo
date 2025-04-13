@@ -1,5 +1,48 @@
 // PrimeHealth blog yazılarını eklemek için komut dosyası
-const fetch = require('node-fetch');
+const https = require('https');
+
+// HTTP isteği yapan yardımcı fonksiyon
+function makeRequest(url, method, data) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    };
+
+    const req = https.request(url, options, (res) => {
+      let responseData = '';
+      
+      res.on('data', (chunk) => {
+        responseData += chunk;
+      });
+      
+      res.on('end', () => {
+        try {
+          const parsedData = JSON.parse(responseData);
+          if (res.statusCode >= 200 && res.statusCode < 300) {
+            resolve(parsedData);
+          } else {
+            reject(new Error(`HTTP Error: ${res.statusCode} - ${JSON.stringify(parsedData)}`));
+          }
+        } catch (error) {
+          reject(new Error(`Failed to parse response: ${error.message}, Raw response: ${responseData}`));
+        }
+      });
+    });
+    
+    req.on('error', (error) => {
+      reject(error);
+    });
+    
+    if (data) {
+      req.write(JSON.stringify(data));
+    }
+    
+    req.end();
+  });
+}
 
 async function createPrimeHealthBlogs() {
   console.log('PrimeHealth blog yazıları oluşturuluyor...');
@@ -755,20 +798,11 @@ MyHair კლინიკაში პაციენტების კმა�
     for (const post of blogPosts) {
       console.log(`"${post.titleTR}" başlıklı blog yazısı oluşturuluyor...`);
       
-      const response = await fetch('http://localhost:5000/api/blog', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(post),
-      });
-
-      if (!response.ok) {
-        const errorMessage = await response.text();
-        console.error(`Blog oluşturma hatası: ${errorMessage}`);
-      } else {
-        const result = await response.json();
+      try {
+        const result = await makeRequest('http://localhost:5000/api/blog', 'POST', post);
         console.log(`✅ Blog oluşturuldu: ${result.titleTR} (ID: ${result.id})`);
+      } catch (error) {
+        console.error(`❌ Blog oluşturma hatası: ${error.message}`);
       }
     }
     
