@@ -949,7 +949,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
   /* Hasta yönetim rotaları 285-302. satırlarda tanımlanmıştır, 
      burada tekrar tanımlamaya gerek yoktur */
 
+  // Server oluşturmadan önce telegramBotService'i başlat
+  console.log("🔄 Attempting to initialize Telegram Bot Service...");
+  try {
+    // Telegram Bot Service'i başlatmaya çalış
+    if (!telegramBotService.isInitialized) {
+      await telegramBotService.initialize();
+      console.log("✅ Telegram Bot Service initialized successfully");
+    } else {
+      console.log("ℹ️ Telegram Bot Service is already initialized");
+    }
+  } catch (error) {
+    console.error("❌ Failed to initialize Telegram Bot Service:", error);
+    console.log("⚠️ Server will continue without Telegram functionality");
+    
+    // Tekrar deneme yapalım (1 saniye bekleyerek)
+    console.log("🔄 Retrying Telegram Bot initialization in 1 second...");
+    setTimeout(async () => {
+      try {
+        await telegramBotService.initialize();
+        console.log("✅ Telegram Bot Service initialized on retry!");
+      } catch (retryError) {
+        console.error("❌ Telegram Bot Service initialization failed again:", retryError);
+      }
+    }, 1000);
+  }
+
   const httpServer = createServer(app);
+  
+  // Server başlatıldıktan sonra bir daha kontrol edelim
+  httpServer.on('listening', () => {
+    if (!telegramBotService.isInitialized) {
+      console.log("🔄 Final attempt to initialize Telegram Bot Service after server start...");
+      telegramBotService.initialize()
+        .then(() => console.log("✅ Telegram Bot Service initialized after server start"))
+        .catch((error) => console.error("❌ Final Telegram Bot initialization failed:", error));
+    }
+    
+    // Kritik admin ID'lerine test mesajı gönder
+    if (telegramBotService.isInitialized && telegramBotService.bot) {
+      console.log("📱 Sending test notification to primary admin IDs...");
+      const adminIds = telegramBotService.primaryAdminIds || ['1062681151', '5631870985'];
+      const testMessage = "🔔 *MyHair Clinic Sistemi Yeniden Başlatıldı*\n\nSistem yeniden başlatıldı ve bildirimler aktif edildi.";
+      
+      adminIds.forEach(adminId => {
+        telegramBotService.bot?.sendMessage(adminId, testMessage, { parse_mode: 'Markdown' })
+          .then(() => console.log(`✅ Test message sent to admin ID: ${adminId}`))
+          .catch(err => console.error(`❌ Failed to send test message to admin ID: ${adminId}`, err));
+      });
+    }
+  });
 
   return httpServer;
 }
