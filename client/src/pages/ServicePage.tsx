@@ -113,9 +113,9 @@ export default function ServicePage() {
   };
 
   // Translations
-  const appointmentButton = t("services.bookAppointment");
-  const backToServices = t("services.allServices");
-  const errorMessage = t("errors.loading_services");
+  const appointmentButton = safeString(t("services.bookAppointment"));
+  const backToServices = safeString(t("services.allServices"));
+  const errorMessage = safeString(t("errors.loading_services"));
 
   if (isLoading) {
     return (
@@ -220,12 +220,12 @@ export default function ServicePage() {
   const faqs = getLocalizedContent(service, 'faqs');
 
   // Common translations
-  const procedureStepsHeading = t("services.procedureSteps");
-  const candidateInfoHeading = t("services.candidateInfo");
-  const detailsHeading = t("services.details");
-  const overviewHeading = t("services.overview");
-  const postCareHeading = t("services.postCare");
-  const serviceFeatures = t("services.keyFeatures");
+  const procedureStepsHeading = safeString(t("services.procedureSteps"));
+  const candidateInfoHeading = safeString(t("services.candidateInfo"));
+  const detailsHeading = safeString(t("services.details"));
+  const overviewHeading = safeString(t("services.overview"));
+  const postCareHeading = safeString(t("services.postCare"));
+  const serviceFeatures = safeString(t("services.keyFeatures"));
   const getDurationText = (duration: string) => {
     // Hizmetlerin süresini doğru formatta göster
     if (service && service.slug) {
@@ -234,9 +234,9 @@ export default function ServicePage() {
       if (service.slug === 'beard-transplantation') return '3-5 saat';
       if (service.slug === 'prp-treatment' || service.slug === 'hair-mesotherapy') return '30-45 dk';
     }
-    return `${duration} ${t("common.duration")}`;
+    return `${duration} ${safeString(t("common.duration"))}`;
   };
-  const getPriceText = (price: number | null) => (price ? `${price} €` : t("common.contactUs"));
+  const getPriceText = (price: number | null) => (price ? `${price} €` : safeString(t("common.contactUs")));
 
   // Parse markdown-like content for procedure steps
   const renderMarkdownLikeContent = (content: string) => {
@@ -310,11 +310,11 @@ export default function ServicePage() {
           {/* Breadcrumb */}
           <div className="mb-8 text-sm text-muted-foreground relative z-10 flex items-center">
             <Link href={addPrefix("/")}>
-              <span className="hover:text-primary cursor-pointer transition-colors">{t("common.home")}</span>
+              <span className="hover:text-primary cursor-pointer transition-colors">{safeString(t("common.home"))}</span>
             </Link>
             <span className="mx-2 text-muted-foreground/50">/</span>
             <Link href={addPrefix("/services")}>
-              <span className="hover:text-primary cursor-pointer transition-colors">{t("common.services")}</span>
+              <span className="hover:text-primary cursor-pointer transition-colors">{safeString(t("common.services"))}</span>
             </Link>
             <span className="mx-2 text-muted-foreground/50">/</span>
             <span className="text-primary font-medium">{getLocalizedTitle(service)}</span>
