@@ -25,6 +25,7 @@ import {
   BookOpen,
   ArrowRight
 } from "lucide-react";
+import { getBlogTranslation, Language } from "@/lib/blogTranslations";
 
 // Blog sayfası için özel stiller
 import '../styles/blog-page.css';
