@@ -5,6 +5,7 @@ import { Award, Calendar, CheckCircle, Clock, Star, UserCheck } from "lucide-rea
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import AliCalıskanImage from "@/assets/ali-caliskan.png";
 
 export default function ExpertSection() {
   const { language } = useLanguage();
@@ -69,7 +70,7 @@ export default function ExpertSection() {
               
               {/* Expert Image */}
               <img 
-                src="/images/experts/ali-caliskan.png" 
+                src={AliCalıskanImage} 
                 alt="Ali Çalışkan - Saç Ekimi Uzmanı" 
                 className="w-full h-auto object-cover aspect-[3/4]"
               />
