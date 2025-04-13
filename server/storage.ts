@@ -1438,6 +1438,48 @@ export class DatabaseStorage implements IStorage {
     });
   }
   
+  // Patient Progress Images operations
+  async getPatientProgressImages(patientId: number): Promise<PatientProgressImage[]> {
+    return await db.select().from(patientProgressImages)
+      .where(eq(patientProgressImages.patientId, patientId))
+      .orderBy(desc(patientProgressImages.captureDate));
+  }
+
+  async getPatientProgressImageById(id: number): Promise<PatientProgressImage | undefined> {
+    const [image] = await db.select().from(patientProgressImages)
+      .where(eq(patientProgressImages.id, id));
+    return image;
+  }
+
+  async createPatientProgressImage(data: InsertPatientProgressImage): Promise<PatientProgressImage> {
+    const [image] = await db.insert(patientProgressImages)
+      .values({
+        ...data,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      })
+      .returning();
+    return image;
+  }
+
+  async updatePatientProgressImage(id: number, data: Partial<InsertPatientProgressImage>): Promise<PatientProgressImage | undefined> {
+    const [updatedImage] = await db.update(patientProgressImages)
+      .set({
+        ...data,
+        updatedAt: new Date()
+      })
+      .where(eq(patientProgressImages.id, id))
+      .returning();
+    return updatedImage;
+  }
+
+  async deletePatientProgressImage(id: number): Promise<PatientProgressImage | undefined> {
+    const [deletedImage] = await db.delete(patientProgressImages)
+      .where(eq(patientProgressImages.id, id))
+      .returning();
+    return deletedImage;
+  }
+  
   // Site Settings operations
   async getSettings(section: string): Promise<SiteSetting[]> {
     return await db.select().from(siteSettings).where(eq(siteSettings.section, section));
