@@ -115,11 +115,8 @@ const PackagesPage: React.FC = () => {
       />
       
       {/* Colorful overlay with wave pattern after header */}
-      <div className="bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 dark:from-blue-900/20 dark:via-purple-900/20 dark:to-pink-900/20 py-20 -mt-20 relative z-10 overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-pink-200/30 dark:bg-pink-700/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-200/40 dark:bg-blue-700/10 rounded-full -ml-48 -mb-48 blur-3xl"></div>
-        
+      <div className="bg-gradient-to-r from-blue-50/80 via-purple-50/80 to-pink-50/80 dark:from-blue-900/10 dark:via-purple-900/10 dark:to-pink-900/10 py-20 -mt-20 relative z-10">
+        {/* Container */}
         <Container>
           <div className="max-w-3xl mx-auto text-center relative">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-primary via-purple-500 to-pink-500 text-transparent bg-clip-text">
@@ -170,10 +167,7 @@ const PackagesPage: React.FC = () => {
         </div>
         
         {/* "Why Choose Our Packages" Section with colorful background */}
-        <div className="rounded-2xl bg-gradient-to-r from-sky-50 via-indigo-50 to-purple-50 dark:from-sky-900/20 dark:via-indigo-900/20 dark:to-purple-900/20 p-8 md:p-12 mb-20 shadow-xl border border-blue-100 dark:border-blue-800/30 relative overflow-hidden">
-          {/* Decorative blobs */}
-          <div className="absolute top-0 right-0 w-48 h-48 bg-indigo-200/40 dark:bg-indigo-700/10 rounded-full -mr-24 -mt-24 blur-2xl"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-sky-200/30 dark:bg-sky-700/10 rounded-full -ml-32 -mb-32 blur-2xl"></div>
+        <div className="rounded-2xl bg-gradient-to-r from-sky-50/80 via-indigo-50/80 to-purple-50/80 dark:from-sky-900/10 dark:via-indigo-900/10 dark:to-purple-900/10 p-8 md:p-12 mb-20 shadow-lg border border-blue-100 dark:border-blue-800/20 relative overflow-hidden">
           
           <div className="flex items-center gap-3 mb-8 relative">
             <div className="h-10 w-10 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full flex items-center justify-center shadow-md">
@@ -264,13 +258,10 @@ const PackagesPage: React.FC = () => {
                     <div className={`absolute inset-0 ${bgImage} bg-cover bg-center`}></div>
                     
                     {/* Glass overlay with gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/60 via-purple-500/40 to-indigo-600/60 backdrop-blur-sm"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/50 via-purple-500/30 to-indigo-600/50 backdrop-blur-[2px]"></div>
                     
                     {/* Glowing border */}
-                    <div className="absolute inset-0 border-2 border-white/20 rounded-2xl"></div>
-                    
-                    {/* Glow effect on hover */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-br from-primary/30 via-violet-500/30 to-fuchsia-500/30 rounded-2xl blur-xl -m-2"></div>
+                    <div className="absolute inset-0 border border-white/20 rounded-2xl"></div>
                     
                     {/* Content */}
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-4 z-10">
