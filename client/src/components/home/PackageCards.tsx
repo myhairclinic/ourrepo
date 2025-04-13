@@ -440,7 +440,7 @@ export function PackageCards() {
                 {packages && packages.length > 0 ? (
                   packages.map((pkg, index) => (
                     <div
-                      key={pkg.id}
+                      key={`${pkg.id}-${pkg.countryOrigin || index}`}
                       className={`transition-all duration-700 transform flex-shrink-0 min-w-[350px] w-[350px] px-3 ${
                         isInView
                           ? 'opacity-100 translate-y-0'

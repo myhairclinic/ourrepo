@@ -1829,6 +1829,7 @@ export class DatabaseStorage implements IStorage {
     try {
       // Her ülkeden bir paket getirme stratejisi
       const result: Package[] = [];
+      const usedIds = new Set<number>(); // Kullanılan ID'leri takip etmek için set
       
       // SQL ile doğrudan her ülke için bir paket sorgular
       // Önce her ülkeyi belirtelim
@@ -1837,18 +1838,37 @@ export class DatabaseStorage implements IStorage {
       // Her ülke için ayrı bir paket seçelim ve id'leri birbirinden farklı olsun
       for (const countryCode of countryList) {
         // Her ülke kodu için o ülkenin paketlerinden birini seçelim 
-        // Ve her ülkeden farklı bir paket alalım
         const countryPackages = await db.select().from(packages)
           .where(eq(packages.countryOrigin, countryCode))
           .where(eq(packages.isActive, true));
           
         if (countryPackages.length > 0) {
-          // Her ülkeden bir paketi rastgele seçme
-          const randomIndex = Math.floor(Math.random() * countryPackages.length);
-          const selectedPackage = countryPackages[randomIndex];
+          // Henüz kullanılmamış paketleri filtrele
+          const availablePackages = countryPackages.filter(pkg => !usedIds.has(pkg.id));
           
-          console.log(`Selected package for ${countryCode}: ${selectedPackage.titleTR} (ID: ${selectedPackage.id})`);
-          result.push(selectedPackage);
+          // Eğer kullanılmamış paket varsa, onlardan birini seç
+          if (availablePackages.length > 0) {
+            const randomIndex = Math.floor(Math.random() * availablePackages.length);
+            const selectedPackage = availablePackages[randomIndex];
+            
+            // Seçilen paketin ID'sini kullanıldı olarak işaretle
+            usedIds.add(selectedPackage.id);
+            
+            console.log(`Selected package for ${countryCode}: ${selectedPackage.titleTR} (ID: ${selectedPackage.id})`);
+            result.push(selectedPackage);
+          } else if (countryPackages.length > 0) {
+            // Eğer tüm paketler kullanılmışsa, benzersiz bir ID'ye sahip olmasını sağla
+            const randomPkg = countryPackages[Math.floor(Math.random() * countryPackages.length)];
+            // Paketi klonla ve ID'ye ülke kodunu ekle
+            const uniquePackage = {
+              ...randomPkg,
+              // Bu alanı sadece client-side'da kullanacağız, DB'ye yazmıyoruz
+              _uniqueKey: `${randomPkg.id}-${countryCode}`
+            };
+            
+            console.log(`Selected package for ${countryCode}: ${uniquePackage.titleTR} (ID: ${uniquePackage.id}-${countryCode})`);
+            result.push(uniquePackage);
+          }
         }
       }
       
@@ -1857,7 +1877,8 @@ export class DatabaseStorage implements IStorage {
       
       // Sonuçları kontrol et
       for (const pkg of result) {
-        console.log(`Package from ${pkg.countryOrigin}: "${pkg.titleTR}" (ID: ${pkg.id})`);
+        const pkgId = pkg._uniqueKey || pkg.id;
+        console.log(`Package from ${pkg.countryOrigin}: "${pkg.titleTR}" (ID: ${pkgId})`);
       }
       
       return result;
