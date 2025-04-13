@@ -18,6 +18,7 @@ import {
   patients, Patient, InsertPatient,
   patientDocuments, PatientDocument, InsertPatientDocument,
   treatmentRecords, TreatmentRecord, InsertTreatmentRecord,
+  patientProgressImages, PatientProgressImage, InsertPatientProgressImage,
   siteSettings, SiteSetting, InsertSiteSetting
 } from "@shared/schema";
 import session from "express-session";
@@ -190,6 +191,13 @@ export interface IStorage {
   updatePatientDocument(id: number, data: Partial<InsertPatientDocument>): Promise<PatientDocument | undefined>;
   deletePatientDocument(id: number): Promise<PatientDocument | undefined>;
 
+  // Patient Progress Image operations
+  getPatientProgressImages(patientId: number): Promise<PatientProgressImage[]>;
+  getPatientProgressImageById(id: number): Promise<PatientProgressImage | undefined>;
+  createPatientProgressImage(data: InsertPatientProgressImage): Promise<PatientProgressImage>;
+  updatePatientProgressImage(id: number, data: Partial<InsertPatientProgressImage>): Promise<PatientProgressImage | undefined>;
+  deletePatientProgressImage(id: number): Promise<PatientProgressImage | undefined>;
+
   // Treatment Record operations
   getTreatmentRecords(patientId: number): Promise<TreatmentRecord[]>;
   getTreatmentRecordById(id: number): Promise<TreatmentRecord | undefined>;
@@ -224,6 +232,7 @@ export class MemStorage implements IStorage {
   private chatOperators: Map<number, ChatOperator>;
   private patients: Map<number, Patient>;
   private patientDocuments: Map<number, PatientDocument>;
+  private patientProgressImages: Map<number, PatientProgressImage>;
   private treatmentRecords: Map<number, TreatmentRecord>;
   private siteSettings: Map<number, SiteSetting>;
   
@@ -244,6 +253,7 @@ export class MemStorage implements IStorage {
   private currentChatOperatorId: number;
   private currentPatientId: number;
   private currentPatientDocumentId: number;
+  private currentPatientProgressImageId: number;
   private currentTreatmentRecordId: number;
   private currentSiteSettingId: number;
   
@@ -267,6 +277,7 @@ export class MemStorage implements IStorage {
     this.chatOperators = new Map();
     this.patients = new Map();
     this.patientDocuments = new Map();
+    this.patientProgressImages = new Map();
     this.treatmentRecords = new Map();
     this.siteSettings = new Map();
 
@@ -287,6 +298,7 @@ export class MemStorage implements IStorage {
     this.currentChatOperatorId = 1;
     this.currentPatientId = 1;
     this.currentPatientDocumentId = 1;
+    this.currentPatientProgressImageId = 1;
     this.currentTreatmentRecordId = 1;
     this.currentSiteSettingId = 1;
 
