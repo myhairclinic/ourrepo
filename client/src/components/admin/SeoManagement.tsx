@@ -511,7 +511,7 @@ const SeoManagement: React.FC<SeoManagementProps> = () => {
                                 variant="outline" 
                                 size="sm"
                                 onClick={() => {
-                                  const matchingPage = pageSeoSettings.find((p) => p.canonicalUrl === page.url || p.page === page.url);
+                                  const matchingPage = pageSeoSettings.find((page_setting) => page_setting.canonicalUrl === page.url || page_setting.page === page.url);
                                   if (matchingPage) {
                                     openDetailModal(matchingPage);
                                   } else {
