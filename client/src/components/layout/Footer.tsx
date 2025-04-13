@@ -248,14 +248,14 @@ export default function Footer() {
       <div className="bg-gray-950 border-t border-gray-800">
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm">
+            <p className="text-white text-sm">
               &copy; {new Date().getFullYear()} MyHair Clinic. {t("footer.allRightsReserved")}
             </p>
             <div className="mt-4 md:mt-0 flex space-x-6">
-              <Link href={addPrefix("/privacy")} className="text-gray-400 text-sm hover:text-white transition-colors">
+              <Link href={addPrefix("/privacy")} className="text-white text-sm hover:text-blue-200 transition-colors">
                 {t("footer.privacyPolicy")}
               </Link>
-              <Link href={addPrefix("/terms")} className="text-gray-400 text-sm hover:text-white transition-colors">
+              <Link href={addPrefix("/terms")} className="text-white text-sm hover:text-blue-200 transition-colors">
                 {t("footer.termsOfUse")}
               </Link>
             </div>
