@@ -163,7 +163,22 @@ export const confirmAppointmentWithTime = async (req: Request, res: Response) =>
     const finalAppointment = updatedAppointment || appointment;
     
     // Send notification to Telegram about appointment confirmation with time
-    telegramService.notifyAppointmentConfirmation(finalAppointment, appointmentTime);
+    console.log(`Sending appointment confirmation to Telegram for appointment ID: ${finalAppointment.id}`);
+    try {
+      // Bildirim göndermede sorunlar yaşanabileceği için try/catch bloğuna alıyoruz ve await ekliyoruz
+      await telegramService.notifyAppointmentConfirmation(finalAppointment, appointmentTime);
+      console.log(`Appointment confirmation notification sent successfully for ID: ${finalAppointment.id}`);
+    } catch (error) {
+      console.error(`Error sending appointment confirmation notification: ${error}`);
+      // Başarısız olursa tekrar deneme (bir acil durum önlemi)
+      try {
+        console.log(`Retrying to send appointment confirmation notification for ID: ${finalAppointment.id}`);
+        await telegramBotService.initialize(); // Bot servisini yeniden başlatmaya çalış
+        await telegramService.notifyAppointmentConfirmation(finalAppointment, appointmentTime);
+      } catch (retryError) {
+        console.error(`Retry failed for sending appointment notification: ${retryError}`);
+      }
+    }
     
     // Onaylanmış randevu hasta kaydına dönüştürülüyor
     try {
