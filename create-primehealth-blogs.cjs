@@ -1,17 +1,24 @@
 // PrimeHealth blog yazılarını eklemek için komut dosyası
 const https = require('https');
+const URL = require('url').URL;
 
 // HTTP isteği yapan yardımcı fonksiyon
 function makeRequest(url, method, data) {
   return new Promise((resolve, reject) => {
+    // URL nesnesini oluştur
+    const parsedUrl = new URL(url);
+    
     const options = {
+      hostname: parsedUrl.hostname,
+      port: parsedUrl.port || 443,
+      path: parsedUrl.pathname + parsedUrl.search,
       method: method,
       headers: {
         'Content-Type': 'application/json',
       }
     };
 
-    const req = https.request(url, options, (res) => {
+    const req = https.request(options, (res) => {
       let responseData = '';
       
       res.on('data', (chunk) => {
@@ -219,7 +226,7 @@ MyHair კლინიკაში ჩვენ ვადევნებთ თ�
       metaDescriptionRU: 'Подробная информация о различиях между техниками трансплантации волос FUE и DHI, преимуществах и о том, какая из них подходит вам. Профессиональные мнения экспертов клиники MyHair.',
       metaDescriptionKA: 'დეტალური ინფორმაცია FUE და DHI თმის გადანერგვის ტექნიკებს შორის განსხვავებების, უპირატესობების და რომელი ტექნიკაა თქვენთვის შესაფერისი. პროფესიონალური მოსაზრებები MyHair კლინიკის ექსპერტებისგან.',
       slug: 'modern-hair-transplantation-techniques',
-      categoryId: 1, // Saç Ekimi kategorisi
+      category: 'Saç Ekimi', // Blog kategorisi
       authorId: 1, // Admin kullanıcısı
       isFeatured: true,
       tags: ['FUE', 'DHI', 'saç ekimi', 'hair transplantation', 'трансплантация волос', 'თმის გადანერგვა']
@@ -467,7 +474,7 @@ MyHair კლინიკაში ჩვენ ვაწვდით ჩვე�
       metaDescriptionRU: 'Этапы подготовки перед трансплантацией волос и последующий уход, процесс восстановления и советы экспертов для получения лучших результатов. Всестороннее руководство по уходу от клиники MyHair.',
       metaDescriptionKA: 'თმის გადანერგვამდე მომზადების ნაბიჯები და შემდგომი მოვლა, აღდგენის პროცესი და ექსპერტების რჩევები საუკეთესო შედეგების მისაღებად. ყოვლისმომცველი მოვლის სახელმძღვანელო MyHair კლინიკისგან.',
       slug: 'before-after-hair-transplantation-care',
-      categoryId: 1, // Saç Ekimi kategorisi
+      category: 'Saç Ekimi', // Blog kategorisi 
       authorId: 1, // Admin kullanıcısı
       isFeatured: true,
       tags: ['saç ekimi', 'hair transplantation', 'трансплантация волос', 'თმის გადანერგვა', 'aftercare', 'bakım']
@@ -787,7 +794,7 @@ MyHair კლინიკაში პაციენტების კმა�
       metaDescriptionRU: 'Почему важно выбрать правильную больницу для трансплантации волос? На что обратить внимание при выборе клиники, оборудования и опытного персонала для успешных результатов. Профессиональное руководство от клиники MyHair.',
       metaDescriptionKA: 'რატომ არის მნიშვნელოვანი სწორი საავადმყოფოს შერჩევა თმის გადანერგვისთვის? რას უნდა მიაქციოთ ყურადღება კლინიკის, აღჭურვილობისა და ექსპერტი პერსონალის შერჩევისას წარმატებული შედეგებისთვის. პროფესიონალური სახელმძღვანელო MyHair კლინიკისგან.',
       slug: 'importance-hospital-selection-hair-transplantation',
-      categoryId: 1, // Saç Ekimi kategorisi
+      category: 'Saç Ekimi', // Blog kategorisi
       authorId: 1, // Admin kullanıcısı
       isFeatured: true,
       tags: ['saç ekimi', 'hair transplantation', 'трансплантация волос', 'თმის გადანერგვა', 'hospital', 'clinic', 'hastane']
@@ -795,11 +802,61 @@ MyHair კლინიკაში პაციენტების კმა�
   ];
 
   try {
+    // API URL'ini HTTP olarak değiştirdik (localhost HTTPS desteklemez)
+    const apiUrl = 'http://localhost:5000/api/blog';
+    
     for (const post of blogPosts) {
       console.log(`"${post.titleTR}" başlıklı blog yazısı oluşturuluyor...`);
       
       try {
-        const result = await makeRequest('http://localhost:5000/api/blog', 'POST', post);
+        // HTTP isteği için http modülü kullanıyoruz
+        const http = require('http');
+        
+        // Verileri JSON formatına dönüştürüyoruz
+        const postData = JSON.stringify(post);
+        
+        // HTTP isteklerini Promise içinde sarmalıyoruz
+        const result = await new Promise((resolve, reject) => {
+          const options = {
+            hostname: 'localhost',
+            port: 5000,
+            path: '/api/blog',
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Content-Length': Buffer.byteLength(postData)
+            }
+          };
+          
+          const req = http.request(options, (res) => {
+            let data = '';
+            
+            res.on('data', (chunk) => {
+              data += chunk;
+            });
+            
+            res.on('end', () => {
+              try {
+                const jsonData = JSON.parse(data);
+                if (res.statusCode >= 200 && res.statusCode < 300) {
+                  resolve(jsonData);
+                } else {
+                  reject(new Error(`HTTP Error: ${res.statusCode} - ${JSON.stringify(jsonData)}`));
+                }
+              } catch (e) {
+                reject(new Error(`Failed to parse response: ${e.message}, Raw response: ${data}`));
+              }
+            });
+          });
+          
+          req.on('error', (e) => {
+            reject(e);
+          });
+          
+          req.write(postData);
+          req.end();
+        });
+        
         console.log(`✅ Blog oluşturuldu: ${result.titleTR} (ID: ${result.id})`);
       } catch (error) {
         console.error(`❌ Blog oluşturma hatası: ${error.message}`);
