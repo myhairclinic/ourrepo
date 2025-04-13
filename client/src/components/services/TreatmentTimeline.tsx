@@ -11,7 +11,7 @@ export interface TimelineStep {
   description: string;
   duration?: string;
   icon?: string;
-  highlights?: string[];
+  highlights?: (string | undefined)[];
 }
 
 interface TreatmentTimelineProps {
