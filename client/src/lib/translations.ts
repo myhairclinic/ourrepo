@@ -334,6 +334,198 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Georgian]: "ორშაბათი - შაბათი"
   },
   
+  // Services Section
+  "services.badge": {
+    [Language.Turkish]: "HİZMETLER",
+    [Language.English]: "SERVICES",
+    [Language.Russian]: "УСЛУГИ",
+    [Language.Georgian]: "სერვისები"
+  },
+  "common.services": {
+    [Language.Turkish]: "Hizmetlerimiz",
+    [Language.English]: "Our Services",
+    [Language.Russian]: "Наши Услуги",
+    [Language.Georgian]: "ჩვენი სერვისები"
+  },
+  "services.subtitle": {
+    [Language.Turkish]: "Saç restorasyon ve güzellik hizmetleri",
+    [Language.English]: "Hair restoration and beauty services",
+    [Language.Russian]: "Услуги по восстановлению волос и красоте",
+    [Language.Georgian]: "თმის აღდგენისა და სილამაზის სერვისები"
+  },
+  "common.viewAll": {
+    [Language.Turkish]: "Tümünü Görüntüle",
+    [Language.English]: "View All",
+    [Language.Russian]: "Посмотреть Все",
+    [Language.Georgian]: "ყველას ნახვა"
+  },
+  "services.popular.label": {
+    [Language.Turkish]: "Popüler Hizmet",
+    [Language.English]: "Popular Service",
+    [Language.Russian]: "Популярная Услуга",
+    [Language.Georgian]: "პოპულარული სერვისი"
+  },
+  "services.features.naturalResults": {
+    [Language.Turkish]: "Doğal Sonuçlar",
+    [Language.English]: "Natural Results",
+    [Language.Russian]: "Естественные Результаты",
+    [Language.Georgian]: "ბუნებრივი შედეგები"
+  },
+  "common.learnMore": {
+    [Language.Turkish]: "Daha Fazla Bilgi",
+    [Language.English]: "Learn More",
+    [Language.Russian]: "Узнать Больше",
+    [Language.Georgian]: "მეტის გაგება"
+  },
+  "services.features.customDesign": {
+    [Language.Turkish]: "Kişiye Özel Tasarım",
+    [Language.English]: "Custom Design",
+    [Language.Russian]: "Индивидуальный Дизайн",
+    [Language.Georgian]: "კუსტომ დიზაინი"
+  },
+  "services.features.densityControl": {
+    [Language.Turkish]: "Yoğunluk Kontrolü",
+    [Language.English]: "Density Control",
+    [Language.Russian]: "Контроль Плотности",
+    [Language.Georgian]: "სიმკვრივის კონტროლი"
+  },
+  "services.features.consultation": {
+    [Language.Turkish]: "Ücretsiz Konsültasyon",
+    [Language.English]: "Free Consultation",
+    [Language.Russian]: "Бесплатная Консультация",
+    [Language.Georgian]: "უფასო კონსულტაცია"
+  },
+  "services.features.aftercare": {
+    [Language.Turkish]: "Kapsamlı Bakım",
+    [Language.English]: "Comprehensive Aftercare",
+    [Language.Russian]: "Комплексный Послеоперационный Уход",
+    [Language.Georgian]: "სრული მოვლა ოპერაციის შემდეგ"
+  },
+  "services.features.support": {
+    [Language.Turkish]: "7/24 Destek",
+    [Language.English]: "24/7 Support",
+    [Language.Russian]: "Поддержка 24/7",
+    [Language.Georgian]: "24/7 მხარდაჭერა"
+  },
+  "services.features.satisfaction": {
+    [Language.Turkish]: "Müşteri Memnuniyeti",
+    [Language.English]: "Customer Satisfaction",
+    [Language.Russian]: "Удовлетворенность Клиентов",
+    [Language.Georgian]: "კლიენტის კმაყოფილება"
+  },
+  
+  // Package section
+  "packages.home.tagline": {
+    [Language.Turkish]: "ÜLKELERE ÖZEL PAKETLER",
+    [Language.English]: "COUNTRY-SPECIFIC PACKAGES",
+    [Language.Russian]: "ПАКЕТЫ ДЛЯ КОНКРЕТНЫХ СТРАН",
+    [Language.Georgian]: "ქვეყნის სპეციფიკური პაკეტები"
+  },
+  "packages.home.title": {
+    [Language.Turkish]: "Saç Ekimi Seyahat Paketleri",
+    [Language.English]: "Hair Transplant Travel Packages",
+    [Language.Russian]: "Пакеты Для Путешествий с Трансплантацией Волос",
+    [Language.Georgian]: "თმის გადანერგვის სამოგზაურო პაკეტები"
+  },
+  "packages.home.subtitle": {
+    [Language.Turkish]: "Konforlu konaklama ve VIP hizmetleri içeren ülkeye özel paketler",
+    [Language.English]: "Country-specific packages including comfortable accommodation and VIP services",
+    [Language.Russian]: "Пакеты для конкретных стран, включающие комфортное проживание и VIP-услуги",
+    [Language.Georgian]: "ქვეყნისთვის სპეციფიკური პაკეტები, რომლებიც მოიცავს კომფორტულ საცხოვრებელს და VIP მომსახურებას"
+  },
+  "countries.turkey": {
+    [Language.Turkish]: "Türkiye",
+    [Language.English]: "Turkey",
+    [Language.Russian]: "Турция",
+    [Language.Georgian]: "თურქეთი"
+  },
+  "countries.ru": {
+    [Language.Turkish]: "Rusya",
+    [Language.English]: "Russia",
+    [Language.Russian]: "Россия",
+    [Language.Georgian]: "რუსეთი"
+  },
+  "countries.az": {
+    [Language.Turkish]: "Azerbaycan",
+    [Language.English]: "Azerbaijan",
+    [Language.Russian]: "Азербайджан",
+    [Language.Georgian]: "აზერბაიჯანი"
+  },
+  "countries.kz": {
+    [Language.Turkish]: "Kazakistan",
+    [Language.English]: "Kazakhstan",
+    [Language.Russian]: "Казахстан",
+    [Language.Georgian]: "ყაზახეთი"
+  },
+  "countries.ua": {
+    [Language.Turkish]: "Ukrayna",
+    [Language.English]: "Ukraine",
+    [Language.Russian]: "Украина",
+    [Language.Georgian]: "უკრაინა"
+  },
+  "countries.ir": {
+    [Language.Turkish]: "İran",
+    [Language.English]: "Iran",
+    [Language.Russian]: "Иран",
+    [Language.Georgian]: "ირანი"
+  },
+  "packages.home.days": {
+    [Language.Turkish]: "gün",
+    [Language.English]: "days",
+    [Language.Russian]: "дней",
+    [Language.Georgian]: "დღე"
+  },
+  "packages.home.forPerson": {
+    [Language.Turkish]: "kişi başı",
+    [Language.English]: "per person",
+    [Language.Russian]: "на человека",
+    [Language.Georgian]: "ერთ პიროვნებაზე"
+  },
+  "packages.home.details": {
+    [Language.Turkish]: "Paket Detayları",
+    [Language.English]: "Package Details",
+    [Language.Russian]: "Детали Пакета",
+    [Language.Georgian]: "პაკეტის დეტალები"
+  },
+  "packages.home.allInclusive": {
+    [Language.Turkish]: "Her Şey Dahil",
+    [Language.English]: "All Inclusive",
+    [Language.Russian]: "Все Включено",
+    [Language.Georgian]: "ყველაფერი ჩათვლილი"
+  },
+  
+  // Footer section  
+  "footer.workingHours": {
+    [Language.Turkish]: "Çalışma Saatleri",
+    [Language.English]: "Working Hours",
+    [Language.Russian]: "Часы Работы",
+    [Language.Georgian]: "სამუშაო საათები"
+  },
+  "footer.getDirections": {
+    [Language.Turkish]: "Yol Tarifi Al",
+    [Language.English]: "Get Directions",
+    [Language.Russian]: "Получить Направления",
+    [Language.Georgian]: "მიმართულებების მიღება"
+  },
+  "footer.allRightsReserved": {
+    [Language.Turkish]: "Tüm Hakları Saklıdır",
+    [Language.English]: "All Rights Reserved",
+    [Language.Russian]: "Все Права Защищены",
+    [Language.Georgian]: "ყველა უფლება დაცულია"
+  },
+  "footer.privacyPolicy": {
+    [Language.Turkish]: "Gizlilik Politikası",
+    [Language.English]: "Privacy Policy",
+    [Language.Russian]: "Политика Конфиденциальности",
+    [Language.Georgian]: "კონფიდენციალურობის პოლიტიკა"
+  },
+  "footer.termsOfUse": {
+    [Language.Turkish]: "Kullanım Şartları",
+    [Language.English]: "Terms of Use",
+    [Language.Russian]: "Условия Использования",
+    [Language.Georgian]: "გამოყენების პირობები"
+  },
+  
   // Other sections
   "gallery.patientJourney": {
     [Language.Turkish]: "Hasta Yolculuğu",
