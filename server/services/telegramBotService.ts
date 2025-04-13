@@ -841,6 +841,17 @@ E-posta: ${appointment.email}
         return false;
       }
       
+      // Bot başlatılmış mı kontrol et, başlatılmamışsa başlat
+      if (!this._isInitialized || !this.bot) {
+        console.warn(`Bot is not initialized, attempting to initialize before sending operator notification...`);
+        await this.initialize();
+        
+        if (!this._isInitialized || !this.bot) {
+          console.error(`Bot initialization failed, cannot send operator notification`);
+          return false;
+        }
+      }
+      
       if (!this._isInitialized || !this.bot) {
         console.warn('Bot is not initialized, cannot send notification. Check if the Telegram bot service is active.');
         return false;
@@ -913,13 +924,14 @@ E-posta: ${appointment.email}
         let fallbackSuccess = false;
         
         for (const adminId of this.primaryAdminIds) {
-          const result = await this.bot?.sendMessage(adminId, message, { parse_mode: 'Markdown' })
-            .then(() => true)
-            .catch(() => false);
-            
-          if (result) {
-            console.log(`Fallback notification sent successfully to admin ${adminId}`);
+          try {
+            const chatId = this.validateChatId(adminId);
+            console.log(`Attempting direct fallback message to admin ID ${chatId}...`);
+            const result = await this.bot?.sendMessage(chatId, message, { parse_mode: 'Markdown' });
+            console.log(`Direct fallback sent with message ID: ${result?.message_id}`);
             fallbackSuccess = true;
+          } catch (directError) {
+            console.error(`Failed direct fallback to admin ID ${adminId}:`, directError);
           }
         }
         
