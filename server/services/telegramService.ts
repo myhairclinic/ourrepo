@@ -232,80 +232,143 @@ const notifyNewAppointment = (appointment: Appointment): void => {
       appointmentDate.setHours(hours, minutes);
     }
     
-    if (!telegramBotService.isInitialized) {
-      console.log("⚠️ Telegram bot servisi henüz başlatılmamış, yeniden başlatılıyor...");
-      telegramBotService.initialize()
-        .then(() => {
-          console.log("✅ Telegram bot servisi başarıyla başlatıldı, bildirim gönderiliyor...");
-          // Tüm operatörlere randevu bildirimi gönderme
-          sendNewAppointmentNotification(appointment, serviceId, appointmentDate)
-            .then(() => console.log(`✅ Randevu bildirimi süreci tamamlandı, ID: ${appointment.id}`))
-            .catch(error => console.error(`❌ Bildirim gönderiminde kritik hata: ${error}`));
-        })
-        .catch(error => {
-          console.error(`❌ Bot servisi başlatılamadı: ${error}`);
-          // Bot başlatılamasa bile bildirimi göndermeyi deneyelim
-          try {
-            console.log("⚠️ Bot başlatılamadı, yine de bildirim gönderilmeye çalışılıyor...");
-            
-            sendNewAppointmentNotification(appointment, serviceId, appointmentDate)
-              .then(() => console.log(`✅ Acil durum bildirimi tamamlandı, ID: ${appointment.id}`))
-              .catch(error => console.error(`❌ Acil durum bildirimi de başarısız: ${error}`));
-          } catch (finalError) {
-            console.error(`❌❌❌ Tüm bildirim denemeleri başarısız: ${finalError}`);
+    // Bildirim gönderimi için Promise zinciri oluştur
+    Promise.resolve()
+      .then(async () => {
+        // Adım 1: Telegram bot servisinin durumunu kontrol et, gerekliyse başlat
+        if (!telegramBotService.isInitialized) {
+          console.log("⚠️ Telegram bot service not initialized, attempting to initialize...");
+          const initResult = await telegramBotService.initialize();
+          
+          if (!initResult) {
+            console.warn("⚠️ Bot initialization failed, will try alternative notification methods");
+          } else {
+            console.log("✅ Telegram bot service initialized successfully");
           }
-        });
-      return;
-    }
-    
-    console.log("✅ Telegram bot servisi aktif durumda, bildirim gönderiliyor...");
-    // Bot zaten çalışır durumda, bildirimi doğrudan gönder
-    sendNewAppointmentNotification(appointment, serviceId, appointmentDate)
-      .then(() => console.log(`✅ Standart bildirim süreci tamamlandı, ID: ${appointment.id}`))
-      .catch(error => {
-        console.error(`❌ Standart bildirim sürecinde hata: ${error}`);
+        } else {
+          console.log("✅ Telegram bot service is already active");
+        }
         
-        // Son çare olarak doğrudan mesaj göndermeyi deneyelim
-        if (telegramBotService.bot) {
-          console.log("⚠️ Standart yöntem başarısız, doğrudan mesaj göndermeye çalışılıyor...");
-          const message = `❗️ RANDEVU BİLDİRİMİ ❗️\n\nİsim: ${appointment.name}\nTelefon: ${appointment.phone}\n\nAcilen admin paneline giriş yapın!`;
+        // Adım 2: Bildirim gönderme işlemi - Ana yöntem
+        try {
+          console.log("🔄 Sending notification using primary method (sendNewAppointmentNotification)...");
+          await sendNewAppointmentNotification(appointment, serviceId, appointmentDate);
+          console.log(`✅ Primary notification method succeeded for appointment ID: ${appointment.id}`);
+          return true; // Başarılı
+        } catch (primaryError) {
+          console.error(`❌ Primary notification method failed:`, primaryError);
+          throw primaryError; // Yedek yöntemlere geç
+        }
+      })
+      .catch(async (error) => {
+        // Adım 3: Birincil yöntem başarısız olursa, sendOperatorNotification'ı dene
+        console.warn("⚠️ Primary method failed, trying secondary method (sendOperatorNotification)...");
+        try {
+          if (!telegramBotService.isInitialized) {
+            console.warn("⚠️ Bot not initialized for secondary method");
+          }
           
-          // Sabit admin ID'lerine gönderme
-          const primaryAdminIds = telegramBotService.primaryAdminIds || ['1062681151', '5631870985'];
+          // Özel bir mesaj hazırla
+          const serviceName = await telegramBotService.getServiceNamePublic(serviceId);
+          const formattedMessage = telegramBotService.formatAppointmentMessage(appointment, serviceName, appointmentDate);
           
-          primaryAdminIds.forEach(adminId => {
-            if (telegramBotService.bot) {
-              telegramBotService.bot.sendMessage(adminId, message, { parse_mode: 'Markdown' })
-                .then(() => console.log(`✅ Manuel mesaj gönderildi, Admin ID: ${adminId}`))
-                .catch(err => console.error(`❌ Manuel mesaj gönderilemedi, Admin ID: ${adminId}`, err));
-            }
-          });
+          // Çift öneme sahip bir randevu bildirimi olduğunu vurgula
+          const urgentMessage = `‼️ *URGENT NEW APPOINTMENT* ‼️\n\n${formattedMessage}\n\n⚠️ *Primary notification failed, this is a backup notification.*`;
+          
+          // Operatörlere gönder
+          const result = await telegramBotService.sendOperatorNotification(urgentMessage);
+          
+          if (result) {
+            console.log(`✅ Secondary notification method succeeded for appointment ID: ${appointment.id}`);
+            return true;
+          } else {
+            console.error("❌ Secondary notification method failed too");
+            throw new Error("Secondary notification failed");
+          }
+        } catch (secondaryError) {
+          console.error("❌ Secondary notification method error:", secondaryError);
+          throw secondaryError; // Son yönteme geç
+        }
+      })
+      .catch(async (finalError) => {
+        // Adım 4: Son çare - doğrudan sabit admin ID'lerine acil bildirim gönder
+        console.warn("⚠️ All standard methods failed, using emergency direct notification...");
+        
+        try {
+          // Ultra acil durum mesajı
+          const emergencyMessage = `🚨 *CRITICAL NOTIFICATION* 🚨\n\nNew appointment received that requires immediate attention!\n\nPatient: ${appointment.name}\nPhone: ${appointment.phone}\nEmail: ${appointment.email}\nService ID: ${serviceId}\nRequested Date: ${appointmentDate.toLocaleString()}\n\n⚠️ *THIS IS AN EMERGENCY NOTIFICATION - MULTIPLE NOTIFICATION ATTEMPTS FAILED*`;
+          
+          // En son çare - sendDirectNotificationToAdmins kullan
+          const result = await telegramBotService.sendDirectNotificationToAdmins(emergencyMessage);
+          console.log(result 
+            ? "✅ Emergency direct notification succeeded" 
+            : "❌ Even emergency direct notification failed");
+          
+          // En kötü durumda, en azından bir log bırak
+          if (!result) {
+            console.error(`⛔ CRITICAL: ALL NOTIFICATION ATTEMPTS FAILED for appointment ID ${appointment.id}`);
+            console.error(`⛔ URGENT MANUAL ACTION REQUIRED: Check appointment ID ${appointment.id} immediately`);
+          }
+        } catch (emergencyError) {
+          console.error("💥 FATAL ERROR in emergency notification:", emergencyError);
+          console.error(`💥 CRITICAL FAILURE: Manual intervention required for appointment ID ${appointment.id}`);
         }
       });
     
-  } catch (error: any) {
-    console.error(`❌ Kritik hata: Randevu bildirimi gönderilemedi: ${error.message}`);
-    console.error("Hata detayları:", error);
+  } catch (error) {
+    console.error("❌ CRITICAL ERROR IN NOTIFICATION SYSTEM:", error);
     
-    // Son çare olarak doğrudan mesaj göndermeyi deneyelim
+    // Son çare - konsola kritik uyarı
+    console.error(`
+    =============================================================
+    ⛔ CRITICAL NOTIFICATION FAILURE FOR APPOINTMENT ID ${appointment.id} ⛔
+    =============================================================
+    Patient: ${appointment.name}
+    Phone: ${appointment.phone}
+    Email: ${appointment.email}
+    Service: ${appointment.serviceId}
+    =============================================================
+    MANUAL INTERVENTION REQUIRED - CHECK ADMIN PANEL IMMEDIATELY
+    =============================================================
+    `);
+    
+    // Son bir çaba olarak, basit hata izleme verisini de log'layalım
+    console.error("Error details:", error);
+    
+    // Acil durum bildirimi için son çaba
     try {
-      console.log("⚠️ Son çare: Kritik manuel bildirim gönderiliyor...");
-      if (telegramBotService.bot) {
-        const message = `❗️ KRİTİK DURUM: YENİ RANDEVU ❗️\n\nİsim: ${appointment.name}\nTelefon: ${appointment.phone}\n\nAcilen admin paneline giriş yapın!`;
+      console.log("🚨 ATTEMPTING EMERGENCY NOTIFICATION AS LAST RESORT...");
+      
+      // DirectNotificationToAdmins yöntemini kullanarak son bir deneme yap
+      if (telegramBotService.isInitialized && telegramBotService.bot) {
+        const emergencyMessage = `🚨 *CRITICAL NOTIFICATION SYSTEM FAILURE* 🚨\n\nThe notification system encountered a critical error while processing an appointment.\n\nPatient: ${appointment.name}\nPhone: ${appointment.phone}\n\nPlease check the admin panel immediately and contact the development team.\n\nError: ${error instanceof Error ? error.message : 'Unknown error'}`;
         
-        // Sabit admin ID'lerine gönderme
+        // Sabit admin ID'lerine direkt mesaj gönder
         const primaryAdminIds = telegramBotService.primaryAdminIds || ['1062681151', '5631870985'];
         
-        primaryAdminIds.forEach(adminId => {
-          if (telegramBotService.bot) {
-            telegramBotService.bot.sendMessage(adminId, message, { parse_mode: 'Markdown' })
-              .then(() => console.log(`✅ Kritik mesaj başarıyla gönderildi, Admin ID: ${adminId}`))
-              .catch(err => console.error(`❌ Kritik mesaj gönderilemedi, Admin ID: ${adminId}`, err));
+        // Promise.all ile paralel gönderim, bir tanesi bile başarılı olsa yeterli
+        Promise.all(
+          primaryAdminIds.map(adminId => 
+            telegramBotService.bot?.sendMessage(adminId, emergencyMessage, { parse_mode: 'Markdown' })
+              .then(() => console.log(`✅ Emergency message sent successfully to Admin ID: ${adminId}`))
+              .catch(err => {
+                console.error(`❌ Failed to send emergency message to Admin ID: ${adminId}`, err);
+                return false;
+              })
+          )
+        ).then(results => {
+          const successCount = results.filter(Boolean).length;
+          if (successCount > 0) {
+            console.log(`✅ Emergency notification sent to ${successCount}/${primaryAdminIds.length} admins`);
+          } else {
+            console.error("❌ All emergency notification attempts failed");
           }
         });
+      } else {
+        console.error("❌ Bot not available for emergency notification");
       }
     } catch (finalError) {
-      console.error(`❌ Tüm bildirim yöntemleri başarısız: ${finalError}`);
+      console.error("💥 COMPLETE SYSTEM FAILURE - All notification methods exhausted:", finalError);
     }
   }
 };
