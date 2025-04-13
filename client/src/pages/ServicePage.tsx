@@ -349,7 +349,7 @@ export default function ServicePage() {
             <div>
               <div className="mb-4">
                 <Badge variant="outline" className="px-4 py-1 rounded-full text-primary border-primary/30 font-medium">
-                  {t("services.popular")}
+                  {safeString(t("services.popular"))}
                 </Badge>
               </div>
               
@@ -384,19 +384,19 @@ export default function ServicePage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div className="flex items-center gap-2">
                     <Check className="h-4 w-4 text-primary shrink-0" />
-                    <span className="text-sm font-medium">{t("services.features.naturalResults")}</span>
+                    <span className="text-sm font-medium">{safeString(t("services.features.naturalResults"))}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="h-4 w-4 text-primary shrink-0" />
-                    <span className="text-sm font-medium">{t("services.features.permanentSolution")}</span>
+                    <span className="text-sm font-medium">{safeString(t("services.features.permanentSolution"))}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="h-4 w-4 text-primary shrink-0" />
-                    <span className="text-sm font-medium">{t("services.features.consultation")}</span>
+                    <span className="text-sm font-medium">{safeString(t("services.features.consultation"))}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Check className="h-4 w-4 text-primary shrink-0" />
-                    <span className="text-sm font-medium">{t("services.features.aftercare")}</span>
+                    <span className="text-sm font-medium">{safeString(t("services.features.aftercare"))}</span>
                   </div>
                 </div>
               </div>
@@ -577,20 +577,20 @@ export default function ServicePage() {
                             <div className="bg-primary/5 rounded-xl p-6 border border-primary/10 relative overflow-hidden group">
                               <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 -z-10 rounded-bl-full group-hover:scale-110 transition-transform"></div>
                               <h3 className="text-xl font-semibold mb-2 text-primary">
-                                {t("services.fueTechnique")}
+                                {safeString(t("services.fueTechnique"))}
                               </h3>
                               <p className="text-muted-foreground">
-                                {t("services.fueDescription")}
+                                {safeString(t("services.fueDescription"))}
                               </p>
                             </div>
                             
                             <div className="bg-primary/5 rounded-xl p-6 border border-primary/10 relative overflow-hidden group">
                               <div className="absolute top-0 right-0 w-24 h-24 bg-primary/10 -z-10 rounded-bl-full group-hover:scale-110 transition-transform"></div>
                               <h3 className="text-xl font-semibold mb-2 text-primary">
-                                {t("services.dhiTechnique")}
+                                {safeString(t("services.dhiTechnique"))}
                               </h3>
                               <p className="text-muted-foreground">
-                                {t("services.dhiDescription")}
+                                {safeString(t("services.dhiDescription"))}
                               </p>
                             </div>
                           </div>
@@ -738,13 +738,13 @@ export default function ServicePage() {
               
               <div className="max-w-3xl mx-auto text-center relative z-10">
                 <Badge variant="secondary" className="mb-6 bg-white/80 backdrop-blur-sm">
-                  {t("services.exclusive")}
+                  {safeString(t("services.exclusive"))}
                 </Badge>
                 <h2 className="text-2xl md:text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/80">
-                  {t("services.readyToStart")}
+                  {safeString(t("services.readyToStart"))}
                 </h2>
                 <p className="text-lg text-muted-foreground mb-8 max-w-xl mx-auto">
-                  {t("services.appointmentCTA")}
+                  {safeString(t("services.appointmentCTA"))}
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                   <Link href={addPrefix(`/appointment?service=${service.id}`)}>
@@ -767,7 +767,7 @@ export default function ServicePage() {
                     >
                       <span className="flex items-center gap-2">
                         <MapPin className="h-5 w-5" />
-                        {t("common.contactUs")}
+                        {safeString(t("common.contactUs"))}
                       </span>
                     </Button>
                   </Link>
@@ -775,7 +775,7 @@ export default function ServicePage() {
                 <div className="mt-8 text-sm text-muted-foreground">
                   <div className="flex items-center justify-center gap-2">
                     <ThumbsUp className="h-4 w-4 text-primary" />
-                    <span>{t("services.satisfaction")}</span>
+                    <span>{safeString(t("services.satisfaction"))}</span>
                   </div>
                 </div>
               </div>
@@ -791,9 +791,9 @@ export default function ServicePage() {
               service.slug === 'prp-treatment' || 
               service.slug === 'hair-mesotherapy') && (
               <div className="mb-24">
-                <h2 className="text-3xl font-bold text-center mb-6">{t("services.procedureTimeline")}</h2>
+                <h2 className="text-3xl font-bold text-center mb-6">{safeString(t("services.procedureTimeline"))}</h2>
                 <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-12">
-                  {t("services.timelineDescription")}
+                  {safeString(t("services.timelineDescription"))}
                 </p>
                 
                 <TreatmentTimeline 
@@ -802,12 +802,12 @@ export default function ServicePage() {
                       id: 1,
                       title: service.slug === 'prp-treatment' ? 'Kan Alma İşlemi / Blood Collection' : 
                              service.slug === 'hair-mesotherapy' ? 'Saç Analizi / Hair Analysis' :
-                             t("services.timeline.step1Title"),
+                             safeString(t("services.timeline.step1Title")),
                       description: service.slug === 'prp-treatment' ? 'Küçük bir miktar kan alınır ve özel tüplerde hazırlanır / A small amount of blood is drawn and prepared in special tubes' :
                                   service.slug === 'hair-mesotherapy' ? 'Saç ve kafa derisi değerlendirmesi yapılır / Hair and scalp evaluation is performed' :
                                   service.slug === 'eyebrow-transplantation' ? 'Kaş şekli ve tasarımı kişiye özel olarak planlanır / Eyebrow shape and design is planned individually' :
                                   service.slug === 'beard-transplantation' ? 'Sakal yoğunluğu ve tasarımı planlanır / Beard density and design is planned' :
-                                  t("services.timeline.step1Description"),
+                                  safeString(t("services.timeline.step1Description")),
                       duration: service.slug === 'prp-treatment' ? "15-20 min" : 
                                service.slug === 'hair-mesotherapy' ? "20-30 min" : "30-60 min",
                       highlights: [
@@ -815,13 +815,13 @@ export default function ServicePage() {
                         service.slug === 'hair-mesotherapy' ? 'Detaylı saç analizi / Detailed hair analysis' :
                         service.slug === 'eyebrow-transplantation' ? 'Yüz şekline uygun tasarım / Design suitable for face shape' :
                         service.slug === 'beard-transplantation' ? 'Yüz hatlarına uygun planlama / Planning suitable for facial features' :
-                        t("services.timeline.step1Highlight1"),
+                        safeString(t("services.timeline.step1Highlight1")),
                         
                         service.slug === 'prp-treatment' ? 'Hızlı işlem / Quick procedure' : 
                         service.slug === 'hair-mesotherapy' ? 'Kişiye özel formül belirleme / Determining custom formula' :
                         service.slug === 'eyebrow-transplantation' ? 'Doğal görünüm için açı planlaması / Angle planning for natural look' :
                         service.slug === 'beard-transplantation' ? 'Doğal sakal hattı belirleme / Determining natural beard line' :
-                        t("services.timeline.step1Highlight2")
+                        safeString(t("services.timeline.step1Highlight2"))
                       ],
                       icon: "Scissors"
                     },
