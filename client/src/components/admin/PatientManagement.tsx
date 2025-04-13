@@ -8,7 +8,8 @@ import {
   UserPlus, Edit, Trash2, Search, ChevronDown, 
   ChevronLeft, ChevronRight, FileText, Folder,
   Upload, Clock, Calendar, RotateCcw, CheckCircle,
-  ListFilter, LayoutGrid, Users, ClipboardList, BadgeCheck
+  ListFilter, LayoutGrid, Users, ClipboardList, BadgeCheck,
+  ImageIcon
 } from "lucide-react";
 
 import {
@@ -532,18 +533,6 @@ const PatientManagement = () => {
     setIsNewPatientDialogOpen(true);
   };
   
-  const handleDeleteItem = () => {
-    if (!itemToDelete) return;
-    
-    if (itemToDelete.type === "patient") {
-      deletePatientMutation.mutate(itemToDelete.id);
-    } else if (itemToDelete.type === "document") {
-      deleteDocumentMutation.mutate(itemToDelete.id);
-    } else if (itemToDelete.type === "treatment") {
-      deleteTreatmentMutation.mutate(itemToDelete.id);
-    }
-  };
-  
   const handleNewDocument = () => {
     documentForm.reset({
       patientId: selectedPatient.id,
@@ -572,30 +561,32 @@ const PatientManagement = () => {
     setIsNewTreatmentDialogOpen(true);
   };
   
-  // Filtreleme işlevi
-  const handleFilterChange = (type: string, value: string) => {
-    // Filtre değiştiğinde sayfa numarasını sıfırla
-    setCurrentPage(1);
+  const handleDeleteItem = () => {
+    if (!itemToDelete) return;
     
-    switch (type) {
-      case "search":
-        setSearchTerm(value);
-        break;
-      case "status":
-        setStatusFilter(value);
-        break;
-      case "source":
-        setSourceFilter(value);
-        break;
-      case "nationality":
-        setNationalityFilter(value);
-        break;
-      default:
-        break;
+    if (itemToDelete.type === "patient") {
+      deletePatientMutation.mutate(itemToDelete.id);
+    } else if (itemToDelete.type === "document") {
+      deleteDocumentMutation.mutate(itemToDelete.id);
+    } else if (itemToDelete.type === "treatment") {
+      deleteTreatmentMutation.mutate(itemToDelete.id);
     }
   };
   
-  // FILTERS & PAGINATION
+  const handleFilterChange = (filterType: string, value: string) => {
+    // Filtre değiştiğinde sayfa 1'e dön
+    setCurrentPage(1);
+    
+    if (filterType === "status") {
+      setStatusFilter(value);
+    } else if (filterType === "source") {
+      setSourceFilter(value);
+    } else if (filterType === "nationality") {
+      setNationalityFilter(value);
+    }
+  };
+  
+  // Hasta verilerini işle
   const filteredPatients = patients ? patients.filter((patient: any) => {
     const matchesSearch = !searchTerm || 
       patient.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -753,170 +744,170 @@ const PatientManagement = () => {
                   <div className="bg-white overflow-hidden rounded-lg shadow-sm">
                     <div className="overflow-x-auto">
                       <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Hasta Adı
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          İletişim Bilgileri
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Durum
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Son Ziyaret
-                        </th>
-                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          İşlemler
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {currentPatients.map((patient: any) => (
-                        <tr key={patient.id} className="hover:bg-gray-50">
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="flex flex-col">
-                              <button 
-                                onClick={() => {
-                                  setSelectedPatient(patient);
-                                  setActiveTab("patient-details");
-                                }}
-                                className="text-left hover:text-primary font-medium text-gray-900"
-                              >
-                                {patient.fullName}
-                              </button>
-                              {patient.notes && patient.notes.includes("Otomatik oluşturuldu. Randevu ID:") && (
-                                <span className="text-xs text-muted-foreground mt-1 flex items-center">
-                                  <CheckCircle className="h-3 w-3 mr-1 text-green-500" />
-                                  Randevudan otomatik oluşturuldu
-                                </span>
-                              )}
-                            </div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-900">{patient.phone}</div>
-                            <div className="text-sm text-gray-500">{patient.email}</div>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <Badge variant={
-                              patient.status === "active" ? "default" :
-                              patient.status === "pending" ? "outline" :
-                              patient.status === "completed" ? "secondary" :
-                              "destructive"
-                            }>
-                              {patient.status === "active" && "Aktif"}
-                              {patient.status === "inactive" && "Pasif"}
-                              {patient.status === "pending" && "Beklemede"}
-                              {patient.status === "completed" && "Tamamlandı"}
-                            </Badge>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {patient.lastVisitDate ? new Date(patient.lastVisitDate).toLocaleDateString('tr-TR') : '-'}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon">
-                                  <ChevronDown className="h-4 w-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuItem onClick={() => {
-                                  setSelectedPatient(patient);
-                                  setActiveTab("patient-details");
-                                }}>
-                                  Detayları Görüntüle
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => handleEditPatient(patient)}>
-                                  Düzenle
-                                </DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem
-                                  onClick={() => {
-                                    setItemToDelete({ type: "patient", id: patient.id });
-                                    setIsDeleteConfirmDialogOpen(true);
-                                  }}
-                                  className="text-red-600"
-                                >
-                                  Sil
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                
-                {/* Pagination */}
-                {totalPages > 1 && (
-                  <div className="px-6 py-4 flex items-center justify-between border-t border-gray-200">
-                    <div className="flex-1 flex justify-between sm:hidden">
-                      <Button
-                        variant="outline"
-                        disabled={currentPage === 1}
-                        onClick={() => setCurrentPage(currentPage - 1)}
-                      >
-                        Önceki
-                      </Button>
-                      <Button
-                        variant="outline"
-                        disabled={currentPage === totalPages}
-                        onClick={() => setCurrentPage(currentPage + 1)}
-                      >
-                        Sonraki
-                      </Button>
+                        <thead className="bg-gray-50">
+                          <tr>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              Hasta Adı
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              İletişim Bilgileri
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              Durum
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              Son Ziyaret
+                            </th>
+                            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                              İşlemler
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                          {currentPatients.map((patient: any) => (
+                            <tr key={patient.id} className="hover:bg-gray-50">
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex flex-col">
+                                  <button 
+                                    onClick={() => {
+                                      setSelectedPatient(patient);
+                                      setActiveTab("patient-details");
+                                    }}
+                                    className="text-left hover:text-primary font-medium text-gray-900"
+                                  >
+                                    {patient.fullName}
+                                  </button>
+                                  {patient.notes && patient.notes.includes("Otomatik oluşturuldu. Randevu ID:") && (
+                                    <span className="text-xs text-muted-foreground mt-1 flex items-center">
+                                      <CheckCircle className="h-3 w-3 mr-1 text-green-500" />
+                                      Randevudan otomatik oluşturuldu
+                                    </span>
+                                  )}
+                                </div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="text-sm text-gray-900">{patient.phone}</div>
+                                <div className="text-sm text-gray-500">{patient.email}</div>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap">
+                                <Badge variant={
+                                  patient.status === "active" ? "default" :
+                                  patient.status === "pending" ? "outline" :
+                                  patient.status === "completed" ? "secondary" :
+                                  "destructive"
+                                }>
+                                  {patient.status === "active" && "Aktif"}
+                                  {patient.status === "inactive" && "Pasif"}
+                                  {patient.status === "pending" && "Beklemede"}
+                                  {patient.status === "completed" && "Tamamlandı"}
+                                </Badge>
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {patient.lastVisitDate ? new Date(patient.lastVisitDate).toLocaleDateString('tr-TR') : '-'}
+                              </td>
+                              <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" size="icon">
+                                      <ChevronDown className="h-4 w-4" />
+                                    </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent align="end">
+                                    <DropdownMenuItem onClick={() => {
+                                      setSelectedPatient(patient);
+                                      setActiveTab("patient-details");
+                                    }}>
+                                      Detayları Görüntüle
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={() => handleEditPatient(patient)}>
+                                      Düzenle
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem
+                                      onClick={() => {
+                                        setItemToDelete({ type: "patient", id: patient.id });
+                                        setIsDeleteConfirmDialogOpen(true);
+                                      }}
+                                      className="text-red-600"
+                                    >
+                                      Sil
+                                    </DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
-                    <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                      <div>
-                        <p className="text-sm text-gray-700">
-                          Toplam <span className="font-medium">{filteredPatients.length}</span> hastadan{" "}
-                          <span className="font-medium">{(currentPage - 1) * itemsPerPage + 1}</span>-
-                          <span className="font-medium">
-                            {Math.min(currentPage * itemsPerPage, filteredPatients.length)}
-                          </span>{" "}
-                          arası gösteriliyor
-                        </p>
-                      </div>
-                      <div>
-                        <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                    
+                    {/* Pagination */}
+                    {totalPages > 1 && (
+                      <div className="px-6 py-4 flex items-center justify-between border-t border-gray-200">
+                        <div className="flex-1 flex justify-between sm:hidden">
                           <Button
                             variant="outline"
-                            className="rounded-l-md"
                             disabled={currentPage === 1}
                             onClick={() => setCurrentPage(currentPage - 1)}
                           >
-                            <span className="sr-only">Önceki</span>
-                            <ChevronLeft className="h-5 w-5" aria-hidden="true" />
+                            Önceki
                           </Button>
-                          
-                          {Array.from({ length: totalPages }).map((_, index) => (
-                            <Button
-                              key={index}
-                              variant={currentPage === index + 1 ? "default" : "outline"}
-                              onClick={() => setCurrentPage(index + 1)}
-                            >
-                              {index + 1}
-                            </Button>
-                          ))}
-                          
                           <Button
                             variant="outline"
-                            className="rounded-r-md"
                             disabled={currentPage === totalPages}
                             onClick={() => setCurrentPage(currentPage + 1)}
                           >
-                            <span className="sr-only">Sonraki</span>
-                            <ChevronRight className="h-5 w-5" aria-hidden="true" />
+                            Sonraki
                           </Button>
-                        </nav>
+                        </div>
+                        <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                          <div>
+                            <p className="text-sm text-gray-700">
+                              Toplam <span className="font-medium">{filteredPatients.length}</span> hastadan{" "}
+                              <span className="font-medium">{(currentPage - 1) * itemsPerPage + 1}</span>-
+                              <span className="font-medium">
+                                {Math.min(currentPage * itemsPerPage, filteredPatients.length)}
+                              </span>{" "}
+                              arası gösteriliyor
+                            </p>
+                          </div>
+                          <div>
+                            <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                              <Button
+                                variant="outline"
+                                className="rounded-l-md"
+                                disabled={currentPage === 1}
+                                onClick={() => setCurrentPage(currentPage - 1)}
+                              >
+                                <span className="sr-only">Önceki</span>
+                                <ChevronLeft className="h-5 w-5" aria-hidden="true" />
+                              </Button>
+                              
+                              {Array.from({ length: totalPages }).map((_, index) => (
+                                <Button
+                                  key={index}
+                                  variant={currentPage === index + 1 ? "default" : "outline"}
+                                  onClick={() => setCurrentPage(index + 1)}
+                                >
+                                  {index + 1}
+                                </Button>
+                              ))}
+                              
+                              <Button
+                                variant="outline"
+                                className="rounded-r-md"
+                                disabled={currentPage === totalPages}
+                                onClick={() => setCurrentPage(currentPage + 1)}
+                              >
+                                <span className="sr-only">Sonraki</span>
+                                <ChevronRight className="h-5 w-5" aria-hidden="true" />
+                              </Button>
+                            </nav>
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
-                )}
-              </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
                     {currentPatients.map((patient: any) => (
@@ -963,42 +954,53 @@ const PatientManagement = () => {
                               </DropdownMenuContent>
                             </DropdownMenu>
                           </div>
+                          
+                          <Badge variant={
+                            patient.status === "active" ? "default" :
+                            patient.status === "pending" ? "outline" :
+                            patient.status === "completed" ? "secondary" :
+                            "destructive"
+                          } className="mb-2">
+                            {patient.status === "active" && "Aktif"}
+                            {patient.status === "inactive" && "Pasif"}
+                            {patient.status === "pending" && "Beklemede"}
+                            {patient.status === "completed" && "Tamamlandı"}
+                          </Badge>
                         </CardHeader>
-                        <CardContent>
-                          <div className="space-y-2 text-sm">
-                            <div className="flex items-center text-muted-foreground">
-                              <Badge variant={
-                                patient.status === "active" ? "default" :
-                                patient.status === "pending" ? "outline" :
-                                patient.status === "completed" ? "secondary" :
-                                "destructive"
-                              } className="mr-2">
-                                {patient.status === "active" && "Aktif"}
-                                {patient.status === "inactive" && "Pasif"}
-                                {patient.status === "pending" && "Beklemede"}
-                                {patient.status === "completed" && "Tamamlandı"}
-                              </Badge>
-                              {patient.notes && patient.notes.includes("Otomatik oluşturuldu. Randevu ID:") && (
-                                <span className="text-xs flex items-center">
-                                  <CheckCircle className="h-3 w-3 mr-1 text-green-500" />
-                                  Randevudan
-                                </span>
-                              )}
+                        <CardContent className="pb-4">
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm font-medium text-gray-500">Telefon:</span>
+                              <span className="text-sm">{patient.phone}</span>
                             </div>
-                            <div className="flex items-center space-x-1">
-                              <span className="font-medium">Telefon:</span>
-                              <span>{patient.phone}</span>
-                            </div>
+                            
                             {patient.email && (
-                              <div className="flex items-center space-x-1 truncate">
-                                <span className="font-medium">E-posta:</span>
-                                <span className="truncate">{patient.email}</span>
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-medium text-gray-500">E-posta:</span>
+                                <span className="text-sm">{patient.email}</span>
                               </div>
                             )}
-                            <div className="flex items-center space-x-1">
-                              <span className="font-medium">Son Ziyaret:</span>
-                              <span>{patient.lastVisitDate ? new Date(patient.lastVisitDate).toLocaleDateString('tr-TR') : '-'}</span>
-                            </div>
+                            
+                            {patient.lastVisitDate && (
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-medium text-gray-500">Son Ziyaret:</span>
+                                <span className="text-sm">{new Date(patient.lastVisitDate).toLocaleDateString('tr-TR')}</span>
+                              </div>
+                            )}
+                            
+                            {patient.nationality && (
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-medium text-gray-500">Uyruk:</span>
+                                <span className="text-sm">{patient.nationality}</span>
+                              </div>
+                            )}
+                            
+                            {patient.notes && patient.notes.includes("Otomatik oluşturuldu. Randevu ID:") && (
+                              <div className="flex items-center text-xs text-muted-foreground mt-1">
+                                <CheckCircle className="h-3 w-3 mr-1 text-green-500" />
+                                <span>Randevudan otomatik oluşturuldu</span>
+                              </div>
+                            )}
                           </div>
                         </CardContent>
                       </Card>
@@ -1006,9 +1008,9 @@ const PatientManagement = () => {
                   </div>
                 )}
                 
-                {/* Pagination - Grid görünümü için de aynı sayfalama */}
-                {totalPages > 1 && (
-                  <div className="mt-6 flex items-center justify-between">
+                {/* Pagination for Grid View */}
+                {viewMode === "grid" && totalPages > 1 && (
+                  <div className="flex items-center justify-between mt-4">
                     <div className="flex-1 flex justify-between sm:hidden">
                       <Button
                         variant="outline"
@@ -1106,7 +1108,7 @@ const PatientManagement = () => {
                   </Badge>
                 </div>
                 
-                <div className="flex items-center gap-2">
+                <div className="flex gap-2">
                   <Button
                     variant="outline"
                     onClick={() => handleEditPatient(selectedPatient)}
@@ -1130,187 +1132,198 @@ const PatientManagement = () => {
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      Kişisel Bilgiler
-                      {selectedPatient.notes && selectedPatient.notes.includes("Otomatik oluşturuldu. Randevu ID:") && (
-                        <Badge variant="outline" className="ml-2 flex items-center gap-1 bg-green-50">
-                          <CheckCircle className="h-3 w-3 text-green-500" />
-                          <span className="text-xs">Randevu Onayından</span>
-                        </Badge>
-                      )}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="text-sm font-medium text-gray-500">Hasta No</div>
-                      <div className="text-sm text-gray-900">{selectedPatient.id}</div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="text-sm font-medium text-gray-500">İsim</div>
-                      <div className="text-sm text-gray-900">{selectedPatient.fullName}</div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="text-sm font-medium text-gray-500">E-posta</div>
-                      <div className="text-sm text-gray-900">{selectedPatient.email || "-"}</div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="text-sm font-medium text-gray-500">Telefon</div>
-                      <div className="text-sm text-gray-900">{selectedPatient.phone}</div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="text-sm font-medium text-gray-500">Doğum Tarihi</div>
-                      <div className="text-sm text-gray-900">
-                        {selectedPatient.dateOfBirth ? new Date(selectedPatient.dateOfBirth).toLocaleDateString('tr-TR') : "-"}
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="text-sm font-medium text-gray-500">Cinsiyet</div>
-                      <div className="text-sm text-gray-900">{selectedPatient.gender || "-"}</div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="text-sm font-medium text-gray-500">Uyruk</div>
-                      <div className="text-sm text-gray-900">{selectedPatient.nationality || "-"}</div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="text-sm font-medium text-gray-500">Pasaport No</div>
-                      <div className="text-sm text-gray-900">{selectedPatient.passportNumber || "-"}</div>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <Card>
-                  <CardHeader>
-                    <CardTitle>İletişim Bilgileri</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="text-sm font-medium text-gray-500">Adres</div>
-                      <div className="text-sm text-gray-900">{selectedPatient.address || "-"}</div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="text-sm font-medium text-gray-500">Şehir</div>
-                      <div className="text-sm text-gray-900">{selectedPatient.city || "-"}</div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="text-sm font-medium text-gray-500">Ülke</div>
-                      <div className="text-sm text-gray-900">{selectedPatient.country || "-"}</div>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Tıbbi Bilgiler</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="text-sm font-medium text-gray-500">İlgili Hizmet</div>
-                      <div className="text-sm text-gray-900">
-                        {selectedPatient.serviceId && services
-                          ? services.find((s: any) => s.id === selectedPatient.serviceId)?.titleTR || "-"
-                          : "-"}
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="text-sm font-medium text-gray-500">Son Ziyaret</div>
-                      <div className="text-sm text-gray-900">
-                        {selectedPatient.lastVisitDate 
-                          ? new Date(selectedPatient.lastVisitDate).toLocaleDateString('tr-TR')
-                          : "-"}
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="text-sm font-medium text-gray-500">Tıbbi Geçmiş</div>
-                      <div className="text-sm text-gray-900">{selectedPatient.medicalHistory || "-"}</div>
-                    </div>
-                    
-                    {/* İlişkili Randevu Bilgisi */}
-                    {selectedPatient.notes && selectedPatient.notes.includes("Otomatik oluşturuldu. Randevu ID:") && (
-                      <>
-                        <div className="border-t pt-2 mt-2">
-                          <div className="text-sm font-medium text-gray-500 mb-2">İlişkili Randevu</div>
-                          {(() => {
-                            // Hasta seçildiğinde randevu ID'sini çıkar ve sorgula
-                            const apptId = extractAppointmentId(selectedPatient.notes);
-                            
-                            if (isAppointmentLoading) {
-                              return (
-                                <div className="flex items-center space-x-2 text-sm text-gray-500">
-                                  <RotateCcw className="h-3 w-3 animate-spin" />
-                                  <span>Randevu bilgileri yükleniyor...</span>
-                                </div>
-                              );
-                            }
-                            
-                            if (!relatedAppointment) {
-                              return (
-                                <div className="text-sm text-gray-900">
-                                  Randevu bilgileri bulunamadı. (ID: {extractAppointmentId(selectedPatient.notes)})
-                                </div>
-                              );
-                            }
-                            
-                            return (
-                              <div className="space-y-2 rounded-md border p-3 text-sm">
-                                <div className="grid grid-cols-2 gap-1">
-                                  <div className="text-xs font-medium text-gray-500">Tarih</div>
-                                  <div className="text-xs">
-                                    {relatedAppointment.preferredDate ? new Date(relatedAppointment.preferredDate).toLocaleDateString('tr-TR') : '-'}
-                                  </div>
-                                </div>
-                                <div className="grid grid-cols-2 gap-1">
-                                  <div className="text-xs font-medium text-gray-500">Saat</div>
-                                  <div className="text-xs">{relatedAppointment.appointmentTime || '-'}</div>
-                                </div>
-                                <div className="grid grid-cols-2 gap-1">
-                                  <div className="text-xs font-medium text-gray-500">Durum</div>
-                                  <div className="text-xs">
-                                    <Badge variant={
-                                      relatedAppointment.status === "confirmed" ? "default" :
-                                      relatedAppointment.status === "completed" ? "secondary" :
-                                      relatedAppointment.status === "cancelled" ? "destructive" :
-                                      "outline"
-                                    } className="text-[10px] px-1 py-0">
-                                      {relatedAppointment.status === "new" && "Yeni"}
-                                      {relatedAppointment.status === "confirmed" && "Onaylandı"}
-                                      {relatedAppointment.status === "completed" && "Tamamlandı"}
-                                      {relatedAppointment.status === "cancelled" && "İptal"}
-                                    </Badge>
-                                  </div>
-                                </div>
-                                <div className="grid grid-cols-2 gap-1">
-                                  <div className="text-xs font-medium text-gray-500">Mesaj</div>
-                                  <div className="text-xs">{relatedAppointment.message || '-'}</div>
-                                </div>
-                              </div>
-                            );
-                          })()}
-                        </div>
-                      </>
-                    )}
-                    
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="text-sm font-medium text-gray-500">Notlar</div>
-                      <div className="text-sm text-gray-900">{selectedPatient.notes || "-"}</div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-              
-              <Tabs defaultValue="documents">
-                <TabsList>
-                  <TabsTrigger value="documents" className="flex items-center gap-2">
-                    <Folder className="w-4 h-4" />
-                    Belgeler
+              {/* Hasta alt sekmeleri */}
+              <Tabs defaultValue="personal-info" className="w-full">
+                <TabsList className="grid grid-cols-4 w-full">
+                  <TabsTrigger value="personal-info" className="flex items-center gap-2">
+                    <Users className="h-4 w-4" />
+                    Kişisel Bilgiler
                   </TabsTrigger>
-                  <TabsTrigger value="treatments" className="flex items-center gap-2">
-                    <FileText className="w-4 h-4" />
+                  <TabsTrigger value="medical-records" className="flex items-center gap-2">
+                    <ClipboardList className="h-4 w-4" />
                     Tedavi Kayıtları
                   </TabsTrigger>
+                  <TabsTrigger value="documents" className="flex items-center gap-2">
+                    <FileText className="h-4 w-4" />
+                    Dökümanlar
+                  </TabsTrigger>
+                  <TabsTrigger value="progress-images" className="flex items-center gap-2">
+                    <ImageIcon className="h-4 w-4" />
+                    İlerleme Görselleri
+                  </TabsTrigger>
                 </TabsList>
+
+                <TabsContent value="personal-info" className="pt-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          Kişisel Bilgiler
+                          {selectedPatient.notes && selectedPatient.notes.includes("Otomatik oluşturuldu. Randevu ID:") && (
+                            <Badge variant="outline" className="ml-2 flex items-center gap-1 bg-green-50">
+                              <CheckCircle className="h-3 w-3 text-green-500" />
+                              <span className="text-xs">Randevu Onayından</span>
+                            </Badge>
+                          )}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="text-sm font-medium text-gray-500">Hasta No</div>
+                          <div className="text-sm text-gray-900">{selectedPatient.id}</div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="text-sm font-medium text-gray-500">İsim</div>
+                          <div className="text-sm text-gray-900">{selectedPatient.fullName}</div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="text-sm font-medium text-gray-500">E-posta</div>
+                          <div className="text-sm text-gray-900">{selectedPatient.email || "-"}</div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="text-sm font-medium text-gray-500">Telefon</div>
+                          <div className="text-sm text-gray-900">{selectedPatient.phone}</div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="text-sm font-medium text-gray-500">Doğum Tarihi</div>
+                          <div className="text-sm text-gray-900">
+                            {selectedPatient.dateOfBirth ? new Date(selectedPatient.dateOfBirth).toLocaleDateString('tr-TR') : "-"}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="text-sm font-medium text-gray-500">Cinsiyet</div>
+                          <div className="text-sm text-gray-900">{selectedPatient.gender || "-"}</div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="text-sm font-medium text-gray-500">Uyruk</div>
+                          <div className="text-sm text-gray-900">{selectedPatient.nationality || "-"}</div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="text-sm font-medium text-gray-500">Pasaport No</div>
+                          <div className="text-sm text-gray-900">{selectedPatient.passportNumber || "-"}</div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>İletişim Bilgileri</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="text-sm font-medium text-gray-500">Adres</div>
+                          <div className="text-sm text-gray-900">{selectedPatient.address || "-"}</div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="text-sm font-medium text-gray-500">Şehir</div>
+                          <div className="text-sm text-gray-900">{selectedPatient.city || "-"}</div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="text-sm font-medium text-gray-500">Ülke</div>
+                          <div className="text-sm text-gray-900">{selectedPatient.country || "-"}</div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Tıbbi Bilgiler</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-3">
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="text-sm font-medium text-gray-500">İlgili Hizmet</div>
+                          <div className="text-sm text-gray-900">
+                            {selectedPatient.serviceId && services
+                              ? services.find((s: any) => s.id === selectedPatient.serviceId)?.titleTR || "-"
+                              : "-"}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="text-sm font-medium text-gray-500">Son Ziyaret</div>
+                          <div className="text-sm text-gray-900">
+                            {selectedPatient.lastVisitDate 
+                              ? new Date(selectedPatient.lastVisitDate).toLocaleDateString('tr-TR')
+                              : "-"}
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="text-sm font-medium text-gray-500">Tıbbi Geçmiş</div>
+                          <div className="text-sm text-gray-900">{selectedPatient.medicalHistory || "-"}</div>
+                        </div>
+                        
+                        {/* İlişkili Randevu Bilgisi */}
+                        {selectedPatient.notes && selectedPatient.notes.includes("Otomatik oluşturuldu. Randevu ID:") && (
+                          <>
+                            <div className="border-t pt-2 mt-2">
+                              <div className="text-sm font-medium text-gray-500 mb-2">İlişkili Randevu</div>
+                              {(() => {
+                                // Hasta seçildiğinde randevu ID'sini çıkar ve sorgula
+                                const apptId = extractAppointmentId(selectedPatient.notes);
+                                
+                                if (isAppointmentLoading) {
+                                  return (
+                                    <div className="flex items-center space-x-2 text-sm text-gray-500">
+                                      <RotateCcw className="h-3 w-3 animate-spin" />
+                                      <span>Randevu bilgileri yükleniyor...</span>
+                                    </div>
+                                  );
+                                }
+                                
+                                if (!relatedAppointment) {
+                                  return (
+                                    <div className="text-sm text-gray-900">
+                                      Randevu bilgileri bulunamadı. (ID: {extractAppointmentId(selectedPatient.notes)})
+                                    </div>
+                                  );
+                                }
+                                
+                                return (
+                                  <div className="space-y-2 rounded-md border p-3 text-sm">
+                                    <div className="grid grid-cols-2 gap-1">
+                                      <div className="text-xs font-medium text-gray-500">Tarih</div>
+                                      <div className="text-xs">
+                                        {relatedAppointment.preferredDate ? new Date(relatedAppointment.preferredDate).toLocaleDateString('tr-TR') : '-'}
+                                      </div>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-1">
+                                      <div className="text-xs font-medium text-gray-500">Saat</div>
+                                      <div className="text-xs">{relatedAppointment.appointmentTime || '-'}</div>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-1">
+                                      <div className="text-xs font-medium text-gray-500">Durum</div>
+                                      <div className="text-xs">
+                                        <Badge variant={
+                                          relatedAppointment.status === "confirmed" ? "default" :
+                                          relatedAppointment.status === "completed" ? "secondary" :
+                                          relatedAppointment.status === "cancelled" ? "destructive" :
+                                          "outline"
+                                        } className="text-[10px] px-1 py-0">
+                                          {relatedAppointment.status === "new" && "Yeni"}
+                                          {relatedAppointment.status === "confirmed" && "Onaylandı"}
+                                          {relatedAppointment.status === "completed" && "Tamamlandı"}
+                                          {relatedAppointment.status === "cancelled" && "İptal"}
+                                        </Badge>
+                                      </div>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-1">
+                                      <div className="text-xs font-medium text-gray-500">Mesaj</div>
+                                      <div className="text-xs">{relatedAppointment.message || '-'}</div>
+                                    </div>
+                                  </div>
+                                );
+                              })()}
+                            </div>
+                          </>
+                        )}
+                        
+                        <div className="grid grid-cols-2 gap-2">
+                          <div className="text-sm font-medium text-gray-500">Notlar</div>
+                          <div className="text-sm text-gray-900">{selectedPatient.notes || "-"}</div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </TabsContent>
                 
                 <TabsContent value="documents" className="space-y-4">
                   <div className="flex justify-between items-center">
@@ -1457,38 +1470,27 @@ const PatientManagement = () => {
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                   {new Date(treatment.treatmentDate).toLocaleDateString('tr-TR')}
                                 </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                  <div className="text-sm font-medium text-gray-900">
-                                    {treatment.doctorName}
-                                  </div>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                  {treatment.doctorName}
                                 </td>
-                                <td className="px-6 py-4">
-                                  <div className="text-sm text-gray-900">
-                                    {treatment.procedureDetails}
-                                  </div>
-                                  {treatment.notes && (
-                                    <div className="text-xs text-gray-500 mt-1">
-                                      Not: {treatment.notes}
-                                    </div>
-                                  )}
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                  {treatment.procedureDetails}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                   <Badge variant={
                                     treatment.status === "completed" ? "secondary" :
-                                    treatment.status === "pending" ? "outline" :
-                                    treatment.status === "active" ? "default" :
-                                    "destructive"
+                                    treatment.status === "scheduled" ? "default" :
+                                    treatment.status === "cancelled" ? "destructive" :
+                                    "outline"
                                   }>
                                     {treatment.status === "completed" && "Tamamlandı"}
-                                    {treatment.status === "pending" && "Beklemede"}
-                                    {treatment.status === "active" && "Aktif"}
+                                    {treatment.status === "scheduled" && "Planlandı"}
                                     {treatment.status === "cancelled" && "İptal"}
+                                    {treatment.status === "pending" && "Beklemede"}
                                   </Badge>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                  {treatment.followUpDate 
-                                    ? new Date(treatment.followUpDate).toLocaleDateString('tr-TR')
-                                    : "-"}
+                                  {treatment.followUpDate ? new Date(treatment.followUpDate).toLocaleDateString('tr-TR') : '-'}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                   <Button
@@ -1509,6 +1511,24 @@ const PatientManagement = () => {
                       </div>
                     </div>
                   )}
+                </TabsContent>
+                
+                {/* İlerleme Görselleri Sekmesi */}
+                <TabsContent value="progress-images" className="pt-4">
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <h3 className="text-lg font-medium">İlerleme Görselleri</h3>
+                      <Button onClick={() => {}} className="flex items-center gap-2">
+                        <Upload className="w-4 h-4" />
+                        Yeni Görsel Ekle
+                      </Button>
+                    </div>
+
+                    <div className="bg-gray-50 rounded-lg p-8 text-center">
+                      <h3 className="text-lg font-medium text-gray-600">Görsel bulunamadı</h3>
+                      <p className="mt-2 text-gray-500">Hasta için ilerleme görseli ekleyebilirsiniz.</p>
+                    </div>
+                  </div>
                 </TabsContent>
               </Tabs>
             </div>
@@ -1538,9 +1558,9 @@ const PatientManagement = () => {
                   name="fullName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Adı Soyadı</FormLabel>
+                      <FormLabel>Ad Soyad</FormLabel>
                       <FormControl>
-                        <Input placeholder="Hasta adı soyadı" {...field} />
+                        <Input placeholder="Ad Soyad" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -1555,8 +1575,7 @@ const PatientManagement = () => {
                       <FormLabel>E-posta</FormLabel>
                       <FormControl>
                         <Input 
-                          placeholder="ornek@mail.com" 
-                          type="email" 
+                          placeholder="E-posta" 
                           {...field} 
                           value={field.value || ""}
                           onChange={(e) => field.onChange(e.target.value || null)}
@@ -1574,7 +1593,7 @@ const PatientManagement = () => {
                     <FormItem>
                       <FormLabel>Telefon</FormLabel>
                       <FormControl>
-                        <Input placeholder="+90 555 123 4567" {...field} />
+                        <Input placeholder="Telefon" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -1606,13 +1625,13 @@ const PatientManagement = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Cinsiyet</FormLabel>
-                      <Select 
-                        onValueChange={(value) => field.onChange(value || null)}
+                      <Select
                         value={field.value || ""}
+                        onValueChange={(value) => field.onChange(value || null)}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Seçiniz" />
+                            <SelectValue placeholder="Cinsiyet seçin" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -1632,14 +1651,26 @@ const PatientManagement = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Uyruk</FormLabel>
-                      <FormControl>
-                        <Input 
-                          placeholder="Uyruk" 
-                          {...field} 
-                          value={field.value || ""}
-                          onChange={(e) => field.onChange(e.target.value || null)}
-                        />
-                      </FormControl>
+                      <Select
+                        value={field.value || ""}
+                        onValueChange={(value) => field.onChange(value || null)}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Uyruk seçin" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="turkey">Türkiye</SelectItem>
+                          <SelectItem value="georgia">Gürcistan</SelectItem>
+                          <SelectItem value="russia">Rusya</SelectItem>
+                          <SelectItem value="azerbaijan">Azerbaycan</SelectItem>
+                          <SelectItem value="kazakhstan">Kazakistan</SelectItem>
+                          <SelectItem value="iran">İran</SelectItem>
+                          <SelectItem value="ukraine">Ukrayna</SelectItem>
+                          <SelectItem value="other">Diğer</SelectItem>
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -1650,7 +1681,7 @@ const PatientManagement = () => {
                   name="passportNumber"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Pasaport Numarası</FormLabel>
+                      <FormLabel>Pasaport No</FormLabel>
                       <FormControl>
                         <Input 
                           placeholder="Pasaport No" 
@@ -1666,13 +1697,13 @@ const PatientManagement = () => {
                 
                 <FormField
                   control={patientForm.control}
-                  name="country"
+                  name="address"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Ülke</FormLabel>
+                      <FormLabel>Adres</FormLabel>
                       <FormControl>
                         <Input 
-                          placeholder="Ülke" 
+                          placeholder="Adres" 
                           {...field} 
                           value={field.value || ""}
                           onChange={(e) => field.onChange(e.target.value || null)}
@@ -1704,13 +1735,32 @@ const PatientManagement = () => {
                 
                 <FormField
                   control={patientForm.control}
+                  name="country"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Ülke</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="Ülke" 
+                          {...field} 
+                          value={field.value || ""}
+                          onChange={(e) => field.onChange(e.target.value || null)}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={patientForm.control}
                   name="serviceId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Hizmet</FormLabel>
-                      <Select 
-                        onValueChange={(value) => field.onChange(value ? parseInt(value) : null)}
+                      <FormLabel>İlgili Hizmet</FormLabel>
+                      <Select
                         value={field.value?.toString() || ""}
+                        onValueChange={(value) => field.onChange(value ? parseInt(value, 10) : null)}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -1736,7 +1786,10 @@ const PatientManagement = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Durum</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
+                      <Select
+                        value={field.value}
+                        onValueChange={(value) => field.onChange(value)}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Durum seçin" />
@@ -1777,32 +1830,14 @@ const PatientManagement = () => {
               <div className="grid grid-cols-1 gap-4">
                 <FormField
                   control={patientForm.control}
-                  name="address"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Adres</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder="Adres" 
-                          {...field} 
-                          value={field.value || ""}
-                          onChange={(e) => field.onChange(e.target.value || null)}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={patientForm.control}
                   name="medicalHistory"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Tıbbi Geçmiş</FormLabel>
                       <FormControl>
                         <Textarea 
-                          placeholder="Hastanın tıbbi geçmişi" 
+                          placeholder="Tıbbi geçmiş bilgileri..." 
+                          className="min-h-[100px]" 
                           {...field} 
                           value={field.value || ""}
                           onChange={(e) => field.onChange(e.target.value || null)}
@@ -1821,7 +1856,8 @@ const PatientManagement = () => {
                       <FormLabel>Notlar</FormLabel>
                       <FormControl>
                         <Textarea 
-                          placeholder="Ekstra notlar" 
+                          placeholder="Hasta ile ilgili notlar..." 
+                          className="min-h-[100px]" 
                           {...field} 
                           value={field.value || ""}
                           onChange={(e) => field.onChange(e.target.value || null)}
@@ -1834,15 +1870,17 @@ const PatientManagement = () => {
               </div>
               
               <DialogFooter>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setIsNewPatientDialogOpen(false)}
-                >
-                  İptal
-                </Button>
-                <Button type="submit">
-                  {patientForm.getValues("id") ? "Güncelle" : "Kaydet"}
+                <Button type="submit" disabled={createPatientMutation.isPending || updatePatientMutation.isPending}>
+                  {createPatientMutation.isPending || updatePatientMutation.isPending ? (
+                    <>
+                      <RotateCcw className="mr-2 h-4 w-4 animate-spin" />
+                      Kaydediliyor...
+                    </>
+                  ) : patientForm.getValues("id") ? (
+                    "Güncelle"
+                  ) : (
+                    "Kaydet"
+                  )}
                 </Button>
               </DialogFooter>
             </form>
@@ -1868,21 +1906,23 @@ const PatientManagement = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Belge Türü</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select
+                      value={field.value}
+                      onValueChange={(value) => field.onChange(value)}
+                    >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Belge türü seçin" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="Tedavi Öncesi Görsel">Tedavi Öncesi Görsel</SelectItem>
-                        <SelectItem value="Tedavi Sonrası Görsel">Tedavi Sonrası Görsel</SelectItem>
-                        <SelectItem value="Kimlik Belgesi">Kimlik Belgesi</SelectItem>
-                        <SelectItem value="Pasaport">Pasaport</SelectItem>
-                        <SelectItem value="Hasta Onay Formu">Hasta Onay Formu</SelectItem>
-                        <SelectItem value="Tıbbi Rapor">Tıbbi Rapor</SelectItem>
-                        <SelectItem value="Laboratuvar Sonucu">Laboratuvar Sonucu</SelectItem>
-                        <SelectItem value="Diğer">Diğer</SelectItem>
+                        <SelectItem value="medical_record">Tıbbi Kayıt</SelectItem>
+                        <SelectItem value="consent_form">Onam Formu</SelectItem>
+                        <SelectItem value="test_result">Test Sonucu</SelectItem>
+                        <SelectItem value="prescription">Reçete</SelectItem>
+                        <SelectItem value="identification">Kimlik</SelectItem>
+                        <SelectItem value="insurance">Sigorta</SelectItem>
+                        <SelectItem value="other">Diğer</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -1909,13 +1949,10 @@ const PatientManagement = () => {
                 name="fileUrl"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Dosya URL</FormLabel>
+                    <FormLabel>Dosya URL'i</FormLabel>
                     <FormControl>
-                      <Input placeholder="Dosya URL adresi" {...field} />
+                      <Input placeholder="https://..." {...field} />
                     </FormControl>
-                    <FormDescription>
-                      Dosyanın internet adresini girin (Örn: https://example.com/dosya.pdf)
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -1929,7 +1966,7 @@ const PatientManagement = () => {
                     <FormLabel>Açıklama</FormLabel>
                     <FormControl>
                       <Textarea 
-                        placeholder="Belge hakkında kısa açıklama" 
+                        placeholder="Belge açıklaması..." 
                         {...field} 
                         value={field.value || ""}
                         onChange={(e) => field.onChange(e.target.value || null)}
@@ -1956,7 +1993,7 @@ const PatientManagement = () => {
                     <div className="space-y-1 leading-none">
                       <FormLabel>Gizli Belge</FormLabel>
                       <FormDescription>
-                        Bu belge gizli bilgiler içeriyorsa işaretleyin.
+                        Bu belge sadece yetkili kişiler tarafından görüntülenebilir.
                       </FormDescription>
                     </div>
                   </FormItem>
@@ -1964,14 +2001,16 @@ const PatientManagement = () => {
               />
               
               <DialogFooter>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setIsNewDocumentDialogOpen(false)}
-                >
-                  İptal
+                <Button type="submit" disabled={createDocumentMutation.isPending}>
+                  {createDocumentMutation.isPending ? (
+                    <>
+                      <RotateCcw className="mr-2 h-4 w-4 animate-spin" />
+                      Kaydediliyor...
+                    </>
+                  ) : (
+                    "Belge Ekle"
+                  )}
                 </Button>
-                <Button type="submit">Belgeyi Ekle</Button>
               </DialogFooter>
             </form>
           </Form>
@@ -1984,7 +2023,7 @@ const PatientManagement = () => {
           <DialogHeader>
             <DialogTitle>Yeni Tedavi Kaydı</DialogTitle>
             <DialogDescription>
-              Hasta için yeni bir tedavi kaydı oluşturun.
+              Hasta için yeni bir tedavi kaydı ekleyin.
             </DialogDescription>
           </DialogHeader>
           
@@ -2009,7 +2048,7 @@ const PatientManagement = () => {
                 name="doctorName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Doktor Adı</FormLabel>
+                    <FormLabel>Doktor</FormLabel>
                     <FormControl>
                       <Input placeholder="Doktor adı" {...field} />
                     </FormControl>
@@ -2026,7 +2065,8 @@ const PatientManagement = () => {
                     <FormLabel>İşlem Detayları</FormLabel>
                     <FormControl>
                       <Textarea 
-                        placeholder="Yapılan işlemin detayları" 
+                        placeholder="Yapılan işlemler..."
+                        className="min-h-[100px]"
                         {...field} 
                       />
                     </FormControl>
@@ -2035,61 +2075,62 @@ const PatientManagement = () => {
                 )}
               />
               
-              <FormField
-                control={treatmentForm.control}
-                name="serviceId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>İlgili Hizmet</FormLabel>
-                    <Select 
-                      onValueChange={(value) => field.onChange(value ? parseInt(value) : null)}
-                      value={field.value?.toString() || ""}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Hizmet seçin" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {services?.map((service: any) => (
-                          <SelectItem key={service.id} value={service.id.toString()}>
-                            {service.titleTR}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={treatmentForm.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Durum</FormLabel>
-                    <Select 
-                      onValueChange={field.onChange} 
-                      value={field.value || "planned"}
-                      defaultValue="planned"
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Durum seçin" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="planned">Planlandı</SelectItem>
-                        <SelectItem value="in-progress">Devam Ediyor</SelectItem>
-                        <SelectItem value="completed">Tamamlandı</SelectItem>
-                        <SelectItem value="cancelled">İptal</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <FormField
+                  control={treatmentForm.control}
+                  name="serviceId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>İlgili Hizmet</FormLabel>
+                      <Select
+                        value={field.value?.toString() || ""}
+                        onValueChange={(value) => field.onChange(value ? parseInt(value, 10) : null)}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Hizmet seçin" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {services?.map((service: any) => (
+                            <SelectItem key={service.id} value={service.id.toString()}>
+                              {service.titleTR}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={treatmentForm.control}
+                  name="status"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Durum</FormLabel>
+                      <Select
+                        value={field.value}
+                        onValueChange={(value) => field.onChange(value)}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Durum seçin" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="completed">Tamamlandı</SelectItem>
+                          <SelectItem value="scheduled">Planlandı</SelectItem>
+                          <SelectItem value="cancelled">İptal</SelectItem>
+                          <SelectItem value="pending">Beklemede</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               
               <FormField
                 control={treatmentForm.control}
@@ -2118,7 +2159,7 @@ const PatientManagement = () => {
                     <FormLabel>Notlar</FormLabel>
                     <FormControl>
                       <Textarea 
-                        placeholder="Ek notlar" 
+                        placeholder="Tedavi ile ilgili notlar..." 
                         {...field} 
                         value={field.value || ""}
                         onChange={(e) => field.onChange(e.target.value || null)}
@@ -2130,14 +2171,16 @@ const PatientManagement = () => {
               />
               
               <DialogFooter>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setIsNewTreatmentDialogOpen(false)}
-                >
-                  İptal
+                <Button type="submit" disabled={createTreatmentMutation.isPending}>
+                  {createTreatmentMutation.isPending ? (
+                    <>
+                      <RotateCcw className="mr-2 h-4 w-4 animate-spin" />
+                      Kaydediliyor...
+                    </>
+                  ) : (
+                    "Tedavi Kaydı Ekle"
+                  )}
                 </Button>
-                <Button type="submit">Kaydet</Button>
               </DialogFooter>
             </form>
           </Form>
@@ -2148,29 +2191,34 @@ const PatientManagement = () => {
       <Dialog open={isDeleteConfirmDialogOpen} onOpenChange={setIsDeleteConfirmDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Silme İşlemini Onaylayın</DialogTitle>
+            <DialogTitle>Silmeyi Onayla</DialogTitle>
             <DialogDescription>
-              {itemToDelete?.type === "patient" && "Bu hastayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz ve hastaya ait tüm belgeler ve tedavi kayıtları da silinecektir."}
+              {itemToDelete?.type === "patient" && "Bu hastayı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."}
               {itemToDelete?.type === "document" && "Bu belgeyi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."}
               {itemToDelete?.type === "treatment" && "Bu tedavi kaydını silmek istediğinizden emin misiniz? Bu işlem geri alınamaz."}
             </DialogDescription>
           </DialogHeader>
-          
           <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => {
-                setIsDeleteConfirmDialogOpen(false);
-                setItemToDelete(null);
-              }}
-            >
+            <Button variant="outline" onClick={() => setIsDeleteConfirmDialogOpen(false)}>
               İptal
             </Button>
             <Button 
               variant="destructive" 
               onClick={handleDeleteItem}
+              disabled={
+                deletePatientMutation.isPending || 
+                deleteDocumentMutation.isPending || 
+                deleteTreatmentMutation.isPending
+              }
             >
-              Evet, Sil
+              {(deletePatientMutation.isPending || deleteDocumentMutation.isPending || deleteTreatmentMutation.isPending) ? (
+                <>
+                  <RotateCcw className="mr-2 h-4 w-4 animate-spin" />
+                  Siliniyor...
+                </>
+              ) : (
+                "Evet, Sil"
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>
