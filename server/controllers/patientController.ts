@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
 import { storage } from "../storage";
-import { insertPatientSchema, insertPatientDocumentSchema, insertTreatmentRecordSchema } from "@shared/schema";
+import { 
+  insertPatientSchema, 
+  insertPatientDocumentSchema, 
+  insertTreatmentRecordSchema,
+  insertPatientProgressImageSchema
+} from "@shared/schema";
 
 // Tüm hastaları getir
 export const getAllPatients = async (req: Request, res: Response) => {
@@ -304,5 +309,96 @@ export const deleteTreatmentRecord = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(`Tedavi kaydı ID ${req.params.recordId} silinirken hata oluştu:`, error);
     res.status(500).json({ message: "Hasta tedavi kaydı silinirken bir hata oluştu" });
+  }
+};
+
+// Hasta ilerleme görsellerini getir
+export const getPatientProgressImages = async (req: Request, res: Response) => {
+  try {
+    const patientId = parseInt(req.params.patientId);
+    if (isNaN(patientId)) {
+      return res.status(400).json({ message: "Geçersiz hasta ID" });
+    }
+
+    const images = await storage.getPatientProgressImages(patientId);
+    res.status(200).json(images);
+  } catch (error) {
+    console.error(`Hasta ID ${req.params.patientId} için ilerleme görselleri getirilirken hata oluştu:`, error);
+    res.status(500).json({ message: "Hasta ilerleme görselleri getirilirken bir hata oluştu" });
+  }
+};
+
+// Hasta ilerleme görselini oluştur
+export const createPatientProgressImage = async (req: Request, res: Response) => {
+  try {
+    const patientId = parseInt(req.params.patientId);
+    if (isNaN(patientId)) {
+      return res.status(400).json({ message: "Geçersiz hasta ID" });
+    }
+
+    // Veriyi hazırla
+    const imageData = {
+      ...req.body,
+      patientId,
+      captureDate: req.body.captureDate ? new Date(req.body.captureDate) : new Date(),
+      isVisible: req.body.isVisible === undefined ? true : req.body.isVisible
+    };
+
+    // Veriyi doğrula ve kaydet
+    try {
+      const validatedData = insertPatientProgressImageSchema.parse(imageData);
+      const newImage = await storage.createPatientProgressImage(validatedData);
+      res.status(201).json(newImage);
+    } catch (error) {
+      console.error("Veri validasyon hatası:", error);
+      res.status(400).json({ message: "Geçersiz ilerleme görseli verileri", error });
+    }
+  } catch (error) {
+    console.error(`Hasta ID ${req.params.patientId} için ilerleme görseli oluşturulurken hata oluştu:`, error);
+    res.status(500).json({ message: "Hasta ilerleme görseli oluşturulurken bir hata oluştu" });
+  }
+};
+
+// Hasta ilerleme görselini güncelle
+export const updatePatientProgressImage = async (req: Request, res: Response) => {
+  try {
+    const imageId = parseInt(req.params.imageId);
+    if (isNaN(imageId)) {
+      return res.status(400).json({ message: "Geçersiz görsel ID" });
+    }
+
+    const validatedData = insertPatientProgressImageSchema.partial().parse(req.body);
+    const image = await storage.getPatientProgressImageById(imageId);
+    
+    if (!image) {
+      return res.status(404).json({ message: "İlerleme görseli bulunamadı" });
+    }
+
+    const updatedImage = await storage.updatePatientProgressImage(imageId, validatedData);
+    res.status(200).json(updatedImage);
+  } catch (error) {
+    console.error(`Görsel ID ${req.params.imageId} güncellenirken hata oluştu:`, error);
+    res.status(500).json({ message: "Hasta ilerleme görseli güncellenirken bir hata oluştu" });
+  }
+};
+
+// Hasta ilerleme görselini sil
+export const deletePatientProgressImage = async (req: Request, res: Response) => {
+  try {
+    const imageId = parseInt(req.params.imageId);
+    if (isNaN(imageId)) {
+      return res.status(400).json({ message: "Geçersiz görsel ID" });
+    }
+
+    const image = await storage.getPatientProgressImageById(imageId);
+    if (!image) {
+      return res.status(404).json({ message: "İlerleme görseli bulunamadı" });
+    }
+
+    await storage.deletePatientProgressImage(imageId);
+    res.status(200).json({ message: "İlerleme görseli başarıyla silindi" });
+  } catch (error) {
+    console.error(`Görsel ID ${req.params.imageId} silinirken hata oluştu:`, error);
+    res.status(500).json({ message: "Hasta ilerleme görseli silinirken bir hata oluştu" });
   }
 };

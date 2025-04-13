@@ -317,6 +317,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/patients/:patientId/treatments", patientController.createTreatmentRecord);
   app.put("/api/treatments/:recordId", patientController.updateTreatmentRecord);
   app.delete("/api/treatments/:recordId", patientController.deleteTreatmentRecord);
+
+  // Hasta ilerleme görselleri route'ları
+  app.get("/api/patients/:patientId/progress-images", patientController.getPatientProgressImages);
+  app.post("/api/patients/:patientId/progress-images", patientController.createPatientProgressImage);
+  app.put("/api/progress-images/:imageId", patientController.updatePatientProgressImage);
+  app.delete("/api/progress-images/:imageId", patientController.deletePatientProgressImage);
   
   // User Review routes
   app.get("/api/reviews", async (req, res) => {
