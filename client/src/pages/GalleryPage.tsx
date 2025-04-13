@@ -87,133 +87,133 @@ export default function GalleryPage() {
       id: 2, 
       url: '/videos/VID-20250325-WA0005.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0053.jpg', 
-      title: t('gallery.patientTestimonial'), 
+      title: getGalleryTranslation('gallery.patientTestimonial', language), 
       duration: '1:03' 
     },
     { 
       id: 3, 
       url: '/videos/VID-20250325-WA0006.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0062.jpg', 
-      title: t('gallery.clinicTour'), 
+      title: getGalleryTranslation('gallery.clinicTour', language), 
       duration: '1:15' 
     },
     { 
       id: 4, 
       url: '/videos/VID-20250325-WA0007.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0059.jpg', 
-      title: t('gallery.doctorInterview'), 
+      title: getGalleryTranslation('gallery.doctorInterview', language), 
       duration: '0:59' 
     },
     { 
       id: 5, 
       url: '/videos/VID-20250325-WA0008.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0055.jpg', 
-      title: t('gallery.consultationSession'), 
+      title: getGalleryTranslation('gallery.consultationSession', language), 
       duration: '0:50' 
     },
     { 
       id: 6, 
       url: '/videos/VID-20250325-WA0009.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0048.jpg', 
-      title: t('gallery.operationOverview'), 
+      title: getGalleryTranslation('gallery.operationOverview', language), 
       duration: '0:55' 
     },
     { 
       id: 7, 
       url: '/videos/VID-20250325-WA0010.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0050.jpg', 
-      title: t('gallery.hairTransplantResults'), 
+      title: getGalleryTranslation('gallery.hairTransplantResults', language), 
       duration: '1:30' 
     },
     { 
       id: 8, 
       url: '/videos/VID-20250325-WA0011.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0051.jpg', 
-      title: t('gallery.patientJourney'), 
+      title: getGalleryTranslation('gallery.patientJourney', language), 
       duration: '0:48' 
     },
     { 
       id: 9, 
       url: '/videos/VID-20250325-WA0012.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0057.jpg', 
-      title: t('gallery.testimonialVideo'), 
+      title: getGalleryTranslation('gallery.testimonialVideo', language), 
       duration: '2:15' 
     },
     { 
       id: 10, 
       url: '/videos/VID-20250325-WA0013.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0047.jpg', 
-      title: t('gallery.treatmentExplained'), 
+      title: getGalleryTranslation('gallery.treatmentExplained', language), 
       duration: '1:25' 
     },
     { 
       id: 11, 
       url: '/videos/VID-20250325-WA0014.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0056.jpg', 
-      title: t('gallery.facilityTour'), 
+      title: getGalleryTranslation('gallery.facilityTour', language), 
       duration: '1:20' 
     },
     { 
       id: 12, 
       url: '/videos/VID-20250325-WA0015.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0058.jpg', 
-      title: t('gallery.hairTransplantProcess'), 
+      title: getGalleryTranslation('gallery.hairTransplantProcess', language), 
       duration: '1:45' 
     },
     { 
       id: 13, 
       url: '/videos/VID-20250325-WA0016.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0061.jpg', 
-      title: t('gallery.patientTestimonial'), 
+      title: getGalleryTranslation('gallery.patientTestimonial', language), 
       duration: '1:12' 
     },
     { 
       id: 14, 
       url: '/videos/VID-20250325-WA0017.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0060.jpg', 
-      title: t('gallery.clinicTour'), 
+      title: getGalleryTranslation('gallery.clinicTour', language), 
       duration: '0:35' 
     },
     { 
       id: 15, 
       url: '/videos/VID-20250325-WA0018.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0049.jpg', 
-      title: t('gallery.doctorInterview'), 
+      title: getGalleryTranslation('gallery.doctorInterview', language), 
       duration: '1:55' 
     },
     { 
       id: 16, 
       url: '/videos/VID-20250325-WA0019.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0054.jpg', 
-      title: t('gallery.operationOverview'), 
+      title: getGalleryTranslation('gallery.operationOverview', language), 
       duration: '3:15' 
     },
     { 
       id: 17, 
       url: '/videos/VID-20250325-WA0022.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0062.jpg', 
-      title: t('gallery.testimonialVideo'), 
+      title: getGalleryTranslation('gallery.testimonialVideo', language), 
       duration: '1:48' 
     },
     { 
       id: 18, 
       url: '/videos/VID-20250325-WA0023.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0063.jpg', 
-      title: t('gallery.patientJourney'), 
+      title: getGalleryTranslation('gallery.patientJourney', language), 
       duration: '2:35' 
     },
     { 
       id: 19, 
       url: '/videos/VID-20250325-WA0031.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0046.jpg', 
-      title: t('gallery.facilityTour'), 
+      title: getGalleryTranslation('gallery.facilityTour', language), 
       duration: '0:40' 
     },
     { 
       id: 20, 
       url: '/videos/VID-20250325-WA0032.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0050.jpg', 
-      title: t('gallery.treatmentExplained'), 
+      title: getGalleryTranslation('gallery.treatmentExplained', language), 
       duration: '0:30' 
     }
   ];
@@ -223,88 +223,88 @@ export default function GalleryPage() {
     { 
       id: 1, 
       imageUrl: '/images/before-after/IMG-20250325-WA0067.jpg', 
-      title: t('gallery.malePatterBaldness'), 
-      description: t('gallery.fullHairTransformation'),
+      title: getGalleryTranslation('gallery.malePatterBaldness', language), 
+      description: getGalleryTranslation('gallery.fullHairTransformation', language),
       month: 12,
       type: 'hair'
     },
     { 
       id: 2, 
       imageUrl: '/images/before-after/IMG-20250325-WA0068.jpg', 
-      title: t('gallery.recededHairline'), 
-      description: t('gallery.naturalHairlineRestoration'),
+      title: getGalleryTranslation('gallery.recededHairline', language), 
+      description: getGalleryTranslation('gallery.naturalHairlineRestoration', language),
       month: 10,
       type: 'hair'
     },
     { 
       id: 3, 
       imageUrl: '/images/before-after/IMG-20250325-WA0069.jpg', 
-      title: t('gallery.advancedBaldness'), 
-      description: t('gallery.completeHairRestoration'),
+      title: getGalleryTranslation('gallery.advancedBaldness', language), 
+      description: getGalleryTranslation('gallery.completeHairRestoration', language),
       month: 12,
       type: 'hair'
     },
     { 
       id: 4, 
       imageUrl: '/images/before-after/IMG-20250325-WA0070.jpg', 
-      title: t('gallery.eyebrowTransplant'), 
-      description: t('gallery.naturalEyebrowEnhancement'),
+      title: getGalleryTranslation('gallery.eyebrowTransplant', language), 
+      description: getGalleryTranslation('gallery.naturalEyebrowEnhancement', language),
       month: 6,
       type: 'eyebrow'
     },
     { 
       id: 5, 
       imageUrl: '/images/before-after/IMG-20250325-WA0071.jpg', 
-      title: t('gallery.youngPatientTransformation'), 
-      description: t('gallery.improvedHairDensity'),
+      title: getGalleryTranslation('gallery.youngPatientTransformation', language), 
+      description: getGalleryTranslation('gallery.improvedHairDensity', language),
       month: 8,
       type: 'hair'
     },
     { 
       id: 6, 
       imageUrl: '/images/before-after/IMG-20250325-WA0072.jpg', 
-      title: t('gallery.hairlinePlanning'), 
-      description: t('gallery.precisionHairlineDesign'),
+      title: getGalleryTranslation('gallery.hairlinePlanning', language), 
+      description: getGalleryTranslation('gallery.precisionHairlineDesign', language),
       month: 10,
       type: 'hair'
     },
     { 
       id: 7, 
       imageUrl: '/images/before-after/IMG-20250325-WA0073.jpg', 
-      title: t('gallery.extensiveRestoration'), 
-      description: t('gallery.completeHairCoverage'),
+      title: getGalleryTranslation('gallery.extensiveRestoration', language), 
+      description: getGalleryTranslation('gallery.completeHairCoverage', language),
       month: 12,
       type: 'hair'
     },
     { 
       id: 8, 
       imageUrl: '/images/before-after/IMG-20250325-WA0092.jpg', 
-      title: t('gallery.seniorPatientTransformation'), 
-      description: t('gallery.naturalRejuvenation'),
+      title: getGalleryTranslation('gallery.seniorPatientTransformation', language), 
+      description: getGalleryTranslation('gallery.naturalRejuvenation', language),
       month: 10,
       type: 'hair'
     },
     { 
       id: 9, 
       imageUrl: '/images/before-after/IMG-20250325-WA0093.jpg', 
-      title: t('gallery.hairTransplantProcedure'), 
-      description: t('gallery.professionalApplication'),
+      title: getGalleryTranslation('gallery.hairTransplantProcedure', language), 
+      description: getGalleryTranslation('gallery.professionalApplication', language),
       month: 8,
       type: 'hair'
     },
     { 
       id: 10, 
       imageUrl: '/images/before-after/IMG-20250325-WA0095.jpg', 
-      title: t('gallery.advancedThinning'), 
-      description: t('gallery.dramaticImprovement'),
+      title: getGalleryTranslation('gallery.advancedThinning', language), 
+      description: getGalleryTranslation('gallery.dramaticImprovement', language),
       month: 12,
       type: 'hair'
     },
     { 
       id: 11, 
       imageUrl: '/images/before-after/WhatsApp Görsel 2025-03-25 saat 22.05.29_4bed7d5d.jpg', 
-      title: t('gallery.youngMaleTransformation'), 
-      description: t('gallery.naturalHairlineAndDensity'),
+      title: getGalleryTranslation('gallery.youngMaleTransformation', language), 
+      description: getGalleryTranslation('gallery.naturalHairlineAndDensity', language),
       month: 10,
       type: 'hair'
     }
@@ -465,7 +465,7 @@ export default function GalleryPage() {
                             </Badge>
                             <p className="flex items-center gap-1">
                               <ImageIcon className="h-3.5 w-3.5" />
-                              {t('gallery.highResolution')}
+                              {getGalleryTranslation('gallery.highResolution', language)}
                             </p>
                           </div>
                         </div>
@@ -613,13 +613,13 @@ export default function GalleryPage() {
                           </p>
                           <div className="flex items-center gap-2">
                             <Badge className="capitalize">
-                              {item.type === 'hair' ? t('gallery.hairTransplant') : 
-                               item.type === 'beard' ? t('gallery.beardTransplant') : 
-                               t('gallery.eyebrowTransplant')}
+                              {item.type === 'hair' ? getGalleryTranslation('gallery.hairTransplant', language) : 
+                               item.type === 'beard' ? getGalleryTranslation('gallery.beardTransplant', language) : 
+                               getGalleryTranslation('gallery.eyebrowTransplant', language)}
                             </Badge>
                             <Badge variant="outline" className="flex items-center gap-1">
                               <Clock className="h-3.5 w-3.5" />
-                              {item.month} {t('gallery.months')}
+                              {item.month} {getGalleryTranslation('gallery.months', language)}
                             </Badge>
                           </div>
                         </div>
