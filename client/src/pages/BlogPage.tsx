@@ -408,15 +408,15 @@ export default function BlogPage() {
                   <DropdownMenuContent>
                     <DropdownMenuItem onClick={() => setActiveSort('date-desc')}>
                       <SortDesc className="h-4 w-4 mr-2" />
-                      {t('blog.newest')}
+                      {getBlogTranslation('blog.newest', language as Language)}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setActiveSort('date-asc')}>
                       <SortAsc className="h-4 w-4 mr-2" />
-                      {t('blog.oldest')}
+                      {getBlogTranslation('blog.oldest', language as Language)}
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setActiveSort('popular')}>
                       <Users className="h-4 w-4 mr-2" />
-                      {t('blog.mostPopular')}
+                      {getBlogTranslation('blog.mostPopular', language as Language)}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

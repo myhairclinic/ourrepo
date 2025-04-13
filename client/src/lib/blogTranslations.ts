@@ -101,49 +101,73 @@ export const blogTranslations: Record<string, LanguageMap> = {
     [Language.Turkish]: "En Yeni",
     [Language.English]: "Newest",
     [Language.Russian]: "Новейшие",
-    [Language.Georgian]: "უახლესი"
+    [Language.Georgian]: "უახლესი",
+    [Language.Azerbaijani]: "Ən Yeni",
+    [Language.Kazakh]: "Ең жаңа",
+    [Language.Persian]: "جدیدترین"
   },
   "blog.oldest": {
     [Language.Turkish]: "En Eski",
     [Language.English]: "Oldest",
     [Language.Russian]: "Старейшие",
-    [Language.Georgian]: "უძველესი"
+    [Language.Georgian]: "უძველესი",
+    [Language.Azerbaijani]: "Ən Köhnə",
+    [Language.Kazakh]: "Ең ескі",
+    [Language.Persian]: "قدیمی‌ترین"
   },
   "blog.mostPopular": {
     [Language.Turkish]: "En Popüler",
     [Language.English]: "Most Popular",
     [Language.Russian]: "Самые Популярные",
-    [Language.Georgian]: "ყველაზე პოპულარული"
+    [Language.Georgian]: "ყველაზე პოპულარული",
+    [Language.Azerbaijani]: "Ən Populyar",
+    [Language.Kazakh]: "Ең танымал",
+    [Language.Persian]: "محبوب‌ترین"
   },
   "blog.featuredPosts": {
     [Language.Turkish]: "Öne Çıkan Yazılar",
     [Language.English]: "Featured Posts",
     [Language.Russian]: "Избранные Статьи",
-    [Language.Georgian]: "გამორჩეული პოსტები"
+    [Language.Georgian]: "გამორჩეული პოსტები",
+    [Language.Azerbaijani]: "Seçilmiş Yazılar",
+    [Language.Kazakh]: "Таңдаулы Посттар",
+    [Language.Persian]: "نوشته‌های برگزیده"
   },
   "blog.search": {
     [Language.Turkish]: "Ara",
     [Language.English]: "Search",
     [Language.Russian]: "Поиск",
-    [Language.Georgian]: "ძიება"
+    [Language.Georgian]: "ძიება",
+    [Language.Azerbaijani]: "Axtar",
+    [Language.Kazakh]: "Іздеу",
+    [Language.Persian]: "جستجو"
   },
   "blog.searchPlaceholder": {
     [Language.Turkish]: "Blog yazılarında ara...",
     [Language.English]: "Search blog posts...",
     [Language.Russian]: "Искать в блоге...",
-    [Language.Georgian]: "ბლოგის პოსტების ძიება..."
+    [Language.Georgian]: "ბლოგის პოსტების ძიება...",
+    [Language.Azerbaijani]: "Bloq yazılarında axtar...",
+    [Language.Kazakh]: "Блог жазбаларын іздеу...",
+    [Language.Persian]: "جستجو در پست‌های وبلاگ..."
   },
   "blog.popularTags": {
     [Language.Turkish]: "Popüler Etiketler",
     [Language.English]: "Popular Tags",
     [Language.Russian]: "Популярные Теги",
-    [Language.Georgian]: "პოპულარული ტეგები"
+    [Language.Georgian]: "პოპულარული ტეგები",
+    [Language.Azerbaijani]: "Populyar Teqlər",
+    [Language.Kazakh]: "Танымал Тегтер",
+    [Language.Persian]: "برچسب‌های محبوب"
   },
   "blog.featuredAuthors": {
     [Language.Turkish]: "Öne Çıkan Yazarlar",
     [Language.English]: "Featured Authors",
     [Language.Russian]: "Избранные Авторы",
-    [Language.Georgian]: "გამორჩეული ავტორები"
+    [Language.Georgian]: "გამორჩეული ავტორები",
+    [Language.Azerbaijani]: "Seçilmiş Müəlliflər",
+    [Language.Kazakh]: "Таңдаулы Авторлар",
+    [Language.Persian]: "نویسندگان برجسته"
   },
   "blog.newsletter": {
     [Language.Turkish]: "Bültenimize Abone Olun",
