@@ -69,7 +69,7 @@ export default function ExpertSection() {
               
               {/* Expert Image */}
               <img 
-                src="/images/experts/ali-caliskan.png" 
+                src="/images/experts/ali-caliskan.jpg" 
                 alt="Ali Çalışkan - Saç Ekimi Uzmanı" 
                 className="w-full h-auto object-cover aspect-[3/4]"
               />
