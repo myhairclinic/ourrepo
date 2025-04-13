@@ -321,12 +321,20 @@ export const notifyCustomerAppointmentUpdate = async (appointment: Appointment):
 /**
  * Send notification about appointment confirmation with specific time
  */
-export const notifyAppointmentConfirmation = (appointment: Appointment, appointmentTime: string): void => {
+export const notifyAppointmentConfirmation = async (appointment: Appointment, appointmentTime: string): Promise<void> => {
   try {
+    console.log(`Sending confirmation notification for appointment ID: ${appointment.id}`);
+
     // telegramBotService başlatılmış mı kontrol et
     if (!telegramBotService.isInitialized) {
-      console.warn('Telegram bot is not initialized, cannot send confirmation notification');
-      return;
+      console.log('Telegram bot is not initialized, initializing now...');
+      await telegramBotService.initialize();
+      
+      // İkinci kontrol - eğer hâlâ başlatılamamışsa loglama yap ve çık
+      if (!telegramBotService.isInitialized) {
+        console.error('Telegram bot initialization failed, cannot send confirmation notification');
+        return;
+      }
     }
     
     // Randevu tarihi ve saati
@@ -344,10 +352,12 @@ export const notifyAppointmentConfirmation = (appointment: Appointment, appointm
       day: 'numeric'
     });
     
-    // Servis adını al
-    telegramBotService.getServiceNamePublic(appointment.serviceId)
-      .then(serviceName => {
-        const message = `
+    try {
+      // Servis adını al
+      const serviceName = await telegramBotService.getServiceNamePublic(appointment.serviceId);
+      console.log(`Service name for confirmation notification: ${serviceName}`);
+      
+      const message = `
 ✅ *RANDEVU ONAYLANDI*
 
 👤 *Hasta Bilgileri*
@@ -366,16 +376,17 @@ ${appointment.message ? `💬 *Mesaj:* ${appointment.message}` : ''}
 /admin komutunu kullanarak yönetici panelinden randevuyu yönetebilirsiniz.
 `;
 
-        // Tüm operatörlere bildirim gönder
-        return telegramBotService.sendOperatorNotification(message);
-      })
-      .then(() => {
-        console.log(`Appointment confirmation notification sent for ID: ${appointment.id}`);
-      })
-      .catch(error => {
-        console.error(`Error sending confirmation notification: ${error}`);
-      });
-    
+      // Tüm operatörlere bildirim gönder
+      const result = await telegramBotService.sendOperatorNotification(message);
+      
+      if (result) {
+        console.log(`✓ Appointment confirmation notification sent successfully for ID: ${appointment.id}`);
+      } else {
+        console.warn(`⚠️ Failed to send confirmation notification to some operators for appointment ID: ${appointment.id}`);
+      }
+    } catch (serviceError) {
+      console.error(`Error getting service name or sending notification: ${serviceError}`);
+    }
   } catch (error: any) {
     console.error(`Error sending appointment confirmation notification: ${error.message}`);
   }
