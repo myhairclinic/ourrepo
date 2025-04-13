@@ -374,7 +374,7 @@ export default function ContactPage() {
                       <Input
                         id="email"
                         type="email"
-                        placeholder={t('contact.emailPlaceholder')}
+                        placeholder="E-posta adresiniz"
                         className={`py-6 px-4 text-base ${errors.email ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'}`}
                         {...register("email")}
                       />
@@ -392,7 +392,7 @@ export default function ContactPage() {
                     <Input
                       id="phone"
                       type="tel"
-                      placeholder={t('contact.phonePlaceholder')}
+                      placeholder="Telefon numaranız"
                       className="py-6 px-4 text-base border-gray-200 dark:border-gray-700"
                       {...register("phone")}
                     />
@@ -408,7 +408,7 @@ export default function ContactPage() {
                     <Textarea
                       id="message"
                       rows={6}
-                      placeholder={t('contact.messagePlaceholder')}
+                      placeholder="Mesajınızı buraya yazın..."
                       className={`px-4 py-3 text-base resize-none ${errors.message ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'}`}
                       {...register("message")}
                     />
