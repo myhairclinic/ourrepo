@@ -162,8 +162,8 @@ export const createBlogPost = async (req: Request, res: Response) => {
       titleTR, titleEN, titleRU, titleKA,
       contentTR, contentEN, contentRU, contentKA,
       imageUrl, 
-      categoryTR, categoryEN, categoryRU, categoryKA,
-      authorTR, authorEN, authorRU, authorKA,
+      categoryTR, categoryEN, categoryRU, categoryKA, category,
+      authorTR, authorEN, authorRU, authorKA, author,
       isFeatured, isPublished 
     } = req.body;
     
@@ -184,9 +184,9 @@ export const createBlogPost = async (req: Request, res: Response) => {
       summaryKA: contentKA.substring(0, 150) + (contentKA.length > 150 ? '...' : ''),
       contentTR, contentEN, contentRU, contentKA,
       imageUrl,
-      category: categoryTR, // Ana kategori olarak TR kategorisini kullan
-      tags: "",  // Varsayılan boş
-      author: authorTR || "MyHair Clinic", // Yazar yoksa varsayılan değer
+      category: category || categoryTR || "Saç Ekimi", // Önce doğrudan category alanını kullan
+      tags: req.body.tags || "",  // Varsayılan boş
+      author: author || authorTR || "MyHair Clinic", // Yazar yoksa varsayılan değer
       isFeatured: isFeatured || false,
       isPublished: isPublished || false,
       // Meta alanları
@@ -256,8 +256,17 @@ export const updateBlogPost = async (req: Request, res: Response) => {
     }
     
     // Kategori güncelleme
-    if (req.body.categoryTR) {
+    if (req.body.category) {
+      setData.category = req.body.category;
+    } else if (req.body.categoryTR) {
       setData.category = req.body.categoryTR;
+    }
+    
+    // Author alanı güncelleme
+    if (req.body.author) {
+      setData.author = req.body.author;
+    } else if (req.body.authorTR) {
+      setData.author = req.body.authorTR;
     }
     
     // Dönüştürülmüş alanları kaldır
@@ -265,6 +274,10 @@ export const updateBlogPost = async (req: Request, res: Response) => {
     delete setData.categoryEN;
     delete setData.categoryRU;
     delete setData.categoryKA;
+    delete setData.authorTR;
+    delete setData.authorEN;
+    delete setData.authorRU;
+    delete setData.authorKA;
     
     const [updatedPost] = await db.update(blogPosts)
       .set(setData)
