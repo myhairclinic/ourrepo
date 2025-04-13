@@ -253,8 +253,8 @@ export default function ServicesListPage() {
                         </Badge>
                       </div>
                       
-                      {/* Service icon with floating effect */}
-                      <div className="absolute bottom-0 right-0 transform translate-y-1/2 translate-x-0 mr-6">
+                      {/* Service icon with floating effect - fixed positioning to avoid overlap */}
+                      <div className="absolute bottom-0 right-0 transform translate-y-1/2 translate-x-0 mr-6 z-20">
                         <div className="bg-white shadow-xl rounded-full p-3 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
                           {getServiceIcon(service.slug)}
                         </div>
@@ -313,10 +313,10 @@ export default function ServicesListPage() {
             </div>
             
             <h3 className="text-2xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
-              Yardıma mı İhtiyacınız Var?
+              {t("services.needHelp") || "Yardıma mı İhtiyacınız Var?"}
             </h3>
             <p className="text-muted-foreground mb-6 text-lg">
-              Saç ekimi hakkında herhangi bir sorunuz varsa veya randevu almak istiyorsanız bizimle iletişime geçin.
+              {t("services.contactForQuestions") || "Saç ekimi hakkında herhangi bir sorunuz varsa veya randevu almak istiyorsanız bizimle iletişime geçin."}
             </p>
             <Link href={addPrefix("/contact")}>
               <Button className="px-8 py-6 text-base bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary shadow-lg hover:shadow-xl transition-all">
