@@ -814,8 +814,7 @@ E-posta: ${appointment.email}
     return this.formatNewAppointmentMessage(appointment, serviceName, date);
   }
   
-  // Sabit ana yönetici ID'leri - her zaman bildirimleri alacaklar
-  private primaryAdminIds = ['1062681151', '5631870985'];
+  // NOT: Sabit ana yönetici ID'leri sınıf başında tanımlandı: readonly primaryAdminIds: string[]
   
   // Operatörlere bildirim gönder - dışarıdan erişilebilir
   async sendOperatorNotification(message: string): Promise<boolean> {
