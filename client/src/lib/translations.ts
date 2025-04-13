@@ -1257,6 +1257,102 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Результаты",
     [Language.Georgian]: "შედეგები"
   },
+  "services.bookAppointment": {
+    [Language.Turkish]: "Randevu Al",
+    [Language.English]: "Book Appointment",
+    [Language.Russian]: "Записаться На Приём",
+    [Language.Georgian]: "დაჯავშნეთ შეხვედრა"
+  },
+  "services.allServices": {
+    [Language.Turkish]: "Tüm Hizmetler",
+    [Language.English]: "All Services",
+    [Language.Russian]: "Все Услуги",
+    [Language.Georgian]: "ყველა სერვისი"
+  },
+  "services.procedureSteps": {
+    [Language.Turkish]: "İşlem Adımları",
+    [Language.English]: "Procedure Steps",
+    [Language.Russian]: "Этапы Процедуры",
+    [Language.Georgian]: "პროცედურის ეტაპები"
+  },
+  "services.candidateInfo": {
+    [Language.Turkish]: "Aday Bilgileri",
+    [Language.English]: "Candidate Information",
+    [Language.Russian]: "Информация для Кандидатов",
+    [Language.Georgian]: "კანდიდატის ინფორმაცია"
+  },
+  "services.details": {
+    [Language.Turkish]: "Detaylar",
+    [Language.English]: "Details",
+    [Language.Russian]: "Подробности",
+    [Language.Georgian]: "დეტალები"
+  },
+  "services.overview": {
+    [Language.Turkish]: "Genel Bakış",
+    [Language.English]: "Overview",
+    [Language.Russian]: "Обзор",
+    [Language.Georgian]: "მიმოხილვა"
+  },
+  "services.postCare": {
+    [Language.Turkish]: "İşlem Sonrası Bakım",
+    [Language.English]: "Post-Procedure Care",
+    [Language.Russian]: "Уход После Процедуры",
+    [Language.Georgian]: "პროცედურის შემდგომი მოვლა"
+  },
+  "services.keyFeatures": {
+    [Language.Turkish]: "Öne Çıkan Özellikler",
+    [Language.English]: "Key Features",
+    [Language.Russian]: "Ключевые Особенности",
+    [Language.Georgian]: "ძირითადი მახასიათებლები"
+  },
+  "services.popular": {
+    [Language.Turkish]: "Popüler",
+    [Language.English]: "Popular",
+    [Language.Russian]: "Популярный",
+    [Language.Georgian]: "პოპულარული"
+  },
+  "common.share": {
+    [Language.Turkish]: "Paylaş",
+    [Language.English]: "Share",
+    [Language.Russian]: "Поделиться",
+    [Language.Georgian]: "გაზიარება"
+  },
+  "common.follow_us": {
+    [Language.Turkish]: "Bizi Takip Edin",
+    [Language.English]: "Follow Us",
+    [Language.Russian]: "Подписывайтесь На Нас",
+    [Language.Georgian]: "გამოგვყევით"
+  },
+  "services.exclusive": {
+    [Language.Turkish]: "Özel",
+    [Language.English]: "Exclusive",
+    [Language.Russian]: "Эксклюзивный",
+    [Language.Georgian]: "ექსკლუზიური"
+  },
+  "services.readyToStart": {
+    [Language.Turkish]: "Başlamaya Hazır mısınız?",
+    [Language.English]: "Ready to Start?",
+    [Language.Russian]: "Готовы Начать?",
+    [Language.Georgian]: "მზად ხართ დასაწყებად?"
+  },
+  "services.appointmentCTA": {
+    [Language.Turkish]: "Ücretsiz konsültasyon için hemen randevu alın",
+    [Language.English]: "Book an appointment now for a free consultation",
+    [Language.Russian]: "Запишитесь на прием сейчас для бесплатной консультации",
+    [Language.Georgian]: "დაჯავშნეთ შეხვედრა ახლავე უფასო კონსულტაციისთვის"
+  },
+  "services.satisfaction": {
+    [Language.Turkish]: "Memnuniyet",
+    [Language.English]: "Satisfaction",
+    [Language.Russian]: "Удовлетворение",
+    [Language.Georgian]: "კმაყოფილება"
+  },
+  "services.procedureTimeline": {
+    [Language.Turkish]: "İşlem Zaman Çizelgesi",
+    [Language.English]: "Procedure Timeline",
+    [Language.Russian]: "График Процедуры",
+    [Language.Georgian]: "პროცედურის დროის განრიგი"
+  },
   "services.resultsStats": {
     [Language.Turkish]: "Sonuçlarımızla Gurur Duyuyoruz",
     [Language.English]: "We Take Pride in Our Results",
