@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { storage } from "../storage";
 import { insertAppointmentSchema, insertPatientSchema, InsertPatient } from "@shared/schema";
 import { z } from "zod";
-import telegramService from "../services/telegramService";
+import { telegramService } from "../services/telegramService";
 
 // Create a new appointment
 export const createAppointment = async (req: Request, res: Response) => {

@@ -21,7 +21,7 @@ import {
   deleteService
 } from "./controllers/contentController";
 import { telegramBotService } from "./services/telegramBotService";
-import telegramService from "./services/telegramService";
+import { telegramService } from "./services/telegramService";
 import { telegramController } from "./controllers/telegramController";
 import { seedServices, seedPackages, seedNewCountryPackages } from "./controllers/seedController";
 import { seedBlogPosts } from "./controllers/seedBlogController";

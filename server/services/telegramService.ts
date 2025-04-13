@@ -3,7 +3,7 @@ import { telegramBotService } from './telegramBotService';
 import { storage } from '../storage';
 
 // Test bildirimleri için Telegram servisi
-export const telegramService = {
+const telegramTestService = {
   // Yeni randevu test bildirimi gönder
   async sendNewAppointmentTestNotification(chatId: string): Promise<{success: boolean, error?: string}> {
     try {
@@ -213,9 +213,13 @@ const getStatusText = (status: string): string => {
 
 /**
  * Send notification about new appointment to admin
+ * This notification is sent when a new appointment is created, BEFORE it's confirmed
  */
-export const notifyNewAppointment = (appointment: Appointment): void => {
+const notifyNewAppointment = (appointment: Appointment): void => {
   try {
+    console.log(`-------- YENİ RANDEVU BİLDİRİMİ BAŞLADI --------`);
+    console.log(`Randevu ID: ${appointment.id}, İsim: ${appointment.name}, Telefon: ${appointment.phone}`);
+    
     // Servis adını al
     const serviceId = appointment.serviceId;
     const appointmentDate = appointment.preferredDate 
@@ -231,25 +235,20 @@ export const notifyNewAppointment = (appointment: Appointment): void => {
     // telegramBotService başlatılmış mı kontrol et
     if (!telegramBotService.isInitialized) {
       console.warn('Telegram bot is not initialized, cannot send notification');
+      // Bot başlatılmadıysa başlatmayı dene
+      telegramBotService.initialize()
+        .then(() => {
+          console.log('Telegram bot initialized, now sending notification');
+          sendNewAppointmentNotification(appointment, serviceId, appointmentDate);
+        })
+        .catch(error => {
+          console.error(`Failed to initialize bot: ${error.message}`);
+        });
       return;
     }
     
-    // Yeni randevu bildirimi için TelegramBotService'i kullan
-    telegramBotService.getServiceNamePublic(serviceId)
-      .then(serviceName => {
-        console.log(`Service name found: ${serviceName}`);
-        return telegramBotService.formatAppointmentMessage(appointment, serviceName, appointmentDate);
-      })
-      .then(formattedMessage => {
-        console.log("Formatted message created, sending to operators");
-        return telegramBotService.sendOperatorNotification(formattedMessage);
-      })
-      .then(() => {
-        console.log(`New appointment notification sent for ID: ${appointment.id}`);
-      })
-      .catch(error => {
-        console.error(`Error in notification chain: ${error}`);
-      });
+    // Bot zaten başlatılmışsa bildirim gönder
+    sendNewAppointmentNotification(appointment, serviceId, appointmentDate);
     
   } catch (error: any) {
     console.error(`Error sending new appointment notification: ${error.message}`);
@@ -257,9 +256,63 @@ export const notifyNewAppointment = (appointment: Appointment): void => {
 };
 
 /**
+ * Helper function to send new appointment notification
+ */
+const sendNewAppointmentNotification = (appointment: Appointment, serviceId: number, appointmentDate: Date): void => {
+  // Yeni randevu bildirimi için TelegramBotService'i kullan
+  telegramBotService.getServiceNamePublic(serviceId)
+    .then(serviceName => {
+      console.log(`Service name found: ${serviceName}`);
+      
+      // Özel bir mesaj formatı oluştur - YENİ RANDEVU vurgusu ile
+      const message = 
+        `🆕 *YENİ RANDEVU KAYDI* 🆕\n\n` +
+        `⚠️ *Onay Bekliyor* ⚠️\n\n` +
+        `👤 *Hasta Bilgileri*\n` +
+        `İsim: ${appointment.name}\n` +
+        `Telefon: ${appointment.phone}\n` +
+        `E-posta: ${appointment.email}\n\n` +
+        `💇 *Randevu Detayları*\n` +
+        `Hizmet: ${serviceName}\n` +
+        `Tercih Edilen Tarih: ${appointment.preferredDate ? new Date(appointment.preferredDate).toLocaleDateString('tr-TR') : 'Belirtilmemiş'}\n\n` +
+        `💬 *Notlar*\n` +
+        `${appointment.message || 'Not belirtilmemiş'}\n\n` +
+        `👉 *Bu randevu onay bekliyor*\n` +
+        `Randevu onaylamak ve saat belirlemek için admin paneline giriş yapın: https://myhair-clinic.replit.app/admin/dashboard`;
+      
+      console.log("Özel yeni randevu mesajı oluşturuldu, operatörlere gönderiliyor");
+      return telegramBotService.sendOperatorNotification(message);
+    })
+    .then(() => {
+      console.log(`Yeni randevu bildirimi başarıyla gönderildi, ID: ${appointment.id}`);
+    })
+    .catch(error => {
+      console.error(`Bildirim gönderiminde hata: ${error.message}`);
+      
+      // Hata durumunda doğrudan göndermeyi deneyelim
+      const fallbackMessage = 
+        `🆕 *YENİ RANDEVU KAYDI* 🆕\n\n` +
+        `⚠️ *Onay Bekliyor* ⚠️\n\n` +
+        `İsim: ${appointment.name}\n` +
+        `Telefon: ${appointment.phone}\n\n` +
+        `Onaylamak için admin paneline girin!`;
+      
+      // Acil durumda ana admin ID'lerine doğrudan gönder
+      telegramBotService.sendDirectMessageToMainAdmins(fallbackMessage)
+        .then(result => {
+          if (result) {
+            console.log("Yedek bildirim başarıyla gönderildi");
+          } else {
+            console.error("Yedek bildirim gönderilemedi");
+          }
+        });
+    });
+};
+
+/**
  * Send notification about appointment status update to admin
  */
-export const notifyAppointmentUpdate = (appointment: Appointment): void => {
+const notifyAppointmentUpdate = (appointment: Appointment): void => {
   try {
     // telegramBotService başlatılmış mı kontrol et
     if (!telegramBotService.isInitialized) {
@@ -313,7 +366,7 @@ export const notifyAppointmentUpdate = (appointment: Appointment): void => {
  * Send notification to customer about appointment status change
  * NOT USED - For future reference only
  */
-export const notifyCustomerAppointmentUpdate = async (appointment: Appointment): Promise<void> => {
+const notifyCustomerAppointmentUpdate = async (appointment: Appointment): Promise<void> => {
   // Bu fonksiyon müşteri ile iletişim içermediği için artık kullanılmıyor
   console.log(`Customer notification is disabled. No message sent for appointment ID: ${appointment.id}`);
 };
@@ -321,9 +374,10 @@ export const notifyCustomerAppointmentUpdate = async (appointment: Appointment):
 /**
  * Send notification about appointment confirmation with specific time
  */
-export const notifyAppointmentConfirmation = async (appointment: Appointment, appointmentTime: string): Promise<void> => {
+const notifyAppointmentConfirmation = async (appointment: Appointment, appointmentTime: string): Promise<void> => {
   try {
-    console.log(`Sending confirmation notification for appointment ID: ${appointment.id}`);
+    console.log(`-------- RANDEVU ONAY BİLDİRİMİ BAŞLADI --------`);
+    console.log(`Randevu ID: ${appointment.id}, İsim: ${appointment.name}, Telefon: ${appointment.phone}`);
 
     // telegramBotService başlatılmış mı kontrol et
     if (!telegramBotService.isInitialized) {
@@ -391,7 +445,54 @@ ${appointment.message ? `💬 *Mesaj:* ${appointment.message}` : ''}
         
         // Tekrar deneme yap - doğrudan primary admin ID'lerine gönder
         console.log(`Trying again with direct message to primary admin IDs...`);
-        await telegramBotService.sendOperatorNotification(message);
+        
+        try {
+          console.log(`⚙️ Forcing Telegram bot service to reinitialize before retry...`);
+          await telegramBotService.initialize();
+          
+          console.log(`⚙️ Sending critical notification directly to primary admin IDs...`);
+          const directResult = await telegramBotService.sendOperatorNotification(message);
+          
+          if (directResult) {
+            console.log(`✓ Second attempt successful - message delivered to primary admins`);
+          } else {
+            console.error(`✗ Second attempt also failed to deliver the message to primary admins`);
+            
+            // Son çare - doğrudan doğruya validateChatId yardımıyla deneme
+            console.log(`🔄 Last resort: Using manual direct message to each admin ID...`);
+            
+            // Admin ID listesi
+            const primaryAdminIds = ['1062681151', '5631870985']; // Ana yöneticilerin sabit ID'leri
+            let manualSuccess = false;
+            
+            for (const adminId of primaryAdminIds) {
+              try {
+                if (telegramBotService.bot) {
+                  // Chat ID'yi doğrula
+                  const validChatId = adminId.trim();
+                  console.log(`💬 Sending manual message to admin ID: ${validChatId}`);
+                  
+                  // Telegram Bot API'yi doğrudan çağır
+                  await telegramBotService.bot.sendMessage(validChatId, message, { parse_mode: 'Markdown' });
+                  console.log(`✓ Manual message sent successfully to admin ${validChatId}`);
+                  manualSuccess = true;
+                  
+                  // Mesaj iletildi, özel bir işlem yapmaya gerek yok
+                }
+              } catch (manualError) {
+                console.error(`Failed in manual message to admin ${adminId}:`, manualError);
+              }
+            }
+            
+            if (manualSuccess) {
+              console.log(`✓ Last resort manual messages succeeded for at least one admin`);
+            } else {
+              console.error(`✗ All manual messaging attempts failed - we've exhausted all options`);
+            }
+          }
+        } catch (retryError) {
+          console.error(`Error during second attempt at notification:`, retryError);
+        }
       }
     } catch (serviceError) {
       console.error(`Error getting service name or sending notification: ${serviceError}`);
@@ -404,7 +505,7 @@ ${appointment.message ? `💬 *Mesaj:* ${appointment.message}` : ''}
 /**
  * Schedule a reminder for an appointment
  */
-export const scheduleAppointmentReminder = async (appointmentId: number, reminderTime: Date): Promise<void> => {
+const scheduleAppointmentReminder = async (appointmentId: number, reminderTime: Date): Promise<void> => {
   try {
     console.log(`Scheduling reminder for appointment ID: ${appointmentId} at ${reminderTime.toISOString()}`);
     
@@ -497,22 +598,83 @@ Lütfen randevu için gerekli hazırlıkları yapın ve hastamızı zamanında k
 /**
  * Send notification when a patient is created from appointment
  */
-export const notifyPatientCreation = (patient: Patient, appointment: Appointment): void => {
+const notifyPatientCreation = (patient: Patient, appointment: Appointment): void => {
   try {
+    console.log(`-------- YENİ HASTA KAYDI BİLDİRİMİ BAŞLADI --------`);
+    console.log(`Hasta ID: ${patient.id}, İsim: ${patient.fullName}, Telefon: ${patient.phone}`);
+    
     // telegramBotService başlatılmış mı kontrol et
     if (!telegramBotService.isInitialized) {
-      console.warn('Telegram bot is not initialized, cannot send patient creation notification');
+      console.log('Telegram bot is not initialized, initializing now...');
+      telegramBotService.initialize()
+        .then(() => {
+          if (!telegramBotService.isInitialized) {
+            console.error('Telegram bot initialization failed, cannot send patient creation notification');
+            return;
+          }
+          // Bot başlatıldıktan sonra bildirim göndermeye devam et
+          sendPatientNotification();
+        })
+        .catch(error => {
+          console.error('Error initializing Telegram bot:', error);
+          
+          // Yine de normal yollarla bildirim göndermeyi dene
+          try {
+            // Ana yöneticilere direkt bildirim gönder
+            console.log('Failed to initialize bot, attempting manual notification to primary admins...');
+            
+            const message = `
+✅ *YENİ HASTA KAYDEDİLDİ - ACİL BİLDİRİM*
+
+Onaylanan randevudan otomatik olarak hasta kaydı oluşturuldu.
+
+👤 *Hasta Bilgileri*
+📝 *İsim:* ${patient.fullName}
+📧 *E-posta:* ${patient.email || 'Belirtilmemiş'}
+📱 *Telefon:* ${patient.phone}
+
+🔷 *Hasta ID:* ${patient.id}
+🔷 *Randevu ID:* ${appointment.id}
+
+⚠️ UYARI: Bu acil bildirimdir. Normal bildirim sistemi çalışmadığında gönderilir. Lütfen hasta kaydını kontrol edin.
+`;
+            
+            // Ana yöneticilere doğrudan ulaş
+            const primaryAdminIds = ['1062681151', '5631870985']; // Sabit ana yönetici ID'leri
+            
+            if (telegramBotService.bot) {
+              primaryAdminIds.forEach(adminId => {
+                try {
+                  telegramBotService.bot?.sendMessage(adminId, message, { parse_mode: 'Markdown' })
+                    .then(() => console.log(`Manual emergency message sent to admin ${adminId}`))
+                    .catch(err => console.error(`Failed to send emergency message to admin ${adminId}:`, err));
+                } catch (manualError) {
+                  console.error(`Error in manual notification to admin ${adminId}:`, manualError);
+                }
+              });
+            }
+          } catch (manualError) {
+            console.error('All manual notification attempts failed:', manualError);
+          }
+        });
       return;
     }
     
-    // Randevu detaylarını formatla
-    const appointmentDate = appointment.preferredDate 
-      ? new Date(appointment.preferredDate)
-      : new Date();
+    // Bildirim gönderme işlemi
+    sendPatientNotification();
     
-    // Servis ismini al
-    telegramBotService.getServiceNamePublic(appointment.serviceId)
-      .then(serviceName => {
+    // İç fonksiyon - bildirim gönderme işlemini gerçekleştirir
+    function sendPatientNotification() {
+      console.log(`Sending patient creation notification for ID: ${patient.id}`);
+      
+      // Randevu detaylarını formatla
+      const appointmentDate = appointment.preferredDate 
+        ? new Date(appointment.preferredDate)
+        : new Date();
+      
+      // Servis ismini al
+      telegramBotService.getServiceNamePublic(appointment.serviceId)
+        .then(serviceName => {
         const message = `
 ✅ *YENİ HASTA KAYDEDİLDİ*
 
@@ -546,17 +708,20 @@ ${appointment.message ? `💬 *Notlar:* ${appointment.message}` : ''}
         console.error(`Error sending patient creation notification: ${error}`);
       });
     
+    } // end of sendPatientNotification function
   } catch (error: any) {
     console.error(`Error sending patient creation notification: ${error.message}`);
   }
 };
 
-export default {
+// Tüm bildirim fonksiyonlarını telegramService nesnesine ekle
+// Tüm servisleri birleştirerek dışa aktar
+export const telegramService = {
+  ...telegramTestService,
   notifyNewAppointment,
   notifyAppointmentUpdate,
-  notifyCustomerAppointmentUpdate,
+  notifyCustomerAppointmentUpdate, 
   notifyAppointmentConfirmation,
   scheduleAppointmentReminder,
-  notifyPatientCreation,
-  ...telegramService // Test fonksiyonlarını dışa aktar
+  notifyPatientCreation 
 };
