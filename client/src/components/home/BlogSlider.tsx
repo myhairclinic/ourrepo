@@ -174,9 +174,15 @@ export default function BlogSlider() {
               <div className="flex flex-col h-full">
                 <div className="relative h-36 max-lg:h-28 overflow-hidden">
                   <img 
-                    src={blog.imageUrl} 
+                    src={blog.imageUrl && blog.imageUrl.startsWith('/attached_assets') ? blog.imageUrl : blog.imageUrl} 
                     alt={getBlogTitle(blog)} 
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    onError={(e) => {
+                      // Görsel yüklenemezse varsayılan görsel göster
+                      const target = e.target as HTMLImageElement;
+                      console.log('Görsel yüklenemedi:', target.src);
+                      target.src = '/images/blog/default-blog.jpg';
+                    }}
                   />
                   <div className="absolute top-0 right-0 m-2">
                     <div className="bg-primary text-white text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-sm font-semibold shadow-sm">

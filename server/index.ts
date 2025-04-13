@@ -21,6 +21,13 @@ if (!fs.existsSync(uploadsDir)) {
 }
 app.use('/uploads', express.static(uploadsDir));
 
+// Attached_assets klasörünü statik dosya olarak servis et
+const assetsDir = path.join(dirname(__dirname), 'attached_assets');
+if (fs.existsSync(assetsDir)) {
+  app.use('/attached_assets', express.static(assetsDir));
+  console.log('Attached assets klasörü statik olarak sunuluyor:', assetsDir);
+}
+
 // Add CORS headers for development
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Credentials', 'true');

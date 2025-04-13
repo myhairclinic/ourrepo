@@ -434,6 +434,12 @@ export default function BlogManagement() {
                           src={blog.imageUrl} 
                           alt={blog.titleTR} 
                           className="w-full h-full object-cover"
+                          onError={(e) => {
+                            // Görsel yüklenemezse varsayılan görsel göster
+                            const target = e.target as HTMLImageElement;
+                            console.log('Blog yönetimi - Görsel yüklenemedi:', target.src);
+                            target.src = '/images/blog/default-blog.jpg';
+                          }}
                         />
                       </div>
                     </td>
