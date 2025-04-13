@@ -1,0 +1,14 @@
+/* Footer başlıkları için özel stil */
+.footer-title {
+  color: white !important;
+}
+
+footer h3 {
+  color: white !important;
+}
+
+/* Footer başlıklar için maksimum override */
+footer h3.footer-title {
+  color: white !important;
+  color: #FFFFFF !important;
+}
