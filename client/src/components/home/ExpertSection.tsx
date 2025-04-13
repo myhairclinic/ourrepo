@@ -1,5 +1,5 @@
 import { useLanguage } from "@/hooks/use-language";
-import { useTranslation } from "@/lib/translations";
+import { useTranslation } from "@/hooks/use-translation";
 import SectionTitle from "../shared/SectionTitle";
 import { 
   Award, 
@@ -22,7 +22,7 @@ import { Badge } from "@/components/ui/badge";
 
 export default function ExpertSection() {
   const { language } = useLanguage();
-  const { t } = useTranslation(language);
+  const { t } = useTranslation();
   
   const expertStats = [
     {

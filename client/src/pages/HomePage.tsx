@@ -39,11 +39,6 @@ export default function HomePage() {
       />
       
       <main>
-        {/* Yeni çeviri sistemi örneği - sadece gösterim amaçlı 
-        (Bu kısım gerçek önyüzde görünmez, örnek bir kullanımdır) */}
-        <div className="hidden">
-          <p>Pakete başlangıç fiyatı: {packagePrice}</p>
-        </div>
         
         <MainSlider />
         <PatientJourney />

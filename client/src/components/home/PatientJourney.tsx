@@ -1,5 +1,5 @@
 import { useLanguage } from "@/hooks/use-language";
-import { useTranslation } from "@/lib/translations";
+import { useTranslation } from "@/hooks/use-translation";
 import SectionTitle from "../shared/SectionTitle";
 import { Check, CalendarDays, Plane, Clock, UserPlus, MapPin, MessageSquare, Stethoscope, SprayCan, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -15,7 +15,7 @@ interface JourneyStep {
 
 export default function PatientJourney() {
   const { language } = useLanguage();
-  const { t } = useTranslation(language);
+  const { t } = useTranslation();
   
   // Define patient journey steps
   const journeySteps: JourneyStep[] = [
