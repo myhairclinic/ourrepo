@@ -101,23 +101,23 @@ export function BlogListSection({
   );
   
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 md:space-y-8">
       {/* Sekmeler - En son, En popüler */}
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
         className="w-full"
       >
-        <TabsList className="blog-list-tabs grid w-full grid-cols-2 max-w-[400px] bg-muted/50 p-1 rounded-lg shadow-sm">
+        <TabsList className="blog-list-tabs grid w-full grid-cols-2 max-w-[300px] md:max-w-[400px] bg-muted/50 p-0.5 md:p-1 rounded-lg shadow-sm">
           <TabsTrigger 
             value="latest" 
-            className="data-[state=active]:bg-background data-[state=active]:shadow-sm rounded-md transition-all"
+            className="data-[state=active]:bg-background data-[state=active]:shadow-sm rounded-md transition-all h-8 md:h-10 text-xs md:text-sm"
           >
             {t('blog.newest')}
           </TabsTrigger>
           <TabsTrigger 
             value="popular" 
-            className="data-[state=active]:bg-background data-[state=active]:shadow-sm rounded-md transition-all"
+            className="data-[state=active]:bg-background data-[state=active]:shadow-sm rounded-md transition-all h-8 md:h-10 text-xs md:text-sm"
           >
             {t('blog.mostPopular')}
           </TabsTrigger>
@@ -125,7 +125,7 @@ export function BlogListSection({
       </Tabs>
       
       {/* Blog yazıları listesi */}
-      <div className="grid grid-cols-1 gap-8">
+      <div className="grid grid-cols-1 gap-4 md:gap-8">
         {isLoading ? (
           renderSkeletons()
         ) : blogPosts.length > 0 ? (
@@ -144,16 +144,16 @@ export function BlogListSection({
       
       {/* Sayfalama kontrolleri */}
       {totalPages > 1 && !isLoading && (
-        <div className="flex items-center justify-center gap-2 pt-10">
+        <div className="flex items-center justify-center gap-1 md:gap-2 pt-6 md:pt-10">
           <Button
             variant="outline"
             size="icon"
             onClick={goToPrevPage}
             disabled={currentPage === 1}
             aria-label="Previous page"
-            className="rounded-full h-9 w-9 hover:bg-muted/80 hover:text-primary transition-colors"
+            className="rounded-full h-7 w-7 md:h-9 md:w-9 hover:bg-muted/80 hover:text-primary transition-colors"
           >
-            <ChevronLeft className="h-4 w-4" />
+            <ChevronLeft className="h-3 w-3 md:h-4 md:w-4" />
           </Button>
           
           {getPaginationArray().map((page, i) => {
@@ -164,7 +164,7 @@ export function BlogListSection({
                   variant="ghost"
                   size="icon"
                   disabled
-                  className="rounded-full h-9 w-9"
+                  className="rounded-full h-7 w-7 md:h-9 md:w-9 text-xs md:text-sm"
                 >
                   ...
                 </Button>
@@ -179,7 +179,7 @@ export function BlogListSection({
                 onClick={() => goToPage(page)}
                 aria-label={`Page ${page}`}
                 aria-current={currentPage === page ? "page" : undefined}
-                className={`rounded-full h-9 w-9 ${
+                className={`rounded-full h-7 w-7 md:h-9 md:w-9 text-xs md:text-sm ${
                   currentPage === page 
                     ? "bg-primary text-primary-foreground hover:bg-primary/90" 
                     : "hover:bg-muted/80 hover:text-primary transition-colors"
@@ -196,9 +196,9 @@ export function BlogListSection({
             onClick={goToNextPage}
             disabled={currentPage === totalPages}
             aria-label="Next page"
-            className="rounded-full h-9 w-9 hover:bg-muted/80 hover:text-primary transition-colors"
+            className="rounded-full h-7 w-7 md:h-9 md:w-9 hover:bg-muted/80 hover:text-primary transition-colors"
           >
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-3 w-3 md:h-4 md:w-4" />
           </Button>
         </div>
       )}
