@@ -222,37 +222,79 @@ const SettingsManagement = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // Ayarları getirme sorgusu
+  // Ayarları getirme fonksiyonu
+  const loadSettingsBySection = async (section: string) => {
+    try {
+      const res = await apiRequest("GET", `/api/settings/${section}`);
+      if (!res.ok) throw new Error(`${section} ayarları alınamadı`);
+      
+      const settingsArray = await res.json();
+      // Dizi formatından obje formatına dönüştür
+      const settingsObject: Record<string, any> = {};
+      settingsArray.forEach((setting: any) => {
+        settingsObject[setting.key] = setting.value;
+      });
+      
+      return settingsObject;
+    } catch (error) {
+      console.error(`${section} ayarları getirilirken hata oluştu:`, error);
+      return {};
+    }
+  };
+  
+  // Tüm ayarları getirme sorgusu
   const { data: settings, isLoading } = useQuery({
     queryKey: ["/api/settings"],
     queryFn: async () => {
-      try {
-        const res = await apiRequest("GET", "/api/settings");
-        if (!res.ok) throw new Error("Ayarlar alınamadı");
-        return await res.json();
-      } catch (error) {
-        console.error("Ayarlar getirilirken hata oluştu:", error);
-        // Varsayılan boş ayarlar objesi döndür
-        return {
-          general: {},
-          contact: {},
-          security: {},
-          notifications: {},
-          languages: {
-            defaultLanguage: "tr",
-            enabledLanguages: ["tr", "en", "ru", "ka"],
-            autoDetectLanguage: true,
-            showLanguageSwitcher: true,
-            translateUserContent: false,
-          },
-          appointments: {},
-          seo: {},
-          integrations: {},
-          content: {},
-          media: {},
-          backup: {},
-        };
+      // Her bölüm için ayarları ayrı ayrı getir ve birleştir
+      const [
+        general,
+        contact,
+        security,
+        notifications,
+        languages,
+        appointments,
+        seo,
+        integrations,
+        content,
+        media,
+        backup
+      ] = await Promise.all([
+        loadSettingsBySection("general"),
+        loadSettingsBySection("contact"),
+        loadSettingsBySection("security"),
+        loadSettingsBySection("notifications"),
+        loadSettingsBySection("languages"),
+        loadSettingsBySection("appointments"),
+        loadSettingsBySection("seo"),
+        loadSettingsBySection("integrations"),
+        loadSettingsBySection("content"),
+        loadSettingsBySection("media"),
+        loadSettingsBySection("backup")
+      ]);
+      
+      // Varsayılan dil ayarlarını sağla
+      if (!languages.enabledLanguages || languages.enabledLanguages.length === 0) {
+        languages.defaultLanguage = "tr";
+        languages.enabledLanguages = ["tr", "en", "ru", "ka"];
+        languages.autoDetectLanguage = true;
+        languages.showLanguageSwitcher = true;
+        languages.translateUserContent = false;
       }
+      
+      return {
+        general,
+        contact,
+        security,
+        notifications,
+        languages,
+        appointments,
+        seo,
+        integrations,
+        content,
+        media,
+        backup
+      };
     },
   });
 
@@ -425,7 +467,15 @@ const SettingsManagement = () => {
   // Ayarları kaydetme mutation'u
   const saveSettingsMutation = useMutation({
     mutationFn: async ({ section, data }: { section: string; data: any }) => {
-      const res = await apiRequest("PUT", `/api/settings/${section}`, data);
+      // Her bir ayarı dönüştür ve API'ye gönder
+      const settingsToSave = Object.keys(data).map(key => ({
+        section: section,
+        key: key,
+        value: data[key]
+      }));
+      
+      // Batch API'sini kullan
+      const res = await apiRequest("POST", "/api/settings/batch", settingsToSave);
       if (!res.ok) throw new Error(`${section} ayarları kaydedilemedi`);
       return await res.json();
     },
