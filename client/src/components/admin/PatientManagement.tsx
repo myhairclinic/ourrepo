@@ -2131,70 +2131,30 @@ const PatientManagement = () => {
               
               <FormField
                 control={documentForm.control}
-                name="fileName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Dosya Adı</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Dosya adı" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={documentForm.control}
                 name="fileUrl"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Dosya URL'i</FormLabel>
+                    <FormLabel>Dosya Yükle</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://..." {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={documentForm.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Açıklama</FormLabel>
-                    <FormControl>
-                      <Textarea 
-                        placeholder="Belge açıklaması..." 
-                        {...field} 
-                        value={field.value || ""}
-                        onChange={(e) => field.onChange(e.target.value || null)}
+                      <Input 
+                        type="file" 
+                        onChange={(e) => {
+                          // Dosya yükleme işlemleri burada yapılacak
+                          if (e.target.files && e.target.files.length > 0) {
+                            const file = e.target.files[0];
+                            // Dosya adını otomatik olarak belirle
+                            documentForm.setValue("fileName", file.name);
+                            // Şimdilik URL'i boş bırak, form gönderildiğinde doldurulacak
+                            field.onChange("/uploads/" + file.name);
+                          }
+                        }}
+                        className="file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
                       />
                     </FormControl>
+                    <FormDescription>
+                      Desteklenen formatlar: PDF, JPG, PNG (Maks: 5MB)
+                    </FormDescription>
                     <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={documentForm.control}
-                name="isConfidential"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                    <FormControl>
-                      <input
-                        type="checkbox"
-                        checked={field.value}
-                        onChange={field.onChange}
-                        className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>Gizli Belge</FormLabel>
-                      <FormDescription>
-                        Bu belge sadece yetkili kişiler tarafından görüntülenebilir.
-                      </FormDescription>
-                    </div>
                   </FormItem>
                 )}
               />
