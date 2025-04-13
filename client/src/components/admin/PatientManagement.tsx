@@ -701,6 +701,8 @@ const PatientManagement = () => {
       treatmentDate: new Date().toISOString().split('T')[0],
       doctorName: "",
       procedureDetails: "",
+      graftsCount: null,
+      techniqueUsed: "",
       serviceId: null,
       notes: null,
       status: "completed",
@@ -1618,6 +1620,12 @@ const PatientManagement = () => {
                                 İşlem Detayları
                               </th>
                               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Greft
+                              </th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Teknik
+                              </th>
+                              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Durum
                               </th>
                               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -1640,6 +1648,12 @@ const PatientManagement = () => {
                                   </td>
                                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                     {treatment.procedureDetails}
+                                  </td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    {treatment.graftsCount || '-'}
+                                  </td>
+                                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    {treatment.techniqueUsed || '-'}
                                   </td>
                                   <td className="px-6 py-4 whitespace-nowrap">
                                     <Badge variant={
@@ -1673,7 +1687,7 @@ const PatientManagement = () => {
                               ))
                             ) : (
                               <tr>
-                                <td colSpan={7} className="px-6 py-4 text-center text-sm text-gray-500">
+                                <td colSpan={8} className="px-6 py-4 text-center text-sm text-gray-500">
                                   Tedavi kaydı bulunamadı
                                 </td>
                               </tr>
@@ -2277,6 +2291,54 @@ const PatientManagement = () => {
               />
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <FormField
+                  control={treatmentForm.control}
+                  name="graftsCount"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Greft Sayısı</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="number" 
+                          placeholder="Greft sayısı" 
+                          {...field}
+                          value={field.value || ""}
+                          onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value, 10) : null)}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={treatmentForm.control}
+                  name="technicUsed"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Kullanılan Teknik</FormLabel>
+                      <Select
+                        value={field.value || ""}
+                        onValueChange={(value) => field.onChange(value)}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Teknik seçin" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="FUE">FUE</SelectItem>
+                          <SelectItem value="DHI">DHI</SelectItem>
+                          <SelectItem value="Saç Mezoterapisi">Saç Mezoterapisi</SelectItem>
+                          <SelectItem value="PRP">PRP</SelectItem>
+                          <SelectItem value="Diğer">Diğer</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              
                 <FormField
                   control={treatmentForm.control}
                   name="serviceId"
