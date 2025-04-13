@@ -9,8 +9,9 @@ import {
   ChevronLeft, ChevronRight, FileText, Folder,
   Upload, Clock, Calendar, RotateCcw, CheckCircle,
   ListFilter, LayoutGrid, Users, ClipboardList, BadgeCheck,
-  ImageIcon
+  ImageIcon, EyeOff
 } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 import {
   Dialog,
@@ -1639,16 +1640,85 @@ const PatientManagement = () => {
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">
                       <h3 className="text-lg font-medium">İlerleme Görselleri</h3>
-                      <Button onClick={() => {}} className="flex items-center gap-2">
+                      <Button 
+                        onClick={() => {
+                          progressImageForm.reset({
+                            patientId: selectedPatient.id,
+                            imageUrl: "",
+                            captureDate: new Date().toISOString().split('T')[0],
+                            stage: "pre-op",
+                            notes: "",
+                            isVisible: true
+                          });
+                          setIsNewProgressImageDialogOpen(true);
+                        }} 
+                        className="flex items-center gap-2"
+                      >
                         <Upload className="w-4 h-4" />
                         Yeni Görsel Ekle
                       </Button>
                     </div>
 
-                    <div className="bg-gray-50 rounded-lg p-8 text-center">
-                      <h3 className="text-lg font-medium text-gray-600">Görsel bulunamadı</h3>
-                      <p className="mt-2 text-gray-500">Hasta için ilerleme görseli ekleyebilirsiniz.</p>
-                    </div>
+                    {isProgressImagesLoading ? (
+                      <div className="flex justify-center items-center py-10">
+                        <div className="animate-spin">
+                          <RotateCcw className="w-8 h-8 text-primary" />
+                        </div>
+                      </div>
+                    ) : !progressImages || progressImages.length === 0 ? (
+                      <div className="bg-gray-50 rounded-lg p-8 text-center">
+                        <h3 className="text-lg font-medium text-gray-600">Görsel bulunamadı</h3>
+                        <p className="mt-2 text-gray-500">Hasta için ilerleme görseli ekleyebilirsiniz.</p>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+                        {progressImages.map((image: any) => (
+                          <Card key={image.id} className="overflow-hidden">
+                            <div className="aspect-square relative">
+                              <img 
+                                src={image.imageUrl} 
+                                alt={`İlerleme görseli - ${image.stage}`}
+                                className="object-cover w-full h-full"
+                              />
+                              {!image.isVisible && (
+                                <div className="absolute top-2 right-2">
+                                  <Badge variant="secondary" className="bg-gray-800 text-white">
+                                    <EyeOff className="w-3 h-3 mr-1" /> Gizli
+                                  </Badge>
+                                </div>
+                              )}
+                            </div>
+                            <CardContent className="p-4">
+                              <div className="flex flex-col gap-2">
+                                <div className="flex justify-between items-center">
+                                  <Badge className="capitalize">
+                                    {image.stage}
+                                  </Badge>
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => {
+                                      setItemToDelete({ type: "progressImage", id: image.id });
+                                      setIsDeleteConfirmDialogOpen(true);
+                                    }}
+                                  >
+                                    <Trash2 className="h-4 w-4 text-red-600" />
+                                  </Button>
+                                </div>
+                                <div className="text-sm text-gray-700">
+                                  <span className="font-medium">Tarih:</span> {new Date(image.captureDate).toLocaleDateString('tr-TR')}
+                                </div>
+                                {image.notes && (
+                                  <div className="text-sm text-gray-600 mt-1">
+                                    <span className="font-medium">Not:</span> {image.notes}
+                                  </div>
+                                )}
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </TabsContent>
               </Tabs>
