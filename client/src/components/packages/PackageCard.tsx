@@ -148,8 +148,8 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
   
   return (
     <div className="group relative h-full">
-      {/* Pulsing effect behind the card */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-purple-400/5 to-blue-400/5 rounded-2xl -m-1 group-hover:blur-xl transition-all duration-500 opacity-0 group-hover:opacity-100"></div>
+      {/* Softened hover effect - more subtle glow */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/3 via-purple-400/3 to-blue-400/3 rounded-2xl -m-1 group-hover:blur-lg transition-all duration-500 opacity-0 group-hover:opacity-70"></div>
       
       {/* Main card */}
       <div className="relative h-full bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg shadow-black/5 dark:shadow-black/30 hover:shadow-xl border border-slate-100 dark:border-slate-800 transition-all duration-500 transform group-hover:-translate-y-1 group-hover:scale-[1.02] z-10">
@@ -258,8 +258,8 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
                 {getPackageTranslation("packages.viewDetails", language)}
                 <ArrowRight className="h-3.5 w-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
               </span>
-              {/* Shimmering effect */}
-              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-white/0 via-white/20 to-white/0 -skew-x-20 animate-[shimmer_2.5s_ease-in-out_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ backgroundSize: '200% 100%' }}></span>
+              {/* Subtle shimmering effect - reduced animation */}
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-white/0 via-white/10 to-white/0 -skew-x-20 animate-[shimmer_3s_ease-in-out_infinite] opacity-0 group-hover:opacity-70 transition-opacity duration-300" style={{ backgroundSize: '200% 100%' }}></span>
             </Link>
           </Button>
         </div>

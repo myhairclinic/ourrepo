@@ -246,19 +246,19 @@ const PackagesPage: React.FC = () => {
               else if (countryCode === 'ir') bgImage = "bg-[url('/images/iran-resimleri.jpg')]";
               else if (countryCode === 'kz') bgImage = "bg-[url('/images/kazakistanin-ruhu-bu-topr-700.jpg')]";
               
-              // Animation classes based on row
-              const animationClasses = index < 3 ? "animate-float" : "animate-float animation-delay-2000";
+              // Animation classes - removed animations to fix layout issues
+              const animationClasses = "";
               
               return (
                 <div key={countryCode} className="group perspective-1000">
                   <div 
-                    className={`h-44 relative overflow-hidden rounded-2xl shadow-lg fade-in ${delayClass} ${animationClasses} transform-style-3d group-hover:scale-105 transition-transform duration-500`}
+                    className={`h-44 relative overflow-hidden rounded-2xl shadow-lg group-hover:scale-105 transition-transform duration-500`}
                   >
                     {/* Background with image */}
                     <div className={`absolute inset-0 ${bgImage} bg-cover bg-center`}></div>
                     
                     {/* Glass overlay with gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/50 via-purple-500/30 to-indigo-600/50 backdrop-blur-[2px]"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/40 via-purple-500/25 to-indigo-600/40 backdrop-blur-[1px]"></div>
                     
                     {/* Glowing border */}
                     <div className="absolute inset-0 border border-white/20 rounded-2xl"></div>
