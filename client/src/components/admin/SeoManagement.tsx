@@ -347,12 +347,12 @@ const SeoManagement: React.FC<SeoManagementProps> = () => {
     enabled: activeTab === 'analysis' // Sadece analysis tabı açıkken çalıştır
   });
   
+  const [activeTab, setActiveTab] = useState("pages");
   const [activeLanguage, setActiveLanguage] = useState<string>("TR");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPage, setSelectedPage] = useState<any | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isAddPageModalOpen, setIsAddPageModalOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("pages");
   
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -527,12 +527,28 @@ const SeoManagement: React.FC<SeoManagementProps> = () => {
     }
   }, [generalSettings]);
   
-  // Filtreleme
+  // API'den SEO sayfa verilerini state'e aktar
+  useEffect(() => {
+    if (seoPages) {
+      setPageSeoSettings(seoPages);
+    }
+  }, [seoPages]);
+  
+  // API'den SEO analiz verilerini state'e aktar
+  useEffect(() => {
+    if (analysisData) {
+      setSeoAnalysisData(analysisData);
+    }
+  }, [analysisData]);
+  
+  // Filtreleme - boş değerlere karşı koruma eklenmiş
   const filteredPages = pageSeoSettings.filter(page => {
     return (
-      page[`page${activeLanguage}` as keyof typeof page].toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-      page[`metaTitle${activeLanguage}` as keyof typeof page].toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-      page[`metaDescription${activeLanguage}` as keyof typeof page].toString().toLowerCase().includes(searchQuery.toLowerCase())
+      page && (
+        (page[`page${activeLanguage}` as keyof typeof page] || "").toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (page[`metaTitle${activeLanguage}` as keyof typeof page] || "").toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (page[`metaDescription${activeLanguage}` as keyof typeof page] || "").toString().toLowerCase().includes(searchQuery.toLowerCase())
+      )
     );
   });
   
@@ -601,11 +617,16 @@ const SeoManagement: React.FC<SeoManagementProps> = () => {
           </a>
           
           <button
-            onClick={() => alert("Site haritası yeniden oluşturuluyor...")}
+            onClick={() => generateSitemapMutation.mutate()}
+            disabled={generateSitemapMutation.isPending}
             className="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-white rounded-lg text-sm font-medium flex items-center"
           >
-            <Save className="w-4 h-4 mr-1.5" />
-            Sitemap Oluştur
+            {generateSitemapMutation.isPending ? (
+              <Loader2 className="w-4 h-4 mr-1.5 animate-spin" />
+            ) : (
+              <Save className="w-4 h-4 mr-1.5" />
+            )}
+            {generateSitemapMutation.isPending ? "Oluşturuluyor..." : "Sitemap Oluştur"}
           </button>
         </div>
       </div>
@@ -1749,5 +1770,71 @@ const SeoManagement: React.FC<SeoManagementProps> = () => {
     </div>
   );
 };
+
+// SEO skoru hesaplama fonksiyonu
+function getSeoScore(page: any): number {
+  if (!page) return 0;
+  
+  let score = 0;
+  const maxScore = 100;
+  
+  // Meta başlıkları kontrol et
+  if (page.metaTitleTR && page.metaTitleTR.length > 10) score += 10;
+  if (page.metaTitleEN && page.metaTitleEN.length > 10) score += 10;
+  if (page.metaTitleRU && page.metaTitleRU.length > 10) score += 5;
+  if (page.metaTitleKA && page.metaTitleKA.length > 10) score += 5;
+  
+  // Meta açıklamaları kontrol et
+  if (page.metaDescriptionTR && page.metaDescriptionTR.length > 50) score += 10;
+  if (page.metaDescriptionEN && page.metaDescriptionEN.length > 50) score += 10;
+  if (page.metaDescriptionRU && page.metaDescriptionRU.length > 50) score += 5;
+  if (page.metaDescriptionKA && page.metaDescriptionKA.length > 50) score += 5;
+  
+  // Meta anahtar kelimeleri kontrol et
+  if (page.metaKeywordsTR && page.metaKeywordsTR.length > 10) score += 5;
+  if (page.metaKeywordsEN && page.metaKeywordsEN.length > 10) score += 5;
+  if (page.metaKeywordsRU && page.metaKeywordsRU.length > 10) score += 2.5;
+  if (page.metaKeywordsKA && page.metaKeywordsKA.length > 10) score += 2.5;
+  
+  // Canonical URL kontrol et
+  if (page.canonicalUrl && page.canonicalUrl.length > 5) score += 10;
+  
+  // Indexleme ve link takibi kontrolü
+  if (page.indexPage) score += 7.5;
+  if (page.followLinks) score += 7.5;
+  
+  return score;
+}
+
+// SEO önerileri oluşturma fonksiyonu
+function getSeoSuggestions(page: any): string[] {
+  if (!page) return [];
+  
+  const suggestions: string[] = [];
+  
+  // Meta başlıkları kontrol et
+  if (!page.metaTitleTR || page.metaTitleTR.length < 10)
+    suggestions.push("Türkçe meta başlığı ekleyin veya uzatın (en az 10 karakter).");
+  if (!page.metaTitleEN || page.metaTitleEN.length < 10)
+    suggestions.push("İngilizce meta başlığı ekleyin veya uzatın (en az 10 karakter).");
+  
+  // Meta açıklamaları kontrol et
+  if (!page.metaDescriptionTR || page.metaDescriptionTR.length < 50)
+    suggestions.push("Türkçe meta açıklamasını ekleyin veya uzatın (en az 50 karakter).");
+  if (!page.metaDescriptionEN || page.metaDescriptionEN.length < 50)
+    suggestions.push("İngilizce meta açıklamasını ekleyin veya uzatın (en az 50 karakter).");
+  
+  // Canonical URL kontrol et
+  if (!page.canonicalUrl || page.canonicalUrl.length < 5)
+    suggestions.push("Canonical URL ekleyin.");
+  
+  // Indexleme ve link takibi kontrolü
+  if (!page.indexPage)
+    suggestions.push("Sayfa indexlemeyi aktifleştirin (arama motorları için görünürlük).");
+  if (!page.followLinks)
+    suggestions.push("Link takibini aktifleştirin (arama motorları için).");
+  
+  return suggestions;
+}
 
 export default SeoManagement;
