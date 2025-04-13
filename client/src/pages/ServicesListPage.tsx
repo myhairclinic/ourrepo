@@ -104,19 +104,31 @@ export default function ServicesListPage() {
 
   // Helper function to get features for each service
   const getServiceFeatures = (serviceId: number) => {
+    // Çevirileri sabit dizeler olarak tanımlayalım
+    const naturalResultsText = t("services.features.naturalResults") || "";
+    const permanentSolutionText = t("services.features.permanentSolution") || "";
+    const consultationText = t("services.features.consultation") || "";
+    const aftercareText = t("services.features.aftercare") || "";
+    const customDesignText = t("services.features.customDesign") || "";
+    const densityControlText = t("services.features.densityControl") || "";
+    const naturalAppearanceText = t("services.features.naturalAppearance") || "";
+    const facialHarmonyText = t("services.features.facialHarmony") || "";
+    const quickRecoveryText = t("services.features.quickRecovery") || "";
+    const noSideEffectsText = t("services.features.noSideEffects") || "";
+    
     const commonFeatures = [
-      t("services.features.naturalResults"),
-      t("services.features.permanentSolution"),
-      t("services.features.consultation"),
-      t("services.features.aftercare")
+      naturalResultsText,
+      permanentSolutionText,
+      consultationText,
+      aftercareText
     ];
 
     const specificFeatures: Record<number, string[]> = {
-      1: [t("services.features.customDesign"), t("services.features.densityControl")], // Hair Transplantation
-      2: [t("services.features.naturalAppearance"), t("services.features.facialHarmony")], // Eyebrow Transplantation
-      3: [t("services.features.facialHarmony"), t("services.features.densityControl")], // Beard Transplantation
-      4: [t("services.features.quickRecovery"), t("services.features.noSideEffects")], // PRP Treatment
-      5: [t("services.features.noSideEffects"), t("services.features.quickRecovery")] // Hair Mesotherapy
+      1: [customDesignText, densityControlText], // Hair Transplantation
+      2: [naturalAppearanceText, facialHarmonyText], // Eyebrow Transplantation
+      3: [facialHarmonyText, densityControlText], // Beard Transplantation
+      4: [quickRecoveryText, noSideEffectsText], // PRP Treatment
+      5: [noSideEffectsText, quickRecoveryText] // Hair Mesotherapy
     };
 
     return serviceId in specificFeatures ? [...specificFeatures[serviceId], ...commonFeatures] : commonFeatures;

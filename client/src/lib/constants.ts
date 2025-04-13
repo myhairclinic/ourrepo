@@ -47,6 +47,12 @@ export const META = {
     RU: "MyHair Clinic | Центр трансплантации волос и эстетики - Тбилиси, Грузия",
     KA: "MyHair Clinic | თმის გადანერგვისა და ესთეტიკის ცენტრი - თბილისი, საქართველო"
   },
+  TITLE_SUFFIX: {
+    TR: " | MyHair Clinic - Tiflis, Gürcistan",
+    EN: " | MyHair Clinic - Tbilisi, Georgia",
+    RU: " | MyHair Clinic - Тбилиси, Грузия",
+    KA: " | MyHair Clinic - თბილისი, საქართველო"
+  },
   DESCRIPTION: {
     TR: "MyHair Clinic, Tiflis Gürcistan'da en son teknoloji ile saç ekimi, sakal ekimi ve kaş ekimi hizmetleri sunan lider kliniktir.",
     EN: "MyHair Clinic is the leading hair transplant center in Tbilisi, Georgia, offering cutting-edge hair, beard, and eyebrow transplantation services.",
