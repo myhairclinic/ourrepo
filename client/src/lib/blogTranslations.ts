@@ -1,15 +1,12 @@
-// Dil enum yapısı
-export enum Language {
-  Turkish = "tr",
-  English = "en",
-  Russian = "ru",
-  Georgian = "ka",
-  Azerbaijani = "az",
-  Kazakh = "kz",
-  Persian = "ir"
-}
+import { Language } from "@shared/types";
 
-type LanguageMap = Record<Language, string>;
+// Blog sayfası için dil haritası
+type LanguageMap = {
+  [Language.Turkish]: string;
+  [Language.English]: string;
+  [Language.Russian]: string;
+  [Language.Georgian]: string;
+};
 
 /**
  * Blog sayfası için özel çeviri sistemi
@@ -56,28 +53,19 @@ export const blogTranslations: Record<string, LanguageMap> = {
     [Language.Turkish]: "Blog - MyHair Clinic",
     [Language.English]: "Blog - MyHair Clinic",
     [Language.Russian]: "Блог - MyHair Clinic",
-    [Language.Georgian]: "ბლოგი - MyHair Clinic",
-    [Language.Azerbaijani]: "Bloq - MyHair Clinic",
-    [Language.Kazakh]: "Блог - MyHair Clinic",
-    [Language.Persian]: "بلاگ - MyHair Clinic"
+    [Language.Georgian]: "ბლოგი - MyHair Clinic"
   },
   "blog.description": {
     [Language.Turkish]: "Saç ekimi, bakımı ve tedavisi hakkında en son güncellemeler, ipuçları ve makaleler",
     [Language.English]: "Latest updates, tips and articles about hair transplantation, care and treatment",
     [Language.Russian]: "Последние обновления, советы и статьи о трансплантации волос, уходе и лечении",
-    [Language.Georgian]: "უახლესი განახლებები, რჩევები და სტატიები თმის გადანერგვის, მოვლისა და მკურნალობის შესახებ",
-    [Language.Azerbaijani]: "Saç əkimi, qulluğu və müalicəsi haqqında ən son yeniləmələr, məsləhətlər və məqalələr",
-    [Language.Kazakh]: "Шаш трансплантациясы, күтімі және емделуі туралы соңғы жаңартулар, кеңестер мен мақалалар",
-    [Language.Persian]: "آخرین به‌روزرسانی‌ها، نکات و مقالات در مورد کاشت مو، مراقبت و درمان"
+    [Language.Georgian]: "უახლესი განახლებები, რჩევები და სტატიები თმის გადანერგვის, მოვლისა და მკურნალობის შესახებ"
   },
   "blog.searchPosts": {
     [Language.Turkish]: "Blog Yazılarını Ara",
     [Language.English]: "Search Blog Posts",
     [Language.Russian]: "Поиск Записей Блога",
-    [Language.Georgian]: "ბლოგის პოსტების ძიება",
-    [Language.Azerbaijani]: "Bloq Yazılarını Axtar",
-    [Language.Kazakh]: "Блог жазбаларын іздеу",
-    [Language.Persian]: "جستجوی مطالب بلاگ"
+    [Language.Georgian]: "ბლოგის პოსტების ძიება"
   },
   "blog.categoriesTitle": {
     [Language.Turkish]: "Kategoriler",
