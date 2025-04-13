@@ -1327,6 +1327,53 @@ export class MemStorage implements IStorage {
     return document;
   }
 
+  // Hasta İlerleme Görselleri işlemleri
+  private patientProgressImages = new Map<number, PatientProgressImage>();
+  private currentPatientProgressImageId = 1;
+
+  async getPatientProgressImages(patientId: number): Promise<PatientProgressImage[]> {
+    return Array.from(this.patientProgressImages.values())
+      .filter(image => image.patientId === patientId)
+      .sort((a, b) => b.captureDate.getTime() - a.captureDate.getTime());
+  }
+
+  async getPatientProgressImageById(id: number): Promise<PatientProgressImage | undefined> {
+    return this.patientProgressImages.get(id);
+  }
+
+  async createPatientProgressImage(data: InsertPatientProgressImage): Promise<PatientProgressImage> {
+    const id = this.currentPatientProgressImageId++;
+    const progressImage: PatientProgressImage = {
+      ...data,
+      id,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.patientProgressImages.set(id, progressImage);
+    return progressImage;
+  }
+
+  async updatePatientProgressImage(id: number, data: Partial<InsertPatientProgressImage>): Promise<PatientProgressImage | undefined> {
+    const existingImage = this.patientProgressImages.get(id);
+    if (!existingImage) return undefined;
+
+    const updatedImage: PatientProgressImage = {
+      ...existingImage,
+      ...data,
+      updatedAt: new Date()
+    };
+    this.patientProgressImages.set(id, updatedImage);
+    return updatedImage;
+  }
+
+  async deletePatientProgressImage(id: number): Promise<PatientProgressImage | undefined> {
+    const image = this.patientProgressImages.get(id);
+    if (!image) return undefined;
+    
+    this.patientProgressImages.delete(id);
+    return image;
+  }
+
   // Treatment Record operations
   async getTreatmentRecords(patientId: number): Promise<TreatmentRecord[]> {
     return Array.from(this.treatmentRecords.values())

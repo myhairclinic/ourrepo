@@ -726,11 +726,33 @@ export const insertTreatmentRecordSchema = createInsertSchema(treatmentRecords).
   updatedAt: true,
 });
 
+// Hasta İyileşme Takip Görselleri (Progress Images)
+export const patientProgressImages = pgTable("patient_progress_images", {
+  id: serial("id").primaryKey(),
+  patientId: integer("patient_id").notNull().references(() => patients.id),
+  imageUrl: text("image_url").notNull(),
+  captureDate: timestamp("capture_date").notNull(),
+  stage: text("stage").notNull(), // pre-op, post-op-day-1, post-op-week-1, post-op-month-1, post-op-month-3, post-op-month-6, post-op-year-1
+  notes: text("notes"),
+  isVisible: boolean("is_visible").notNull().default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const insertPatientProgressImageSchema = createInsertSchema(patientProgressImages).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 export type Patient = typeof patients.$inferSelect;
 export type InsertPatient = z.infer<typeof insertPatientSchema>;
 
 export type PatientDocument = typeof patientDocuments.$inferSelect;
 export type InsertPatientDocument = z.infer<typeof insertPatientDocumentSchema>;
+
+export type PatientProgressImage = typeof patientProgressImages.$inferSelect;
+export type InsertPatientProgressImage = z.infer<typeof insertPatientProgressImageSchema>;
 
 export type TreatmentRecord = typeof treatmentRecords.$inferSelect;
 export type InsertTreatmentRecord = z.infer<typeof insertTreatmentRecordSchema>;
