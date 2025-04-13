@@ -636,12 +636,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const appointmentId = parseInt(req.params.appointmentId);
       if (isNaN(appointmentId)) {
+        console.error(`Invalid appointment ID received: ${req.params.appointmentId}`);
         return res.status(400).json({ error: "Invalid appointment ID" });
       }
+      
+      console.log(`Processing notification request for appointment ID: ${appointmentId}`);
       
       // Randevu bilgilerini al
       const appointment = await storage.getAppointmentById(appointmentId);
       if (!appointment) {
+        console.error(`Appointment not found with ID: ${appointmentId}`);
         return res.status(404).json({ error: "Appointment not found" });
       }
       
@@ -650,17 +654,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Hatırlatma bildirimi
         // Bu mantıken scheduleAppointmentReminder tarafından otomatik olarak çağrılır,
         // ama manuel tetikleme için de bir endpoint sağlıyoruz
+        console.log(`Scheduling reminder notification for appointment ID: ${appointmentId}`);
         const reminderTime = new Date(Date.now() + 5000); // 5 saniye sonra (test amaçlı)
         await telegramService.scheduleAppointmentReminder(appointmentId, reminderTime);
         res.json({ success: true, message: "Reminder notification scheduled" });
       } else {
         // Onay bildirimi
+        console.log(`Sending confirmation notification for appointment ID: ${appointmentId}`);
         const appointmentTime = appointment.appointmentTime || "09:00";
-        telegramService.notifyAppointmentConfirmation(appointment, appointmentTime);
-        res.json({ success: true, message: "Confirmation notification sent" });
+        
+        try {
+          // Async fonksiyonu await ile çağır
+          await telegramService.notifyAppointmentConfirmation(appointment, appointmentTime);
+          console.log(`Confirmation notification successfully sent for appointment ID: ${appointmentId}`);
+          res.json({ success: true, message: "Confirmation notification sent" });
+        } catch (notificationError: any) {
+          console.error(`Failed to send confirmation notification: ${notificationError.message}`);
+          throw notificationError; // Re-throw error for global error handler
+        }
       }
     } catch (error: any) {
-      console.error("Error sending telegram notification:", error);
+      console.error(`Error in notification process: ${error.message}`, error);
       res.status(500).json({ 
         error: "Failed to send telegram notification",
         details: error.message 
