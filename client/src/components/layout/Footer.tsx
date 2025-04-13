@@ -160,7 +160,7 @@ export default function Footer() {
             {/* Hızlı Linkler */}
             <div className="lg:col-span-2">
               <div className="mb-6">
-                <h3 className="text-lg font-bold text-white" style={{color: 'white'}}>{t("footer.quickLinks")}</h3>
+                <h3 className="text-lg font-bold text-white">{t("footer.quickLinks")}</h3>
                 <div className="h-0.5 w-12 bg-blue-500 mt-2 rounded-full"></div>
               </div>
               
@@ -179,7 +179,7 @@ export default function Footer() {
             {/* Hizmetler */}
             <div className="lg:col-span-3">
               <div className="mb-6">
-                <h3 className="text-lg font-bold text-white" style={{color: 'white'}}>{t("footer.ourServices")}</h3>
+                <h3 className="text-lg font-bold text-white">{t("footer.ourServices")}</h3>
                 <div className="h-0.5 w-12 bg-blue-500 mt-2 rounded-full"></div>
               </div>
               
@@ -198,7 +198,7 @@ export default function Footer() {
             {/* Çalışma Saatleri + Harita */}
             <div className="lg:col-span-3">
               <div className="mb-6">
-                <h3 className="text-lg font-bold text-white" style={{color: 'white'}}>{t("footer.workingHours")}</h3>
+                <h3 className="text-lg font-bold text-white">{t("footer.workingHours")}</h3>
                 <div className="h-0.5 w-12 bg-blue-500 mt-2 rounded-full"></div>
               </div>
               
@@ -234,7 +234,7 @@ export default function Footer() {
                 href={`https://maps.google.com/?q=${getAddress()}`}
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="mt-3 inline-flex items-center text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors"
+                className="mt-3 inline-flex items-center text-white hover:text-blue-200 text-sm font-medium transition-colors"
               >
                 <ExternalLink size={14} className="mr-1" />
                 <span>{t("footer.getDirections")}</span>
