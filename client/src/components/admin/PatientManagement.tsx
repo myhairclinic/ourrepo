@@ -2523,8 +2523,6 @@ const PatientManagement = () => {
                 )}
               />
               
-
-              
               <DialogFooter>
                 <Button
                   type="button"
