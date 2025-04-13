@@ -30,6 +30,13 @@ const MemoryStore = createMemoryStore(session);
 const PostgresSessionStore = connectPg(session);
 
 export interface IStorage {
+  // Site Settings operations
+  getSettings(section: string): Promise<SiteSetting[]>;
+  getSettingsByKey(section: string, key: string): Promise<SiteSetting | undefined>;
+  saveSetting(setting: InsertSiteSetting): Promise<SiteSetting>;
+  updateSettings(settings: InsertSiteSetting[]): Promise<SiteSetting[]>;
+  deleteSetting(id: number): Promise<boolean>;
+
   // User operations
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
@@ -218,6 +225,7 @@ export class MemStorage implements IStorage {
   private patients: Map<number, Patient>;
   private patientDocuments: Map<number, PatientDocument>;
   private treatmentRecords: Map<number, TreatmentRecord>;
+  private siteSettings: Map<number, SiteSetting>;
   
   private currentUserId: number;
   private currentServiceId: number;
@@ -237,6 +245,7 @@ export class MemStorage implements IStorage {
   private currentPatientId: number;
   private currentPatientDocumentId: number;
   private currentTreatmentRecordId: number;
+  private currentSiteSettingId: number;
   
   sessionStore: any;
 
@@ -259,6 +268,7 @@ export class MemStorage implements IStorage {
     this.patients = new Map();
     this.patientDocuments = new Map();
     this.treatmentRecords = new Map();
+    this.siteSettings = new Map();
 
     this.currentUserId = 1;
     this.currentServiceId = 1;
@@ -278,6 +288,7 @@ export class MemStorage implements IStorage {
     this.currentPatientId = 1;
     this.currentPatientDocumentId = 1;
     this.currentTreatmentRecordId = 1;
+    this.currentSiteSettingId = 1;
 
     this.sessionStore = new MemoryStore({
       checkPeriod: 86400000, // Prune expired entries every 24h
@@ -895,6 +906,59 @@ export class MemStorage implements IStorage {
 
   async deleteMessage(id: number): Promise<boolean> {
     return this.messages.delete(id);
+  }
+  
+  // Site Settings operations
+  async getSettings(section: string): Promise<SiteSetting[]> {
+    return Array.from(this.siteSettings.values())
+      .filter(setting => setting.section === section);
+  }
+
+  async getSettingsByKey(section: string, key: string): Promise<SiteSetting | undefined> {
+    return Array.from(this.siteSettings.values())
+      .find(setting => setting.section === section && setting.key === key);
+  }
+
+  async saveSetting(setting: InsertSiteSetting): Promise<SiteSetting> {
+    const existingSetting = Array.from(this.siteSettings.values())
+      .find(s => s.section === setting.section && s.key === setting.key);
+    
+    if (existingSetting) {
+      // Update existing setting
+      const updatedSetting: SiteSetting = {
+        ...existingSetting,
+        value: setting.value,
+        updatedAt: new Date()
+      };
+      this.siteSettings.set(existingSetting.id, updatedSetting);
+      return updatedSetting;
+    } else {
+      // Create new setting
+      const id = this.currentSiteSettingId++;
+      const newSetting: SiteSetting = {
+        ...setting,
+        id,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      this.siteSettings.set(id, newSetting);
+      return newSetting;
+    }
+  }
+
+  async updateSettings(settings: InsertSiteSetting[]): Promise<SiteSetting[]> {
+    const result: SiteSetting[] = [];
+    
+    for (const setting of settings) {
+      const savedSetting = await this.saveSetting(setting);
+      result.push(savedSetting);
+    }
+    
+    return result;
+  }
+
+  async deleteSetting(id: number): Promise<boolean> {
+    return this.siteSettings.delete(id);
   }
 
   // Clinic Info operations
