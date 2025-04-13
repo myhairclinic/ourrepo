@@ -11,6 +11,7 @@ import { Progress } from "@/components/ui/progress";
 import { Play, PauseCircle, Image as ImageIcon, Clock, Camera, Clapperboard, Split, 
   Heart, Share2, Download, ChevronRight, Sparkles, Filter, Sun, Award } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
+import { getGalleryTranslation } from '@/lib/galleryTranslations';
 import PageHeader from '@/components/ui/PageHeader';
 import Container from '@/components/ui/container';
 
@@ -51,26 +52,26 @@ export default function GalleryPage() {
   // Klinik görüntüleri
   const clinicImages: ClinicImage[] = [
     // Prosedür görselleri
-    { id: 1, url: '/images/clinic-gallery/IMG-20250325-WA0046.jpg', title: t('gallery.hairTransplantProcedure'), category: 'procedure' },
-    { id: 2, url: '/images/clinic-gallery/IMG-20250325-WA0047.jpg', title: t('gallery.hairAnalysis'), category: 'procedure' },
-    { id: 3, url: '/images/clinic-gallery/IMG-20250325-WA0048.jpg', title: t('gallery.donorAreaPreparation'), category: 'procedure' },
-    { id: 4, url: '/images/clinic-gallery/IMG-20250325-WA0049.jpg', title: t('gallery.graftExtraction'), category: 'procedure' },
-    { id: 5, url: '/images/clinic-gallery/IMG-20250325-WA0050.jpg', title: t('gallery.hairTransplantTechnique'), category: 'procedure' },
-    { id: 6, url: '/images/clinic-gallery/IMG-20250325-WA0051.jpg', title: t('gallery.recipientSiteCreation'), category: 'procedure' },
-    { id: 7, url: '/images/clinic-gallery/IMG-20250325-WA0053.jpg', title: t('gallery.implantationProcess'), category: 'procedure' },
-    { id: 8, url: '/images/clinic-gallery/IMG-20250325-WA0054.jpg', title: t('gallery.precisionTools'), category: 'procedure' },
+    { id: 1, url: '/images/clinic-gallery/IMG-20250325-WA0046.jpg', title: getGalleryTranslation('gallery.hairTransplantProcedure', language), category: 'procedure' },
+    { id: 2, url: '/images/clinic-gallery/IMG-20250325-WA0047.jpg', title: getGalleryTranslation('gallery.hairAnalysis', language), category: 'procedure' },
+    { id: 3, url: '/images/clinic-gallery/IMG-20250325-WA0048.jpg', title: getGalleryTranslation('gallery.donorAreaPreparation', language), category: 'procedure' },
+    { id: 4, url: '/images/clinic-gallery/IMG-20250325-WA0049.jpg', title: getGalleryTranslation('gallery.graftExtraction', language), category: 'procedure' },
+    { id: 5, url: '/images/clinic-gallery/IMG-20250325-WA0050.jpg', title: getGalleryTranslation('gallery.hairTransplantTechnique', language), category: 'procedure' },
+    { id: 6, url: '/images/clinic-gallery/IMG-20250325-WA0051.jpg', title: getGalleryTranslation('gallery.recipientSiteCreation', language), category: 'procedure' },
+    { id: 7, url: '/images/clinic-gallery/IMG-20250325-WA0053.jpg', title: getGalleryTranslation('gallery.implantationProcess', language), category: 'procedure' },
+    { id: 8, url: '/images/clinic-gallery/IMG-20250325-WA0054.jpg', title: getGalleryTranslation('gallery.precisionTools', language), category: 'procedure' },
     
     // Tesis görselleri
-    { id: 9, url: '/images/clinic-gallery/IMG-20250325-WA0055.jpg', title: t('gallery.operationRoom'), category: 'facility' },
-    { id: 10, url: '/images/clinic-gallery/IMG-20250325-WA0056.jpg', title: t('gallery.consultationRoom'), category: 'facility' },
-    { id: 11, url: '/images/clinic-gallery/IMG-20250325-WA0057.jpg', title: t('gallery.advancedEquipment'), category: 'facility' },
-    { id: 12, url: '/images/clinic-gallery/IMG-20250325-WA0058.jpg', title: t('gallery.sterilizationArea'), category: 'facility' },
+    { id: 9, url: '/images/clinic-gallery/IMG-20250325-WA0055.jpg', title: getGalleryTranslation('gallery.operationRoom', language), category: 'facility' },
+    { id: 10, url: '/images/clinic-gallery/IMG-20250325-WA0056.jpg', title: getGalleryTranslation('gallery.consultationRoom', language), category: 'facility' },
+    { id: 11, url: '/images/clinic-gallery/IMG-20250325-WA0057.jpg', title: getGalleryTranslation('gallery.advancedEquipment', language), category: 'facility' },
+    { id: 12, url: '/images/clinic-gallery/IMG-20250325-WA0058.jpg', title: getGalleryTranslation('gallery.sterilizationArea', language), category: 'facility' },
     
     // Ekip görselleri
-    { id: 13, url: '/images/clinic-gallery/IMG-20250325-WA0059.jpg', title: t('gallery.medicalTeam'), category: 'team' },
-    { id: 14, url: '/images/clinic-gallery/IMG-20250325-WA0060.jpg', title: t('gallery.surgicalTeam'), category: 'team' },
-    { id: 15, url: '/images/clinic-gallery/IMG-20250325-WA0061.jpg', title: t('gallery.technicalStaff'), category: 'team' },
-    { id: 16, url: '/images/clinic-gallery/IMG-20250325-WA0062.jpg', title: t('gallery.supportStaff'), category: 'team' }
+    { id: 13, url: '/images/clinic-gallery/IMG-20250325-WA0059.jpg', title: getGalleryTranslation('gallery.medicalTeam', language), category: 'team' },
+    { id: 14, url: '/images/clinic-gallery/IMG-20250325-WA0060.jpg', title: getGalleryTranslation('gallery.surgicalTeam', language), category: 'team' },
+    { id: 15, url: '/images/clinic-gallery/IMG-20250325-WA0061.jpg', title: getGalleryTranslation('gallery.technicalStaff', language), category: 'team' },
+    { id: 16, url: '/images/clinic-gallery/IMG-20250325-WA0062.jpg', title: getGalleryTranslation('gallery.supportStaff', language), category: 'team' }
   ];
 
   // Videolar
@@ -79,7 +80,7 @@ export default function GalleryPage() {
       id: 1, 
       url: '/videos/VID-20250325-WA0004.mp4', 
       thumbnail: '/images/clinic-gallery/IMG-20250325-WA0046.jpg', 
-      title: t('gallery.hairTransplantProcess'), 
+      title: getGalleryTranslation('gallery.hairTransplantProcess', language), 
       duration: '0:42' 
     },
     { 
@@ -351,8 +352,8 @@ export default function GalleryPage() {
   return (
     <div>
       <PageHeader
-        title={t('gallery.pageTitle')}
-        description={t('gallery.pageDescription')}
+        title={getGalleryTranslation('gallery.pageTitle', language)}
+        description={getGalleryTranslation('gallery.pageDescription', language)}
         isSpecialPage={true}
         imageUrl="/images/clinic-gallery/IMG-20250325-WA0055.jpg"
       />
@@ -362,10 +363,10 @@ export default function GalleryPage() {
           <div className="text-center mb-12">
             <div className="inline-flex items-center justify-center mb-3">
               <Sparkles className="h-5 w-5 mr-2 text-blue-500" />
-              <span className="text-sm font-semibold text-blue-500 uppercase tracking-wider">{t('gallery.exploreOurWork')}</span>
+              <span className="text-sm font-semibold text-blue-500 uppercase tracking-wider">{getGalleryTranslation('gallery.exploreOurWork', language)}</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{t('gallery.transformationShowcase')}</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">{t('gallery.showcaseDescription')}</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{getGalleryTranslation('gallery.transformationShowcase', language)}</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">{getGalleryTranslation('gallery.showcaseDescription', language)}</p>
           </div>
           
           <Tabs defaultValue="clinic" className="w-full" onValueChange={setActiveTab}>
@@ -373,15 +374,15 @@ export default function GalleryPage() {
               <TabsList className="grid grid-cols-3 md:w-auto bg-blue-50/80">
                 <TabsTrigger value="clinic" className="flex items-center gap-1.5 data-[state=active]:bg-blue-600 data-[state=active]:text-white">
                   <Camera className="h-4 w-4" />
-                  <span>{t('gallery.clinicImages')}</span>
+                  <span>{getGalleryTranslation('gallery.clinicImages', language)}</span>
                 </TabsTrigger>
                 <TabsTrigger value="videos" className="flex items-center gap-1.5 data-[state=active]:bg-blue-600 data-[state=active]:text-white">
                   <Clapperboard className="h-4 w-4" />
-                  <span>{t('gallery.videos')}</span>
+                  <span>{getGalleryTranslation('gallery.videos', language)}</span>
                 </TabsTrigger>
                 <TabsTrigger value="beforeAfter" className="flex items-center gap-1.5 data-[state=active]:bg-blue-600 data-[state=active]:text-white">
                   <Split className="h-4 w-4" />
-                  <span>{t('gallery.beforeAfter')}</span>
+                  <span>{getGalleryTranslation('gallery.beforeAfter', language)}</span>
                 </TabsTrigger>
               </TabsList>
 
@@ -394,7 +395,7 @@ export default function GalleryPage() {
                     className={selectedCategory === null ? "bg-blue-600 hover:bg-blue-700" : ""}
                   >
                     <Filter className="h-3.5 w-3.5 mr-1.5" />
-                    {t('gallery.all')}
+                    {getGalleryTranslation('gallery.all', language)}
                   </Button>
                   <Button
                     variant={selectedCategory === 'procedure' ? "default" : "outline"}
@@ -402,7 +403,7 @@ export default function GalleryPage() {
                     onClick={() => setSelectedCategory('procedure')}
                     className={selectedCategory === 'procedure' ? "bg-blue-600 hover:bg-blue-700" : ""}
                   >
-                    {t('gallery.procedures')}
+                    {getGalleryTranslation('gallery.procedures', language)}
                   </Button>
                   <Button
                     variant={selectedCategory === 'facility' ? "default" : "outline"}
@@ -410,7 +411,7 @@ export default function GalleryPage() {
                     onClick={() => setSelectedCategory('facility')}
                     className={selectedCategory === 'facility' ? "bg-blue-600 hover:bg-blue-700" : ""}
                   >
-                    {t('gallery.facilities')}
+                    {getGalleryTranslation('gallery.facilities', language)}
                   </Button>
                   <Button
                     variant={selectedCategory === 'team' ? "default" : "outline"}
@@ -418,7 +419,7 @@ export default function GalleryPage() {
                     onClick={() => setSelectedCategory('team')}
                     className={selectedCategory === 'team' ? "bg-blue-600 hover:bg-blue-700" : ""}
                   >
-                    {t('gallery.team')}
+                    {getGalleryTranslation('gallery.team', language)}
                   </Button>
                 </div>
               )}
@@ -585,12 +586,12 @@ export default function GalleryPage() {
                           <div className="flex flex-col gap-1">
                             <h3 className="font-medium text-base">{item.title}</h3>
                             <p className="text-xs text-muted-foreground">
-                              {t('gallery.resultAfter')} {item.month} {t('gallery.months')}
+                              {getGalleryTranslation('gallery.resultAfter', language, { time: item.month })} {getGalleryTranslation('gallery.months', language)}
                             </p>
                             <Badge variant="outline" className="w-fit mt-1 text-xs capitalize">
-                              {item.type === 'hair' ? t('gallery.hairTransplant') : 
-                               item.type === 'beard' ? t('gallery.beardTransplant') : 
-                               t('gallery.eyebrowTransplant')}
+                              {item.type === 'hair' ? getGalleryTranslation('gallery.hairTransplant', language) : 
+                               item.type === 'beard' ? getGalleryTranslation('gallery.beardTransplant', language) : 
+                               getGalleryTranslation('gallery.eyebrowTransplant', language)}
                             </Badge>
                           </div>
                         </CardContent>
