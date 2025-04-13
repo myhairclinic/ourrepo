@@ -71,40 +71,153 @@ class TelegramBotService {
   }
 
   // Bot başlatma fonksiyonu
-  async initialize() {
-    console.log('Telegram bot initialization starting...');
+  // Bot başlatma fonksiyonu - geliştirilmiş hata yönetimi ve yeniden deneme mekanizması ile
+  async initialize(retryCount = 0, maxRetries = 3): Promise<boolean> {
+    console.log(`🚀 Telegram bot initialization starting (attempt ${retryCount + 1} of ${maxRetries + 1})...`);
     
-    if (this.isInitialized) {
-      console.log('Telegram bot is already initialized, skipping initialization');
-      return;
+    if (this.isInitialized && this.bot) {
+      console.log('✅ Telegram bot is already initialized and active, skipping initialization');
+      return true;
+    }
+    
+    // Zaten başlatılmış ama bot nesnesi yok veya hatalı ise resetleyelim
+    if (this._isInitialized && (!this.bot || (this.bot.hasOwnProperty('isPolling') && !this.bot.isPolling()))) {
+      console.log('⚠️ Bot marked as initialized but not polling or missing bot instance, resetting state...');
+      this._isInitialized = false;
+      if (this.bot) {
+        try {
+          await this.bot.stopPolling();
+        } catch (e) {
+          console.error('❌ Error while stopping polling on incomplete bot:', e);
+        }
+        this.bot = null;
+      }
     }
 
     // Token kontrolü
     const token = process.env.TELEGRAM_BOT_TOKEN;
     if (!token) {
-      console.error('TELEGRAM_BOT_TOKEN environment variable is not set');
-      return;
+      console.error('❌ TELEGRAM_BOT_TOKEN environment variable is not set');
+      if (retryCount < maxRetries) {
+        const delay = Math.pow(2, retryCount) * 1000; // Exponential backoff
+        console.log(`⏱️ Will retry in ${delay}ms...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        return this.initialize(retryCount + 1, maxRetries);
+      }
+      return false;
     }
-    console.log('TELEGRAM_BOT_TOKEN found, proceeding with initialization');
+    
+    console.log('✅ TELEGRAM_BOT_TOKEN found, proceeding with initialization');
 
     try {
       // Bot ayarlarını al
-      console.log('Fetching bot settings from database...');
-      const [settings] = await db.select().from(botSettingsTable);
-      const isActive = settings?.isActive ?? true;
-      console.log('Bot settings fetched, isActive:', isActive);
-
-      if (isActive) {
-        console.log('Creating Telegram bot instance with polling...');
-        this.bot = new TelegramBot(token, { polling: true });
-        this.setupEventHandlers();
-        this._isInitialized = true;
-        console.log('Telegram bot initialized successfully');
-      } else {
-        console.log('Telegram bot is disabled in settings');
+      console.log('📋 Fetching bot settings from database...');
+      let isActive = true;
+      
+      try {
+        const [settings] = await db.select().from(botSettingsTable);
+        isActive = settings?.isActive ?? true;
+        console.log('✅ Bot settings fetched, isActive:', isActive);
+      } catch (dbError) {
+        console.warn('⚠️ Could not fetch bot settings, using defaults:', dbError);
       }
+
+      if (!isActive) {
+        console.log('⏸️ Telegram bot is disabled in settings, skipping initialization');
+        return false;
+      }
+      
+      // Mevcut bot örneğini kapatmaya çalış
+      if (this.bot) {
+        try {
+          console.log('🔄 Stopping existing bot instance before creating a new one...');
+          await this.bot.stopPolling();
+          console.log('✅ Successfully stopped existing bot instance');
+        } catch (stopError) {
+          console.error('❌ Error stopping existing bot:', stopError);
+        }
+      }
+
+      // Yeni bot instance oluştur
+      console.log('🔄 Creating Telegram bot instance with polling...');
+      
+      // Yeni bot oluştur - doğrudan polling özelliği ile
+      try {
+        this.bot = new TelegramBot(token, { polling: true });
+        console.log('✅ Telegram bot created with polling enabled');
+      } catch (createError) {
+        console.error('❌ Error creating Telegram bot:', createError);
+        
+        if (retryCount < maxRetries) {
+          const delay = Math.pow(2, retryCount) * 1000;
+          console.log(`⏱️ Will retry in ${delay}ms...`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+          return this.initialize(retryCount + 1, maxRetries);
+        }
+        
+        return false;
+      }
+      
+      // Event handler'ları kur
+      try {
+        console.log('🔄 Setting up event handlers...');
+        this.setupEventHandlers();
+        console.log('✅ Event handlers setup complete');
+      } catch (handlerError) {
+        console.error('❌ Error setting up event handlers:', handlerError);
+      }
+
+      // Zamanlanmış görevleri başlat
+      try {
+        console.log('🔄 Starting appointment checkers and scheduled tasks...');
+        this.startAppointmentCheckers();
+        this.scheduleDailySummary();
+        console.log('✅ Scheduled tasks started successfully');
+      } catch (schedulerError) {
+        console.error('❌ Error starting scheduled tasks:', schedulerError);
+      }
+
+      // Başarılı bir şekilde başlatıldı
+      this._isInitialized = true;
+      console.log('✅ Telegram bot initialization completed successfully');
+      
+      // Bot'un working olduğunu doğrulayalım ve durumunu bildirelim
+      try {
+        const botInfo = await this.bot.getMe();
+        console.log(`✅ Bot is working as: @${botInfo.username} (ID: ${botInfo.id})`);
+        
+        // Test amaçlı bir hatırlatıcı mesaj gönder
+        try {
+          const notificationMessage = `🔔 *MyHair Clinic Bot Aktif*\n\nBot başarıyla aktif edildi.\nBot Adı: @${botInfo.username}\nTarih: ${new Date().toLocaleString('tr-TR')}\n\nBildirimler bu hesaba gönderilecek.`;
+          
+          for (const adminId of this.primaryAdminIds) {
+            try {
+              await this.bot.sendMessage(adminId, notificationMessage, { parse_mode: 'Markdown' });
+              console.log(`✅ Activation notification sent to admin ID: ${adminId}`);
+            } catch (notifyError) {
+              console.error(`❌ Failed to send activation notification to admin ID: ${adminId}`, notifyError);
+            }
+          }
+        } catch (finalError) {
+          console.error('❌ Error sending activation notifications:', finalError);
+        }
+      } catch (botInfoError) {
+        console.error('❌ Error getting bot info, but continuing anyway:', botInfoError);
+      }
+      
+      return true;
     } catch (error) {
-      console.error('Error initializing Telegram bot:', error);
+      console.error('❌ Critical error during Telegram bot initialization:', error);
+      
+      // Son deneme değilse tekrar dene
+      if (retryCount < maxRetries) {
+        const delay = Math.pow(2, retryCount) * 1000;
+        console.log(`⏱️ Will retry initialization in ${delay}ms...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        return this.initialize(retryCount + 1, maxRetries);
+      }
+      
+      return false;
     }
   }
 
@@ -832,42 +945,96 @@ E-posta: ${appointment.email}
     return this.formatNewAppointmentMessage(appointment, serviceName, date);
   }
   
+  // Bot başlatılmasa bile sabit admin ID'lerine acil bildirim gönderme
+  async sendDirectNotificationToAdmins(message: string): Promise<boolean> {
+    console.log(`🆘 sendDirectNotificationToAdmins: Attempting to send direct message to primary admins`);
+    
+    if (!message || message.trim() === '') {
+      console.error('❌ sendDirectNotificationToAdmins: Invalid message - Message cannot be empty');
+      return false;
+    }
+    
+    // TELEGRAM_BOT_TOKEN çevresel değişkeni kontrolü
+    const token = process.env.TELEGRAM_BOT_TOKEN;
+    if (!token) {
+      console.error('❌ sendDirectNotificationToAdmins: TELEGRAM_BOT_TOKEN environment variable is not set');
+      return false;
+    }
+    
+    try {
+      // Yeni bir bot örneği oluştur (polling olmadan, sadece mesaj göndermek için)
+      console.log(`🔄 sendDirectNotificationToAdmins: Creating temporary bot instance...`);
+      const tempBot = new TelegramBot(token, { polling: false });
+      
+      let success = false;
+      
+      // Ana yöneticilere bildirim gönder
+      for (const adminId of this.primaryAdminIds) {
+        try {
+          console.log(`🔄 sendDirectNotificationToAdmins: Sending to admin ID ${adminId}...`);
+          await tempBot.sendMessage(adminId, message, { parse_mode: 'Markdown' });
+          console.log(`✅ sendDirectNotificationToAdmins: Successfully sent to admin ID ${adminId}`);
+          success = true;
+        } catch (adminError) {
+          console.error(`❌ sendDirectNotificationToAdmins: Error sending to admin ID ${adminId}:`, adminError);
+        }
+      }
+      
+      return success;
+    } catch (error) {
+      console.error(`❌ sendDirectNotificationToAdmins: Critical error:`, error);
+      return false;
+    }
+  }
+  
   // NOT: Sabit ana yönetici ID'leri sınıf başında tanımlandı: readonly primaryAdminIds: string[]
   
   // Operatörlere bildirim gönder - dışarıdan erişilebilir
   async sendOperatorNotification(message: string): Promise<boolean> {
+    console.log(`🚀 sendOperatorNotification: Attempting to send message to all operators and admins`);
+    
     try {
       if (!message || message.trim() === '') {
-        console.error('Invalid message: Message cannot be empty');
+        console.error('❌ sendOperatorNotification: Invalid message - Message cannot be empty');
         return false;
       }
       
       // Bot başlatılmış mı kontrol et, başlatılmamışsa başlat
       if (!this._isInitialized || !this.bot) {
-        console.warn(`Bot is not initialized, attempting to initialize before sending operator notification...`);
-        await this.initialize();
+        console.warn(`⚠️ sendOperatorNotification: Bot is not initialized, attempting to initialize before sending notification...`);
+        const initResult = await this.initialize();
         
-        if (!this._isInitialized || !this.bot) {
-          console.error(`Bot initialization failed, cannot send operator notification`);
-          return false;
+        if (!initResult || !this._isInitialized || !this.bot) {
+          console.error(`❌ sendOperatorNotification: Bot initialization failed, attempting direct approach...`);
+          
+          // Bot başlatılamasa bile doğrudan Telegram API'sini kullanarak mesaj göndermeyi dene
+          return await this.sendDirectNotificationToAdmins(message);
         }
       }
       
       if (!this._isInitialized || !this.bot) {
-        console.warn('Bot is not initialized, cannot send notification. Check if the Telegram bot service is active.');
-        return false;
+        console.warn('⚠️ sendOperatorNotification: Bot is still not initialized, attempting direct approach...');
+        return await this.sendDirectNotificationToAdmins(message);
       }
       
-      console.log('Getting bot settings to send notification to operators...');
-      // Bot ayarlarını al ve operatör listesini getir
-      const [botSettings] = await db.select().from(botSettingsTable);
-      const operators = botSettings?.operators || [];
-      console.log(`Found ${operators.length} operators in settings.`);
+      console.log('📋 sendOperatorNotification: Getting bot settings to send notification to operators...');
       
-      // Aktif operatörler ve ana yöneticileri birleştirelim
+      // Bot ayarlarını al ve operatör listesini getir
+      let operators = [];
+      try {
+        const [botSettings] = await db.select().from(botSettingsTable);
+        operators = botSettings?.operators || [];
+        console.log(`✅ sendOperatorNotification: Found ${operators.length} operators in settings.`);
+      } catch (dbError) {
+        console.error(`❌ sendOperatorNotification: Error fetching bot settings: ${dbError}`);
+        console.log(`⚠️ sendOperatorNotification: Continuing with only primary admin IDs...`);
+      }
+      
+      // Aktif operatörler
       const activeOperators = operators.filter(op => op.isActive && op.telegramUsername);
       
-      console.log(`Adding ${this.primaryAdminIds.length} primary admin IDs to notification list: ${this.primaryAdminIds.join(', ')}`);
+      console.log(`📣 sendOperatorNotification: Will send to ${activeOperators.length} active operators and ${this.primaryAdminIds.length} primary admins`);
+      console.log(`📣 Primary admin IDs: ${this.primaryAdminIds.join(', ')}`);
       
       let success = false;
       let failedOperators = [];
@@ -875,32 +1042,57 @@ E-posta: ${appointment.email}
       
       // Önce normal operatörlere mesajı gönder
       for (const operator of activeOperators) {
-        console.log(`Attempting to send message to operator: ${operator.name} (${operator.telegramUsername})`);
-        const result = await this.sendMessageToOperator(operator.telegramUsername, message);
+        console.log(`🔄 sendOperatorNotification: Attempting to send message to operator: ${operator.name} (${operator.telegramUsername})`);
         
-        if (result) {
-          console.log(`✓ Successfully sent message to ${operator.telegramUsername}`);
-          success = true;
-          successfulOperators.push(operator.telegramUsername);
-        } else {
-          console.warn(`✗ Failed to send message to ${operator.telegramUsername}`);
+        try {
+          const result = await this.sendMessageToOperator(operator.telegramUsername, message);
+          
+          if (result) {
+            console.log(`✅ sendOperatorNotification: Successfully sent message to ${operator.telegramUsername}`);
+            success = true;
+            successfulOperators.push(operator.telegramUsername);
+          } else {
+            console.warn(`⚠️ sendOperatorNotification: Failed to send message to ${operator.telegramUsername}`);
+            failedOperators.push(operator.telegramUsername);
+          }
+        } catch (operatorError) {
+          console.error(`❌ sendOperatorNotification: Error sending to ${operator.telegramUsername}:`, operatorError);
           failedOperators.push(operator.telegramUsername);
         }
       }
       
       // Ardından ana yöneticilere gönder (kritik mesajlar her durumda onlara ulaşmalı)
-      console.log(`Now sending notifications to ${this.primaryAdminIds.length} primary admin IDs...`);
+      console.log(`🔴 sendOperatorNotification: Now sending to ${this.primaryAdminIds.length} primary admin IDs...`);
       
       for (const adminId of this.primaryAdminIds) {
-        console.log(`Attempting to send message to primary admin ID: ${adminId}`);
-        const result = await this.sendMessageToOperator(adminId, message);
+        console.log(`🔄 sendOperatorNotification: Attempting to send message to primary admin ID: ${adminId}`);
         
-        if (result) {
-          console.log(`✓ Successfully sent message to primary admin ${adminId}`);
-          success = true; // En az bir başarılı bildirim varsa true
-          successfulOperators.push(`Admin ID: ${adminId}`);
-        } else {
-          console.warn(`✗ Failed to send message to primary admin ${adminId}`);
+        try {
+          // Önce sendMessageToOperator ile deneyelim
+          let result = await this.sendMessageToOperator(adminId, message);
+          
+          // Başarısız olursa doğrudan bot.sendMessage ile deneyelim
+          if (!result && this.bot) {
+            try {
+              console.log(`⚠️ sendOperatorNotification: First attempt failed, trying direct bot.sendMessage to ${adminId}...`);
+              await this.bot.sendMessage(adminId, message, { parse_mode: 'Markdown' });
+              result = true;
+              console.log(`✅ sendOperatorNotification: Direct bot.sendMessage succeeded to ${adminId}`);
+            } catch (directError) {
+              console.error(`❌ sendOperatorNotification: Direct bot.sendMessage failed to ${adminId}:`, directError);
+            }
+          }
+          
+          if (result) {
+            console.log(`✅ sendOperatorNotification: Successfully sent message to primary admin ${adminId}`);
+            success = true; // En az bir başarılı bildirim varsa true
+            successfulOperators.push(`Admin ID: ${adminId}`);
+          } else {
+            console.warn(`⚠️ sendOperatorNotification: Failed to send message to primary admin ${adminId}`);
+            failedOperators.push(`Admin ID: ${adminId}`);
+          }
+        } catch (adminError) {
+          console.error(`❌ sendOperatorNotification: Error sending to primary admin ${adminId}:`, adminError);
           failedOperators.push(`Admin ID: ${adminId}`);
         }
       }
