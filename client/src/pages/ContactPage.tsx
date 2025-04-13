@@ -223,7 +223,7 @@ export default function ContactPage() {
                         <Mail className="h-6 w-6" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-lg mb-2">{t('home.location.email')}</h3>
+                        <h3 className="font-semibold text-lg mb-2">E-posta</h3>
                         <p className="text-muted-foreground">{CONTACT.EMAIL}</p>
                       </div>
                     </div>
@@ -236,19 +236,19 @@ export default function ContactPage() {
                         <Clock className="h-6 w-6" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-lg mb-2">{t('home.location.workingHours')}</h3>
+                        <h3 className="font-semibold text-lg mb-2">Çalışma Saatleri</h3>
                         <div className="space-y-1 text-muted-foreground">
                           <div className="flex justify-between">
-                            <span>{t('home.location.weekdaysLabel')}</span>
-                            <span className="font-medium">{t('home.location.weekdays')}</span>
+                            <span>Pazartesi - Cuma</span>
+                            <span className="font-medium">09:00 - 18:00</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>{t('home.location.saturdayLabel')}</span>
-                            <span className="font-medium">{t('home.location.saturday')}</span>
+                            <span>Cumartesi</span>
+                            <span className="font-medium">10:00 - 16:00</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>{t('home.location.sundayLabel')}</span>
-                            <span className="font-medium">{t('home.location.sunday')}</span>
+                            <span>Pazar</span>
+                            <span className="font-medium">Kapalı</span>
                           </div>
                         </div>
                       </div>
@@ -352,12 +352,12 @@ export default function ContactPage() {
                         <div className="bg-primary/10 p-1.5 rounded-full">
                           <User className="h-4 w-4 text-primary" />
                         </div>
-                        {t('common.name')} {t('common.surname')}*
+                        Ad Soyad*
                       </Label>
                       <Input
                         id="name"
                         type="text"
-                        placeholder={t('contact.namePlaceholder')}
+                        placeholder="Adınız ve soyadınız"
                         className={`py-6 px-4 text-base ${errors.name ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'}`}
                         {...register("name")}
                       />
@@ -369,7 +369,7 @@ export default function ContactPage() {
                         <div className="bg-primary/10 p-1.5 rounded-full">
                           <AtSign className="h-4 w-4 text-primary" />
                         </div>
-                        {t('common.email')}*
+                        E-posta*
                       </Label>
                       <Input
                         id="email"
@@ -387,7 +387,7 @@ export default function ContactPage() {
                       <div className="bg-primary/10 p-1.5 rounded-full">
                         <Phone className="h-4 w-4 text-primary" />
                       </div>
-                      {t('common.phoneNumber')}
+                      Telefon Numarası
                     </Label>
                     <Input
                       id="phone"
@@ -403,7 +403,7 @@ export default function ContactPage() {
                       <div className="bg-primary/10 p-1.5 rounded-full">
                         <MessageSquare className="h-4 w-4 text-primary" />
                       </div>
-                      {t('common.message')}*
+                      Mesaj*
                     </Label>
                     <Textarea
                       id="message"
@@ -427,12 +427,12 @@ export default function ContactPage() {
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        {t('contact.sending')}
+                        Gönderiliyor...
                       </span>
                     ) : (
                       <span className="flex items-center gap-2">
                         <Send className="h-5 w-5" />
-                        {t('common.submitForm')}
+                        Mesaj Gönder
                       </span>
                     )}
                   </Button>
