@@ -750,11 +750,19 @@ export const patientProgressImages = pgTable("patient_progress_images", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
-export const insertPatientProgressImageSchema = createInsertSchema(patientProgressImages).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const insertPatientProgressImageSchema = createInsertSchema(patientProgressImages)
+  .omit({
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+    beforeAfterType: true,
+    angleType: true,
+    isHighlighted: true,
+    notes: true,
+  })
+  .extend({
+    captureDate: z.string().min(1, { message: "Tarih gereklidir." }),
+  });
 
 export type Patient = typeof patients.$inferSelect;
 export type InsertPatient = z.infer<typeof insertPatientSchema>;
