@@ -526,6 +526,60 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Georgian]: "გამოყენების პირობები"
   },
   
+  "common.contactViaWhatsApp": {
+    [Language.Turkish]: "WhatsApp'tan Ulaşın",
+    [Language.English]: "Contact via WhatsApp",
+    [Language.Russian]: "Связаться через WhatsApp",
+    [Language.Georgian]: "დაგვიკავშირდით WhatsApp-ით"
+  },
+  "common.makeAppointment": {
+    [Language.Turkish]: "Randevu Alın",
+    [Language.English]: "Make an Appointment",
+    [Language.Russian]: "Записаться на Прием",
+    [Language.Georgian]: "დანიშნეთ შეხვედრა"
+  },
+  "home.location.saturdayLabel": {
+    [Language.Turkish]: "Cumartesi",
+    [Language.English]: "Saturday",
+    [Language.Russian]: "Суббота",
+    [Language.Georgian]: "შაბათი"
+  },
+  "home.location.sundayLabel": {
+    [Language.Turkish]: "Pazar",
+    [Language.English]: "Sunday",
+    [Language.Russian]: "Воскресенье",
+    [Language.Georgian]: "კვირა"
+  },
+  "home.location.closed": {
+    [Language.Turkish]: "Kapalı",
+    [Language.English]: "Closed",
+    [Language.Russian]: "Закрыто",
+    [Language.Georgian]: "დახურულია"
+  },
+  
+
+  
+  "footer.description": {
+    [Language.Turkish]: "MyHair Clinic, saç ekimi ve restorasyon konusunda uzmanlaşmış öncü bir kliniktir. Yüksek kaliteli bakım, ileri teknoloji ve kişiselleştirilmiş tedavi yaklaşımı sunuyoruz.",
+    [Language.English]: "MyHair Clinic is a leading clinic specializing in hair transplantation and restoration. We offer high-quality care, advanced technology, and a personalized treatment approach.",
+    [Language.Russian]: "MyHair Clinic — ведущая клиника, специализирующаяся на трансплантации и восстановлении волос. Мы предлагаем высококачественный уход, передовые технологии и персонализированный подход к лечению.",
+    [Language.Georgian]: "MyHair Clinic არის წამყვანი კლინიკა, რომელიც სპეციალიზირებულია თმის გადანერგვასა და აღდგენაში. ჩვენ გთავაზობთ მაღალი ხარისხის მოვლას, თანამედროვე ტექნოლოგიებს და პერსონალიზებულ მკურნალობის მიდგომას."
+  },
+  
+  "footer.quickLinks": {
+    [Language.Turkish]: "Hızlı Linkler",
+    [Language.English]: "Quick Links",
+    [Language.Russian]: "Быстрые Ссылки",
+    [Language.Georgian]: "სწრაფი ბმულები"
+  },
+  
+  "footer.ourServices": {
+    [Language.Turkish]: "Hizmetlerimiz",
+    [Language.English]: "Our Services",
+    [Language.Russian]: "Наши Услуги",
+    [Language.Georgian]: "ჩვენი სერვისები"
+  },
+  
   // Other sections
   "gallery.patientJourney": {
     [Language.Turkish]: "Hasta Yolculuğu",
