@@ -346,7 +346,7 @@ export default function BlogManagement() {
   }) : [];
   
   // Kategori listesi
-  const categories = blogs ? [...new Set(blogs.map((blog: any) => blog.category).filter(Boolean))] : [];
+  const categories = blogs ? Array.from(new Set(blogs.map((blog: any) => blog.category).filter(Boolean))) : [];
   
   // Formata edilmiş tarih
   const formatDate = (dateString: string) => {
