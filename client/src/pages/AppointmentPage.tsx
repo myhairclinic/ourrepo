@@ -237,7 +237,7 @@ export default function AppointmentPage() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-neutral-600 mb-1" htmlFor="message">
-                      {t('common.message')}
+                      Mesajınız
                     </label>
                     <textarea
                       id="message"
@@ -255,7 +255,7 @@ export default function AppointmentPage() {
                       {...register("consent")}
                     />
                     <label className="ml-2 block text-sm text-neutral-600" htmlFor="consent">
-                      {t('common.consentText')}*
+                      Kişisel verilerimin kullanılmasına ve benimle iletişime geçilmesine izin veriyorum*
                     </label>
                   </div>
                   {errors.consent && <p className="text-red-500 text-xs">{errors.consent.message}</p>}
@@ -264,7 +264,7 @@ export default function AppointmentPage() {
                     className="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-md transition duration-200 w-full"
                     disabled={appointmentMutation.isPending}
                   >
-                    {appointmentMutation.isPending ? t('appointment.sending') : t('common.bookAppointment')}
+                    {appointmentMutation.isPending ? "Gönderiliyor..." : "Randevu Al"}
                   </button>
                 </form>
               </div>
@@ -276,15 +276,15 @@ export default function AppointmentPage() {
             <div className="bg-neutral-100 rounded-lg p-6 shadow-md">
               <h3 className="font-heading text-xl font-semibold mb-4 flex items-center">
                 <i className="fas fa-info-circle text-primary mr-2"></i>
-                {t('appointment.localPatients')}
+                Yerel Hastalar İçin Bilgiler
               </h3>
               <div className="prose prose-sm">
-                <p>{t('appointment.localInfo1')}</p>
-                <p>{t('appointment.localInfo2')}</p>
+                <p>MyHair Clinic, Gürcistan'da saç ekimi hizmetleri için uygun fiyatlarla profesyonel çözümler sunmaktadır.</p>
+                <p>Yerel hastalar için özel avantajlar ve ödeme seçenekleri mevcuttur.</p>
                 <ul>
-                  <li>{t('appointment.localPoint1')}</li>
-                  <li>{t('appointment.localPoint2')}</li>
-                  <li>{t('appointment.localPoint3')}</li>
+                  <li>Ücretsiz konsültasyon randevusu alabilirsiniz</li>
+                  <li>Tedavi sonrası takip randevuları dahildir</li>
+                  <li>Yerel hastalar için esnek ödeme planları mevcuttur</li>
                 </ul>
               </div>
             </div>
@@ -292,15 +292,15 @@ export default function AppointmentPage() {
             <div className="bg-neutral-100 rounded-lg p-6 shadow-md">
               <h3 className="font-heading text-xl font-semibold mb-4 flex items-center">
                 <i className="fas fa-globe text-primary mr-2"></i>
-                {t('appointment.internationalPatients')}
+                Uluslararası Hastalar İçin Bilgiler
               </h3>
               <div className="prose prose-sm">
-                <p>{t('appointment.internationalInfo1')}</p>
-                <p>{t('appointment.internationalInfo2')}</p>
+                <p>MyHair Clinic olarak yurtdışından gelen hastalarımız için özel paketler sunuyoruz.</p>
+                <p>Paketlerimize konaklama, havalimanı transferi ve çevirmen hizmeti dahildir.</p>
                 <ul>
-                  <li>{t('appointment.internationalPoint1')}</li>
-                  <li>{t('appointment.internationalPoint2')}</li>
-                  <li>{t('appointment.internationalPoint3')}</li>
+                  <li>Ülkenize özel seyahat ve tedavi paketleri</li>
+                  <li>Vize işlemlerinde destek ve yönlendirme</li>
+                  <li>Tbilisi'de konaklamanız boyunca 7/24 asistanlık hizmeti</li>
                 </ul>
               </div>
             </div>
