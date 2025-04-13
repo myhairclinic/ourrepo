@@ -718,8 +718,6 @@ const PatientManagement = () => {
       imageUrl: "",
       captureDate: new Date().toISOString().split('T')[0],
       stage: "pre-op",
-      notes: null,
-      isVisible: true,
     });
     
     setIsNewProgressImageDialogOpen(true);
@@ -2523,46 +2521,7 @@ const PatientManagement = () => {
                 )}
               />
               
-              <FormField
-                control={progressImageForm.control}
-                name="notes"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Notlar</FormLabel>
-                    <FormControl>
-                      <Textarea 
-                        placeholder="Görsel hakkında notlar..."
-                        className="min-h-[80px]"
-                        {...field}
-                        value={field.value || ""}
-                        onChange={(e) => field.onChange(e.target.value || null)}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={progressImageForm.control}
-                name="isVisible"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>Görsel Görünürlüğü</FormLabel>
-                      <FormDescription>
-                        Bu görsel hastaya gösterilsin mi?
-                      </FormDescription>
-                    </div>
-                  </FormItem>
-                )}
-              />
+
               
               <DialogFooter>
                 <Button
