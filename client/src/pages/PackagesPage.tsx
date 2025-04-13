@@ -192,8 +192,8 @@ const PackagesPage: React.FC = () => {
                 <Users className="h-5 w-5 text-purple-500" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg mb-2 text-gray-800 dark:text-white">{getTranslation("packages.expertTeam", language)}</h3>
-                <p className="text-gray-600 dark:text-gray-300">{getTranslation("packages.expertTeamDesc", language)}</p>
+                <h3 className="font-semibold text-lg mb-2 text-gray-800 dark:text-white">{getPackageTranslation("packages.expertTeam", language)}</h3>
+                <p className="text-gray-600 dark:text-gray-300">{getPackageTranslation("packages.expertTeamDesc", language)}</p>
               </div>
             </div>
             
@@ -202,8 +202,8 @@ const PackagesPage: React.FC = () => {
                 <Globe className="h-5 w-5 text-teal-500" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg mb-2 text-gray-800 dark:text-white">{getTranslation("packages.bestLocations", language)}</h3>
-                <p className="text-gray-600 dark:text-gray-300">{getTranslation("packages.bestLocationsDesc", language)}</p>
+                <h3 className="font-semibold text-lg mb-2 text-gray-800 dark:text-white">{getPackageTranslation("packages.bestLocations", language)}</h3>
+                <p className="text-gray-600 dark:text-gray-300">{getPackageTranslation("packages.bestLocationsDesc", language)}</p>
               </div>
             </div>
             
@@ -212,8 +212,8 @@ const PackagesPage: React.FC = () => {
                 <Check className="h-5 w-5 text-amber-500" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg mb-2 text-gray-800 dark:text-white">{getTranslation("packages.seamlessTransport", language)}</h3>
-                <p className="text-gray-600 dark:text-gray-300">{getTranslation("packages.seamlessTransportDesc", language)}</p>
+                <h3 className="font-semibold text-lg mb-2 text-gray-800 dark:text-white">{getPackageTranslation("packages.seamlessTransport", language)}</h3>
+                <p className="text-gray-600 dark:text-gray-300">{getPackageTranslation("packages.seamlessTransportDesc", language)}</p>
               </div>
             </div>
           </div>
