@@ -95,9 +95,9 @@ export function BeforeAfterGallery({
   };
 
   return (
-    <div className="mb-12">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8">
-        <h2 className="text-2xl font-bold mb-4 sm:mb-0">
+    <div className="mb-8 md:mb-12">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-5 md:mb-8">
+        <h2 className="text-xl md:text-2xl font-bold mb-3 sm:mb-0">
           {title ? 
             `${t("Before & After Results")}: ${title}` :
             t("Before & After Gallery")
@@ -105,14 +105,14 @@ export function BeforeAfterGallery({
         </h2>
         
         {categories.length > 1 && (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5 md:gap-2">
             {categories.map(category => (
               <Button
                 key={category}
                 variant={selectedCategory === category ? "default" : "outline"}
                 size="sm"
                 onClick={() => filterItemsByCategory(category)}
-                className="text-sm"
+                className="text-xs md:text-sm h-7 md:h-9 px-2 md:px-3"
               >
                 {category}
               </Button>
@@ -122,12 +122,12 @@ export function BeforeAfterGallery({
       </div>
       
       {/* View toggle */}
-      <div className="flex justify-end mb-6">
+      <div className="flex justify-end mb-4 md:mb-6">
         <div className="border rounded-lg inline-flex">
           <Button
             variant={viewMode === "grid" ? "secondary" : "ghost"}
             size="sm"
-            className="rounded-r-none"
+            className="rounded-r-none h-8 md:h-9 px-2 md:px-3 text-xs md:text-sm"
             onClick={() => setViewMode("grid")}
           >
             {t("Grid View")}
@@ -135,7 +135,7 @@ export function BeforeAfterGallery({
           <Button
             variant={viewMode === "slider" ? "secondary" : "ghost"}
             size="sm"
-            className="rounded-l-none"
+            className="rounded-l-none h-8 md:h-9 px-2 md:px-3 text-xs md:text-sm"
             onClick={() => setViewMode("slider")}
           >
             {t("Slider View")}
@@ -146,16 +146,16 @@ export function BeforeAfterGallery({
       {/* Grid View */}
       {viewMode === "grid" && (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
             {visibleItems.map((item, index) => (
               <motion.div
                 key={item.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.1 }}
-                className="group relative overflow-hidden border rounded-xl shadow-sm hover:shadow-md transition-all duration-300"
+                className="group relative overflow-hidden border rounded-lg md:rounded-xl shadow-sm hover:shadow-md transition-all duration-300"
               >
-                <div className="relative w-full h-64 cursor-pointer">
+                <div className="relative w-full h-48 md:h-64 cursor-pointer">
                   <div 
                     className="absolute top-0 left-0 w-1/2 h-full overflow-hidden"
                     onClick={() => setSelectedItem(item)}
@@ -170,7 +170,7 @@ export function BeforeAfterGallery({
                       }}
                     />
                     <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-colors">
-                      <div className="absolute bottom-4 left-4 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                      <div className="absolute bottom-2 md:bottom-4 left-2 md:left-4 bg-black/70 text-white text-[10px] md:text-xs px-1.5 md:px-2 py-0.5 md:py-1 rounded">
                         {t("Before")}
                       </div>
                     </div>
@@ -189,21 +189,21 @@ export function BeforeAfterGallery({
                       }}
                     />
                     <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-colors">
-                      <div className="absolute bottom-4 right-4 bg-primary/90 text-white text-xs px-2 py-1 rounded">
+                      <div className="absolute bottom-2 md:bottom-4 right-2 md:right-4 bg-primary/90 text-white text-[10px] md:text-xs px-1.5 md:px-2 py-0.5 md:py-1 rounded">
                         {t("After")}
                       </div>
                     </div>
                   </div>
-                  <div className="absolute top-1/2 left-1/2 h-full w-[2px] bg-white -translate-x-1/2 -translate-y-1/2 z-10" />
+                  <div className="absolute top-1/2 left-1/2 h-full w-[2px] bg-white/80 -translate-x-1/2 -translate-y-1/2 z-10" />
                 </div>
                 
-                <div className="p-4">
-                  <p className="text-sm text-muted-foreground line-clamp-2">
+                <div className="p-3 md:p-4">
+                  <p className="text-xs md:text-sm text-muted-foreground line-clamp-2">
                     {getLocalizedDescription(item)}
                   </p>
                   {item.category && (
-                    <div className="mt-2">
-                      <span className="inline-block bg-muted px-2 py-1 text-xs rounded-full">
+                    <div className="mt-1.5 md:mt-2">
+                      <span className="inline-block bg-muted px-1.5 md:px-2 py-0.5 md:py-1 text-[10px] md:text-xs rounded-full">
                         {item.category}
                       </span>
                     </div>
@@ -214,10 +214,11 @@ export function BeforeAfterGallery({
           </div>
           
           {visibleItems.length < (selectedCategory === "All" ? items.length : items.filter(item => item.category === selectedCategory).length) && (
-            <div className="flex justify-center mt-8">
+            <div className="flex justify-center mt-6 md:mt-8">
               <Button 
                 variant="outline" 
                 onClick={loadMoreItems}
+                className="text-xs md:text-sm h-8 md:h-9"
               >
                 {t("Load More")}
               </Button>
