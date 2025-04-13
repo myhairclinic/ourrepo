@@ -1,4 +1,6 @@
 import { useTranslation } from "@/hooks/use-translation";
+import { useLanguage } from "@/hooks/use-language";
+import { getBlogTranslation, Language } from "@/lib/blogTranslations";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,6 +38,7 @@ export function BlogSidebar({
   getCategoryName
 }: BlogSidebarProps) {
   const { t } = useTranslation();
+  const { language } = useLanguage();
 
   // Etiket bulutu için farklı boyut ve renk tonları
   const getTagClasses = (index: number) => {
@@ -66,13 +69,13 @@ export function BlogSidebar({
         <CardHeader className="pb-3">
           <CardTitle className="text-lg flex gap-2 items-center">
             <Search className="h-4 w-4 text-primary" />
-            {t('blog.search')}
+            {getBlogTranslation('blog.search', language as Language)}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSearch} className="relative">
             <Input
-              placeholder={t('blog.searchPlaceholder')}
+              placeholder={getBlogTranslation('blog.searchPlaceholder', language as Language)}
               className="pl-3 border-primary/20 focus-visible:ring-primary/20"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -130,7 +133,7 @@ export function BlogSidebar({
         <CardHeader className="pb-3 bg-muted/30">
           <CardTitle className="text-lg flex gap-2 items-center">
             <Tag className="h-4 w-4 text-primary" />
-            {t('blog.popularTags')}
+            {getBlogTranslation('blog.popularTags', language as Language)}
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-4">
@@ -171,7 +174,7 @@ export function BlogSidebar({
               <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
               <path d="M16 3.13a4 4 0 0 1 0 7.75" />
             </svg>
-            {t('blog.featuredAuthors')}
+            {getBlogTranslation('blog.featuredAuthors', language as Language)}
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-4 space-y-5">

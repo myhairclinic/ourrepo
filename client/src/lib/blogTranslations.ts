@@ -173,13 +173,19 @@ export const blogTranslations: Record<string, LanguageMap> = {
     [Language.Turkish]: "Bültenimize Abone Olun",
     [Language.English]: "Subscribe to Our Newsletter",
     [Language.Russian]: "Подпишитесь на Нашу Рассылку",
-    [Language.Georgian]: "გამოიწერეთ ჩვენი საინფორმაციო ბიულეტენი"
+    [Language.Georgian]: "გამოიწერეთ ჩვენი საინფორმაციო ბიულეტენი",
+    [Language.Azerbaijani]: "Bülletenimizə Abunə Olun",
+    [Language.Kazakh]: "Бюллетенімізге Жазылыңыз",
+    [Language.Persian]: "در خبرنامه ما مشترک شوید"
   },
   "blog.newsletterDescription": {
     [Language.Turkish]: "En son blog yazılarımız ve saç ekimi hakkındaki güncellemeler direkt e-posta adresinize gelsin.",
     [Language.English]: "Get our latest blog posts and updates about hair transplantation directly to your email.",
     [Language.Russian]: "Получайте наши последние сообщения в блоге и обновления о трансплантации волос прямо на вашу электронную почту.",
-    [Language.Georgian]: "მიიღეთ ჩვენი უახლესი ბლოგის პოსტები და განახლებები თმის გადანერგვის შესახებ პირდაპირ თქვენს ელფოსტაზე."
+    [Language.Georgian]: "მიიღეთ ჩვენი უახლესი ბლოგის პოსტები და განახლებები თმის გადანერგვის შესახებ პირდაპირ თქვენს ელფოსტაზე.",
+    [Language.Azerbaijani]: "Ən son bloq yazılarımızı və saç əkimi haqqında yenilikləri birbaşa e-poçt ünvanınıza alın.",
+    [Language.Kazakh]: "Біздің соңғы блог жазбаларымыз және шаш трансплантациясы туралы жаңартуларды тікелей электрондық поштаңызға алыңыз.",
+    [Language.Persian]: "آخرین پست‌های وبلاگ ما و به‌روزرسانی‌های مربوط به کاشت مو را مستقیماً در ایمیل خود دریافت کنید."
   },
   "blog.subscribe": {
     [Language.Turkish]: "Abone Ol",
