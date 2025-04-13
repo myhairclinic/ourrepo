@@ -1827,58 +1827,64 @@ export class DatabaseStorage implements IStorage {
   
   async getOnePackagePerCountry(): Promise<Package[]> {
     try {
-      // Her ülkeden bir paket getirme stratejisi
-      const result: Package[] = [];
-      const usedIds = new Set<number>(); // Kullanılan ID'leri takip etmek için set
-      
+      // Her ülkeden bir paket getirme stratejisi ama her seferinde benzersiz ID'ler ile
       // SQL ile doğrudan her ülke için bir paket sorgular
       // Önce her ülkeyi belirtelim
       const countryList = ['TR', 'RU', 'AZ', 'KZ', 'UA', 'IR'];
       
-      // Her ülke için ayrı bir paket seçelim ve id'leri birbirinden farklı olsun
+      // Benzersiz ülke-paket haritası oluşturalım, her ülke için sadece bir paket
+      const countryPackageMap = new Map<string, Package & { _uniqueKey?: string }>();
+      
+      // Tüm paketleri bir kerede çekelim - performans için daha iyi
+      const allPackages = await db.select().from(packages)
+        .where(eq(packages.isActive, true));
+      
+      // Ülke bazında filtreleme yapalım
       for (const countryCode of countryList) {
-        // Her ülke kodu için o ülkenin paketlerinden birini seçelim 
-        const countryPackages = await db.select().from(packages)
-          .where(eq(packages.countryOrigin, countryCode))
-          .where(eq(packages.isActive, true));
+        const packagesForCountry = allPackages.filter(
+          pkg => pkg.countryOrigin === countryCode
+        );
+        
+        if (packagesForCountry.length > 0) {
+          // Rastgele bir paket seçelim
+          const randomIndex = Math.floor(Math.random() * packagesForCountry.length);
+          const selectedPackage = packagesForCountry[randomIndex];
           
-        if (countryPackages.length > 0) {
-          // Henüz kullanılmamış paketleri filtrele
-          const availablePackages = countryPackages.filter(pkg => !usedIds.has(pkg.id));
+          // Her pakete benzersiz bir anahtar ekleyelim (ülke kodu + package id)
+          const uniquePackage = {
+            ...selectedPackage,
+            _uniqueKey: `${selectedPackage.id}-${countryCode}`
+          };
           
-          // Eğer kullanılmamış paket varsa, onlardan birini seç
-          if (availablePackages.length > 0) {
-            const randomIndex = Math.floor(Math.random() * availablePackages.length);
-            const selectedPackage = availablePackages[randomIndex];
-            
-            // Seçilen paketin ID'sini kullanıldı olarak işaretle
-            usedIds.add(selectedPackage.id);
-            
-            console.log(`Selected package for ${countryCode}: ${selectedPackage.titleTR} (ID: ${selectedPackage.id})`);
-            result.push(selectedPackage);
-          } else if (countryPackages.length > 0) {
-            // Eğer tüm paketler kullanılmışsa, benzersiz bir ID'ye sahip olmasını sağla
-            const randomPkg = countryPackages[Math.floor(Math.random() * countryPackages.length)];
-            // Paketi klonla ve ID'ye ülke kodunu ekle
-            const uniquePackage = {
-              ...randomPkg,
-              // Bu alanı sadece client-side'da kullanacağız, DB'ye yazmıyoruz
-              _uniqueKey: `${randomPkg.id}-${countryCode}`
-            };
-            
-            console.log(`Selected package for ${countryCode}: ${uniquePackage.titleTR} (ID: ${uniquePackage.id}-${countryCode})`);
-            result.push(uniquePackage);
-          }
+          // Map'e ekleyelim
+          countryPackageMap.set(countryCode, uniquePackage);
+          
+          console.log(`Selected package for ${countryCode}: ${selectedPackage.titleTR} (ID: ${selectedPackage.id})`);
         }
       }
+      
+      // Sonuç dizisi oluştur
+      const result = Array.from(countryPackageMap.values());
       
       // Toplam paket sayısını logla
       console.log(`Found packages from ${result.length} different countries`);
       
-      // Sonuçları kontrol et
+      // Sonuçları kontrol et ve çakışmaları bildir
+      const usedIds = new Set<number>();
+      const duplicateIds = new Set<number>();
+      
       for (const pkg of result) {
-        const pkgId = pkg._uniqueKey || pkg.id;
-        console.log(`Package from ${pkg.countryOrigin}: "${pkg.titleTR}" (ID: ${pkgId})`);
+        if (usedIds.has(pkg.id)) {
+          duplicateIds.add(pkg.id);
+        }
+        usedIds.add(pkg.id);
+        
+        console.log(`Package from ${pkg.countryOrigin}: "${pkg.titleTR}" (ID: ${pkg._uniqueKey || pkg.id})`);
+      }
+      
+      // Varsa çakışan ID'leri logla
+      if (duplicateIds.size > 0) {
+        console.log(`Warning: Found ${duplicateIds.size} duplicate package IDs! Using unique keys for React components.`);
       }
       
       return result;
