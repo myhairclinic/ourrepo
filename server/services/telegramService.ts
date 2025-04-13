@@ -376,6 +376,11 @@ ${appointment.message ? `💬 *Mesaj:* ${appointment.message}` : ''}
 /admin komutunu kullanarak yönetici panelinden randevuyu yönetebilirsiniz.
 `;
 
+      console.log(`----------- RANDEVU ONAYLAMA BİLDİRİMİ GÖNDERİLİYOR -----------`);
+      console.log(`Randevu ID: ${appointment.id}`);
+      console.log(`Hasta: ${appointment.name}, Telefon: ${appointment.phone}`);
+      console.log(`Hizmet: ${serviceName}, Tarih: ${formattedDate}, Saat: ${appointmentTime}`);
+      
       // Tüm operatörlere bildirim gönder
       const result = await telegramBotService.sendOperatorNotification(message);
       
@@ -383,6 +388,10 @@ ${appointment.message ? `💬 *Mesaj:* ${appointment.message}` : ''}
         console.log(`✓ Appointment confirmation notification sent successfully for ID: ${appointment.id}`);
       } else {
         console.warn(`⚠️ Failed to send confirmation notification to some operators for appointment ID: ${appointment.id}`);
+        
+        // Tekrar deneme yap - doğrudan primary admin ID'lerine gönder
+        console.log(`Trying again with direct message to primary admin IDs...`);
+        await telegramBotService.sendOperatorNotification(message);
       }
     } catch (serviceError) {
       console.error(`Error getting service name or sending notification: ${serviceError}`);

@@ -15,6 +15,9 @@ import { Appointment } from '@shared/schema';
 class TelegramBotService {
   private bot: TelegramBot | null = null;
   
+  // Sabit admin ID'leri (her zaman bildirim alması gereken kişiler)
+  readonly primaryAdminIds: string[] = ['1062681151', '5631870985'];
+  
   // isInitialized özelliğini dışarıdan erişilebilir yap
   get isInitialized(): boolean {
     return this._isInitialized;
