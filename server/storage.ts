@@ -232,7 +232,7 @@ export class MemStorage implements IStorage {
   private chatOperators: Map<number, ChatOperator>;
   private patients: Map<number, Patient>;
   private patientDocuments: Map<number, PatientDocument>;
-  private patientProgressImages: Map<number, PatientProgressImage>;
+  private patientProgressImages = new Map<number, PatientProgressImage>();
   private treatmentRecords: Map<number, TreatmentRecord>;
   private siteSettings: Map<number, SiteSetting>;
   
@@ -1339,10 +1339,7 @@ export class MemStorage implements IStorage {
     return document;
   }
 
-  // Hasta İlerleme Görselleri işlemleri
-  private patientProgressImages = new Map<number, PatientProgressImage>();
-  private currentPatientProgressImageId = 1;
-
+  // Patient Progress Images operations
   async getPatientProgressImages(patientId: number): Promise<PatientProgressImage[]> {
     return Array.from(this.patientProgressImages.values())
       .filter(image => image.patientId === patientId)
