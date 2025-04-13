@@ -713,8 +713,15 @@ export const treatmentRecords = pgTable("treatment_records", {
   treatmentDate: timestamp("treatment_date").notNull(),
   doctorName: text("doctor_name").notNull(),
   procedureDetails: text("procedure_details").notNull(),
+  graftsCount: integer("grafts_count"),
+  treatmentArea: text("treatment_area"), // Saç, sakal, kaş vb.
+  technicUsed: text("technic_used"), // FUE, DHI, Sapphire FUE vb.
+  medicationsProvided: text("medications_provided"), // Reçete edilen ilaçlar
+  complicationNotes: text("complication_notes"), // Komplikasyon notları
   notes: text("notes"),
   followUpDate: timestamp("follow_up_date"),
+  nextTreatmentDate: timestamp("next_treatment_date"), // Bir sonraki tedavi tarihi
+  progressRating: integer("progress_rating"), // 1-5 arası ilerleme değerlendirmesi
   status: text("status").notNull().default("planned"), // planned, in-progress, completed, cancelled
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -730,11 +737,15 @@ export const insertTreatmentRecordSchema = createInsertSchema(treatmentRecords).
 export const patientProgressImages = pgTable("patient_progress_images", {
   id: serial("id").primaryKey(),
   patientId: integer("patient_id").notNull().references(() => patients.id),
+  treatmentRecordId: integer("treatment_record_id").references(() => treatmentRecords.id),
   imageUrl: text("image_url").notNull(),
   captureDate: timestamp("capture_date").notNull(),
   stage: text("stage").notNull(), // pre-op, post-op-day-1, post-op-week-1, post-op-month-1, post-op-month-3, post-op-month-6, post-op-year-1
+  beforeAfterType: text("before_after_type").notNull().default("before"), // before, after, progress
+  angleType: text("angle_type"), // front, top, left-side, right-side, back
   notes: text("notes"),
   isVisible: boolean("is_visible").notNull().default(true),
+  isHighlighted: boolean("is_highlighted").notNull().default(false),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });

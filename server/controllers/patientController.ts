@@ -250,17 +250,51 @@ export const getPatientTreatmentRecords = async (req: Request, res: Response) =>
 // Hasta tedavi kaydı oluştur
 export const createTreatmentRecord = async (req: Request, res: Response) => {
   try {
+    console.log(`createTreatmentRecord: Hasta için tedavi kaydı oluşturuluyor. Hasta ID: ${req.params.patientId}`);
+    
     const patientId = parseInt(req.params.patientId);
     if (isNaN(patientId)) {
       return res.status(400).json({ message: "Geçersiz hasta ID" });
     }
 
+    // Hasta varlığını kontrol et
+    const patient = await storage.getPatientById(patientId);
+    if (!patient) {
+      console.error(`Hasta ID ${patientId} bulunamadı`);
+      return res.status(404).json({ message: "Hasta bulunamadı" });
+    }
+
+    // Tedavi kaydı verilerini doğrula
     const validatedData = insertTreatmentRecordSchema.parse({
       ...req.body,
       patientId
     });
 
+    // Tedavi kaydını oluştur
+    console.log(`Hasta ID ${patientId} için tedavi kaydı oluşturuluyor:`, validatedData);
     const newRecord = await storage.createTreatmentRecord(validatedData);
+    
+    // İlerleme görseli eklenmişse işle
+    const progressImages = req.body.progressImages;
+    if (progressImages && Array.isArray(progressImages) && progressImages.length > 0) {
+      console.log(`Tedavi kaydı için ${progressImages.length} ilerleme görseli ekleniyor`);
+      
+      for (const imageData of progressImages) {
+        const validatedImageData = insertPatientProgressImageSchema.parse({
+          ...imageData,
+          patientId,
+          treatmentRecordId: newRecord.id
+        });
+        
+        await storage.createPatientProgressImage(validatedImageData);
+      }
+      
+      console.log(`${progressImages.length} ilerleme görseli başarıyla eklendi`);
+    }
+
+    // Bildirim gönderme veya diğer işlemler burada yapılabilir
+    
+    console.log(`Tedavi kaydı başarıyla oluşturuldu. Kayıt ID: ${newRecord.id}`);
     res.status(201).json(newRecord);
   } catch (error) {
     console.error(`Hasta ID ${req.params.patientId} için tedavi kaydı oluşturulurken hata oluştu:`, error);
@@ -271,19 +305,79 @@ export const createTreatmentRecord = async (req: Request, res: Response) => {
 // Hasta tedavi kaydı güncelle
 export const updateTreatmentRecord = async (req: Request, res: Response) => {
   try {
+    console.log(`updateTreatmentRecord: Tedavi kaydı güncellemesi başlatıldı. Kayıt ID: ${req.params.recordId}`);
     const recordId = parseInt(req.params.recordId);
     if (isNaN(recordId)) {
       return res.status(400).json({ message: "Geçersiz tedavi kaydı ID" });
     }
 
-    const validatedData = insertTreatmentRecordSchema.partial().parse(req.body);
+    // Mevcut kaydı kontrol et
     const record = await storage.getTreatmentRecordById(recordId);
-    
     if (!record) {
       return res.status(404).json({ message: "Tedavi kaydı bulunamadı" });
     }
 
+    // Tedavi kaydı verilerini doğrula
+    const validatedData = insertTreatmentRecordSchema.partial().parse(req.body);
+    console.log(`Tedavi kaydı ID ${recordId} güncelleniyor:`, validatedData);
+    
+    // Tedavi kaydını güncelle
     const updatedRecord = await storage.updateTreatmentRecord(recordId, validatedData);
+    
+    // İlerleme görselleri eklenecekse işle
+    const progressImages = req.body.progressImages;
+    if (progressImages && Array.isArray(progressImages) && progressImages.length > 0) {
+      console.log(`Tedavi kaydı için ${progressImages.length} yeni ilerleme görseli ekleniyor`);
+      
+      for (const imageData of progressImages) {
+        // Yeni görsel mi, mevcut görseli güncelleme mi kontrol et
+        if (imageData.id) {
+          // Mevcut görseli güncelle
+          const validatedImageData = insertPatientProgressImageSchema.partial().parse({
+            ...imageData,
+            treatmentRecordId: recordId
+          });
+          
+          const existingImage = await storage.getPatientProgressImageById(imageData.id);
+          if (existingImage) {
+            await storage.updatePatientProgressImage(imageData.id, validatedImageData);
+            console.log(`İlerleme görseli ID ${imageData.id} güncellendi`);
+          } else {
+            console.warn(`İlerleme görseli ID ${imageData.id} bulunamadı, güncelleme atlanıyor`);
+          }
+        } else {
+          // Yeni görsel ekle
+          const validatedImageData = insertPatientProgressImageSchema.parse({
+            ...imageData,
+            patientId: record.patientId,
+            treatmentRecordId: recordId
+          });
+          
+          await storage.createPatientProgressImage(validatedImageData);
+          console.log(`Yeni ilerleme görseli eklendi`);
+        }
+      }
+      
+      console.log(`${progressImages.length} ilerleme görseli işlendi`);
+    }
+    
+    // Silinecek görsel ID'leri varsa işle
+    const deleteImageIds = req.body.deleteImageIds;
+    if (deleteImageIds && Array.isArray(deleteImageIds) && deleteImageIds.length > 0) {
+      console.log(`${deleteImageIds.length} ilerleme görseli siliniyor...`);
+      
+      for (const imageId of deleteImageIds) {
+        const image = await storage.getPatientProgressImageById(parseInt(imageId));
+        if (image && image.treatmentRecordId === recordId) {
+          await storage.deletePatientProgressImage(parseInt(imageId));
+          console.log(`İlerleme görseli ID ${imageId} silindi`);
+        } else {
+          console.warn(`İlerleme görseli ID ${imageId} bu tedavi kaydına ait değil veya bulunamadı`);
+        }
+      }
+    }
+    
+    console.log(`Tedavi kaydı ID ${recordId} başarıyla güncellendi`);
     res.status(200).json(updatedRecord);
   } catch (error) {
     console.error(`Tedavi kaydı ID ${req.params.recordId} güncellenirken hata oluştu:`, error);
@@ -294,18 +388,42 @@ export const updateTreatmentRecord = async (req: Request, res: Response) => {
 // Hasta tedavi kaydı sil
 export const deleteTreatmentRecord = async (req: Request, res: Response) => {
   try {
+    console.log(`deleteTreatmentRecord: Tedavi kaydı silme işlemi başlatıldı. Kayıt ID: ${req.params.recordId}`);
     const recordId = parseInt(req.params.recordId);
     if (isNaN(recordId)) {
       return res.status(400).json({ message: "Geçersiz tedavi kaydı ID" });
     }
 
+    // Mevcut kaydı kontrol et
     const record = await storage.getTreatmentRecordById(recordId);
     if (!record) {
       return res.status(404).json({ message: "Tedavi kaydı bulunamadı" });
     }
 
+    // Bu tedavi kaydına ait ilerleme görsellerini bul
+    const relatedImages = await storage.getProgressImagesByTreatmentRecordId(recordId);
+    console.log(`Tedavi kaydı ID ${recordId} ile ilişkili ${relatedImages.length} ilerleme görseli bulundu`);
+    
+    // Önce ilişkili görselleri sil (varsa)
+    if (relatedImages.length > 0) {
+      console.log(`İlişkili ${relatedImages.length} ilerleme görseli siliniyor...`);
+      
+      for (const image of relatedImages) {
+        await storage.deletePatientProgressImage(image.id);
+        console.log(`İlerleme görseli ID ${image.id} silindi`);
+      }
+      
+      console.log(`${relatedImages.length} ilişkili görsel başarıyla silindi`);
+    }
+    
+    // Tedavi kaydını sil
     await storage.deleteTreatmentRecord(recordId);
-    res.status(200).json({ message: "Tedavi kaydı başarıyla silindi" });
+    console.log(`Tedavi kaydı ID ${recordId} başarıyla silindi`);
+    
+    res.status(200).json({ 
+      message: "Tedavi kaydı başarıyla silindi", 
+      deletedImagesCount: relatedImages.length 
+    });
   } catch (error) {
     console.error(`Tedavi kaydı ID ${req.params.recordId} silinirken hata oluştu:`, error);
     res.status(500).json({ message: "Hasta tedavi kaydı silinirken bir hata oluştu" });

@@ -194,6 +194,7 @@ export interface IStorage {
   // Patient Progress Image operations
   getPatientProgressImages(patientId: number): Promise<PatientProgressImage[]>;
   getPatientProgressImageById(id: number): Promise<PatientProgressImage | undefined>;
+  getProgressImagesByTreatmentRecordId(treatmentRecordId: number): Promise<PatientProgressImage[]>;
   createPatientProgressImage(data: InsertPatientProgressImage): Promise<PatientProgressImage>;
   updatePatientProgressImage(id: number, data: Partial<InsertPatientProgressImage>): Promise<PatientProgressImage | undefined>;
   deletePatientProgressImage(id: number): Promise<PatientProgressImage | undefined>;
@@ -1350,6 +1351,12 @@ export class MemStorage implements IStorage {
     return this.patientProgressImages.get(id);
   }
 
+  async getProgressImagesByTreatmentRecordId(treatmentRecordId: number): Promise<PatientProgressImage[]> {
+    return Array.from(this.patientProgressImages.values())
+      .filter(image => image.treatmentRecordId === treatmentRecordId)
+      .sort((a, b) => b.captureDate.getTime() - a.captureDate.getTime());
+  }
+
   async createPatientProgressImage(data: InsertPatientProgressImage): Promise<PatientProgressImage> {
     const id = this.currentPatientProgressImageId++;
     const progressImage: PatientProgressImage = {
@@ -1449,6 +1456,12 @@ export class DatabaseStorage implements IStorage {
     const [image] = await db.select().from(patientProgressImages)
       .where(eq(patientProgressImages.id, id));
     return image;
+  }
+
+  async getProgressImagesByTreatmentRecordId(treatmentRecordId: number): Promise<PatientProgressImage[]> {
+    return await db.select().from(patientProgressImages)
+      .where(eq(patientProgressImages.treatmentRecordId, treatmentRecordId))
+      .orderBy(desc(patientProgressImages.captureDate));
   }
 
   async createPatientProgressImage(data: InsertPatientProgressImage): Promise<PatientProgressImage> {
