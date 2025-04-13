@@ -9,7 +9,6 @@ import MainSlider from "@/components/home/MainSlider";
 import PatientJourney from "@/components/home/PatientJourney";
 import ExpertSection from "@/components/home/ExpertSection";
 import BlogSlider from "@/components/home/BlogSlider";
-import FeaturedProducts from "@/components/home/FeaturedProducts";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
 import AppointmentButton from "@/components/layout/AppointmentButton";
 import SEO from "@/components/layout/SEO";
@@ -45,7 +44,6 @@ export default function HomePage() {
         <ExpertSection />
         <ServiceCards />
         <PackageCards />
-        <FeaturedProducts />
         <BlogSlider />
         
         {/* Fixed buttons */}
