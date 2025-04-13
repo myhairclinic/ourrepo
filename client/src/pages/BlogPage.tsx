@@ -314,22 +314,25 @@ export default function BlogPage() {
   return (
     <>
       <Helmet>
-        <title>{t('blog.title')}</title>
-        <meta name="description" content={t('blog.description')} />
+        <title>{getBlogTranslation('blog.title', language as Language)}</title>
+        <meta name="description" content={getBlogTranslation('blog.description', language as Language)} />
         <meta name="keywords" content="saç ekimi, saç nakli, saç dökülmesi, FUE, DHI, kaş ekimi, sakal ekimi, PRP, saç mezoterapisi, saç bakımı, tıbbi turizm" />
         <link rel="canonical" href={window.location.origin + addPrefix("/blog")} />
         <link rel="alternate" hrefLang="tr" href={window.location.origin + "/tr/blog"} />
         <link rel="alternate" hrefLang="en" href={window.location.origin + "/en/blog"} />
         <link rel="alternate" hrefLang="ru" href={window.location.origin + "/ru/blog"} />
         <link rel="alternate" hrefLang="ka" href={window.location.origin + "/ka/blog"} />
-        <meta property="og:title" content={t('blog.title')} />
-        <meta property="og:description" content={t('blog.description')} />
+        <link rel="alternate" hrefLang="az" href={window.location.origin + "/az/blog"} />
+        <link rel="alternate" hrefLang="kz" href={window.location.origin + "/kz/blog"} />
+        <link rel="alternate" hrefLang="ir" href={window.location.origin + "/ir/blog"} />
+        <meta property="og:title" content={getBlogTranslation('blog.title', language as Language)} />
+        <meta property="og:description" content={getBlogTranslation('blog.description', language as Language)} />
         <meta property="og:url" content={window.location.origin + addPrefix("/blog")} />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="MyHair Clinic" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={t('blog.title')} />
-        <meta name="twitter:description" content={t('blog.description')} />
+        <meta name="twitter:title" content={getBlogTranslation('blog.title', language as Language)} />
+        <meta name="twitter:description" content={getBlogTranslation('blog.description', language as Language)} />
       </Helmet>
       
       <PageHeader
@@ -358,7 +361,7 @@ export default function BlogPage() {
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input 
-                  placeholder={t('blog.searchPosts')}
+                  placeholder={getBlogTranslation('blog.searchPosts', language as Language)}
                   className="pl-10"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -370,12 +373,12 @@ export default function BlogPage() {
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="sm" className="flex items-center gap-1">
                       <Filter className="h-4 w-4" />
-                      <span className="hidden sm:inline">{t('blog.categoriesTitle')}</span>
+                      <span className="hidden sm:inline">{getBlogTranslation('blog.categoriesTitle', language as Language)}</span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuItem onClick={() => setSelectedCategory(null)}>
-                      {t('blog.allCategories')}
+                      {getBlogTranslation('blog.allCategories', language as Language)}
                     </DropdownMenuItem>
                     <Separator />
                     {categories.map((category) => (
@@ -396,9 +399,9 @@ export default function BlogPage() {
                        activeSort === 'date-asc' ? <SortAsc className="h-4 w-4" /> : 
                        <SortDesc className="h-4 w-4" />}
                       <span className="hidden sm:inline">
-                        {activeSort === 'date-desc' ? t('blog.newest') : 
-                         activeSort === 'date-asc' ? t('blog.oldest') : 
-                         t('blog.mostPopular')}
+                        {activeSort === 'date-desc' ? getBlogTranslation('blog.newest', language as Language) : 
+                         activeSort === 'date-asc' ? getBlogTranslation('blog.oldest', language as Language) : 
+                         getBlogTranslation('blog.mostPopular', language as Language)}
                       </span>
                     </Button>
                   </DropdownMenuTrigger>

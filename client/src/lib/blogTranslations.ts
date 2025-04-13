@@ -65,25 +65,37 @@ export const blogTranslations: Record<string, LanguageMap> = {
     [Language.Turkish]: "Saç ekimi, bakımı ve tedavisi hakkında en son güncellemeler, ipuçları ve makaleler",
     [Language.English]: "Latest updates, tips and articles about hair transplantation, care and treatment",
     [Language.Russian]: "Последние обновления, советы и статьи о трансплантации волос, уходе и лечении",
-    [Language.Georgian]: "უახლესი განახლებები, რჩევები და სტატიები თმის გადანერგვის, მოვლისა და მკურნალობის შესახებ"
+    [Language.Georgian]: "უახლესი განახლებები, რჩევები და სტატიები თმის გადანერგვის, მოვლისა და მკურნალობის შესახებ",
+    [Language.Azerbaijani]: "Saç əkimi, qulluğu və müalicəsi haqqında ən son yeniləmələr, məsləhətlər və məqalələr",
+    [Language.Kazakh]: "Шаш трансплантациясы, күтімі және емделуі туралы соңғы жаңартулар, кеңестер мен мақалалар",
+    [Language.Persian]: "آخرین به‌روزرسانی‌ها، نکات و مقالات در مورد کاشت مو، مراقبت و درمان"
   },
   "blog.searchPosts": {
     [Language.Turkish]: "Blog Yazılarını Ara",
     [Language.English]: "Search Blog Posts",
     [Language.Russian]: "Поиск Записей Блога",
-    [Language.Georgian]: "ბლოგის პოსტების ძიება"
+    [Language.Georgian]: "ბლოგის პოსტების ძიება",
+    [Language.Azerbaijani]: "Bloq Yazılarını Axtar",
+    [Language.Kazakh]: "Блог жазбаларын іздеу",
+    [Language.Persian]: "جستجوی مطالب بلاگ"
   },
   "blog.categoriesTitle": {
     [Language.Turkish]: "Kategoriler",
     [Language.English]: "Categories",
     [Language.Russian]: "Категории",
-    [Language.Georgian]: "კატეგორიები"
+    [Language.Georgian]: "კატეგორიები",
+    [Language.Azerbaijani]: "Kateqoriyalar",
+    [Language.Kazakh]: "Санаттар",
+    [Language.Persian]: "دسته‌بندی‌ها"
   },
   "blog.allCategories": {
     [Language.Turkish]: "Tüm Kategoriler",
     [Language.English]: "All Categories",
     [Language.Russian]: "Все Категории",
-    [Language.Georgian]: "ყველა კატეგორია"
+    [Language.Georgian]: "ყველა კატეგორია",
+    [Language.Azerbaijani]: "Bütün Kateqoriyalar",
+    [Language.Kazakh]: "Барлық санаттар",
+    [Language.Persian]: "همه دسته‌بندی‌ها"
   },
   "blog.newest": {
     [Language.Turkish]: "En Yeni",
