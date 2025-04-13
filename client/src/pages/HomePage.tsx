@@ -7,6 +7,7 @@ import { FeaturedPackageCards } from "@/components/home/FeaturedPackageCards";
 import { useTranslation } from "@/lib/translations";
 import MainSlider from "@/components/home/MainSlider";
 import PatientJourney from "@/components/home/PatientJourney";
+import ExpertSection from "@/components/home/ExpertSection";
 import BlogSlider from "@/components/home/BlogSlider";
 import FeaturedProducts from "@/components/home/FeaturedProducts";
 import WhatsAppButton from "@/components/layout/WhatsAppButton";
@@ -54,6 +55,7 @@ export default function HomePage() {
         
         <MainSlider />
         <PatientJourney />
+        <ExpertSection />
         <ServiceCards />
         <PackageCards />
         <FeaturedProducts />
