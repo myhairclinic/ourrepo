@@ -2467,11 +2467,64 @@ const PatientManagement = () => {
                 name="imageUrl"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Görsel URL</FormLabel>
+                    <FormLabel>Görsel Yükle</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://example.com/image.jpg" {...field} />
+                      <div className="flex flex-col space-y-2">
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={async (e) => {
+                            if (e.target.files && e.target.files[0]) {
+                              const file = e.target.files[0];
+                              const formData = new FormData();
+                              formData.append("file", file);
+                              
+                              try {
+                                const response = await fetch("/api/upload", {
+                                  method: "POST",
+                                  body: formData,
+                                });
+                                
+                                if (response.ok) {
+                                  const data = await response.json();
+                                  field.onChange(data.url);
+                                  toast({
+                                    title: "Görsel yüklendi",
+                                    description: "Görsel başarıyla yüklendi.",
+                                  });
+                                } else {
+                                  toast({
+                                    title: "Hata",
+                                    description: "Görsel yüklenirken bir hata oluştu.",
+                                    variant: "destructive",
+                                  });
+                                }
+                              } catch (error) {
+                                toast({
+                                  title: "Hata",
+                                  description: "Görsel yüklenirken bir hata oluştu.",
+                                  variant: "destructive",
+                                });
+                              }
+                            }
+                          }}
+                        />
+                        {field.value && (
+                          <div className="mt-2">
+                            <img 
+                              src={field.value} 
+                              alt="Yüklenen görsel" 
+                              className="w-32 h-32 object-cover rounded-md border" 
+                            />
+                          </div>
+                        )}
+                        <Input 
+                          type="hidden" 
+                          {...field}
+                        />
+                      </div>
                     </FormControl>
-                    <FormDescription>Görselin tam URL'sini girin</FormDescription>
+                    <FormDescription>Hasta için bir görsel yükleyin</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
