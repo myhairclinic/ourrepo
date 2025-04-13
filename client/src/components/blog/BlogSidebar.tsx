@@ -92,7 +92,7 @@ export function BlogSidebar({
         <CardHeader className="pb-3 bg-muted/30">
           <CardTitle className="text-lg flex gap-2 items-center">
             <Tag className="h-4 w-4 text-primary" />
-            {t('blog.categoriesTitle')}
+            {getBlogTranslation('blog.categoriesTitle', language as Language)}
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-4">
@@ -107,7 +107,7 @@ export function BlogSidebar({
               }`}
               onClick={() => setSelectedCategory(null)}
             >
-              {t('blog.allCategories')}
+              {getBlogTranslation('blog.allCategories', language as Language)}
             </Button>
             {allCategories.map((category) => (
               <Button
@@ -215,16 +215,16 @@ export function BlogSidebar({
             >
               <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38" />
             </svg>
-            {t('blog.newsletter')}
+            {getBlogTranslation('blog.newsletter', language as Language)}
           </CardTitle>
         </CardHeader>
         <CardContent className="relative z-10">
           <p className="text-sm text-muted-foreground mb-4">
-            {t('blog.newsletterDescription')}
+            {getBlogTranslation('blog.newsletterDescription', language as Language)}
           </p>
           <form className="space-y-3">
             <Input 
-              placeholder={t('common.emailPlaceholder')} 
+              placeholder={getBlogTranslation('common.emailPlaceholder', language as Language)} 
               type="email" 
               required 
               className="bg-background/80 border-primary/20 focus-visible:ring-primary/30"
@@ -233,7 +233,7 @@ export function BlogSidebar({
               type="submit" 
               className="w-full gap-1 bg-primary hover:bg-primary/90"
             >
-              {t('blog.subscribe')}
+              {getBlogTranslation('blog.subscribe', language as Language)}
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Button>
           </form>

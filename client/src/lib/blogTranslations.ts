@@ -191,43 +191,64 @@ export const blogTranslations: Record<string, LanguageMap> = {
     [Language.Turkish]: "Abone Ol",
     [Language.English]: "Subscribe",
     [Language.Russian]: "Подписаться",
-    [Language.Georgian]: "გამოწერა"
+    [Language.Georgian]: "გამოწერა",
+    [Language.Azerbaijani]: "Abunə Ol",
+    [Language.Kazakh]: "Жазылу",
+    [Language.Persian]: "مشترک شوید"
   },
   "blog.minutes": {
     [Language.Turkish]: "dk okuma",
     [Language.English]: "min read",
     [Language.Russian]: "мин чтения",
-    [Language.Georgian]: "წთ წაკითხვა"
+    [Language.Georgian]: "წთ წაკითხვა",
+    [Language.Azerbaijani]: "dəq oxuma",
+    [Language.Kazakh]: "мин оқу",
+    [Language.Persian]: "دقیقه مطالعه"
   },
   "blog.views": {
     [Language.Turkish]: "görüntülenme",
     [Language.English]: "views",
     [Language.Russian]: "просмотров",
-    [Language.Georgian]: "ნახვა"
+    [Language.Georgian]: "ნახვა",
+    [Language.Azerbaijani]: "baxış",
+    [Language.Kazakh]: "қарау",
+    [Language.Persian]: "بازدید"
   },
   "common.readMore": {
     [Language.Turkish]: "Devamını Oku",
     [Language.English]: "Read More",
     [Language.Russian]: "Читать Далее",
-    [Language.Georgian]: "მეტის წაკითხვა"
+    [Language.Georgian]: "მეტის წაკითხვა",
+    [Language.Azerbaijani]: "Daha Ətraflı",
+    [Language.Kazakh]: "Толығырақ Оқу",
+    [Language.Persian]: "بیشتر بخوانید"
   },
   "common.emailPlaceholder": {
     [Language.Turkish]: "E-posta adresiniz",
     [Language.English]: "Your email address",
     [Language.Russian]: "Ваш адрес электронной почты",
-    [Language.Georgian]: "თქვენი ელფოსტის მისამართი"
+    [Language.Georgian]: "თქვენი ელფოსტის მისამართი",
+    [Language.Azerbaijani]: "E-poçt ünvanınız",
+    [Language.Kazakh]: "Электрондық пошта мекенжайыңыз",
+    [Language.Persian]: "آدرس ایمیل شما"
   },
   "blog.author": {
     [Language.Turkish]: "Yazar",
     [Language.English]: "Author",
     [Language.Russian]: "Автор",
-    [Language.Georgian]: "ავტორი"
+    [Language.Georgian]: "ავტორი",
+    [Language.Azerbaijani]: "Müəllif",
+    [Language.Kazakh]: "Автор",
+    [Language.Persian]: "نویسنده"
   },
   "blog.category": {
     [Language.Turkish]: "Kategori",
     [Language.English]: "Category",
     [Language.Russian]: "Категория",
-    [Language.Georgian]: "კატეგორია"
+    [Language.Georgian]: "კატეგორია",
+    [Language.Azerbaijani]: "Kateqoriya",
+    [Language.Kazakh]: "Санат",
+    [Language.Persian]: "دسته‌بندی"
   },
   "blog.publishedDate": {
     [Language.Turkish]: "Yayınlanma Tarihi",
