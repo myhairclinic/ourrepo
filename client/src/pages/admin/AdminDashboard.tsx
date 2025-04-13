@@ -23,6 +23,7 @@ import SeoManagement from "@/components/admin/SeoManagement";
 import MessageManagement from "@/components/admin/MessageManagement";
 import TelegramBotManagement from "@/components/admin/TelegramBotManagement";
 import PatientManagement from "@/components/admin/PatientManagement";
+import ProductManagement from "@/components/admin/ProductManagement";
 
 import {
   Dialog,
