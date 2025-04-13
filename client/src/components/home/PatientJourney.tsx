@@ -1,156 +1,136 @@
 import { useLanguage } from "@/hooks/use-language";
 import { useTranslation } from "@/lib/translations";
 import SectionTitle from "../shared/SectionTitle";
-import { CalendarClock, CheckCircle2, HeartHandshake, ListChecks, MessageCircle, Plane } from "lucide-react";
+import { Check, CalendarDays, Plane, Clock, UserPlus, MapPin, MessageSquare, Stethoscope, SprayCan, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface JourneyStepProps {
+// Journey step interface
+interface JourneyStep {
+  id: number;
   icon: React.ReactNode;
   title: string;
   description: string;
-  stepNumber: number;
-  isLastStep?: boolean;
-}
-
-function JourneyStep({ icon, title, description, stepNumber, isLastStep = false }: JourneyStepProps) {
-  return (
-    <div className="relative flex flex-col items-center">
-      {/* Step number badge with icon */}
-      <div className="relative z-10 mb-4">
-        <div className="absolute -inset-3 bg-primary/5 rounded-full blur-md"></div>
-        <div className="relative flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-primary to-blue-600 text-white shadow-lg">
-          {icon}
-        </div>
-        <div className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-white shadow-md flex items-center justify-center font-bold text-primary border border-primary/10">
-          {stepNumber}
-        </div>
-      </div>
-      
-      {/* Step content */}
-      <h3 className="text-xl font-semibold mb-2 text-center">{title}</h3>
-      <p className="text-gray-600 text-sm text-center max-w-xs">{description}</p>
-      
-      {/* Connector line between steps */}
-      {!isLastStep && (
-        <div className="hidden md:block absolute top-8 left-[calc(50%+4rem)] w-[calc(100%-8rem)] h-[2px] bg-gradient-to-r from-primary/40 to-primary/10"></div>
-      )}
-    </div>
-  );
+  color: string;
 }
 
 export default function PatientJourney() {
   const { language } = useLanguage();
   const { t } = useTranslation(language);
   
-  const journeySteps = [
+  // Define patient journey steps
+  const journeySteps: JourneyStep[] = [
     {
-      icon: <MessageCircle className="h-7 w-7" />,
-      title: t("home.patientJourney.consultation.title"),
-      description: t("home.patientJourney.consultation.description"),
+      id: 1,
+      icon: <MessageSquare className="h-6 w-6" />,
+      title: t("home.patientJourney.steps.consultation.title") || "İlk Konsültasyon",
+      description: t("home.patientJourney.steps.consultation.description") || "Online görüşme ile saç kaybınızın değerlendirilmesi ve kişisel tedavi planı oluşturulması.",
+      color: "bg-blue-50 text-blue-600",
     },
     {
-      icon: <ListChecks className="h-7 w-7" />,
-      title: t("home.patientJourney.planning.title"),
-      description: t("home.patientJourney.planning.description"),
+      id: 2,
+      icon: <CalendarDays className="h-6 w-6" />,
+      title: t("home.patientJourney.steps.scheduling.title") || "Randevu Planlaması",
+      description: t("home.patientJourney.steps.scheduling.description") || "Size en uygun tarihin belirlenmesi ve operasyon için randevunun oluşturulması.",
+      color: "bg-indigo-50 text-indigo-600",
     },
     {
-      icon: <Plane className="h-7 w-7" />,
-      title: t("home.patientJourney.arrival.title"),
-      description: t("home.patientJourney.arrival.description"),
+      id: 3,
+      icon: <Plane className="h-6 w-6" />,
+      title: t("home.patientJourney.steps.travel.title") || "Tiflis'e Seyahat",
+      description: t("home.patientJourney.steps.travel.description") || "Gürcistan'a varışınızda, havalimanından kliniğe veya otelinize özel transfer hizmeti.",
+      color: "bg-green-50 text-green-600",
     },
     {
-      icon: <CalendarClock className="h-7 w-7" />,
-      title: t("home.patientJourney.procedure.title"),
-      description: t("home.patientJourney.procedure.description"),
+      id: 4,
+      icon: <Stethoscope className="h-6 w-6" />,
+      title: t("home.patientJourney.steps.preOp.title") || "Operasyon Öncesi Değerlendirme",
+      description: t("home.patientJourney.steps.preOp.description") || "Yüz yüze konsültasyon, saç çizgisi tasarımı ve operasyon öncesi son hazırlıklar.",
+      color: "bg-violet-50 text-violet-600",
     },
     {
-      icon: <HeartHandshake className="h-7 w-7" />,
-      title: t("home.patientJourney.aftercare.title"),
-      description: t("home.patientJourney.aftercare.description"),
+      id: 5,
+      icon: <UserPlus className="h-6 w-6" />,
+      title: t("home.patientJourney.steps.procedure.title") || "Saç Ekimi İşlemi",
+      description: t("home.patientJourney.steps.procedure.description") || "Konforlu bir ortamda DHI veya FUE yöntemiyle saç ekimi operasyonunun gerçekleştirilmesi.",
+      color: "bg-rose-50 text-rose-600",
     },
     {
-      icon: <CheckCircle2 className="h-7 w-7" />,
-      title: t("home.patientJourney.results.title"),
-      description: t("home.patientJourney.results.description"),
+      id: 6,
+      icon: <CheckCircle2 className="h-6 w-6" />,
+      title: t("home.patientJourney.steps.postOp.title") || "Operasyon Sonrası Bakım",
+      description: t("home.patientJourney.steps.postOp.description") || "İlk gün sonrası kontrolü ve detaylı bakım talimatlarının verilmesi.",
+      color: "bg-amber-50 text-amber-600",
+    },
+    {
+      id: 7,
+      icon: <MapPin className="h-6 w-6" />,
+      title: t("home.patientJourney.steps.tourism.title") || "Tiflis'i Keşfedin",
+      description: t("home.patientJourney.steps.tourism.description") || "İyileşme sürecinde Tiflis'in güzelliklerini keşfetme fırsatı ve şehir turu.",
+      color: "bg-emerald-50 text-emerald-600",
+    },
+    {
+      id: 8,
+      icon: <Clock className="h-6 w-6" />,
+      title: t("home.patientJourney.steps.followUp.title") || "Uzun Dönem Takip",
+      description: t("home.patientJourney.steps.followUp.description") || "Ülkenize döndükten sonra düzenli online kontroller ve süreç takibi.",
+      color: "bg-cyan-50 text-cyan-600",
     },
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-white to-blue-50/40 overflow-hidden relative">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute -right-64 top-1/4 w-96 h-96 rounded-full bg-blue-50/70 blur-3xl"></div>
-        <div className="absolute left-0 bottom-0 w-full h-64 bg-gradient-to-t from-white to-transparent"></div>
-      </div>
-      
-      <div className="container mx-auto px-4 relative z-10">
+    <section className="py-16 bg-white">
+      <div className="container mx-auto px-4">
         <SectionTitle 
-          title={t("home.patientJourney.title")}
-          subtitle={t("home.patientJourney.subtitle")}
+          title={t("home.patientJourney.title") || "Hasta Yolculuğu"}
+          subtitle={t("home.patientJourney.subtitle") || "MyHair Clinic'te saç ekimi süreciniz nasıl ilerleyecek?"}
           centered
         />
         
-        {/* Desktop timeline */}
-        <div className="mt-16 hidden md:block max-w-7xl mx-auto">
-          <div className="grid grid-cols-3 gap-8">
-            {journeySteps.slice(0, 3).map((step, index) => (
-              <JourneyStep
-                key={index}
-                icon={step.icon}
-                title={step.title}
-                description={step.description}
-                stepNumber={index + 1}
-                isLastStep={index === 2}
-              />
-            ))}
-          </div>
-          
-          <div className="grid grid-cols-3 gap-8 mt-16">
-            {journeySteps.slice(3).map((step, index) => (
-              <JourneyStep
-                key={index + 3}
-                icon={step.icon}
-                title={step.title}
-                description={step.description}
-                stepNumber={index + 4}
-                isLastStep={index === 2}
-              />
-            ))}
-          </div>
-        </div>
-        
-        {/* Mobile timeline (vertical) */}
-        <div className="md:hidden mt-12 max-w-sm mx-auto">
-          <div className="relative">
-            {/* Vertical line */}
-            <div className="absolute left-8 top-8 bottom-8 w-[2px] bg-gradient-to-b from-primary/40 via-primary/20 to-primary/5"></div>
-            
-            {journeySteps.map((step, index) => (
-              <div key={index} className={cn("flex items-start mb-12", index === journeySteps.length - 1 ? "mb-0" : "")}>
-                <div className="relative mr-6">
-                  <div className="absolute -inset-2 bg-primary/5 rounded-full blur-md"></div>
-                  <div className="relative flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-primary to-blue-600 text-white shadow-lg">
+        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {journeySteps.map((step) => (
+            <div 
+              key={step.id}
+              className="flex flex-col rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300"
+            >
+              {/* Step number indicator */}
+              <div className="relative h-1 bg-gray-100">
+                <div className={`absolute inset-0 ${step.color.split(' ')[0]}`} style={{ width: `${(step.id / journeySteps.length) * 100}%` }}></div>
+              </div>
+              
+              <div className="p-6 flex-grow flex flex-col">
+                {/* Icon and Step Number */}
+                <div className="flex items-start justify-between mb-4">
+                  <div className={cn("p-3 rounded-lg", step.color)}>
                     {step.icon}
                   </div>
-                  <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-white shadow-md flex items-center justify-center font-bold text-primary text-xs border border-primary/10">
-                    {index + 1}
-                  </div>
+                  <span className="text-3xl font-bold text-gray-200">{step.id}</span>
                 </div>
                 
-                <div className="pt-1">
-                  <h3 className="text-lg font-semibold mb-1">{step.title}</h3>
-                  <p className="text-gray-600 text-sm">{step.description}</p>
+                {/* Content */}
+                <h3 className="text-xl font-semibold mb-2 text-gray-900">{step.title}</h3>
+                <p className="text-gray-600 text-sm flex-grow">{step.description}</p>
+                
+                {/* Success indicator */}
+                <div className="mt-4 flex items-center text-sm text-gray-500">
+                  <Check className="h-4 w-4 mr-1 text-green-500" />
+                  <span>{t("home.patientJourney.satisfaction") || "98% Hasta Memnuniyeti"}</span>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
         
-        {/* Optional CTA */}
-        <div className="mt-16 text-center">
-          <a href="#" className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary to-blue-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:translate-y-[-2px]">
-            <MessageCircle className="h-5 w-5" />
-            <span>{t("home.patientJourney.cta")}</span>
+        {/* Call to action section */}
+        <div className="mt-12 text-center">
+          <p className="text-gray-600 max-w-2xl mx-auto mb-6">
+            {t("home.patientJourney.cta.description") || "Saç ekimi yolculuğunuza ilk adımı atmak ve ücretsiz olarak değerlendirme almak için hemen bize ulaşın. Uzmanlarımız sizinle ilgilenecektir."}
+          </p>
+          <a 
+            href="/appointment" 
+            className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white rounded-full hover:bg-primary-dark transition-colors"
+          >
+            <CalendarDays className="h-5 w-5" />
+            {t("home.patientJourney.cta.button") || "Ücretsiz Danışma Randevusu Alın"}
           </a>
         </div>
       </div>
