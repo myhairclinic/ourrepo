@@ -99,9 +99,20 @@ const treatmentFormSchema = z.object({
   followUpDate: z.string().nullable().optional(),
 });
 
+const progressImageFormSchema = z.object({
+  id: z.number().optional(),
+  patientId: z.number(),
+  imageUrl: z.string(),
+  captureDate: z.string(),
+  stage: z.string(),
+  notes: z.string().nullable().optional(),
+  isVisible: z.boolean().default(true),
+});
+
 type PatientFormValues = z.infer<typeof patientFormSchema>;
 type DocumentFormValues = z.infer<typeof documentFormSchema>;
 type TreatmentFormValues = z.infer<typeof treatmentFormSchema>;
+type ProgressImageFormValues = z.infer<typeof progressImageFormSchema>;
 
 const PatientManagement = () => {
   const [activeTab, setActiveTab] = useState("all-patients");
@@ -113,6 +124,7 @@ const PatientManagement = () => {
   const [isNewPatientDialogOpen, setIsNewPatientDialogOpen] = useState(false);
   const [isNewDocumentDialogOpen, setIsNewDocumentDialogOpen] = useState(false);
   const [isNewTreatmentDialogOpen, setIsNewTreatmentDialogOpen] = useState(false);
+  const [isNewProgressImageDialogOpen, setIsNewProgressImageDialogOpen] = useState(false);
   const [isDeleteConfirmDialogOpen, setIsDeleteConfirmDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<{ type: string; id: number } | null>(null);
   const [viewMode, setViewMode] = useState<"list" | "grid">("list"); // Görünüm modu: liste veya grid
