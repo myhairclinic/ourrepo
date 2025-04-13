@@ -70,6 +70,7 @@ function Router() {
       {/* Admin rotaları */}
       <Route path="/admin/login" component={AdminLoginPage} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
+      <Route path="/admin/blog-management" component={BlogManagementPage} />
       <Route path="/admin" component={AdminLoginPage} />
       
       {/* Special tool routes */}
