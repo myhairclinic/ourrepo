@@ -217,10 +217,10 @@ const getStatusText = (status: string): string => {
  */
 const notifyNewAppointment = (appointment: Appointment): void => {
   try {
-    console.log("🔔🔔🔔 YENİ RANDEVU BİLDİRİMİ BAŞLATIYOR 🔔🔔🔔");
-    console.log(`📊 RANDEVU BİLGİLERİ: ID=${appointment.id}, İsim=${appointment.name}, Telefon=${appointment.phone}`);
+    console.log("🔔🔔🔔 NEW APPOINTMENT NOTIFICATION STARTING 🔔🔔🔔");
+    console.log(`📊 APPOINTMENT DETAILS: ID=${appointment.id}, Name=${appointment.name}, Phone=${appointment.phone}`);
     
-    // Bildirimi göndermeden önce bot servisinin çalışır durumda olduğundan emin olalım
+    // Randevu bilgilerini hazırla
     const serviceId = appointment.serviceId;
     const appointmentDate = appointment.preferredDate 
       ? new Date(appointment.preferredDate)

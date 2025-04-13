@@ -115,9 +115,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication routes
   setupAuth(app);
   
-  // Initialize Telegram bot
-  await telegramBotService.initialize();
-  console.log("Telegram bot initialization attempt completed");
+  // Geliştirilmiş Telegram bot başlatma süreci
+  try {
+    console.log("🚀 Starting Telegram bot initialization...");
+    const botInitResult = await telegramBotService.initialize();
+    
+    if (botInitResult) {
+      console.log("✅ Telegram bot successfully initialized");
+    } else {
+      console.warn("⚠️ Telegram bot initialization failed or bot is disabled in settings");
+      console.log("🔄 Server will continue to function, notifications may not be sent");
+      
+      // 30 saniye sonra tekrar denemeyi planla
+      setTimeout(async () => {
+        console.log("🔄 Attempting to initialize Telegram bot again after delay...");
+        const retryResult = await telegramBotService.initialize();
+        console.log(retryResult 
+          ? "✅ Delayed Telegram bot initialization successful" 
+          : "❌ Delayed Telegram bot initialization failed again");
+      }, 30000);
+    }
+  } catch (error) {
+    console.error("❌ Error during Telegram bot initialization:", error);
+    console.log("🔄 Server will continue to function, notifications may not be sent");
+  }
 
   // Content routes
   app.get("/api/services", getServices);
