@@ -31,8 +31,7 @@ import { EnhancedFAQs } from "@/components/services/EnhancedFAQs";
 import { BeforeAfterGallery } from "@/components/services/BeforeAfterGallery";
 import { TreatmentTimeline } from "@/components/services/TreatmentTimeline";
 import { ResultsStats } from "@/components/services/ResultsStats";
-import SocialShareButtons from "@/components/shared/SocialShareButtons";
-import SocialFollowButtons from "@/components/shared/SocialFollowButtons";
+// Social media buttons removed as requested
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Card,
@@ -399,29 +398,7 @@ export default function ServicePage() {
                 </Link>
               </div>
               
-              {/* Social Media Share & Follow */}
-              <div className="border-t border-b py-4 my-6">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-2">{t("common.share")}:</p>
-                    <SocialShareButtons 
-                      title={getLocalizedTitle(service)}
-                      description={getLocalizedDescription(service)}
-                      hashtags={["MyHairClinic", "HairTransplant", "Tbilisi"]}
-                      showCopyLink={true}
-                      size="md"
-                    />
-                  </div>
-                  <div>
-                    <p className="text-sm text-muted-foreground mb-2">{t("common.follow_us")}:</p>
-                    <SocialFollowButtons 
-                      showText={false} 
-                      size="default"
-                      variant="outline"
-                    />
-                  </div>
-                </div>
-              </div>
+              {/* Social Media buttons removed as requested */}
             </div>
           </div>
 
