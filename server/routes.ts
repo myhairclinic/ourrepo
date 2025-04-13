@@ -348,6 +348,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put("/api/progress-images/:imageId", patientController.updatePatientProgressImage);
   app.delete("/api/progress-images/:imageId", patientController.deletePatientProgressImage);
   
+  // Hasta dosya yükleme endpoint'i
+  app.post("/api/upload", (req, res, next) => {
+    try {
+      import('./middleware/upload')
+        .then(({ upload, handleUploadErrors }) => {
+          upload.single('file')(req, res, (err) => {
+            if (err) {
+              return handleUploadErrors(err, req, res, next);
+            }
+            
+            if (!req.file) {
+              return res.status(400).json({ message: 'Lütfen bir dosya yükleyin.' });
+            }
+            
+            // Dosya URL'ini oluştur ve döndür
+            const fileUrl = `/uploads/${req.file.filename}`;
+            res.status(200).json({ 
+              message: 'Dosya başarıyla yüklendi',
+              fileUrl,
+              fileName: req.file.filename,
+              originalName: req.file.originalname
+            });
+          });
+        })
+        .catch(err => {
+          console.error('Dosya yükleme modülü yüklenirken hata oluştu:', err);
+          res.status(500).json({ message: 'Dosya yükleme işlemi sırasında bir hata oluştu' });
+        });
+    } catch (error) {
+      console.error('Dosya yükleme hatası:', error);
+      res.status(500).json({ message: 'Dosya yükleme işlemi sırasında bir hata oluştu' });
+    }
+  });
+  
   // User Review routes
   app.get("/api/reviews", async (req, res) => {
     try {
