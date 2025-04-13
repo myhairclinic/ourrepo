@@ -114,8 +114,6 @@ const progressImageFormSchema = z.object({
   imageUrl: z.string(),
   captureDate: z.string(),
   stage: z.string(),
-  notes: z.string().nullable().optional(),
-  isVisible: z.boolean().default(true),
 });
 
 type PatientFormValues = z.infer<typeof patientFormSchema>;
@@ -213,9 +211,7 @@ const PatientManagement = () => {
     defaultValues: {
       imageUrl: "",
       captureDate: new Date().toISOString().split('T')[0],
-      stage: "pre-op",
-      notes: null,
-      isVisible: true,
+      stage: "pre-op"
     }
   });
   
@@ -656,7 +652,13 @@ const PatientManagement = () => {
   };
   
   const onSubmitProgressImage = (data: ProgressImageFormValues) => {
-    createProgressImageMutation.mutate(data);
+    // Yeni versiyon sadece temel alanları kullanıyor
+    createProgressImageMutation.mutate({
+      ...data,
+      // Backend tarafında varsayılan değerler kullanılacak
+      notes: null,
+      isVisible: true
+    });
   };
   
   const handleEditPatient = (patient: any) => {
