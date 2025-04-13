@@ -674,10 +674,13 @@ const AdminDashboard = () => {
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
                 <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
                 <div className="flex items-center space-x-2 mt-2 md:mt-0">
-                  <select className="px-3 py-1.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary">
+                  <select 
+                    className="px-3 py-1.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    defaultValue="month"
+                  >
                     <option value="today">Bugün</option>
                     <option value="week">Bu Hafta</option>
-                    <option value="month" selected>Bu Ay</option>
+                    <option value="month">Bu Ay</option>
                     <option value="year">Bu Yıl</option>
                   </select>
                   <button className="bg-gray-100 hover:bg-gray-200 transition-colors duration-200 rounded-lg p-1.5">
@@ -1297,7 +1300,7 @@ const AdminDashboard = () => {
                     >
                       <option value="">Tüm Hizmetler</option>
                       {services?.map((service: any) => (
-                        <option key={service.id} value={service.id}>{service.titleTR}</option>
+                        <option key={service.id} value={service.id.toString()}>{service.titleTR}</option>
                       ))}
                     </select>
                   </div>
