@@ -191,6 +191,17 @@ const PatientManagement = () => {
     }
   });
   
+  const progressImageForm = useForm<ProgressImageFormValues>({
+    resolver: zodResolver(progressImageFormSchema),
+    defaultValues: {
+      imageUrl: "",
+      captureDate: new Date().toISOString().split('T')[0],
+      stage: "pre-op",
+      notes: null,
+      isVisible: true,
+    }
+  });
+  
   // QUERIES
   const { data: patients, isLoading: isPatientsLoading, refetch: refetchPatients } = useQuery({
     queryKey: ["/api/patients"],
@@ -259,6 +270,19 @@ const PatientManagement = () => {
       const res = await fetch(`/api/patients/${selectedPatient.id}/treatments`);
       if (!res.ok) {
         throw new Error("Tedavi kayıtları getirilirken bir hata oluştu.");
+      }
+      return res.json();
+    },
+    enabled: !!selectedPatient?.id,
+  });
+  
+  const { data: progressImages, isLoading: isProgressImagesLoading, refetch: refetchProgressImages } = useQuery({
+    queryKey: ["/api/patients", selectedPatient?.id, "progress-images"],
+    queryFn: async () => {
+      if (!selectedPatient?.id) return [];
+      const res = await fetch(`/api/patients/${selectedPatient.id}/progress-images`);
+      if (!res.ok) {
+        throw new Error("İlerleme görselleri getirilirken bir hata oluştu.");
       }
       return res.json();
     },
@@ -505,6 +529,72 @@ const PatientManagement = () => {
     },
   });
   
+  const createProgressImageMutation = useMutation({
+    mutationFn: async (data: ProgressImageFormValues) => {
+      const res = await fetch(`/api/patients/${data.patientId}/progress-images`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      
+      if (!res.ok) {
+        throw new Error("İlerleme görseli oluşturulurken bir hata oluştu.");
+      }
+      
+      return res.json();
+    },
+    onSuccess: () => {
+      setIsNewProgressImageDialogOpen(false);
+      progressImageForm.reset();
+      refetchProgressImages();
+      toast({
+        title: "Başarılı",
+        description: "İlerleme görseli başarıyla eklendi.",
+      });
+    },
+    onError: (error) => {
+      console.error("İlerleme görseli oluşturma hatası:", error);
+      toast({
+        title: "Hata",
+        description: "İlerleme görseli oluşturulurken bir hata oluştu.",
+        variant: "destructive",
+      });
+    },
+  });
+  
+  const deleteProgressImageMutation = useMutation({
+    mutationFn: async (id: number) => {
+      const res = await fetch(`/api/patients/progress-images/${id}`, {
+        method: "DELETE",
+      });
+      
+      if (!res.ok) {
+        throw new Error("İlerleme görseli silinirken bir hata oluştu.");
+      }
+      
+      return res.json();
+    },
+    onSuccess: () => {
+      setIsDeleteConfirmDialogOpen(false);
+      setItemToDelete(null);
+      refetchProgressImages();
+      toast({
+        title: "Başarılı",
+        description: "İlerleme görseli başarıyla silindi.",
+      });
+    },
+    onError: (error) => {
+      console.error("İlerleme görseli silme hatası:", error);
+      toast({
+        title: "Hata",
+        description: "İlerleme görseli silinirken bir hata oluştu.",
+        variant: "destructive",
+      });
+    },
+  });
+  
   // HANDLERS
   const onSubmitPatient = (data: PatientFormValues) => {
     if (data.id) {
@@ -520,6 +610,10 @@ const PatientManagement = () => {
   
   const onSubmitTreatment = (data: TreatmentFormValues) => {
     createTreatmentMutation.mutate(data);
+  };
+  
+  const onSubmitProgressImage = (data: ProgressImageFormValues) => {
+    createProgressImageMutation.mutate(data);
   };
   
   const handleEditPatient = (patient: any) => {
@@ -573,6 +667,19 @@ const PatientManagement = () => {
     setIsNewTreatmentDialogOpen(true);
   };
   
+  const handleNewProgressImage = () => {
+    progressImageForm.reset({
+      patientId: selectedPatient.id,
+      imageUrl: "",
+      captureDate: new Date().toISOString().split('T')[0],
+      stage: "pre-op",
+      notes: null,
+      isVisible: true,
+    });
+    
+    setIsNewProgressImageDialogOpen(true);
+  };
+  
   const handleDeleteItem = () => {
     if (!itemToDelete) return;
     
@@ -582,6 +689,8 @@ const PatientManagement = () => {
       deleteDocumentMutation.mutate(itemToDelete.id);
     } else if (itemToDelete.type === "treatment") {
       deleteTreatmentMutation.mutate(itemToDelete.id);
+    } else if (itemToDelete.type === "progressImage") {
+      deleteProgressImageMutation.mutate(itemToDelete.id);
     }
   };
   
