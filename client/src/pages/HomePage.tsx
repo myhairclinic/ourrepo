@@ -4,7 +4,7 @@ import HeroSlider from "@/components/home/HeroSlider";
 import ServiceCards from "@/components/home/ServiceCards";
 import { PackageCards } from "@/components/home/PackageCards";
 import { FeaturedPackageCards } from "@/components/home/FeaturedPackageCards";
-import { useTranslation } from "@/lib/translations";
+import { useTranslation } from "@/hooks/use-translation";
 import MainSlider from "@/components/home/MainSlider";
 import PatientJourney from "@/components/home/PatientJourney";
 import ExpertSection from "@/components/home/ExpertSection";
@@ -17,16 +17,11 @@ import { generateOrganizationSchema } from "@/lib/seo";
 
 export default function HomePage() {
   const { language } = useLanguage();
-  const { t, formatCurrency } = useTranslation(language);
+  const { t, formatCurrency } = useTranslation();
   
   // Sayfa başlık ve açıklaması - çeviri sistemi kullanılıyor
   const pageTitle = t("home.title") || "Tiflis Saç Ekimi ve Estetik Merkezi";
   const pageDescription = t("home.description") || "MyHair Clinic, Tiflis'te lider saç ekimi ve estetik merkezi. FUE ve DHI teknikleri kullanarak doğal görünümlü saç ekimi, sakal ekimi ve kaş ekimi hizmetleri sunuyoruz.";
-  
-  // Yer tutucu değişkenli örnek çeviriler (örnek olarak eklenmiştir)
-  const exampleTranslation1 = t("home.procedure_cost", { procedure: "FUE" });
-  const exampleTranslation2 = t("home.welcome_user", { name: "John" });
-  const exampleTranslation3 = t("home.results_time", { months: 6 });
   
   // Para birimi formatlama örneği
   const packagePrice = formatCurrency(1500);
@@ -47,9 +42,6 @@ export default function HomePage() {
         {/* Yeni çeviri sistemi örneği - sadece gösterim amaçlı 
         (Bu kısım gerçek önyüzde görünmez, örnek bir kullanımdır) */}
         <div className="hidden">
-          <p>{exampleTranslation1}</p>
-          <p>{exampleTranslation2}</p>
-          <p>{exampleTranslation3}</p>
           <p>Pakete başlangıç fiyatı: {packagePrice}</p>
         </div>
         
