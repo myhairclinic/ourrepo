@@ -1,6 +1,7 @@
 import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
-import { getBlogTranslation, Language } from "@/lib/blogTranslations";
+import { getBlogTranslation } from "@/lib/blogTranslations";
+import { Language } from "@shared/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

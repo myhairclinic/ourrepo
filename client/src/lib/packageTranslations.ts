@@ -756,29 +756,11 @@ export const packageTranslations: Record<string, LanguageMap> = {
     [Language.Russian]: "Массаж после путешествия",
     [Language.Georgian]: "მოგზაურობის შემდგომი მასაჟი"
   },
-  "packages.airportTransfer": {
-    [Language.Turkish]: "Havalimanı Transferi",
-    [Language.English]: "Airport Transfer",
-    [Language.Russian]: "Трансфер из аэропорта",
-    [Language.Georgian]: "აეროპორტის ტრანსფერი"
-  },
   "packages.personalCare": {
     [Language.Turkish]: "Kişisel Bakım",
     [Language.English]: "Personal Care",
     [Language.Russian]: "Личный уход",
     [Language.Georgian]: "პირადი მოვლა"
-  },
-  "packages.cityTours": {
-    [Language.Turkish]: "Şehir Turları",
-    [Language.English]: "City Tours",
-    [Language.Russian]: "Городские экскурсии",
-    [Language.Georgian]: "ქალაქის ტურები"
-  },
-  "packages.traditionalCuisine": {
-    [Language.Turkish]: "Geleneksel Mutfak",
-    [Language.English]: "Traditional Cuisine",
-    [Language.Russian]: "Традиционная кухня",
-    [Language.Georgian]: "ტრადიციული სამზარეულო"
   },
   "packages.freeConsultation": {
     [Language.Turkish]: "Ücretsiz Konsültasyon",

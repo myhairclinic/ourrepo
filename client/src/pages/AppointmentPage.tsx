@@ -59,7 +59,7 @@ type AppointmentFormData = z.infer<ReturnType<typeof createAppointmentFormSchema
 
 export default function AppointmentPage() {
   const { language, addPrefix } = useLanguage();
-  const { t } = useTranslation(language);
+  const { t } = useTranslation();
   const { toast } = useToast();
   
   // Create a schema for the current language
