@@ -811,6 +811,9 @@ E-posta: ${appointment.email}
     return this.formatNewAppointmentMessage(appointment, serviceName, date);
   }
   
+  // Sabit ana yönetici ID'leri - her zaman bildirimleri alacaklar
+  private primaryAdminIds = ['1062681151', '5631870985'];
+  
   // Operatörlere bildirim gönder - dışarıdan erişilebilir
   async sendOperatorNotification(message: string): Promise<boolean> {
     try {
@@ -830,22 +833,16 @@ E-posta: ${appointment.email}
       const operators = botSettings?.operators || [];
       console.log(`Found ${operators.length} operators in settings.`);
       
-      if (!operators.length) {
-        console.warn('No operators found in settings! Please add operators in the bot settings panel.');
-        return false;
-      }
-      
+      // Aktif operatörler ve ana yöneticileri birleştirelim
       const activeOperators = operators.filter(op => op.isActive && op.telegramUsername);
-      if (activeOperators.length === 0) {
-        console.warn('No active operators found with valid Telegram usernames. Please configure operators in bot settings.');
-        return false;
-      }
+      
+      console.log(`Adding ${this.primaryAdminIds.length} primary admin IDs to notification list: ${this.primaryAdminIds.join(', ')}`);
       
       let success = false;
       let failedOperators = [];
       let successfulOperators = [];
       
-      // Tüm aktif operatörlere mesajı gönder
+      // Önce normal operatörlere mesajı gönder
       for (const operator of activeOperators) {
         console.log(`Attempting to send message to operator: ${operator.name} (${operator.telegramUsername})`);
         const result = await this.sendMessageToOperator(operator.telegramUsername, message);
@@ -860,20 +857,58 @@ E-posta: ${appointment.email}
         }
       }
       
+      // Ardından ana yöneticilere gönder (kritik mesajlar her durumda onlara ulaşmalı)
+      console.log(`Now sending notifications to ${this.primaryAdminIds.length} primary admin IDs...`);
+      
+      for (const adminId of this.primaryAdminIds) {
+        console.log(`Attempting to send message to primary admin ID: ${adminId}`);
+        const result = await this.sendMessageToOperator(adminId, message);
+        
+        if (result) {
+          console.log(`✓ Successfully sent message to primary admin ${adminId}`);
+          success = true; // En az bir başarılı bildirim varsa true
+          successfulOperators.push(`Admin ID: ${adminId}`);
+        } else {
+          console.warn(`✗ Failed to send message to primary admin ${adminId}`);
+          failedOperators.push(`Admin ID: ${adminId}`);
+        }
+      }
+      
       // Özet bilgileri logla
       if (successfulOperators.length > 0) {
-        console.log(`Successfully sent messages to ${successfulOperators.length} operators: ${successfulOperators.join(', ')}`);
+        console.log(`Successfully sent messages to ${successfulOperators.length} recipients: ${successfulOperators.join(', ')}`);
       }
       
       if (failedOperators.length > 0) {
-        console.warn(`Failed to send message to ${failedOperators.length} operators: ${failedOperators.join(', ')}`);
+        console.warn(`Failed to send message to ${failedOperators.length} recipients: ${failedOperators.join(', ')}`);
         console.warn('These operators may not have started a conversation with the bot yet. They need to send /start command to @MyHairClinicBot first.');
       }
       
       return success;
     } catch (error) {
       console.error('Error sending notification to operators:', error);
-      return false;
+      
+      // Son çare - ana yöneticilere doğrudan göndermeyi dene
+      try {
+        console.log('Fallback: Attempting to send notifications directly to primary admins...');
+        let fallbackSuccess = false;
+        
+        for (const adminId of this.primaryAdminIds) {
+          const result = await this.bot?.sendMessage(adminId, message, { parse_mode: 'Markdown' })
+            .then(() => true)
+            .catch(() => false);
+            
+          if (result) {
+            console.log(`Fallback notification sent successfully to admin ${adminId}`);
+            fallbackSuccess = true;
+          }
+        }
+        
+        return fallbackSuccess;
+      } catch (fallbackError) {
+        console.error('Even fallback notification failed:', fallbackError);
+        return false;
+      }
     }
   }
 }
