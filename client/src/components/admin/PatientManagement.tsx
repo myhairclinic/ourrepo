@@ -111,7 +111,8 @@ const treatmentFormSchema = z.object({
 const progressImageFormSchema = z.object({
   id: z.number().optional(),
   patientId: z.number(),
-  imageUrl: z.string(),
+  imageFile: z.instanceof(File).optional(),
+  imageUrl: z.string().optional(),
   captureDate: z.string(),
   stage: z.string(),
 });
@@ -214,6 +215,8 @@ const PatientManagement = () => {
       stage: "pre-op"
     }
   });
+  
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   
   // QUERIES
   const { data: patients, isLoading: isPatientsLoading, refetch: refetchPatients } = useQuery({
