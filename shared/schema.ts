@@ -2,6 +2,20 @@ import { pgTable, text, serial, integer, boolean, jsonb, timestamp } from "drizz
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+// Settings tablo tanımı
+export const siteSettings = pgTable("site_settings", {
+  id: serial("id").primaryKey(),
+  section: text("section").notNull(),  // genel, iletişim, SEO, dil, vs.
+  key: text("key").notNull(),
+  value: jsonb("value"),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const insertSettingSchema = createInsertSchema(siteSettings).omit({
+  id: true,
+  updatedAt: true,
+});
+
 // Users (Admin users)
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
@@ -373,6 +387,10 @@ export const updateClinicInfoSchema = createInsertSchema(clinicInfo).omit({
 
 // Package Type
 export type PackageType = "standard" | "premium" | "luxury" | "budget";
+
+// Setting Type
+export type SiteSetting = typeof siteSettings.$inferSelect;
+export type InsertSiteSetting = z.infer<typeof insertSettingSchema>;
 
 // Telegram Bot için şema tanımları
 import { pgEnum } from 'drizzle-orm/pg-core';

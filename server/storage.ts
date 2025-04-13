@@ -17,7 +17,8 @@ import {
   chatOperators, ChatOperator, InsertChatOperator,
   patients, Patient, InsertPatient,
   patientDocuments, PatientDocument, InsertPatientDocument,
-  treatmentRecords, TreatmentRecord, InsertTreatmentRecord
+  treatmentRecords, TreatmentRecord, InsertTreatmentRecord,
+  siteSettings, SiteSetting, InsertSiteSetting
 } from "@shared/schema";
 import session from "express-session";
 import createMemoryStore from "memorystore";
