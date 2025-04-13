@@ -819,6 +819,104 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Здесь вы можете найти наиболее распространенные вопросы об этой процедуре и ответы от наших экспертов.",
     [Language.Georgian]: "აქ შეგიძლიათ იხილოთ ყველაზე გავრცელებული შეკითხვები ამ პროცედურის შესახებ და პასუხები ჩვენი ექსპერტებისგან."
   },
+  
+  // SSS sorular ve cevapları
+  "services.faqs.question1": {
+    [Language.Turkish]: "Saç ekimi kalıcı bir çözüm müdür?",
+    [Language.English]: "Is hair transplantation a permanent solution?",
+    [Language.Russian]: "Является ли трансплантация волос постоянным решением?",
+    [Language.Georgian]: "არის თუ არა თმის გადანერგვა მუდმივი გადაწყვეტილება?"
+  },
+  "services.faqs.answer1": {
+    [Language.Turkish]: "Evet, saç ekimi kalıcı bir çözümdür. Donör bölgeden alınan saç kökleri dökülmeye karşı genetik olarak dirençlidir. Bu nedenle alıcı bölgeye yerleştirilen greftler genellikle ömür boyu kalır.",
+    [Language.English]: "Yes, hair transplantation is a permanent solution. Hair follicles taken from the donor area are genetically resistant to hair loss. Therefore, the grafts placed in the recipient area generally last a lifetime.",
+    [Language.Russian]: "Да, трансплантация волос - это постоянное решение. Волосяные фолликулы, взятые из донорской области, генетически устойчивы к выпадению волос. Поэтому графты, размещенные в области реципиента, обычно сохраняются на всю жизнь.",
+    [Language.Georgian]: "დიახ, თმის გადანერგვა არის მუდმივი გადაწყვეტილება. დონორის ზონიდან აღებული თმის ფოლიკულები გენეტიკურად მდგრადია თმის ცვენის მიმართ. შესაბამისად, მიმღებ არეში განთავსებული გრაფტები ზოგადად გრძელდება მთელი სიცოცხლის განმავლობაში."
+  },
+  "services.faqs.question2": {
+    [Language.Turkish]: "Saç ekimi işlemi sırasında ağrı hissedilir mi?",
+    [Language.English]: "Is there pain during the hair transplantation procedure?",
+    [Language.Russian]: "Ощущается ли боль во время процедуры трансплантации волос?",
+    [Language.Georgian]: "არის თუ არა ტკივილი თმის გადანერგვის პროცედურის დროს?"
+  },
+  "services.faqs.answer2": {
+    [Language.Turkish]: "Hayır, işlem sırasında ağrı hissedilmez çünkü işlem lokal anestezi altında gerçekleştirilir. İşlem sonrası hafif bir rahatsızlık olabilir, ancak bu genellikle reçete edilen ağrı kesicilerle kolayca yönetilebilir.",
+    [Language.English]: "No, pain is not felt during the procedure because it is performed under local anesthesia. There may be mild discomfort after the procedure, but this can usually be easily managed with prescribed painkillers.",
+    [Language.Russian]: "Нет, боль не ощущается во время процедуры, потому что она выполняется под местной анестезией. После процедуры может возникнуть легкий дискомфорт, но обычно его можно легко устранить с помощью назначенных обезболивающих.",
+    [Language.Georgian]: "არა, ტკივილი არ იგრძნობა პროცედურის დროს, რადგან ის ტარდება ადგილობრივი ანესთეზიის ქვეშ. პროცედურის შემდეგ შეიძლება იყოს მსუბუქი დისკომფორტი, მაგრამ ეს ჩვეულებრივ ადვილად მართვადია დანიშნული ტკივილგამაყუჩებლებით."
+  },
+  "services.faqs.question3": {
+    [Language.Turkish]: "Saç ekimi sonrası ne kadar zaman içinde sonuçlar görülmeye başlar?",
+    [Language.English]: "How soon after hair transplantation do results start to become visible?",
+    [Language.Russian]: "Как скоро после трансплантации волос начинают быть видны результаты?",
+    [Language.Georgian]: "რამდენად მალე ჩანს შედეგები თმის გადანერგვის შემდეგ?"
+  },
+  "services.faqs.answer3": {
+    [Language.Turkish]: "İlk 2-3 hafta içinde nakledilen saçların çoğu dökülür, bu normal bir süreçtir. Yeni saç büyümesi genellikle 3-4 ay sonra başlar. Nihai sonuçlar için 12-18 ay beklemek gerekebilir.",
+    [Language.English]: "Most of the transplanted hair falls out within the first 2-3 weeks, which is a normal process. New hair growth typically begins after 3-4 months. Final results may take 12-18 months.",
+    [Language.Russian]: "Большинство пересаженных волос выпадает в течение первых 2-3 недель, это нормальный процесс. Рост новых волос обычно начинается через 3-4 месяца. Окончательные результаты могут занять 12-18 месяцев.",
+    [Language.Georgian]: "გადანერგილი თმის უმეტესობა ცვივა პირველი 2-3 კვირის განმავლობაში, რაც ნორმალური პროცესია. თმის ახალი ზრდა ჩვეულებრივ იწყება 3-4 თვის შემდეგ. საბოლოო შედეგებმა შეიძლება 12-18 თვე წაიღოს."
+  },
+  "services.faqs.question4": {
+    [Language.Turkish]: "Saç ekimi sonrası nasıl bir bakım gereklidir?",
+    [Language.English]: "What kind of aftercare is required after hair transplantation?",
+    [Language.Russian]: "Какой уход требуется после трансплантации волос?",
+    [Language.Georgian]: "როგორი მოვლაა საჭირო თმის გადანერგვის შემდეგ?"
+  },
+  "services.faqs.answer4": {
+    [Language.Turkish]: "İlk bir hafta doğrudan güneş ışığından kaçınmanız, grefler iyileşene kadar başınızı ovmamanız veya kaşımamanız gerekir. Size verilen özel şampuan talimatlarına uymanız önemlidir. Kliniğimiz size detaylı bir bakım kılavuzu sağlayacaktır.",
+    [Language.English]: "For the first week, you should avoid direct sunlight and not rub or scratch your head until the grafts heal. It is important to follow the special shampoo instructions given to you. Our clinic will provide you with a detailed care guide.",
+    [Language.Russian]: "В течение первой недели вы должны избегать прямых солнечных лучей и не тереть или чесать голову, пока графты не заживут. Важно следовать инструкциям по использованию специального шампуня, которые вам дали. Наша клиника предоставит вам подробное руководство по уходу.",
+    [Language.Georgian]: "პირველი კვირის განმავლობაში თავი უნდა აარიდოთ პირდაპირ მზის სხივებს და არ უნდა გაისრისოთ ან მოიფხანოთ თავი, სანამ გრაფტები არ გაჯანსაღდება. მნიშვნელოვანია, დაიცვათ თქვენთვის მიცემული სპეციალური შამპუნის ინსტრუქციები. ჩვენი კლინიკა მოგაწვდით დეტალურ მოვლის სახელმძღვანელოს."
+  },
+  "services.faqs.question5": {
+    [Language.Turkish]: "Saç ekimi kimler için uygundur?",
+    [Language.English]: "Who is a suitable candidate for hair transplantation?",
+    [Language.Russian]: "Кто является подходящим кандидатом для трансплантации волос?",
+    [Language.Georgian]: "ვინ არის შესაფერისი კანდიდატი თმის გადანერგვისთვის?"
+  },
+  "services.faqs.answer5": {
+    [Language.Turkish]: "18 yaşından büyük, sağlıklı ve yeterli donör saç yoğunluğuna sahip kişiler ideal adaylardır. Saç kaybı dengeli ve yaş ile bağlantılı olan kişiler de iyi sonuçlar alabilir. Kesin uygunluk için konsültasyon sırasında değerlendirme yapılması gerekir.",
+    [Language.English]: "People over 18 years old, healthy, and with sufficient donor hair density are ideal candidates. People with stabilized hair loss that is age-related can also achieve good results. A proper assessment during consultation is necessary for definitive eligibility.",
+    [Language.Russian]: "Люди старше 18 лет, здоровые и с достаточной плотностью волос донора являются идеальными кандидатами. Люди со стабилизированным выпадением волос, связанным с возрастом, также могут достичь хороших результатов. Для окончательного определения пригодности необходима надлежащая оценка во время консультации.",
+    [Language.Georgian]: "18 წელზე უფროსი ადამიანები, ჯანმრთელი და საკმარისი დონორის თმის სიმკვრივით არიან იდეალური კანდიდატები. ადამიანებს, რომლებსაც აქვთ სტაბილიზებული თმის ცვენა, რომელიც დაკავშირებულია ასაკთან, ასევე შეუძლიათ მიაღწიონ კარგ შედეგებს. კონსულტაციის დროს საჭიროა სათანადო შეფასება საბოლოო შესაბამისობისთვის."
+  },
+  "services.faqs.question6": {
+    [Language.Turkish]: "Saç ekimi sonrası normal aktivitelerime ne zaman dönebilirim?",
+    [Language.English]: "When can I return to my normal activities after hair transplantation?",
+    [Language.Russian]: "Когда я могу вернуться к своей нормальной деятельности после трансплантации волос?",
+    [Language.Georgian]: "როდის შემიძლია დავბრუნდე ჩემს ჩვეულებრივ საქმიანობაზე თმის გადანერგვის შემდეგ?"
+  },
+  "services.faqs.answer6": {
+    [Language.Turkish]: "Çoğu hasta işlemi takip eden gün normal, fiziksel olmayan aktivitelerine dönebilir. Ağır egzersiz ve fiziksel aktivitelerden yaklaşık 2 hafta kaçınmanızı öneririz. İş yerinde veya sosyal ortamlarda şapka veya gevşek başlık ile donör ve alıcı bölgelerini gizlemek mümkündür.",
+    [Language.English]: "Most patients can return to normal, non-physical activities the day after the procedure. We recommend avoiding heavy exercise and physical activities for about 2 weeks. It is possible to conceal the donor and recipient areas with a hat or loose headwear in workplace or social settings.",
+    [Language.Russian]: "Большинство пациентов могут вернуться к нормальной, нефизической деятельности на следующий день после процедуры. Мы рекомендуем избегать тяжелых упражнений и физической активности в течение примерно 2 недель. На рабочем месте или в социальной обстановке можно скрыть донорские и принимающие области шляпой или свободным головным убором.",
+    [Language.Georgian]: "პაციენტების უმეტესობას შეუძლია დაუბრუნდეს ნორმალურ, არაფიზიკურ აქტივობებს პროცედურის მეორე დღეს. ჩვენ გირჩევთ თავი აარიდოთ მძიმე ვარჯიშს და ფიზიკურ აქტივობას დაახლოებით 2 კვირის განმავლობაში. სამუშაო ადგილზე ან სოციალურ გარემოში შესაძლებელია დონორისა და მიმღების ტერიტორიების დამალვა ქუდით ან თავისუფალი თავსაბურავით."
+  },
+  "services.faqs.question7": {
+    [Language.Turkish]: "FUE ve DHI teknikleri arasındaki fark nedir?",
+    [Language.English]: "What is the difference between FUE and DHI techniques?",
+    [Language.Russian]: "В чем разница между техниками FUE и DHI?",
+    [Language.Georgian]: "რა განსხვავებაა FUE და DHI ტექნიკებს შორის?"
+  },
+  "services.faqs.answer7": {
+    [Language.Turkish]: "FUE tekniğinde saç kökleri tek tek çıkarılır ve önceden açılmış kanallara yerleştirilir. DHI tekniğinde ise, özel bir kalem cihazı (Choi implanter) ile greftler doğrudan alıcı bölgeye yerleştirilir, kanal açmaya gerek kalmaz. DHI daha yoğun sonuçlar ve daha hızlı iyileşme sağlayabilir, ancak genellikle daha maliyetlidir.",
+    [Language.English]: "In the FUE technique, hair follicles are extracted one by one and placed into pre-made channels. In the DHI technique, grafts are placed directly into the recipient area using a special pen device (Choi implanter), eliminating the need for channel creation. DHI can provide denser results and faster healing, but it is usually more costly.",
+    [Language.Russian]: "В технике FUE волосяные фолликулы извлекаются один за другим и помещаются в предварительно созданные каналы. В технике DHI трансплантаты помещаются непосредственно в область реципиента с помощью специального ручного устройства (имплантера Choi), что устраняет необходимость создания канала. DHI может обеспечить более плотные результаты и более быстрое заживление, но обычно стоит дороже.",
+    [Language.Georgian]: "FUE ტექნიკაში თმის ფოლიკულები ამოღებულია ერთი-ერთზე და განთავსებულია წინასწარ დამზადებულ არხებში. DHI ტექნიკაში გრაფტები პირდაპირ მიმღებ ზონაში თავსდება სპეციალური კალმის მოწყობილობის (Choi implanter) გამოყენებით, რაც გამორიცხავს არხის შექმნის საჭიროებას. DHI-ს შეუძლია უზრუნველყოს უფრო მჭიდრო შედეგები და სწრაფი შეხორცება, მაგრამ ჩვეულებრივ უფრო ძვირია."
+  },
+  "services.faqs.question8": {
+    [Language.Turkish]: "Saç ekimi işlemi sırasında riskler var mı?",
+    [Language.English]: "Are there any risks during the hair transplantation procedure?",
+    [Language.Russian]: "Существуют ли какие-либо риски во время процедуры трансплантации волос?",
+    [Language.Georgian]: "არსებობს თუ არა რაიმე რისკი თმის გადანერგვის პროცედურის დროს?"
+  },
+  "services.faqs.answer8": {
+    [Language.Turkish]: "Saç ekimi oldukça güvenli bir prosedürdür, ancak her cerrahi işlem gibi minimal riskler taşır. Bunlar arasında enfeksiyon, kanama, şişlik ve geçici uyuşukluk sayılabilir. MyHair Clinic'te deneyimli ekibimiz, steril koşullar ve modern ekipman kullanımı ile bu riskleri en aza indiriyor. Kapsamlı işlem öncesi değerlendirme ve yakın işlem sonrası takip sayesinde komplikasyon riski minimize edilir.",
+    [Language.English]: "Hair transplantation is a very safe procedure, but like any surgical procedure, it carries minimal risks. These include infection, bleeding, swelling, and temporary numbness. At MyHair Clinic, our experienced team minimizes these risks with sterile conditions and modern equipment. The risk of complications is minimized through comprehensive pre-procedure assessment and close post-procedure follow-up.",
+    [Language.Russian]: "Трансплантация волос - очень безопасная процедура, но, как и любая хирургическая процедура, она несет минимальные риски. К ним относятся инфекция, кровотечение, отек и временное онемение. В клинике MyHair наша опытная команда минимизирует эти риски с помощью стерильных условий и современного оборудования. Риск осложнений сводится к минимуму благодаря комплексной предпроцедурной оценке и тщательному последующему наблюдению после процедуры.",
+    [Language.Georgian]: "თმის გადანერგვა არის ძალიან უსაფრთხო პროცედურა, მაგრამ ნებისმიერი ქირურგიული პროცედურის მსგავსად, მას აქვს მინიმალური რისკები. ესენი მოიცავს ინფექციას, სისხლდენას, შეშუპებას და დროებით გაბუჟებას. MyHair Clinic-ში ჩვენი გამოცდილი გუნდი ამცირებს ამ რისკებს სტერილური პირობებისა და თანამედროვე აღჭურვილობის გამოყენებით. გართულებების რისკი მინიმუმამდე მცირდება ყოვლისმომცველი წინასწარი პროცედურის შეფასებითა და მჭიდრო შემდგომი მეთვალყურეობით."
+  },
   "services.timelineDescription": {
     [Language.Turkish]: "İşlem adımları ve iyileşme süreci",
     [Language.English]: "Procedure steps and recovery process",
@@ -830,6 +928,120 @@ export const translations: Record<string, LanguageMap> = {
     [Language.English]: "Free Consultation",
     [Language.Russian]: "Бесплатная консультация",
     [Language.Georgian]: "უფასო კონსულტაცია"
+  },
+  "services.timeline.step1Description": {
+    [Language.Turkish]: "Saç dökülmesi probleminizi değerlendirmek ve uygun tedavi yöntemini belirlemek için ücretsiz konsültasyon hizmeti sunuyoruz",
+    [Language.English]: "We offer a free consultation service to assess your hair loss problem and determine the appropriate treatment method",
+    [Language.Russian]: "Мы предлагаем бесплатную консультацию для оценки проблемы выпадения волос и определения подходящего метода лечения",
+    [Language.Georgian]: "ჩვენ გთავაზობთ უფასო საკონსულტაციო მომსახურებას თქვენი თმის ცვენის პრობლემის შესაფასებლად და შესაბამისი მკურნალობის მეთოდის განსასაზღვრად"
+  },
+  "services.timeline.step1Highlight1": {
+    [Language.Turkish]: "Detaylı saç analizi",
+    [Language.English]: "Detailed hair analysis",
+    [Language.Russian]: "Детальный анализ волос",
+    [Language.Georgian]: "დეტალური თმის ანალიზი"
+  },
+  "services.timeline.step1Highlight2": {
+    [Language.Turkish]: "Tedavi planı oluşturma",
+    [Language.English]: "Treatment planning",
+    [Language.Russian]: "Планирование лечения",
+    [Language.Georgian]: "მკურნალობის დაგეგმვა"
+  },
+  "services.timeline.step2Title": {
+    [Language.Turkish]: "Hazırlık ve Tasarım",
+    [Language.English]: "Preparation and Design",
+    [Language.Russian]: "Подготовка и Дизайн",
+    [Language.Georgian]: "მომზადება და დიზაინი"
+  },
+  "services.timeline.step2Description": {
+    [Language.Turkish]: "İşlem günü saçınız kısaltılır ve doğal saç çizginiz oluşturulur",
+    [Language.English]: "On the day of the procedure, your hair is shortened and your natural hairline is created",
+    [Language.Russian]: "В день процедуры ваши волосы укорачиваются и создается естественная линия роста волос",
+    [Language.Georgian]: "პროცედურის დღეს თქვენი თმა მოკლდება და შეიქმნება თქვენი ბუნებრივი თმის ხაზი"
+  },
+  "services.timeline.step2Highlight1": {
+    [Language.Turkish]: "Saç çizgisi tasarımı",
+    [Language.English]: "Hairline design",
+    [Language.Russian]: "Дизайн линии роста волос",
+    [Language.Georgian]: "თმის ხაზის დიზაინი"
+  },
+  "services.timeline.step2Highlight2": {
+    [Language.Turkish]: "Donör bölge hazırlığı",
+    [Language.English]: "Donor area preparation",
+    [Language.Russian]: "Подготовка донорской зоны",
+    [Language.Georgian]: "დონორის ზონის მომზადება"
+  },
+  "services.timeline.step3Title": {
+    [Language.Turkish]: "Greft Çıkarma",
+    [Language.English]: "Graft Extraction",
+    [Language.Russian]: "Извлечение Графтов",
+    [Language.Georgian]: "გრაფტის ექსტრაქცია"
+  },
+  "services.timeline.step3Description": {
+    [Language.Turkish]: "Özel mikrocerrahi aletlerle donör bölgeden kıl kökleri tek tek çıkarılır",
+    [Language.English]: "Hair follicles are individually extracted from the donor area with special microsurgical tools",
+    [Language.Russian]: "Волосяные фолликулы индивидуально извлекаются из донорской области с помощью специальных микрохирургических инструментов",
+    [Language.Georgian]: "თმის ფოლიკულები ინდივიდუალურად მოიპოვება დონორის ზონიდან სპეციალური მიკროქირურგიული ინსტრუმენტებით"
+  },
+  "services.timeline.step3Highlight1": {
+    [Language.Turkish]: "Hassas FUE tekniği",
+    [Language.English]: "Precise FUE technique",
+    [Language.Russian]: "Точная техника FUE",
+    [Language.Georgian]: "ზუსტი FUE ტექნიკა"
+  },
+  "services.timeline.step3Highlight2": {
+    [Language.Turkish]: "Minimal skar oluşumu",
+    [Language.English]: "Minimal scarring",
+    [Language.Russian]: "Минимальное образование рубцов",
+    [Language.Georgian]: "მინიმალური დანაწიბურება"
+  },
+  "services.timeline.step4Title": {
+    [Language.Turkish]: "Kanal Açma ve Yerleştirme",
+    [Language.English]: "Channel Creation and Placement",
+    [Language.Russian]: "Создание Каналов и Размещение",
+    [Language.Georgian]: "არხის შექმნა და განთავსება"
+  },
+  "services.timeline.step4Description": {
+    [Language.Turkish]: "Alıcı bölgede mikroskobik kanallar açılır ve greftler yerleştirilir",
+    [Language.English]: "Microscopic channels are created in the recipient area and grafts are placed",
+    [Language.Russian]: "В принимающей области создаются микроскопические каналы и размещаются графты",
+    [Language.Georgian]: "მიმღებ ზონაში იქმნება მიკროსკოპული არხები და ხდება გრაფტების განთავსება"
+  },
+  "services.timeline.step4Highlight1": {
+    [Language.Turkish]: "Doğal açılı yerleştirme",
+    [Language.English]: "Natural angle placement",
+    [Language.Russian]: "Размещение под естественным углом",
+    [Language.Georgian]: "ბუნებრივი კუთხით განთავსება"
+  },
+  "services.timeline.step4Highlight2": {
+    [Language.Turkish]: "Yüksek greft canlılık oranı",
+    [Language.English]: "High graft survival rate",
+    [Language.Russian]: "Высокий показатель приживаемости графтов",
+    [Language.Georgian]: "გრაფტის გადარჩენის მაღალი მაჩვენებელი"
+  },
+  "services.timeline.step5Title": {
+    [Language.Turkish]: "İyileşme ve Sonuç",
+    [Language.English]: "Recovery and Results",
+    [Language.Russian]: "Восстановление и Результаты",
+    [Language.Georgian]: "აღდგენა და შედეგები"
+  },
+  "services.timeline.step5Description": {
+    [Language.Turkish]: "İlk haftalarda kabuklanma ve dökülme olur, 6-12 ay içinde tam sonuçlar görülür",
+    [Language.English]: "Crusting and shedding occur in the first weeks, full results are seen within 6-12 months",
+    [Language.Russian]: "В первые недели происходит образование корок и выпадение, полные результаты видны через 6-12 месяцев",
+    [Language.Georgian]: "პირველ კვირებში ხდება ქერქის წარმოქმნა და ცვენა, სრული შედეგები ჩანს 6-12 თვის განმავლობაში"
+  },
+  "services.timeline.step5Highlight1": {
+    [Language.Turkish]: "Kalıcı sonuçlar",
+    [Language.English]: "Permanent results",
+    [Language.Russian]: "Постоянные результаты",
+    [Language.Georgian]: "მუდმივი შედეგები"
+  },
+  "services.timeline.step5Highlight2": {
+    [Language.Turkish]: "Doğal büyüme",
+    [Language.English]: "Natural growth",
+    [Language.Russian]: "Естественный рост",
+    [Language.Georgian]: "ბუნებრივი ზრდა"
   },
   "services.beforeAfter": {
     [Language.Turkish]: "Öncesi ve Sonrası",
@@ -983,8 +1195,68 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Недавно Добавленные",
     [Language.Georgian]: "ახლახანს დამატებული"
   },
+  "reviews.overview": {
+    [Language.Turkish]: "Genel Bakış",
+    [Language.English]: "Overview",
+    [Language.Russian]: "Обзор",
+    [Language.Georgian]: "მიმოხილვა"
+  },
+  "reviews.byCategory": {
+    [Language.Turkish]: "Kategoriye Göre",
+    [Language.English]: "By Category",
+    [Language.Russian]: "По Категории",
+    [Language.Georgian]: "კატეგორიის მიხედვით"
+  },
+  "Featured Review": {
+    [Language.Turkish]: "Öne Çıkan İnceleme",
+    [Language.English]: "Featured Review",
+    [Language.Russian]: "Рекомендуемый Отзыв",
+    [Language.Georgian]: "რჩეული მიმოხილვა"
+  },
+  "No 4-star reviews yet": {
+    [Language.Turkish]: "Henüz 4 yıldızlı inceleme yok",
+    [Language.English]: "No 4-star reviews yet",
+    [Language.Russian]: "Пока нет отзывов с 4 звездами",
+    [Language.Georgian]: "ჯერ არ არის 4-ვარსკვლავიანი მიმოხილვები"
+  },
+  "No reviews with 3 stars or below yet": {
+    [Language.Turkish]: "Henüz 3 yıldız veya altında inceleme yok",
+    [Language.English]: "No reviews with 3 stars or below yet",
+    [Language.Russian]: "Пока нет отзывов с 3 звездами или ниже",
+    [Language.Georgian]: "ჯერ არ არის მიმოხილვები 3 ვარსკვლავით ან ქვემოთ"
+  },
+  "reviews.verifiedCustomer": {
+    [Language.Turkish]: "Doğrulanmış Müşteri",
+    [Language.English]: "Verified Customer",
+    [Language.Russian]: "Проверенный Клиент",
+    [Language.Georgian]: "გადამოწმებული მომხმარებელი"
+  },
+  "Read More": {
+    [Language.Turkish]: "Devamını Oku",
+    [Language.English]: "Read More",
+    [Language.Russian]: "Читать Далее",
+    [Language.Georgian]: "მეტის წაკითხვა"
+  },
+  "Share": {
+    [Language.Turkish]: "Paylaş",
+    [Language.English]: "Share",
+    [Language.Russian]: "Поделиться",
+    [Language.Georgian]: "გაზიარება"
+  },
+  "Helpful": {
+    [Language.Turkish]: "Yararlı",
+    [Language.English]: "Helpful",
+    [Language.Russian]: "Полезно",
+    [Language.Georgian]: "სასარგებლო"
+  },
   
   // Sonuç istatistikleri ve değerler bölümü
+  "services.results": {
+    [Language.Turkish]: "Sonuçlar",
+    [Language.English]: "Results",
+    [Language.Russian]: "Результаты",
+    [Language.Georgian]: "შედეგები"
+  },
   "services.resultsStats": {
     [Language.Turkish]: "Sonuçlarımızla Gurur Duyuyoruz",
     [Language.English]: "We Take Pride in Our Results",
