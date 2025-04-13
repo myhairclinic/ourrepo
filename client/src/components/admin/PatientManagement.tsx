@@ -654,54 +654,59 @@ const PatientManagement = () => {
     createTreatmentMutation.mutate(data);
   };
   
-  const onSubmitProgressImage = (data: ProgressImageFormValues) => {
-    // Eğer dosya seçilmişse, dosya yükleme işlemi yap
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append('image', selectedFile);
-      formData.append('patientId', String(data.patientId));
-      formData.append('captureDate', data.captureDate);
-      formData.append('stage', data.stage);
-      
-      // FormData içeriğini kontrol etmek için konsola yazıyoruz
-      console.log('FormData içeriği:');
-      for (let [key, value] of formData.entries()) {
-        console.log(key, ':', value);
-      }
-      
-      // Dosya yükleme API endpoint'i
-      fetch('/api/upload/progress-image', {
-        method: 'POST',
-        body: formData,
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Dosya yükleme hatası: ' + response.status);
+  const onSubmitProgressImage = async (data: ProgressImageFormValues) => {
+    try {
+      // Eğer dosya seçilmişse, önce dosyayı yükle ve URL'ini al
+      if (selectedFile) {
+        console.log('Dosya yükleme başlatılıyor...');
+        
+        // Yeni dosya yükleme fonksiyonumuzu kullan
+        const fileUrl = await handleFileUpload(selectedFile);
+        
+        if (!fileUrl) {
+          toast({
+            title: "Hata",
+            description: "Dosya yüklenirken bir hata oluştu. Lütfen tekrar deneyiniz.",
+            variant: "destructive",
+          });
+          return;
         }
-        return response.json();
-      })
-      .then(result => {
-        console.log('Dosya yükleme başarılı:', result);
-        toast({
-          title: "Başarılı",
-          description: "İlerleme görseli başarıyla yüklendi.",
+        
+        console.log('Dosya başarıyla yüklendi, URL:', fileUrl);
+        
+        // Dosya URL'ini imageUrl alanına ekle ve veriyi gönder
+        const updatedData = {
+          ...data,
+          imageUrl: fileUrl
+        };
+        
+        console.log('İlerleme görseli verisi gönderiliyor:', updatedData);
+        createProgressImageMutation.mutate(updatedData, {
+          onSuccess: () => {
+            toast({
+              title: "Başarılı",
+              description: "İlerleme görseli başarıyla kaydedildi.",
+            });
+            setIsNewProgressImageDialogOpen(false);
+            progressImageForm.reset();
+            setSelectedFile(null);
+            refetchProgressImages();
+          }
         });
-        setIsNewProgressImageDialogOpen(false);
-        progressImageForm.reset();
-        refetchProgressImages();
-      })
-      .catch(error => {
-        console.error('Dosya yükleme hatası:', error);
+      } else {
+        // Dosya seçilmemişse, kullanıcıyı uyar
         toast({
-          title: "Hata",
-          description: "İlerleme görseli yüklenirken bir hata oluştu.",
+          title: "Uyarı",
+          description: "Lütfen bir görsel dosyası seçiniz.",
           variant: "destructive",
         });
-      });
-    } else {
-      // Dosya seçilmemişse, normal API endpoint'i kullan
-      createProgressImageMutation.mutate({
-        ...data,
+      }
+    } catch (error) {
+      console.error('İlerleme görseli ekleme hatası:', error);
+      toast({
+        title: "Hata",
+        description: "İlerleme görseli eklenirken bir hata oluştu.",
+        variant: "destructive",
       });
     }
   };
@@ -774,6 +779,39 @@ const PatientManagement = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setSelectedFile(e.target.files[0]);
+      console.log("Dosya seçildi:", e.target.files[0].name);
+    }
+  };
+
+  // Dosya yükleme işlemi için yeni fonksiyon
+  const handleFileUpload = async (file: File): Promise<string | null> => {
+    if (!file) return null;
+
+    try {
+      console.log("Dosya yükleme başladı:", file.name);
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Dosya yükleme hatası: " + response.statusText);
+      }
+
+      const data = await response.json();
+      console.log("Dosya yükleme başarılı:", data);
+      return data.fileUrl;
+    } catch (error) {
+      console.error("Dosya yükleme hatası:", error);
+      toast({
+        title: "Dosya Yükleme Hatası",
+        description: "Dosya yüklenirken bir sorun oluştu. Lütfen tekrar deneyiniz.",
+        variant: "destructive",
+      });
+      return null;
     }
   };
   
