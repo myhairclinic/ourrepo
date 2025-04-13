@@ -2,6 +2,9 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth } from "./auth";
+//import multer from "multer";
+import path from "path";
+import fs from "fs";
 import { 
   insertUserReviewSchema, 
   insertChatSessionSchema, 
@@ -995,6 +998,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     }, 1000);
   }
+
+  // Simple file upload handler for now, will integrate multer later
+  app.post("/api/uploads", (req, res) => {
+    try {
+      // For now, simply return a mock image path so the client side can function
+      const filePath = "/images/default-progress.jpg";
+      res.json({ 
+        success: true, 
+        filePath: filePath,
+        message: "File path generated successfully" 
+      });
+    } catch (error) {
+      console.error("File upload error:", error);
+      res.status(500).json({ message: "File upload failed", error: String(error) });
+    }
+  });
 
   const httpServer = createServer(app);
   

@@ -655,8 +655,6 @@ const PatientManagement = () => {
     // Yeni versiyon sadece temel alanları kullanıyor
     createProgressImageMutation.mutate({
       ...data,
-      // Backend tarafında varsayılan değerler kullanılacak
-      notes: null,
       isVisible: true
     });
   };
