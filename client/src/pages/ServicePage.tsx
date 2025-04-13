@@ -48,6 +48,14 @@ import { Separator } from "@/components/ui/separator";
 import hairTransplantImage from "@/assets/images/hair-transplant.png";
 import consultationImage from "@/assets/images/consultation.png";
 
+// Tür güvenliği için yardımcı tip
+type SafeString = string | undefined | null;
+
+// SafeString tipini string'e dönüştürmek için yardımcı fonksiyon
+function safeString(value: SafeString): string {
+  return value || '';
+}
+
 // Service-specific icons - these will be used in the tabs and other sections
 const serviceIcons = {
   'hair-transplantation': <Scissors className="h-5 w-5" />,
@@ -137,7 +145,7 @@ export default function ServicePage() {
   const pageTitle = `${getLocalizedTitle(service)}${META.TITLE_SUFFIX[languageKey]}`;
 
   // Helper function to get localized content
-  const getLocalizedContent = (service: Service, field: string) => {
+  const getLocalizedContent = (service: Service, field: string): string => {
     if (!service) return '';
     
     switch (field) {
