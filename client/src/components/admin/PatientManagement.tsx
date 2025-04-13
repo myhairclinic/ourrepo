@@ -655,11 +655,55 @@ const PatientManagement = () => {
   };
   
   const onSubmitProgressImage = (data: ProgressImageFormValues) => {
-    // Yeni versiyon sadece temel alanları kullanıyor
-    createProgressImageMutation.mutate({
-      ...data,
-      isVisible: true
-    });
+    // Eğer dosya seçilmişse, dosya yükleme işlemi yap
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append('image', selectedFile);
+      formData.append('patientId', String(data.patientId));
+      formData.append('captureDate', data.captureDate);
+      formData.append('stage', data.stage);
+      
+      // FormData içeriğini kontrol etmek için konsola yazıyoruz
+      console.log('FormData içeriği:');
+      for (let [key, value] of formData.entries()) {
+        console.log(key, ':', value);
+      }
+      
+      // Dosya yükleme API endpoint'i
+      fetch('/api/upload/progress-image', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Dosya yükleme hatası: ' + response.status);
+        }
+        return response.json();
+      })
+      .then(result => {
+        console.log('Dosya yükleme başarılı:', result);
+        toast({
+          title: "Başarılı",
+          description: "İlerleme görseli başarıyla yüklendi.",
+        });
+        setIsNewProgressImageDialogOpen(false);
+        progressImageForm.reset();
+        refetchProgressImages();
+      })
+      .catch(error => {
+        console.error('Dosya yükleme hatası:', error);
+        toast({
+          title: "Hata",
+          description: "İlerleme görseli yüklenirken bir hata oluştu.",
+          variant: "destructive",
+        });
+      });
+    } else {
+      // Dosya seçilmemişse, normal API endpoint'i kullan
+      createProgressImageMutation.mutate({
+        ...data,
+      });
+    }
   };
   
   const handleEditPatient = (patient: any) => {
@@ -723,7 +767,14 @@ const PatientManagement = () => {
       stage: "pre-op",
     });
     
+    setSelectedFile(null);
     setIsNewProgressImageDialogOpen(true);
+  };
+  
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedFile(e.target.files[0]);
+    }
   };
   
   const handleDeleteItem = () => {
@@ -2472,49 +2523,15 @@ const PatientManagement = () => {
                         <Input
                           type="file"
                           accept="image/*"
-                          onChange={async (e) => {
-                            if (e.target.files && e.target.files[0]) {
-                              const file = e.target.files[0];
-                              const formData = new FormData();
-                              formData.append("file", file);
-                              
-                              try {
-                                const response = await fetch("/api/upload", {
-                                  method: "POST",
-                                  body: formData,
-                                });
-                                
-                                if (response.ok) {
-                                  const data = await response.json();
-                                  field.onChange(data.url);
-                                  toast({
-                                    title: "Görsel yüklendi",
-                                    description: "Görsel başarıyla yüklendi.",
-                                  });
-                                } else {
-                                  toast({
-                                    title: "Hata",
-                                    description: "Görsel yüklenirken bir hata oluştu.",
-                                    variant: "destructive",
-                                  });
-                                }
-                              } catch (error) {
-                                toast({
-                                  title: "Hata",
-                                  description: "Görsel yüklenirken bir hata oluştu.",
-                                  variant: "destructive",
-                                });
-                              }
-                            }
-                          }}
+                          onChange={handleFileChange}
+                          className="cursor-pointer"
                         />
-                        {field.value && (
+                        {selectedFile && (
                           <div className="mt-2">
-                            <img 
-                              src={field.value} 
-                              alt="Yüklenen görsel" 
-                              className="w-32 h-32 object-cover rounded-md border" 
-                            />
+                            <p className="text-sm text-gray-600 truncate">{selectedFile.name}</p>
+                            <div className="w-full h-1 bg-gray-200 rounded-full mt-1">
+                              <div className="h-1 bg-primary rounded-full" style={{ width: '100%' }}></div>
+                            </div>
                           </div>
                         )}
                         <Input 
