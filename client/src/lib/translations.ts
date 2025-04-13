@@ -50,6 +50,20 @@ function applyReplacements(text: string, replacements?: Record<string, string | 
 // Our translations object with simple key structure
 // Translations object (exported for direct usage in components)
 export const translations: Record<string, LanguageMap> = {
+  // Services page specific translations
+  "services.needHelp": {
+    [Language.Turkish]: "Yardıma mı İhtiyacınız Var?",
+    [Language.English]: "Need Help?",
+    [Language.Russian]: "Нужна помощь?",
+    [Language.Georgian]: "გჭირდებათ დახმარება?"
+  },
+  
+  "services.contactForQuestions": {
+    [Language.Turkish]: "Saç ekimi hakkında herhangi bir sorunuz varsa veya randevu almak istiyorsanız bizimle iletişime geçin.",
+    [Language.English]: "If you have any questions about hair transplantation or would like to make an appointment, please contact us.",
+    [Language.Russian]: "Если у вас есть вопросы о трансплантации волос или вы хотите записаться на прием, пожалуйста, свяжитесь с нами.",
+    [Language.Georgian]: "თუ გაქვთ რაიმე შეკითხვა თმის გადანერგვის შესახებ ან გსურთ შეხვედრის დანიშვნა, გთხოვთ დაგვიკავშირდეთ."
+  },
   // Why Choose Us section
   "home.whyChooseUs.title": {
     [Language.Turkish]: "Neden Bizi Seçmelisiniz",
