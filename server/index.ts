@@ -1,10 +1,25 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import * as path from "path";
+import * as fs from "fs";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+// ES module'de __dirname eşdeğeri
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Uploads klasörünü statik dosya olarak servis et
+const uploadsDir = path.join(dirname(__dirname), 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+app.use('/uploads', express.static(uploadsDir));
 
 // Add CORS headers for development
 app.use((req, res, next) => {
