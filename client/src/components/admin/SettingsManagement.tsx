@@ -2692,7 +2692,7 @@ const SettingsManagement = () => {
                           <div className="space-y-2">
                             <div className="flex flex-wrap gap-2">
                               {['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'mp4', 'webm'].map((type) => {
-                                const isSelected = field.value?.includes(type);
+                                const isSelected = field.value && field.value.includes(type);
                                 return (
                                   <div 
                                     key={type}
@@ -2702,10 +2702,12 @@ const SettingsManagement = () => {
                                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                     }`}
                                     onClick={() => {
-                                      if (isSelected) {
+                                      if (isSelected && field.value) {
                                         field.onChange(field.value.filter(value => value !== type));
-                                      } else {
+                                      } else if (field.value) {
                                         field.onChange([...field.value, type]);
+                                      } else {
+                                        field.onChange([type]);
                                       }
                                     }}
                                   >
