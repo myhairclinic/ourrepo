@@ -167,9 +167,9 @@ export default function Footer() {
               <ul className="space-y-3">
                 {footerLinks.map((link, index) => (
                   <li key={index} className="group">
-                    <Link href={addPrefix(`/${link.path}`)} className="flex items-center hover:text-blue-200 transition-colors duration-200">
+                    <Link href={addPrefix(`/${link.path}`)} className="flex items-center text-white hover:text-blue-200 transition-colors duration-200">
                       <ArrowRight size={14} className="mr-2 text-blue-400" />
-                      <span className="text-sm font-medium text-white">{link.name}</span>
+                      <span className="text-sm font-medium">{link.name}</span>
                     </Link>
                   </li>
                 ))}
@@ -186,9 +186,9 @@ export default function Footer() {
               <ul className="space-y-3">
                 {serviceLinks.map((link, index) => (
                   <li key={index} className="group">
-                    <Link href={addPrefix(`/${link.path}`)} className="flex items-center hover:text-blue-200 transition-colors duration-200">
+                    <Link href={addPrefix(`/${link.path}`)} className="flex items-center text-white hover:text-blue-200 transition-colors duration-200">
                       <ArrowRight size={14} className="mr-2 text-blue-400" />
-                      <span className="text-sm font-medium text-white">{link.name}</span>
+                      <span className="text-sm font-medium">{link.name}</span>
                     </Link>
                   </li>
                 ))}
