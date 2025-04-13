@@ -631,11 +631,19 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Главная",
     [Language.Georgian]: "მთავარი"
   },
-  "common.services": {
+  "common.servicesMenu": {
     [Language.Turkish]: "Hizmetler",
     [Language.English]: "Services",
     [Language.Russian]: "Услуги",
     [Language.Georgian]: "სერვისები"
+  },
+  
+  // Blog çevirileri
+  "blog.badge": {
+    [Language.Turkish]: "BLOG & HABERLER",
+    [Language.English]: "BLOG & NEWS",
+    [Language.Russian]: "БЛОГ И НОВОСТИ",
+    [Language.Georgian]: "ბლოგი და სიახლეები"
   },
   "common.packages": {
     [Language.Turkish]: "Paketler",
@@ -714,19 +722,19 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Georgian]: "სერვისების ჩატვირთვისას მოხდა შეცდომა"
   },
   
-  // Blog çevirileri
+  "common.latestFromOurBlog": {
+    [Language.Turkish]: "Blogdan Son Yazılar",
+    [Language.English]: "Latest From Our Blog",
+    [Language.Russian]: "Последние Записи из Нашего Блога",
+    [Language.Georgian]: "უახლესი ჩვენი ბლოგიდან"
+  },
   "blog.readMore": {
     [Language.Turkish]: "Devamını Oku",
     [Language.English]: "Read More",
     [Language.Russian]: "Читать Далее",
     [Language.Georgian]: "მეტის წაკითხვა"
   },
-  "blog.latestFromOurBlog": {
-    [Language.Turkish]: "Blogdan Son Yazılar",
-    [Language.English]: "Latest From Our Blog",
-    [Language.Russian]: "Последние Записи из Нашего Блога",
-    [Language.Georgian]: "უახლესი ჩვენი ბლოგიდან"
-  },
+
   "common.viewAllBlogs": {
     [Language.Turkish]: "Tüm Blog Yazılarını Görüntüle",
     [Language.English]: "View All Blog Posts",

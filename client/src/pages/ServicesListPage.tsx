@@ -12,6 +12,7 @@ import { getTranslation, useTranslation } from "@/lib/translations";
 import { Language } from "@shared/types";
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
+import PageHeader from "@/components/ui/PageHeader";
 
 export default function ServicesListPage() {
   const { language, currentLanguage, addPrefix } = useLanguage();
@@ -43,9 +44,9 @@ export default function ServicesListPage() {
   });
 
   // Page title and description
-  const pageTitle = t("common.services");
-  const fullTitle = `${pageTitle} ${META.TITLE_SUFFIX}`;
-  const pageDescription = t("services.subtitle");
+  const pageTitle = t("common.services") || "Hizmetler";
+  const fullTitle = `${pageTitle} | MyHair Clinic`;
+  const pageDescription = t("services.subtitle") || "Saç ekimi ve güzellik hizmetleri";
 
   // Button texts
   const learnMoreButton = t("common.learnMore");
@@ -159,45 +160,27 @@ export default function ServicesListPage() {
         <meta name="twitter:description" content={pageDescription} />
       </Helmet>
       
+      <PageHeader 
+        title={pageTitle} 
+        description={pageDescription}
+        imageUrl="/images/services/hair-transplant.jpg"
+        isSpecialPage={true}
+      />
+      
       <main className="py-20 bg-gradient-to-b from-white via-gray-50/50 to-white overflow-hidden" ref={sectionRef}>
-        {/* Modern dekoratif arka plan elementleri */}
+        {/* Modern decorative background elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -left-40 -top-40 w-[500px] h-[500px] rounded-full bg-primary/5 blur-[100px] animate-blob"></div>
           <div className="absolute right-10 top-1/3 w-[600px] h-[600px] rounded-full bg-blue-300/5 blur-[120px] animate-blob animation-delay-2000"></div>
           <div className="absolute left-1/4 bottom-1/4 w-[400px] h-[400px] rounded-full bg-blue-100/10 blur-[80px] animate-blob animation-delay-4000"></div>
         </div>
         
-        {/* Dekoratif şekiller */}
+        {/* Decorative shapes */}
         <div className="absolute top-20 left-10 w-16 h-16 border-2 border-primary/10 rounded-full opacity-50 animate-spin-slow"></div>
         <div className="absolute bottom-40 right-20 w-24 h-24 border-2 border-primary/10 rounded-lg rotate-12 opacity-40"></div>
         <div className="absolute top-1/3 right-1/4 w-12 h-12 border-2 border-primary/10 rounded-full opacity-30"></div>
 
-        <div className="container mx-auto px-4 relative z-10">
-          {/* Breadcrumb */}
-          <div className="mb-8 text-sm text-muted-foreground flex items-center">
-            <Link href={addPrefix("/")}>
-              <span className="hover:text-primary cursor-pointer transition-colors">{t("common.home")}</span>
-            </Link>
-            <span className="mx-2 text-muted-foreground/50">/</span>
-            <span className="text-primary font-medium">{pageTitle}</span>
-          </div>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="max-w-3xl mx-auto text-center mb-20"
-          >
-            <Badge variant="outline" className="px-6 py-1.5 rounded-full text-primary border-primary/30 font-medium mb-6 text-sm shadow-sm">
-              {t("services.badge")}
-            </Badge>
-            <h1 className="text-4xl md:text-6xl font-bold mb-8 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/90 to-primary/70">
-              {pageTitle}
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              {pageDescription}
-            </p>
-          </motion.div>
+        <div className="container mx-auto px-4 relative z-10 mt-12">
 
           {isLoading ? (
             <div className="flex justify-center items-center py-20">
