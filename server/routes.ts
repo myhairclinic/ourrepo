@@ -832,6 +832,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Route for adding only new country packages (Azerbaijan and Kazakhstan)
   app.post("/api/seed/new-country-packages", seedNewCountryPackages);
   
+  // File upload endpoint
+  app.post("/api/upload", async (req, res) => {
+    try {
+      // Create uploads directory if it doesn't exist
+      const uploadDir = path.join(__dirname, "../public/uploads");
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+      }
+      
+      const form = new formidable.IncomingForm({
+        uploadDir,
+        keepExtensions: true,
+        maxFileSize: 10 * 1024 * 1024, // 10MB max file size
+      });
+      
+      form.parse(req, (err, fields, files) => {
+        if (err) {
+          console.error("File upload error:", err);
+          return res.status(500).json({ error: "File upload failed" });
+        }
+        
+        const file = files.file;
+        if (!file) {
+          return res.status(400).json({ error: "No file uploaded" });
+        }
+        
+        // Get the file path
+        const filePath = file.path || file.filepath;
+        const fileName = path.basename(filePath);
+        
+        // Return the URL to the uploaded file
+        const fileUrl = `/uploads/${fileName}`;
+        res.status(200).json({ url: fileUrl });
+      });
+    } catch (error) {
+      console.error("File upload error:", error);
+      res.status(500).json({ error: "File upload failed" });
+    }
+  });
+  
   // Seed Vithair products
   app.post("/api/seed/vithair-products", async (req, res) => {
     try {
