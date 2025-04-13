@@ -517,7 +517,7 @@ const PatientManagement = () => {
   
   const deleteTreatmentMutation = useMutation({
     mutationFn: async (id: number) => {
-      const res = await fetch(`/api/patients/treatments/${id}`, {
+      const res = await fetch(`/api/treatments/${id}`, {
         method: "DELETE",
       });
       
@@ -609,7 +609,7 @@ const PatientManagement = () => {
   
   const deleteProgressImageMutation = useMutation({
     mutationFn: async (id: number) => {
-      const res = await fetch(`/api/patients/progress-images/${id}`, {
+      const res = await fetch(`/api/progress-images/${id}`, {
         method: "DELETE",
       });
       
