@@ -953,6 +953,541 @@ export const translations: Record<string, LanguageMap> = {
   },
   
   // ===========================================================================
+  // CONTACT PAGE
+  // ===========================================================================
+  
+  "contact.title": {
+    [Language.Turkish]: "İletişim | MyHair Clinic",
+    [Language.English]: "Contact | MyHair Clinic",
+    [Language.Russian]: "Контакты | MyHair Clinic",
+    [Language.Georgian]: "კონტაქტი | MyHair Clinic"
+  },
+  "contact.description": {
+    [Language.Turkish]: "MyHair Clinic ile iletişime geçin. Tiflis'teki kliniğimize ulaşın, saç ekimi hakkında sorularınızı sorun veya randevu alın. Saç ekimi ve saç bakımı konusunda tüm sorularınızı yanıtlamak için buradayız.",
+    [Language.English]: "Contact MyHair Clinic. Reach our clinic in Tbilisi, ask questions about hair transplantation, or make an appointment. We are here to answer all your questions about hair transplantation and hair care.",
+    [Language.Russian]: "Свяжитесь с MyHair Clinic. Свяжитесь с нашей клиникой в Тбилиси, задайте вопросы о трансплантации волос или запишитесь на прием. Мы здесь, чтобы ответить на все ваши вопросы о трансплантации волос и уходе за волосами.",
+    [Language.Georgian]: "დაუკავშირდით MyHair Clinic-ს. დაუკავშირდით ჩვენს კლინიკას თბილისში, დასვით კითხვები თმის გადანერგვის შესახებ ან დანიშნეთ შეხვედრა. ჩვენ აქ ვართ, რომ ვუპასუხოთ თქვენს ყველა კითხვას თმის გადანერგვისა და თმის მოვლის შესახებ."
+  },
+  "contact.getInTouch": {
+    [Language.Turkish]: "İletişime Geçin",
+    [Language.English]: "Get in Touch",
+    [Language.Russian]: "Свяжитесь с Нами",
+    [Language.Georgian]: "დაგვიკავშირდით"
+  },
+  "contact.form.title": {
+    [Language.Turkish]: "Bize Mesaj Gönderin",
+    [Language.English]: "Send Us a Message",
+    [Language.Russian]: "Отправьте Нам Сообщение",
+    [Language.Georgian]: "გამოგვიგზავნეთ შეტყობინება"
+  },
+  "contact.form.description": {
+    [Language.Turkish]: "Saç ekimi veya diğer tedavilerimiz hakkında sorularınız mı var? Aşağıdaki formu doldurun, en kısa sürede size dönüş yapacağız.",
+    [Language.English]: "Do you have questions about hair transplantation or our other treatments? Fill out the form below, and we will get back to you as soon as possible.",
+    [Language.Russian]: "У вас есть вопросы о трансплантации волос или других наших процедурах? Заполните форму ниже, и мы свяжемся с вами в кратчайшие сроки.",
+    [Language.Georgian]: "გაქვთ კითხვები თმის გადანერგვის ან ჩვენი სხვა პროცედურების შესახებ? შეავსეთ ქვემოთ მოცემული ფორმა და ჩვენ დაგიკავშირდებით რაც შეიძლება მალე."
+  },
+  "contact.form.name": {
+    [Language.Turkish]: "Adınız",
+    [Language.English]: "Your Name",
+    [Language.Russian]: "Ваше Имя",
+    [Language.Georgian]: "თქვენი სახელი"
+  },
+  "contact.form.email": {
+    [Language.Turkish]: "E-posta Adresiniz",
+    [Language.English]: "Your Email",
+    [Language.Russian]: "Ваш Email",
+    [Language.Georgian]: "თქვენი ელფოსტა"
+  },
+  "contact.form.phone": {
+    [Language.Turkish]: "Telefon Numaranız",
+    [Language.English]: "Your Phone Number",
+    [Language.Russian]: "Ваш Номер Телефона",
+    [Language.Georgian]: "თქვენი ტელეფონის ნომერი"
+  },
+  "contact.form.message": {
+    [Language.Turkish]: "Mesajınız",
+    [Language.English]: "Your Message",
+    [Language.Russian]: "Ваше Сообщение",
+    [Language.Georgian]: "თქვენი შეტყობინება"
+  },
+  "contact.form.submit": {
+    [Language.Turkish]: "Mesaj Gönder",
+    [Language.English]: "Send Message",
+    [Language.Russian]: "Отправить Сообщение",
+    [Language.Georgian]: "შეტყობინების გაგზავნა"
+  },
+  "contact.form.success": {
+    [Language.Turkish]: "Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağız.",
+    [Language.English]: "Your message has been sent successfully. We will get back to you as soon as possible.",
+    [Language.Russian]: "Ваше сообщение успешно отправлено. Мы свяжемся с вами в ближайшее время.",
+    [Language.Georgian]: "თქვენი შეტყობინება წარმატებით გაიგზავნა. ჩვენ დაგიკავშირდებით რაც შეიძლება მალე."
+  },
+  "contact.form.error": {
+    [Language.Turkish]: "Mesajınız gönderilirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+    [Language.English]: "An error occurred while sending your message. Please try again later.",
+    [Language.Russian]: "Произошла ошибка при отправке вашего сообщения. Пожалуйста, попробуйте позже.",
+    [Language.Georgian]: "თქვენი შეტყობინების გაგზავნისას მოხდა შეცდომა. გთხოვთ სცადოთ მოგვიანებით."
+  },
+  "contact.info.title": {
+    [Language.Turkish]: "İletişim Bilgilerimiz",
+    [Language.English]: "Our Contact Information",
+    [Language.Russian]: "Наша Контактная Информация",
+    [Language.Georgian]: "ჩვენი საკონტაქტო ინფორმაცია"
+  },
+  "contact.info.description": {
+    [Language.Turkish]: "Aşağıdaki iletişim bilgilerinden bize ulaşabilir veya doğrudan kliniğimizi ziyaret edebilirsiniz.",
+    [Language.English]: "You can reach us using the contact information below or visit our clinic directly.",
+    [Language.Russian]: "Вы можете связаться с нами, используя контактную информацию ниже, или посетить нашу клинику напрямую.",
+    [Language.Georgian]: "შეგიძლიათ დაგვიკავშირდეთ ქვემოთ მოცემული საკონტაქტო ინფორმაციის გამოყენებით ან პირდაპირ ეწვიოთ ჩვენს კლინიკას."
+  },
+  "contact.address": {
+    [Language.Turkish]: "Adres",
+    [Language.English]: "Address",
+    [Language.Russian]: "Адрес",
+    [Language.Georgian]: "მისამართი"
+  },
+  "contact.phone": {
+    [Language.Turkish]: "Telefon",
+    [Language.English]: "Phone",
+    [Language.Russian]: "Телефон",
+    [Language.Georgian]: "ტელეფონი"
+  },
+  "contact.email": {
+    [Language.Turkish]: "E-posta",
+    [Language.English]: "Email",
+    [Language.Russian]: "Email",
+    [Language.Georgian]: "ელფოსტა"
+  },
+  "contact.workingHours": {
+    [Language.Turkish]: "Çalışma Saatleri",
+    [Language.English]: "Working Hours",
+    [Language.Russian]: "Часы Работы",
+    [Language.Georgian]: "სამუშაო საათები"
+  },
+  "contact.followUs": {
+    [Language.Turkish]: "Bizi Takip Edin",
+    [Language.English]: "Follow Us",
+    [Language.Russian]: "Подписывайтесь на Нас",
+    [Language.Georgian]: "გამოგვყევით"
+  },
+  "contact.mapTitle": {
+    [Language.Turkish]: "Kliniğimizin Konumu",
+    [Language.English]: "Our Clinic Location",
+    [Language.Russian]: "Расположение Нашей Клиники",
+    [Language.Georgian]: "ჩვენი კლინიკის მდებარეობა"
+  },
+  
+  // ===========================================================================
+  // ABOUT PAGE
+  // ===========================================================================
+  
+  "about.title": {
+    [Language.Turkish]: "Hakkımızda | MyHair Clinic",
+    [Language.English]: "About Us | MyHair Clinic",
+    [Language.Russian]: "О Нас | MyHair Clinic",
+    [Language.Georgian]: "ჩვენ შესახებ | MyHair Clinic"
+  },
+  "about.description": {
+    [Language.Turkish]: "MyHair Clinic, Tiflis'te yüksek kaliteli saç ekimi ve estetik tedaviler sunan uzman bir kliniktir. FUE ve DHI teknikleri konusunda uzmanlaşmış deneyimli ekibimizle tanışın.",
+    [Language.English]: "MyHair Clinic is a specialized clinic offering high-quality hair transplantation and aesthetic treatments in Tbilisi. Meet our experienced team specialized in FUE and DHI techniques.",
+    [Language.Russian]: "MyHair Clinic — это специализированная клиника, предлагающая высококачественную трансплантацию волос и эстетические процедуры в Тбилиси. Познакомьтесь с нашей опытной командой, специализирующейся на методах FUE и DHI.",
+    [Language.Georgian]: "MyHair Clinic არის სპეციალიზებული კლინიკა, რომელიც გთავაზობთ მაღალი ხარისხის თმის გადანერგვას და ესთეტიკურ პროცედურებს თბილისში. გაიცანით ჩვენი გამოცდილი გუნდი, რომელიც სპეციალიზებულია FUE და DHI ტექნიკებში."
+  },
+  "about.ourStory": {
+    [Language.Turkish]: "Hikayemiz",
+    [Language.English]: "Our Story",
+    [Language.Russian]: "Наша История",
+    [Language.Georgian]: "ჩვენი ისტორია"
+  },
+  "about.ourMission": {
+    [Language.Turkish]: "Misyonumuz",
+    [Language.English]: "Our Mission",
+    [Language.Russian]: "Наша Миссия",
+    [Language.Georgian]: "ჩვენი მისია"
+  },
+  "about.ourVision": {
+    [Language.Turkish]: "Vizyonumuz",
+    [Language.English]: "Our Vision",
+    [Language.Russian]: "Наше Видение",
+    [Language.Georgian]: "ჩვენი ხედვა"
+  },
+  "about.ourTeam": {
+    [Language.Turkish]: "Ekibimiz",
+    [Language.English]: "Our Team",
+    [Language.Russian]: "Наша Команда",
+    [Language.Georgian]: "ჩვენი გუნდი"
+  },
+  "about.ourValues": {
+    [Language.Turkish]: "Değerlerimiz",
+    [Language.English]: "Our Values",
+    [Language.Russian]: "Наши Ценности",
+    [Language.Georgian]: "ჩვენი ღირებულებები"
+  },
+  "about.whyChooseUs": {
+    [Language.Turkish]: "Neden Bizi Seçmelisiniz",
+    [Language.English]: "Why Choose Us",
+    [Language.Russian]: "Почему Выбирают Нас",
+    [Language.Georgian]: "რატომ უნდა აგვირჩიოთ"
+  },
+  "about.ourAchievements": {
+    [Language.Turkish]: "Başarılarımız",
+    [Language.English]: "Our Achievements",
+    [Language.Russian]: "Наши Достижения",
+    [Language.Georgian]: "ჩვენი მიღწევები"
+  },
+  "about.meetTheTeam": {
+    [Language.Turkish]: "Ekibimizle Tanışın",
+    [Language.English]: "Meet the Team",
+    [Language.Russian]: "Познакомьтесь с Командой",
+    [Language.Georgian]: "გაიცანით გუნდი"
+  },
+  "about.doctorTitle": {
+    [Language.Turkish]: "Saç Ekimi Uzmanı",
+    [Language.English]: "Hair Transplant Specialist",
+    [Language.Russian]: "Специалист по Трансплантации Волос",
+    [Language.Georgian]: "თმის გადანერგვის სპეციალისტი"
+  },
+  "about.nurseTitle": {
+    [Language.Turkish]: "Klinik Hemşiresi",
+    [Language.English]: "Clinical Nurse",
+    [Language.Russian]: "Клиническая Медсестра",
+    [Language.Georgian]: "კლინიკური ექთანი"
+  },
+  "about.consultantTitle": {
+    [Language.Turkish]: "Hasta Danışmanı",
+    [Language.English]: "Patient Consultant",
+    [Language.Russian]: "Консультант Пациентов",
+    [Language.Georgian]: "პაციენტის კონსულტანტი"
+  },
+  
+  // ===========================================================================
+  // APPOINTMENT PAGE
+  // ===========================================================================
+  
+  "appointment.title": {
+    [Language.Turkish]: "Randevu Alın | MyHair Clinic",
+    [Language.English]: "Make an Appointment | MyHair Clinic", 
+    [Language.Russian]: "Записаться на Прием | MyHair Clinic",
+    [Language.Georgian]: "დანიშნეთ შეხვედრა | MyHair Clinic"
+  },
+  "appointment.description": {
+    [Language.Turkish]: "MyHair Clinic'te saç ekimi, sakal ekimi veya kaş ekimi için hızlı ve kolay bir şekilde randevu alın. Uzmanlarımız sizinle en kısa sürede iletişime geçecektir.",
+    [Language.English]: "Quickly and easily make an appointment for hair transplantation, beard transplantation, or eyebrow transplantation at MyHair Clinic. Our experts will contact you as soon as possible.",
+    [Language.Russian]: "Быстро и легко запишитесь на трансплантацию волос, бороды или бровей в MyHair Clinic. Наши эксперты свяжутся с вами в кратчайшие сроки.",
+    [Language.Georgian]: "სწრაფად და მარტივად დანიშნეთ შეხვედრა თმის, წვერის ან წარბების გადანერგვისთვის MyHair Clinic-ში. ჩვენი ექსპერტები დაგიკავშირდებიან რაც შეიძლება მალე."
+  },
+  "appointment.form.title": {
+    [Language.Turkish]: "Randevu Talep Formu",
+    [Language.English]: "Appointment Request Form",
+    [Language.Russian]: "Форма Запроса на Прием",
+    [Language.Georgian]: "შეხვედრის მოთხოვნის ფორმა"
+  },
+  "appointment.form.description": {
+    [Language.Turkish]: "Saç ekimi veya diğer tedavilerimiz için randevu talep etmek için aşağıdaki formu doldurun. Ekibimiz en kısa sürede sizinle iletişime geçecektir.",
+    [Language.English]: "Fill out the form below to request an appointment for hair transplantation or our other treatments. Our team will contact you as soon as possible.",
+    [Language.Russian]: "Заполните форму ниже, чтобы запросить встречу для трансплантации волос или других наших процедур. Наша команда свяжется с вами в кратчайшие сроки.",
+    [Language.Georgian]: "შეავსეთ ქვემოთ მოცემული ფორმა თმის გადანერგვის ან ჩვენი სხვა პროცედურებისთვის შეხვედრის მოთხოვნისთვის. ჩვენი გუნდი დაგიკავშირდებათ რაც შეიძლება მალე."
+  },
+  "appointment.form.fullName": {
+    [Language.Turkish]: "Adınız Soyadınız",
+    [Language.English]: "Full Name",
+    [Language.Russian]: "Полное Имя",
+    [Language.Georgian]: "სრული სახელი"
+  },
+  "appointment.form.email": {
+    [Language.Turkish]: "E-posta Adresiniz",
+    [Language.English]: "Email Address",
+    [Language.Russian]: "Адрес Электронной Почты",
+    [Language.Georgian]: "ელფოსტის მისამართი"
+  },
+  "appointment.form.phone": {
+    [Language.Turkish]: "Telefon Numaranız",
+    [Language.English]: "Phone Number",
+    [Language.Russian]: "Номер Телефона",
+    [Language.Georgian]: "ტელეფონის ნომერი"
+  },
+  "appointment.form.country": {
+    [Language.Turkish]: "Ülkeniz",
+    [Language.English]: "Country",
+    [Language.Russian]: "Страна",
+    [Language.Georgian]: "ქვეყანა"
+  },
+  "appointment.form.service": {
+    [Language.Turkish]: "İlgilendiğiniz Hizmet",
+    [Language.English]: "Service of Interest",
+    [Language.Russian]: "Интересующая Услуга",
+    [Language.Georgian]: "სასურველი სერვისი"
+  },
+  "appointment.form.preferredDate": {
+    [Language.Turkish]: "Tercih Ettiğiniz Tarih",
+    [Language.English]: "Preferred Date",
+    [Language.Russian]: "Предпочтительная Дата",
+    [Language.Georgian]: "სასურველი თარიღი"
+  },
+  "appointment.form.preferredTime": {
+    [Language.Turkish]: "Tercih Ettiğiniz Saat",
+    [Language.English]: "Preferred Time",
+    [Language.Russian]: "Предпочтительное Время",
+    [Language.Georgian]: "სასურველი დრო"
+  },
+  "appointment.form.additionalNotes": {
+    [Language.Turkish]: "Ek Notlar",
+    [Language.English]: "Additional Notes",
+    [Language.Russian]: "Дополнительные Примечания",
+    [Language.Georgian]: "დამატებითი შენიშვნები"
+  },
+  "appointment.form.submit": {
+    [Language.Turkish]: "Randevu Talep Et",
+    [Language.English]: "Request Appointment",
+    [Language.Russian]: "Запросить Встречу",
+    [Language.Georgian]: "შეხვედრის მოთხოვნა"
+  },
+  "appointment.form.success": {
+    [Language.Turkish]: "Randevu talebiniz başarıyla alındı. En kısa sürede sizinle iletişime geçeceğiz.",
+    [Language.English]: "Your appointment request has been successfully received. We will contact you as soon as possible.",
+    [Language.Russian]: "Ваш запрос на встречу успешно получен. Мы свяжемся с вами в ближайшее время.",
+    [Language.Georgian]: "თქვენი შეხვედრის მოთხოვნა წარმატებით მიღებულია. ჩვენ დაგიკავშირდებით რაც შეიძლება მალე."
+  },
+  "appointment.form.error": {
+    [Language.Turkish]: "Randevu talebiniz gönderilirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+    [Language.English]: "An error occurred while sending your appointment request. Please try again later.",
+    [Language.Russian]: "Произошла ошибка при отправке вашего запроса на встречу. Пожалуйста, попробуйте позже.",
+    [Language.Georgian]: "თქვენი შეხვედრის მოთხოვნის გაგზავნისას მოხდა შეცდომა. გთხოვთ სცადოთ მოგვიანებით."
+  },
+  "appointment.tracker.title": {
+    [Language.Turkish]: "Randevu Takibi",
+    [Language.English]: "Appointment Tracker",
+    [Language.Russian]: "Отслеживание Встречи",
+    [Language.Georgian]: "შეხვედრის თვალთვალი"
+  },
+  "appointment.tracker.description": {
+    [Language.Turkish]: "Randevu numaranızı girerek mevcut randevunuzun durumunu kontrol edebilirsiniz.",
+    [Language.English]: "Enter your appointment number to check the status of your current appointment.",
+    [Language.Russian]: "Введите номер вашей встречи, чтобы проверить статус вашей текущей встречи.",
+    [Language.Georgian]: "შეიყვანეთ თქვენი შეხვედრის ნომერი, რათა შეამოწმოთ თქვენი მიმდინარე შეხვედრის სტატუსი."
+  },
+  "appointment.tracker.checkStatus": {
+    [Language.Turkish]: "Durum Kontrol Et",
+    [Language.English]: "Check Status",
+    [Language.Russian]: "Проверить Статус",
+    [Language.Georgian]: "სტატუსის შემოწმება"
+  },
+  "appointment.tracker.appointmentNumber": {
+    [Language.Turkish]: "Randevu Numarası",
+    [Language.English]: "Appointment Number",
+    [Language.Russian]: "Номер Встречи",
+    [Language.Georgian]: "შეხვედრის ნომერი"
+  },
+  "appointment.status.pending": {
+    [Language.Turkish]: "Beklemede",
+    [Language.English]: "Pending",
+    [Language.Russian]: "В Ожидании",
+    [Language.Georgian]: "მიმდინარე"
+  },
+  "appointment.status.confirmed": {
+    [Language.Turkish]: "Onaylandı",
+    [Language.English]: "Confirmed",
+    [Language.Russian]: "Подтверждено",
+    [Language.Georgian]: "დადასტურებული"
+  },
+  "appointment.status.cancelled": {
+    [Language.Turkish]: "İptal Edildi",
+    [Language.English]: "Cancelled",
+    [Language.Russian]: "Отменено",
+    [Language.Georgian]: "გაუქმებული"
+  },
+  "appointment.status.completed": {
+    [Language.Turkish]: "Tamamlandı",
+    [Language.English]: "Completed",
+    [Language.Russian]: "Завершено",
+    [Language.Georgian]: "დასრულებული"
+  },
+  
+  // ===========================================================================
+  // GALLERY PAGE
+  // ===========================================================================
+  
+  "gallery.title": {
+    [Language.Turkish]: "Galeri | Öncesi-Sonrası Fotoğraflar ve Videolar | MyHair Clinic",
+    [Language.English]: "Gallery | Before-After Photos and Videos | MyHair Clinic",
+    [Language.Russian]: "Галерея | Фото и Видео До и После | MyHair Clinic",
+    [Language.Georgian]: "გალერეა | ფოტოები და ვიდეოები მანამდე-მერე | MyHair Clinic"
+  },
+  "gallery.description": {
+    [Language.Turkish]: "Saç ekimi, sakal ekimi ve kaş ekimi öncesi-sonrası fotoğraflarımızı ve hasta deneyimlerimizi içeren video galerimizi keşfedin.",
+    [Language.English]: "Explore our gallery of before-after photos of hair transplantation, beard transplantation, and eyebrow transplantation, as well as videos of patient experiences.",
+    [Language.Russian]: "Изучите нашу галерею фотографий до и после трансплантации волос, бороды и бровей, а также видео с опытом пациентов.",
+    [Language.Georgian]: "გაეცანით ჩვენს გალერეას თმის, წვერის და წარბების გადანერგვის ფოტოებით მანამდე-მერე, ასევე ვიდეოებს პაციენტების გამოცდილებებით."
+  },
+  "gallery.header.title": {
+    [Language.Turkish]: "Başarı Hikayelerimiz",
+    [Language.English]: "Our Success Stories",
+    [Language.Russian]: "Наши Истории Успеха",
+    [Language.Georgian]: "ჩვენი წარმატების ისტორიები"
+  },
+  "gallery.header.description": {
+    [Language.Turkish]: "Hastalarımızın dönüşüm yolculuklarını ve memnuniyet verici sonuçlarını keşfedin.",
+    [Language.English]: "Discover the transformation journeys and satisfying results of our patients.",
+    [Language.Russian]: "Откройте для себя путь трансформации и удовлетворительные результаты наших пациентов.",
+    [Language.Georgian]: "აღმოაჩინეთ ჩვენი პაციენტების ტრანსფორმაციის მოგზაურობები და დამაკმაყოფილებელი შედეგები."
+  },
+  "gallery.filter.all": {
+    [Language.Turkish]: "Tümü",
+    [Language.English]: "All",
+    [Language.Russian]: "Все",
+    [Language.Georgian]: "ყველა"
+  },
+  "gallery.filter.beforeAfter": {
+    [Language.Turkish]: "Öncesi-Sonrası",
+    [Language.English]: "Before-After",
+    [Language.Russian]: "До-После",
+    [Language.Georgian]: "მანამდე-მერე"
+  },
+  "gallery.filter.videos": {
+    [Language.Turkish]: "Videolar",
+    [Language.English]: "Videos",
+    [Language.Russian]: "Видео",
+    [Language.Georgian]: "ვიდეოები"
+  },
+  "gallery.filter.testimonials": {
+    [Language.Turkish]: "Müşteri Yorumları",
+    [Language.English]: "Testimonials",
+    [Language.Russian]: "Отзывы",
+    [Language.Georgian]: "გამოხმაურებები"
+  },
+  "gallery.filter.clinic": {
+    [Language.Turkish]: "Klinik",
+    [Language.English]: "Clinic",
+    [Language.Russian]: "Клиника",
+    [Language.Georgian]: "კლინიკა"
+  },
+  "gallery.filter.hairTransplant": {
+    [Language.Turkish]: "Saç Ekimi",
+    [Language.English]: "Hair Transplant",
+    [Language.Russian]: "Трансплантация Волос",
+    [Language.Georgian]: "თმის გადანერგვა"
+  },
+  "gallery.filter.beardTransplant": {
+    [Language.Turkish]: "Sakal Ekimi",
+    [Language.English]: "Beard Transplant",
+    [Language.Russian]: "Трансплантация Бороды",
+    [Language.Georgian]: "წვერის გადანერგვა"
+  },
+  "gallery.filter.eyebrowTransplant": {
+    [Language.Turkish]: "Kaş Ekimi",
+    [Language.English]: "Eyebrow Transplant",
+    [Language.Russian]: "Трансплантация Бровей",
+    [Language.Georgian]: "წარბების გადანერგვა"
+  },
+  "gallery.item.monthsAfter": {
+    [Language.Turkish]: "ay sonra",
+    [Language.English]: "months after",
+    [Language.Russian]: "месяцев после",
+    [Language.Georgian]: "თვის შემდეგ"
+  },
+  "gallery.item.viewDetails": {
+    [Language.Turkish]: "Detayları Görüntüle",
+    [Language.English]: "View Details",
+    [Language.Russian]: "Посмотреть Детали",
+    [Language.Georgian]: "დეტალების ნახვა"
+  },
+  "gallery.item.before": {
+    [Language.Turkish]: "Öncesi",
+    [Language.English]: "Before",
+    [Language.Russian]: "До",
+    [Language.Georgian]: "მანამდე"
+  },
+  "gallery.item.after": {
+    [Language.Turkish]: "Sonrası",
+    [Language.English]: "After",
+    [Language.Russian]: "После",
+    [Language.Georgian]: "მერე"
+  },
+  "gallery.noResults": {
+    [Language.Turkish]: "Seçilen filtrelere uygun sonuç bulunamadı.",
+    [Language.English]: "No results found for the selected filters.",
+    [Language.Russian]: "Результатов для выбранных фильтров не найдено.",
+    [Language.Georgian]: "არჩეული ფილტრებისთვის შედეგები არ მოიძებნა."
+  },
+  
+  // ===========================================================================
+  // PACKAGE PAGE
+  // ===========================================================================
+  
+  "packages.title": {
+    [Language.Turkish]: "Saç Ekimi Paketleri | MyHair Clinic",
+    [Language.English]: "Hair Transplant Packages | MyHair Clinic",
+    [Language.Russian]: "Пакеты Трансплантации Волос | MyHair Clinic",
+    [Language.Georgian]: "თმის გადანერგვის პაკეტები | MyHair Clinic"
+  },
+  "packages.description": {
+    [Language.Turkish]: "Saç ekimi, konaklama ve şehir turu dahil özel olarak hazırlanmış tüm dahil paketlerimizi keşfedin. Türkiye, Rusya, Azerbaycan ve diğer ülkelerden gelen hastalarımız için özel paketler.",
+    [Language.English]: "Explore our specially prepared all-inclusive packages including hair transplantation, accommodation, and city tour. Special packages for our patients from Turkey, Russia, Azerbaijan, and other countries.",
+    [Language.Russian]: "Изучите наши специально подготовленные пакеты «все включено», включающие трансплантацию волос, проживание и экскурсию по городу. Специальные пакеты для наших пациентов из Турции, России, Азербайджана и других стран.",
+    [Language.Georgian]: "გაეცანით ჩვენს სპეციალურად მომზადებულ სრულ პაკეტებს, რომლებიც მოიცავს თმის გადანერგვას, საცხოვრებელს და ქალაქის ტურს. სპეციალური პაკეტები ჩვენი პაციენტებისთვის თურქეთიდან, რუსეთიდან, აზერბაიჯანიდან და სხვა ქვეყნებიდან."
+  },
+  "packages.header.title": {
+    [Language.Turkish]: "Özel Saç Ekimi Seyahat Paketlerimiz",
+    [Language.English]: "Our Special Hair Transplant Travel Packages",
+    [Language.Russian]: "Наши Специальные Пакеты для Путешествия с Трансплантацией Волос",
+    [Language.Georgian]: "ჩვენი სპეციალური თმის გადანერგვის სამოგზაურო პაკეტები"
+  },
+  "packages.header.description": {
+    [Language.Turkish]: "MyHair Clinic olarak, saç ekimi operasyonunuzu konforlu bir seyahat deneyimiyle birleştiren özel paketler sunuyoruz. Her şey dahil paketlerimiz, tedavinizin yanı sıra konaklama, transfer ve şehir turu gibi avantajlar içerir.",
+    [Language.English]: "At MyHair Clinic, we offer special packages that combine your hair transplant operation with a comfortable travel experience. Our all-inclusive packages include benefits such as accommodation, transfer, and city tour in addition to your treatment.",
+    [Language.Russian]: "В MyHair Clinic мы предлагаем специальные пакеты, которые объединяют вашу операцию по трансплантации волос с комфортным путешествием. Наши пакеты «все включено» включают такие преимущества, как проживание, трансфер и экскурсия по городу в дополнение к вашему лечению.",
+    [Language.Georgian]: "MyHair Clinic-ში ჩვენ გთავაზობთ სპეციალურ პაკეტებს, რომლებიც აერთიანებს თქვენს თმის გადანერგვის ოპერაციას კომფორტულ მოგზაურობასთან. ჩვენი სრული პაკეტები მოიცავს ისეთ უპირატესობებს, როგორიცაა საცხოვრებელი, ტრანსფერი და ქალაქის ტური თქვენი მკურნალობის გარდა."
+  },
+  "packages.filter.allCountries": {
+    [Language.Turkish]: "Tüm Ülkeler",
+    [Language.English]: "All Countries",
+    [Language.Russian]: "Все Страны",
+    [Language.Georgian]: "ყველა ქვეყანა"
+  },
+  "packages.detail.includes": {
+    [Language.Turkish]: "Paket İçeriği",
+    [Language.English]: "Package Includes",
+    [Language.Russian]: "Пакет Включает",
+    [Language.Georgian]: "პაკეტი მოიცავს"
+  },
+  "packages.detail.duration": {
+    [Language.Turkish]: "Süre",
+    [Language.English]: "Duration",
+    [Language.Russian]: "Продолжительность",
+    [Language.Georgian]: "ხანგრძლივობა"
+  },
+  "packages.detail.days": {
+    [Language.Turkish]: "gün",
+    [Language.English]: "days",
+    [Language.Russian]: "дней",
+    [Language.Georgian]: "დღე"
+  },
+  "packages.detail.itinerary": {
+    [Language.Turkish]: "Program",
+    [Language.English]: "Itinerary",
+    [Language.Russian]: "Маршрут",
+    [Language.Georgian]: "მარშრუტი"
+  },
+  "packages.detail.day": {
+    [Language.Turkish]: "Gün",
+    [Language.English]: "Day",
+    [Language.Russian]: "День",
+    [Language.Georgian]: "დღე"
+  },
+  "packages.detail.bookNow": {
+    [Language.Turkish]: "Şimdi Rezervasyon Yap",
+    [Language.English]: "Book Now",
+    [Language.Russian]: "Забронировать Сейчас",
+    [Language.Georgian]: "დაჯავშნეთ ახლავე"
+  },
+  "packages.detail.contactUs": {
+    [Language.Turkish]: "Daha Fazla Bilgi İçin Bize Ulaşın",
+    [Language.English]: "Contact Us for More Information",
+    [Language.Russian]: "Свяжитесь с Нами для Получения Дополнительной Информации",
+    [Language.Georgian]: "დაგვიკავშირდით მეტი ინფორმაციისთვის"
+  },
+  
+  // ===========================================================================
   // ERRORS & MISC
   // ===========================================================================
   
