@@ -487,14 +487,14 @@ const SettingsManagement = () => {
       queryClient.invalidateQueries({ queryKey: ["/api/settings"] });
       toast({
         title: t("admin.settings.saveSuccess.title"),
-        description: t("admin.settings.saveSuccess.description", { section: variables.section }),
+        description: t(`admin.settings.saveSuccess.description.${variables.section}`),
       });
     },
     onError: (error, variables) => {
       console.error(`${variables.section} ayarları kaydedilirken hata oluştu:`, error);
       toast({
         title: t("admin.settings.saveError.title"),
-        description: t("admin.settings.saveError.description", { section: variables.section }),
+        description: t(`admin.settings.saveError.description.${variables.section}`),
         variant: "destructive",
       });
     },

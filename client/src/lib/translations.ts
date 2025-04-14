@@ -1835,6 +1835,256 @@ export const translations: Record<string, LanguageMap> = {
   },
   
   // ===========================================================================
+  // AFTERCARE GUIDES
+  // ===========================================================================
+
+  "aftercare.title": {
+    [Language.Turkish]: "Bakım Kılavuzları | MyHair Clinic",
+    [Language.English]: "Aftercare Guides | MyHair Clinic",
+    [Language.Russian]: "Руководства по Уходу | MyHair Clinic",
+    [Language.Georgian]: "მკურნალობის შემდგომი გზამკვლევები | MyHair Clinic"
+  },
+  "aftercare.description": {
+    [Language.Turkish]: "Saç ekimi sonrası en iyi sonuçları elde etmek için kapsamlı bakım kılavuzlarımızı inceleyin. Adım adım talimatlar ve uzman ipuçları.",
+    [Language.English]: "Explore our comprehensive aftercare guides to achieve the best results after hair transplantation. Step-by-step instructions and expert tips.",
+    [Language.Russian]: "Изучите наши исчерпывающие руководства по уходу, чтобы достичь наилучших результатов после трансплантации волос. Пошаговые инструкции и советы экспертов.",
+    [Language.Georgian]: "გაეცანით ჩვენს ყოვლისმომცველ მკურნალობის შემდგომ გზამკვლევებს თმის გადანერგვის შემდეგ საუკეთესო შედეგების მისაღწევად. ნაბიჯ-ნაბიჯ ინსტრუქციები და ექსპერტების რჩევები."
+  },
+  "aftercare.header.title": {
+    [Language.Turkish]: "Saç Ekimi Sonrası Bakım Kılavuzları",
+    [Language.English]: "Hair Transplant Aftercare Guides",
+    [Language.Russian]: "Руководства по Уходу После Трансплантации Волос",
+    [Language.Georgian]: "თმის გადანერგვის შემდგომი მოვლის გზამკვლევები"
+  },
+  "aftercare.header.description": {
+    [Language.Turkish]: "Saç ekimi operasyonunuzdan sonra en iyi sonuçları elde etmek için takip etmeniz gereken kapsamlı bakım kılavuzları.",
+    [Language.English]: "Comprehensive aftercare guides to follow after your hair transplant operation to achieve the best results.",
+    [Language.Russian]: "Комплексные руководства по уходу после операции по трансплантации волос для достижения наилучших результатов.",
+    [Language.Georgian]: "ყოვლისმომცველი მკურნალობის შემდგომი გზამკვლევები თმის გადანერგვის ოპერაციის შემდეგ საუკეთესო შედეგების მისაღწევად."
+  },
+  "aftercare.guide.firstDay": {
+    [Language.Turkish]: "İlk Gün Bakımı",
+    [Language.English]: "First Day Care",
+    [Language.Russian]: "Уход в Первый День",
+    [Language.Georgian]: "პირველი დღის მოვლა"
+  },
+  "aftercare.guide.firstWeek": {
+    [Language.Turkish]: "İlk Hafta Bakımı",
+    [Language.English]: "First Week Care",
+    [Language.Russian]: "Уход в Первую Неделю",
+    [Language.Georgian]: "პირველი კვირის მოვლა"
+  },
+  "aftercare.guide.firstMonth": {
+    [Language.Turkish]: "İlk Ay Bakımı",
+    [Language.English]: "First Month Care",
+    [Language.Russian]: "Уход в Первый Месяц",
+    [Language.Georgian]: "პირველი თვის მოვლა"
+  },
+  "aftercare.guide.longTerm": {
+    [Language.Turkish]: "Uzun Vadeli Bakım",
+    [Language.English]: "Long-Term Care",
+    [Language.Russian]: "Долгосрочный Уход",
+    [Language.Georgian]: "გრძელვადიანი მოვლა"
+  },
+  "aftercare.guide.dosDonts": {
+    [Language.Turkish]: "Yapılması ve Yapılmaması Gerekenler",
+    [Language.English]: "Dos and Don'ts",
+    [Language.Russian]: "Что Делать и Чего Не Делать",
+    [Language.Georgian]: "რა უნდა გააკეთოთ და რა არა"
+  },
+  "aftercare.guide.medications": {
+    [Language.Turkish]: "İlaçlar ve Takviyeler",
+    [Language.English]: "Medications and Supplements",
+    [Language.Russian]: "Лекарства и Добавки",
+    [Language.Georgian]: "მედიკამენტები და დანამატები"
+  },
+  "aftercare.guide.washing": {
+    [Language.Turkish]: "Saç Yıkama Kılavuzu",
+    [Language.English]: "Hair Washing Guide",
+    [Language.Russian]: "Руководство по Мытью Волос",
+    [Language.Georgian]: "თმის დაბანის გზამკვლევი"
+  },
+  "aftercare.guide.sleeping": {
+    [Language.Turkish]: "Uyuma Pozisyonları",
+    [Language.English]: "Sleeping Positions",
+    [Language.Russian]: "Позиции для Сна",
+    [Language.Georgian]: "ძილის პოზიციები"
+  },
+  "aftercare.guide.shedding": {
+    [Language.Turkish]: "Saç Dökülmesi Rehberi",
+    [Language.English]: "Shedding Phase Guide",
+    [Language.Russian]: "Руководство по Фазе Выпадения",
+    [Language.Georgian]: "თმის ცვენის ფაზის გზამკვლევი"
+  },
+  "aftercare.guide.growth": {
+    [Language.Turkish]: "Saç Büyüme Süreci",
+    [Language.English]: "Hair Growth Process",
+    [Language.Russian]: "Процесс Роста Волос",
+    [Language.Georgian]: "თმის ზრდის პროცესი"
+  },
+  "aftercare.guide.complications": {
+    [Language.Turkish]: "Olası Komplikasyonlar",
+    [Language.English]: "Possible Complications",
+    [Language.Russian]: "Возможные Осложнения",
+    [Language.Georgian]: "შესაძლო გართულებები"
+  },
+  "aftercare.guide.nutrition": {
+    [Language.Turkish]: "Beslenme Önerileri",
+    [Language.English]: "Nutrition Recommendations",
+    [Language.Russian]: "Рекомендации по Питанию",
+    [Language.Georgian]: "კვების რეკომენდაციები"
+  },
+  "aftercare.guide.exercise": {
+    [Language.Turkish]: "Egzersiz Kısıtlamaları",
+    [Language.English]: "Exercise Restrictions",
+    [Language.Russian]: "Ограничения на Физические Упражнения",
+    [Language.Georgian]: "ვარჯიშის შეზღუდვები"
+  },
+  "aftercare.guide.timeline": {
+    [Language.Turkish]: "İyileşme Zaman Çizelgesi",
+    [Language.English]: "Recovery Timeline",
+    [Language.Russian]: "График Восстановления",
+    [Language.Georgian]: "აღდგენის დროის ცხრილი"
+  },
+  "aftercare.faq.title": {
+    [Language.Turkish]: "Sık Sorulan Sorular",
+    [Language.English]: "Frequently Asked Questions",
+    [Language.Russian]: "Часто Задаваемые Вопросы",
+    [Language.Georgian]: "ხშირად დასმული კითხვები"
+  },
+  "aftercare.faq.description": {
+    [Language.Turkish]: "Saç ekimi sonrası bakım hakkında en sık sorulan soruları ve cevaplarını burada bulabilirsiniz.",
+    [Language.English]: "Find the most frequently asked questions and answers about hair transplant aftercare here.",
+    [Language.Russian]: "Здесь вы найдете наиболее часто задаваемые вопросы и ответы об уходе после трансплантации волос.",
+    [Language.Georgian]: "აქ შეგიძლიათ იპოვოთ ყველაზე ხშირად დასმული კითხვები და პასუხები თმის გადანერგვის შემდგომი მოვლის შესახებ."
+  },
+
+  // ===========================================================================
+  // PRODUCT PAGE
+  // ===========================================================================
+
+  "products.title": {
+    [Language.Turkish]: "Ürünlerimiz | MyHair Clinic",
+    [Language.English]: "Our Products | MyHair Clinic",
+    [Language.Russian]: "Наши Продукты | MyHair Clinic",
+    [Language.Georgian]: "ჩვენი პროდუქტები | MyHair Clinic"
+  },
+  "products.description": {
+    [Language.Turkish]: "Saç ve saçlı deri sağlığı için yüksek kaliteli ürünlerimizi keşfedin. Saç ekimi sonrası bakım, saç dökülmesi tedavisi ve genel saç bakımı için özel formüle edilmiş ürünler.",
+    [Language.English]: "Discover our high-quality products for hair and scalp health. Specially formulated products for post-transplant care, hair loss treatment, and general hair care.",
+    [Language.Russian]: "Откройте для себя наши высококачественные продукты для здоровья волос и кожи головы. Специально разработанные продукты для ухода после трансплантации, лечения выпадения волос и общего ухода за волосами.",
+    [Language.Georgian]: "აღმოაჩინეთ ჩვენი მაღალი ხარისხის პროდუქტები თმისა და თავის კანის ჯანმრთელობისთვის. სპეციალურად შექმნილი პროდუქტები გადანერგვის შემდგომი მოვლისთვის, თმის ცვენის მკურნალობისთვის და ზოგადი თმის მოვლისთვის."
+  },
+  "products.category.all": {
+    [Language.Turkish]: "Tüm Ürünler",
+    [Language.English]: "All Products",
+    [Language.Russian]: "Все Продукты",
+    [Language.Georgian]: "ყველა პროდუქტი"
+  },
+  "products.category.posttransplant": {
+    [Language.Turkish]: "Saç Ekimi Sonrası",
+    [Language.English]: "Post-Transplant",
+    [Language.Russian]: "После Трансплантации",
+    [Language.Georgian]: "გადანერგვის შემდეგ"
+  },
+  "products.category.hairloss": {
+    [Language.Turkish]: "Saç Dökülmesi",
+    [Language.English]: "Hair Loss",
+    [Language.Russian]: "Выпадение Волос",
+    [Language.Georgian]: "თმის ცვენა"
+  },
+  "products.category.shampoo": {
+    [Language.Turkish]: "Şampuanlar",
+    [Language.English]: "Shampoos",
+    [Language.Russian]: "Шампуни",
+    [Language.Georgian]: "შამპუნები"
+  },
+  "products.category.conditioner": {
+    [Language.Turkish]: "Saç Kremleri",
+    [Language.English]: "Conditioners",
+    [Language.Russian]: "Кондиционеры",
+    [Language.Georgian]: "კონდიციონერები"
+  },
+  "products.category.serum": {
+    [Language.Turkish]: "Serumlar",
+    [Language.English]: "Serums",
+    [Language.Russian]: "Сыворотки",
+    [Language.Georgian]: "შრატები"
+  },
+  "products.category.supplement": {
+    [Language.Turkish]: "Takviyeler",
+    [Language.English]: "Supplements",
+    [Language.Russian]: "Добавки",
+    [Language.Georgian]: "დანამატები"
+  },
+  "products.filter.title": {
+    [Language.Turkish]: "Filtreleme ve Sıralama",
+    [Language.English]: "Filter and Sort",
+    [Language.Russian]: "Фильтр и Сортировка",
+    [Language.Georgian]: "ფილტრი და სორტირება"
+  },
+  "products.sort.default": {
+    [Language.Turkish]: "Varsayılan",
+    [Language.English]: "Default",
+    [Language.Russian]: "По умолчанию",
+    [Language.Georgian]: "ნაგულისხმევი"
+  },
+  "products.sort.newest": {
+    [Language.Turkish]: "En Yeni",
+    [Language.English]: "Newest",
+    [Language.Russian]: "Новейшие",
+    [Language.Georgian]: "უახლესი"
+  },
+  "products.sort.priceAsc": {
+    [Language.Turkish]: "Fiyat: Düşükten Yükseğe",
+    [Language.English]: "Price: Low to High",
+    [Language.Russian]: "Цена: от низкой к высокой",
+    [Language.Georgian]: "ფასი: დაბლიდან მაღლისკენ"
+  },
+  "products.sort.priceDesc": {
+    [Language.Turkish]: "Fiyat: Yüksekten Düşüğe",
+    [Language.English]: "Price: High to Low",
+    [Language.Russian]: "Цена: от высокой к низкой",
+    [Language.Georgian]: "ფასი: მაღლიდან დაბლისკენ"
+  },
+  "products.sort.popular": {
+    [Language.Turkish]: "Popülerlik",
+    [Language.English]: "Popularity",
+    [Language.Russian]: "Популярность",
+    [Language.Georgian]: "პოპულარობა"
+  },
+  "products.filter.price": {
+    [Language.Turkish]: "Fiyat Aralığı",
+    [Language.English]: "Price Range",
+    [Language.Russian]: "Ценовой Диапазон",
+    [Language.Georgian]: "ფასის დიაპაზონი"
+  },
+  "products.filter.brand": {
+    [Language.Turkish]: "Marka",
+    [Language.English]: "Brand",
+    [Language.Russian]: "Бренд",
+    [Language.Georgian]: "ბრენდი"
+  },
+  "products.filter.rating": {
+    [Language.Turkish]: "Değerlendirme",
+    [Language.English]: "Rating",
+    [Language.Russian]: "Рейтинг",
+    [Language.Georgian]: "შეფასება"
+  },
+  "products.noProducts": {
+    [Language.Turkish]: "Seçilen filtrelere uygun ürün bulunamadı.",
+    [Language.English]: "No products found matching the selected filters.",
+    [Language.Russian]: "Не найдено продуктов, соответствующих выбранным фильтрам.",
+    [Language.Georgian]: "არჩეული ფილტრების შესაბამისი პროდუქტები არ მოიძებნა."
+  },
+  "products.productCount": {
+    [Language.Turkish]: "Toplam {count} ürün",
+    [Language.English]: "{count} products found",
+    [Language.Russian]: "Найдено {count} продуктов",
+    [Language.Georgian]: "ნაპოვნია {count} პროდუქტი"
+  },
+
+  // ===========================================================================
   // ERRORS & MISC
   // ===========================================================================
   

@@ -1,4 +1,4 @@
-import { useTranslation } from "@/lib/translations";
+import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
 import { useState, useEffect } from "react";
 import { Calendar } from "lucide-react";
@@ -10,7 +10,7 @@ interface AppointmentButtonProps {
 
 export default function AppointmentButton({ text, fixed = true }: AppointmentButtonProps) {
   const { language, addPrefix } = useLanguage();
-  const { t } = useTranslation(language);
+  const { t } = useTranslation();
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);

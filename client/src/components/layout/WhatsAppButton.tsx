@@ -1,5 +1,5 @@
 import { CONTACT } from "@/lib/constants";
-import { useTranslation } from "@/lib/translations";
+import { useTranslation } from "@/hooks/use-translation";
 import { useLanguage } from "@/hooks/use-language";
 import { Language } from "@shared/types";
 import { useState, useEffect } from "react";
@@ -11,7 +11,7 @@ interface WhatsAppButtonProps {
 
 export default function WhatsAppButton({ text, fixed = true }: WhatsAppButtonProps) {
   const { language } = useLanguage();
-  const { t } = useTranslation(language);
+  const { t } = useTranslation();
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
