@@ -1402,6 +1402,20 @@ export const translations: Record<string, LanguageMap> = {
     [Language.English]: "Countries",
     [Language.Russian]: "Стран",
     [Language.Georgian]: "ქვეყნები"
+  },
+  
+  // Home page title and description
+  "home.title": {
+    [Language.Turkish]: "Tiflis Saç Ekimi ve Estetik Merkezi",
+    [Language.English]: "Tbilisi Hair Transplantation and Aesthetic Center",
+    [Language.Russian]: "Центр Трансплантации Волос и Эстетики в Тбилиси",
+    [Language.Georgian]: "თბილისის თმის გადანერგვისა და ესთეტიკის ცენტრი"
+  },
+  "home.description": {
+    [Language.Turkish]: "MyHair Clinic, Tiflis'te lider saç ekimi ve estetik merkezi. FUE ve DHI teknikleri kullanarak doğal görünümlü saç ekimi, sakal ekimi ve kaş ekimi hizmetleri sunuyoruz.",
+    [Language.English]: "MyHair Clinic, the leading hair transplantation and aesthetic center in Tbilisi. We offer natural-looking hair, beard, and eyebrow transplantation services using FUE and DHI techniques.",
+    [Language.Russian]: "MyHair Clinic, ведущий центр трансплантации волос и эстетики в Тбилиси. Мы предлагаем услуги по трансплантации волос, бороды и бровей с естественным видом, используя методы FUE и DHI.",
+    [Language.Georgian]: "MyHair Clinic, წამყვანი თმის გადანერგვის და ესთეტიკის ცენტრი თბილისში. ჩვენ გთავაზობთ ბუნებრივი იერსახის თმის, წვერის და წარბების გადანერგვის სერვისებს FUE და DHI ტექნიკების გამოყენებით."
   }
 };
 
