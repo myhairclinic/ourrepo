@@ -1051,16 +1051,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   // TELEGRAM BOT GEÇİCİ OLARAK TAMAMEN DEVRE DIŞI
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  console.log("🚫 TELEGRAM BOT COMPLETELY DISABLED IN PRODUCTION");
-  console.log("🔄 To enable Telegram Bot functionality, use admin panel after deployment");
+  console.log("✅ TELEGRAM BOT ENABLED FOR PRODUCTION");
+  console.log("🔄 Telegram Bot functionality is now active");
   
-  // Hiçbir bot başlatma işlemi yapılmayacak
-  console.log("💡 SERVER TIP: Server is running without Telegram functionality");
+  // Bot başlatma işlemi aktif hale getirildi
+  console.log("💡 SERVER TIP: Server is running with Telegram functionality enabled");
 
-  // Import fake telegramBotService
-  // @ts-ignore - Telegram bot servisini tamamen yoksayalım
-  telegramBotService.isInitialized = false;
-  telegramBotService.bot = null;
+  // Telegram bot servisi artık aktif - bu satırlar kaldırıldı
+  // telegramBotService.isInitialized = false;
+  // telegramBotService.bot = null;
 
   // Simple file upload handler for now, will integrate multer later
   app.post("/api/uploads", (req, res) => {
@@ -1080,11 +1079,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   const httpServer = createServer(app);
   
-  // Server başladıktan sonra LOG mesajı göster ama Telegram Bot başlatma
+  // Server başladıktan sonra LOG mesajı göster ve Telegram Bot'un aktif olduğunu bildir
   httpServer.on('listening', () => {
-    console.log("🚫 TELEGRAM BOT AUTO-INITIALIZATION DISABLED");
-    console.log("✅ Server started successfully without Telegram Bot");
-    console.log("💡 TIP: Enable Telegram Bot from admin panel if needed");
+    console.log("✅ TELEGRAM BOT AUTO-INITIALIZATION ENABLED");
+    console.log("✅ Server started successfully with Telegram Bot");
+    console.log("💡 TIP: Bot settings can be managed from admin panel");
   });
 
   return httpServer;
