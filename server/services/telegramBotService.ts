@@ -11,13 +11,18 @@ import {
 import { eq, desc, and, gt, lte, gte } from 'drizzle-orm';
 import { Appointment } from '@shared/schema';
 
-// Telegram Bot işlemleri için servis
-// Singleton pattern: Her zaman tek bir bot örneği kullanmak için
-// ÇOK ÖNEMLİ NOTE: Bu değişkenler global olarak depolanır ve her zaman kontrol edilmelidir
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// !!! TELEGRAm BOT SERVİSİ TAMAMEN DEVRE DIŞI !!!
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//
+// 409 Conflict hataları nedeniyle Telegram Bot servisi geçici olarak
+// devre dışı bırakılmıştır. Admin panelinden manuel olarak aktifleştirilmelidir.
+// 
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// Tüm bot bağlantıları engellenmiştir - her seferinde yeni null bot instance oluştur
 let botInstance: TelegramBot | null = null;
 let isBotInitializedGlobal = false;
-
-// Aktif polling state'ini kontrol eden değişken
 let isPollingActive = false;
 
 class TelegramBotService {
@@ -92,6 +97,9 @@ class TelegramBotService {
   // Bot başlatma fonksiyonu
   // Bot başlatma fonksiyonu - geliştirilmiş hata yönetimi ve yeniden deneme mekanizması ile
   async initialize(retryCount = 0, maxRetries = 3): Promise<boolean> {
+    // !!! BOT TAMAMEN DEVRE DIŞI !!!
+    console.log('🚫 TELEGRAM BOT IS DISABLED - INITIALIZE REQUEST IGNORED');
+    return false;
     console.log(`🚀 Telegram bot initialization starting (attempt ${retryCount + 1} of ${maxRetries + 1})...`);
     
     // Global bot örneği varsa onu kullan
