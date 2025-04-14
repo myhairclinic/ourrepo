@@ -1049,65 +1049,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
      burada tekrar tanımlamaya gerek yoktur */
 
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // ENGELLEME ÇÖZÜMÜ - Telegram Bot devredışı bırakılıyor
+  // TELEGRAM BOT GEÇİCİ OLARAK TAMAMEN DEVRE DIŞI
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  console.log("🚫 TELEGRAM BOT DISABLED TO RESOLVE 409 CONFLICT ERRORS");
-  console.log("🔄 To enable Telegram Bot functionality, manually initialize it from admin panel");
+  console.log("🚫 TELEGRAM BOT COMPLETELY DISABLED IN PRODUCTION");
+  console.log("🔄 To enable Telegram Bot functionality, use admin panel after deployment");
   
-  // Tüm bot örneklerini temizleyip pasif moda alıyoruz
-  try {
-    // @ts-ignore - global değişkeni kontrolü
-    if (global.TELEGRAM_BOT_INSTANCE) {
-      console.log("🛑 Found existing global bot instance, stopping it FORCEFULLY");
-      
-      try {
-        // @ts-ignore - global değişken temizleme
-        if (typeof global.TELEGRAM_BOT_INSTANCE.stopPolling === 'function') {
-          // @ts-ignore
-          await global.TELEGRAM_BOT_INSTANCE.stopPolling();
-        }
-      } catch (e) {
-        console.log("⚠️ Error while stopping global bot instance:", e);
-      }
-      
-      try {
-        // @ts-ignore - global değişken silme
-        global.TELEGRAM_BOT_INSTANCE = null;
-        console.log("🧹 Cleared global bot instance reference");
-      } catch (e) {
-        console.log("⚠️ Error while clearing global bot reference:", e);
-      }
-    }
-    
-    // telegramBotService'teki botu da temizleme
-    if (telegramBotService.bot) {
-      console.log("🛑 Found existing bot in telegramBotService, stopping it FORCEFULLY");
-      
-      try {
-        if (typeof telegramBotService.bot.stopPolling === 'function') {
-          await telegramBotService.bot.stopPolling();
-        }
-      } catch (e) {
-        console.log("⚠️ Error while stopping telegramBotService bot:", e);
-      }
-      
-      telegramBotService.bot = null;
-      telegramBotService.isInitialized = false;
-      console.log("🧹 Cleared telegramBotService bot reference");
-    }
-    
-    // Bot'u veritabanında da devre dışı bırak
-    try {
-      await db.update(botSettingsTable)
-        .set({ isActive: false })
-        .where(eq(botSettingsTable.id, 1));
-      console.log("✅ Bot set to inactive in database");
-    } catch (dbError) {
-      console.error("❌ Failed to update bot status in database:", dbError);
-    }
-  } catch (criticalError) {
-    console.error("❌ CRITICAL ERROR in Telegram Bot disabling:", criticalError);
-  }
+  // Hiçbir bot başlatma işlemi yapılmayacak
+  console.log("💡 SERVER TIP: Server is running without Telegram functionality");
+
+  // Import fake telegramBotService
+  // @ts-ignore - Telegram bot servisini tamamen yoksayalım
+  telegramBotService.isInitialized = false;
+  telegramBotService.bot = null;
 
   // Simple file upload handler for now, will integrate multer later
   app.post("/api/uploads", (req, res) => {
