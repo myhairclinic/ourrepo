@@ -1048,13 +1048,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   /* Hasta yönetim rotaları 285-302. satırlarda tanımlanmıştır, 
      burada tekrar tanımlamaya gerek yoktur */
 
-  // RADIKAL ÇÖZÜM - Daha önce çalışan bir Bot varsa zorla durduralım
-  // Telegram bot'u yalnızca tek bir kez başlatmak için özel bir yaklaşım kullanıyoruz
-  // Ve bot başlatma işlemi tam olarak burada yapılarak sorunları önlüyoruz
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // ENGELLEME ÇÖZÜMÜ - Telegram Bot devredışı bırakılıyor
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  console.log("🚫 TELEGRAM BOT DISABLED TO RESOLVE 409 CONFLICT ERRORS");
+  console.log("🔄 To enable Telegram Bot functionality, manually initialize it from admin panel");
   
-  console.log("🔄 Telegram Bot Service - CRITICAL SOLUTION MANAGER...");
-  
-  // Diğer bot örneklerini zorla temizleme
+  // Tüm bot örneklerini temizleyip pasif moda alıyoruz
   try {
     // @ts-ignore - global değişkeni kontrolü
     if (global.TELEGRAM_BOT_INSTANCE) {
@@ -1096,17 +1096,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log("🧹 Cleared telegramBotService bot reference");
     }
     
-    // 1 saniye bekleyerek tüm eski bağlantıların kapanmasını bekleyelim
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    console.log("⏱️ Waited 1 second for all connections to close");
-    
-    // Temiz bir şekilde yeniden başlat
-    console.log("🚀 Starting completely fresh Telegram Bot instance...");
-    await telegramBotService.initialize();
-    console.log("✅ Telegram Bot Service initialized with clean state");
+    // Bot'u veritabanında da devre dışı bırak
+    try {
+      await db.update(botSettingsTable)
+        .set({ isActive: false })
+        .where(eq(botSettingsTable.id, 1));
+      console.log("✅ Bot set to inactive in database");
+    } catch (dbError) {
+      console.error("❌ Failed to update bot status in database:", dbError);
+    }
   } catch (criticalError) {
-    console.error("❌ CRITICAL ERROR in Telegram Bot initialization:", criticalError);
-    console.log("⚠️ Server will continue without Telegram functionality");
+    console.error("❌ CRITICAL ERROR in Telegram Bot disabling:", criticalError);
   }
 
   // Simple file upload handler for now, will integrate multer later
@@ -1127,27 +1127,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   const httpServer = createServer(app);
   
-  // Server başlatıldıktan sonra bir daha kontrol edelim
+  // Server başladıktan sonra LOG mesajı göster ama Telegram Bot başlatma
   httpServer.on('listening', () => {
-    if (!telegramBotService.isInitialized) {
-      console.log("🔄 Final attempt to initialize Telegram Bot Service after server start...");
-      telegramBotService.initialize()
-        .then(() => console.log("✅ Telegram Bot Service initialized after server start"))
-        .catch((error) => console.error("❌ Final Telegram Bot initialization failed:", error));
-    }
-    
-    // Kritik admin ID'lerine test mesajı gönder
-    if (telegramBotService.isInitialized && telegramBotService.bot) {
-      console.log("📱 Sending test notification to primary admin IDs...");
-      const adminIds = telegramBotService.primaryAdminIds || ['1062681151', '5631870985'];
-      const testMessage = "🔔 *MyHair Clinic Sistemi Yeniden Başlatıldı*\n\nSistem yeniden başlatıldı ve bildirimler aktif edildi.";
-      
-      adminIds.forEach(adminId => {
-        telegramBotService.bot?.sendMessage(adminId, testMessage, { parse_mode: 'Markdown' })
-          .then(() => console.log(`✅ Test message sent to admin ID: ${adminId}`))
-          .catch(err => console.error(`❌ Failed to send test message to admin ID: ${adminId}`, err));
-      });
-    }
+    console.log("🚫 TELEGRAM BOT AUTO-INITIALIZATION DISABLED");
+    console.log("✅ Server started successfully without Telegram Bot");
+    console.log("💡 TIP: Enable Telegram Bot from admin panel if needed");
   });
 
   return httpServer;
