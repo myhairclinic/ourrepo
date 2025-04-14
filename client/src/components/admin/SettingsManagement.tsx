@@ -223,6 +223,8 @@ const SettingsManagement = () => {
   const [activeTab, setActiveTab] = useState("general");
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { language } = useLanguage();
+  const { t } = useAdminTranslation(language);
 
   // Ayarları getirme fonksiyonu
   const loadSettingsBySection = async (section: string) => {
@@ -546,18 +548,18 @@ const SettingsManagement = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Site Ayarları</h1>
+        <h1 className="text-2xl font-bold">{t("admin.settings.title", "Site Ayarları")}</h1>
         <Button 
           variant="outline" 
           onClick={() => {
             queryClient.invalidateQueries({ queryKey: ["/api/settings"] });
             toast({
-              title: "Ayarlar yenilendi",
-              description: "Ayarlar sunucudan tekrar yüklendi.",
+              title: t("admin.settings.refreshSuccess.title", "Ayarlar yenilendi"),
+              description: t("admin.settings.refreshSuccess.description", "Ayarlar sunucudan tekrar yüklendi."),
             });
           }}
         >
-          Yenile
+          {t("admin.settings.refresh", "Yenile")}
         </Button>
       </div>
 

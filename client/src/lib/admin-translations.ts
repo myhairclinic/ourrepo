@@ -10,6 +10,32 @@ type LanguageMap = {
 
 // Admin panel çevirileri (doğrudan bileşenlerde kullanım için dışa aktarıldı)
 export const adminTranslations: Record<string, LanguageMap> = {
+  // Genel ayarlar başlığı
+  "admin.settings.title": {
+    [Language.Turkish]: "Site Ayarları",
+    [Language.English]: "Site Settings",
+    [Language.Russian]: "Настройки Сайта",
+    [Language.Georgian]: "საიტის პარამეტრები"
+  },
+  "admin.settings.refresh": {
+    [Language.Turkish]: "Yenile",
+    [Language.English]: "Refresh",
+    [Language.Russian]: "Обновить",
+    [Language.Georgian]: "განახლება"
+  },
+  "admin.settings.refreshSuccess.title": {
+    [Language.Turkish]: "Ayarlar yenilendi",
+    [Language.English]: "Settings refreshed",
+    [Language.Russian]: "Настройки обновлены",
+    [Language.Georgian]: "პარამეტრები განახლდა"
+  },
+  "admin.settings.refreshSuccess.description": {
+    [Language.Turkish]: "Ayarlar sunucudan tekrar yüklendi.",
+    [Language.English]: "Settings have been reloaded from the server.",
+    [Language.Russian]: "Настройки были перезагружены с сервера.",
+    [Language.Georgian]: "პარამეტრები სერვერიდან გადმოტვირთულია."
+  },
+
   // Genel ayarlar sekmesi
   "admin.settings.tabs.general": {
     [Language.Turkish]: "Genel",
@@ -194,8 +220,8 @@ export function getAdminTranslation(
 // useAdminTranslation kancası
 export function useAdminTranslation(language: Language) {
   return {
-    t: (key: string, replacements?: Record<string, string | number>) => {
-      return getAdminTranslation(key, language, replacements);
+    t: (key: string, fallback?: string, replacements?: Record<string, string | number>) => {
+      return getAdminTranslation(key, language, replacements) || fallback || key;
     }
   };
 }
