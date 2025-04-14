@@ -156,12 +156,7 @@ export default function AftercareGuidesPage() {
                         <div className="space-y-6">
                           <div className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-primary/10 text-primary font-medium">
                             <Heart className="w-4 h-4 mr-2" />
-                            <span>{t({
-                              TR: "Bakım Rehberi",
-                              EN: "Care Guide",
-                              RU: "Руководство по уходу",
-                              KA: "მოვლის გზამკვლევი"
-                            })}</span>
+                            <span>{t("aftercare.careGuideLabel")}</span>
                           </div>
                           
                           <h2 className="text-3xl font-bold">{getTitle(guide)}</h2>
@@ -207,12 +202,7 @@ export default function AftercareGuidesPage() {
 
             {/* Guides Cards */}
             <div>
-              <h3 className="text-2xl font-bold mb-6">{t({
-                TR: "Tüm Bakım Rehberleri",
-                EN: "All Care Guides",
-                RU: "Все руководства по уходу",
-                KA: "ყველა მოვლის გზამკვლევი"
-              })}</h3>
+              <h3 className="text-2xl font-bold mb-6">{t("aftercare.allGuides")}</h3>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {activeGuides.map((guide) => (
@@ -249,12 +239,7 @@ export default function AftercareGuidesPage() {
                           )}
                         </div>
                         <Button variant="ghost" size="sm" className="gap-1">
-                          {t({
-                            TR: "Detaylar",
-                            EN: "Details",
-                            RU: "Подробнее",
-                            KA: "დეტალები"
-                          })}
+                          {t("aftercare.details")}
                           <ChevronRight className="h-4 w-4" />
                         </Button>
                       </div>
@@ -287,58 +272,33 @@ export default function AftercareGuidesPage() {
                   
                   <div className="lg:col-span-1">
                     <div className="bg-muted p-6 rounded-xl">
-                      <h3 className="text-lg font-semibold mb-4">{t({
-                        TR: "Önemli Hatırlatmalar",
-                        EN: "Important Reminders",
-                        RU: "Важные напоминания",
-                        KA: "მნიშვნელოვანი შეხსენებები"
-                      })}</h3>
+                      <h3 className="text-lg font-semibold mb-4">{t("aftercare.importantReminders")}</h3>
                       
                       <ul className="space-y-3">
                         <li className="flex items-start gap-2">
                           <div className="rounded-full bg-primary/10 p-1 mt-0.5">
                             <Heart className="h-4 w-4 text-primary" />
                           </div>
-                          <span>{t({
-                            TR: "Tedavi sonrası bakım talimatlarını dikkatle uygulayın.",
-                            EN: "Follow post-treatment care instructions carefully.",
-                            RU: "Тщательно следуйте инструкциям по уходу после лечения.",
-                            KA: "ყურადღებით გაითვალისწინეთ მკურნალობის შემდგომი მოვლის ინსტრუქციები."
-                          })}</span>
+                          <span>{t("aftercare.reminder.followInstructions")}</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <div className="rounded-full bg-primary/10 p-1 mt-0.5">
                             <Heart className="h-4 w-4 text-primary" />
                           </div>
-                          <span>{t({
-                            TR: "Sorularınız için her zaman kliniğimizle iletişime geçin.",
-                            EN: "Always contact our clinic if you have questions.",
-                            RU: "Всегда обращайтесь в нашу клинику, если у вас есть вопросы.",
-                            KA: "ყოველთვის დაუკავშირდით ჩვენს კლინიკას თუ გაქვთ შეკითხვები."
-                          })}</span>
+                          <span>{t("aftercare.reminder.contactClinic")}</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <div className="rounded-full bg-primary/10 p-1 mt-0.5">
                             <Heart className="h-4 w-4 text-primary" />
                           </div>
-                          <span>{t({
-                            TR: "Düzenli kontrol randevularınızı kaçırmayın.",
-                            EN: "Don't miss your regular check-up appointments.",
-                            RU: "Не пропускайте регулярные контрольные приемы.",
-                            KA: "არ გამოტოვოთ თქვენი რეგულარული შემოწმების შეხვედრები."
-                          })}</span>
+                          <span>{t("aftercare.reminder.appointmentCheckup")}</span>
                         </li>
                       </ul>
                       
                       <Separator className="my-4" />
                       
                       <div className="text-sm text-muted-foreground">
-                        <p>{t({
-                          TR: "Bu rehberler genel bilgi amaçlıdır ve kişisel tıbbi tavsiye yerine geçmez.",
-                          EN: "These guides are for general information and do not replace personal medical advice.",
-                          RU: "Эти руководства предназначены для общей информации и не заменяют персональную медицинскую консультацию.",
-                          KA: "ეს გზამკვლევები ზოგადი ინფორმაციისთვისაა და არ ანაცვლებს პირად სამედიცინო რჩევას."
-                        })}</p>
+                        <p>{t("aftercare.disclaimer")}</p>
                       </div>
                     </div>
                   </div>
