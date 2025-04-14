@@ -1488,6 +1488,353 @@ export const translations: Record<string, LanguageMap> = {
   },
   
   // ===========================================================================
+  // SERVICE PAGE SPECIFIC
+  // ===========================================================================
+  
+  "service.timeline.title": {
+    [Language.Turkish]: "Tedavi Süreci",
+    [Language.English]: "Treatment Process",
+    [Language.Russian]: "Процесс Лечения",
+    [Language.Georgian]: "მკურნალობის პროცესი"
+  },
+  "service.timeline.subtitle": {
+    [Language.Turkish]: "Tedavi sürecimiz aşağıdaki adımlardan oluşur:",
+    [Language.English]: "Our treatment process consists of the following steps:",
+    [Language.Russian]: "Наш процесс лечения состоит из следующих этапов:",
+    [Language.Georgian]: "ჩვენი მკურნალობის პროცესი შედგება შემდეგი ეტაპებისგან:"
+  },
+  "service.timeline.step": {
+    [Language.Turkish]: "Adım",
+    [Language.English]: "Step",
+    [Language.Russian]: "Шаг",
+    [Language.Georgian]: "ნაბიჯი"
+  },
+  "service.timeline.duration": {
+    [Language.Turkish]: "Süre:",
+    [Language.English]: "Duration:",
+    [Language.Russian]: "Продолжительность:",
+    [Language.Georgian]: "ხანგრძლივობა:"
+  },
+  "service.timeline.highlights": {
+    [Language.Turkish]: "Önemli Noktalar:",
+    [Language.English]: "Highlights:",
+    [Language.Russian]: "Основные Моменты:",
+    [Language.Georgian]: "მთავარი საკითხები:"
+  },
+  "service.faqs.title": {
+    [Language.Turkish]: "Sık Sorulan Sorular",
+    [Language.English]: "Frequently Asked Questions",
+    [Language.Russian]: "Часто Задаваемые Вопросы",
+    [Language.Georgian]: "ხშირად დასმული კითხვები"
+  },
+  "service.faqs.subtitle": {
+    [Language.Turkish]: "Bu tedavi hakkında en çok sorulan soruları ve cevaplarını burada bulabilirsiniz.",
+    [Language.English]: "Find the most commonly asked questions and answers about this treatment here.",
+    [Language.Russian]: "Здесь вы найдете наиболее часто задаваемые вопросы и ответы об этом лечении.",
+    [Language.Georgian]: "აქ შეგიძლიათ იპოვოთ ყველაზე ხშირად დასმული კითხვები და პასუხები ამ მკურნალობის შესახებ."
+  },
+  "service.faqs.searchPlaceholder": {
+    [Language.Turkish]: "Soru ara...",
+    [Language.English]: "Search questions...",
+    [Language.Russian]: "Поиск вопросов...",
+    [Language.Georgian]: "კითხვების ძიება..."
+  },
+  "service.faqs.allCategories": {
+    [Language.Turkish]: "Tüm Kategoriler",
+    [Language.English]: "All Categories",
+    [Language.Russian]: "Все Категории",
+    [Language.Georgian]: "ყველა კატეგორია"
+  },
+  "service.gallery.title": {
+    [Language.Turkish]: "Öncesi ve Sonrası",
+    [Language.English]: "Before and After",
+    [Language.Russian]: "До и После",
+    [Language.Georgian]: "მანამდე და შემდეგ"
+  },
+  "service.gallery.subtitle": {
+    [Language.Turkish]: "Gerçek hastalarımızın öncesi ve sonrası fotoğrafları.",
+    [Language.English]: "Before and after photos of our real patients.",
+    [Language.Russian]: "Фотографии до и после наших реальных пациентов.",
+    [Language.Georgian]: "ჩვენი რეალური პაციენტების ფოტოები მანამდე და შემდეგ."
+  },
+  "service.results.title": {
+    [Language.Turkish]: "Sonuçlarımız",
+    [Language.English]: "Our Results",
+    [Language.Russian]: "Наши Результаты",
+    [Language.Georgian]: "ჩვენი შედეგები"
+  },
+  "service.results.subtitle": {
+    [Language.Turkish]: "İstatistiklerimiz ve başarılarımız",
+    [Language.English]: "Our statistics and achievements",
+    [Language.Russian]: "Наша статистика и достижения",
+    [Language.Georgian]: "ჩვენი სტატისტიკა და მიღწევები"
+  },
+  "service.results.happyPatients": {
+    [Language.Turkish]: "Mutlu Hasta",
+    [Language.English]: "Happy Patients",
+    [Language.Russian]: "Довольных Пациентов",
+    [Language.Georgian]: "კმაყოფილი პაციენტები"
+  },
+  "service.results.successRate": {
+    [Language.Turkish]: "Başarı Oranı",
+    [Language.English]: "Success Rate",
+    [Language.Russian]: "Показатель Успеха",
+    [Language.Georgian]: "წარმატების განაკვეთი"
+  },
+  "service.results.yearsExperience": {
+    [Language.Turkish]: "Yıllık Deneyim",
+    [Language.English]: "Years Experience",
+    [Language.Russian]: "Лет Опыта",
+    [Language.Georgian]: "წლიანი გამოცდილება"
+  },
+  "service.results.internationalPatients": {
+    [Language.Turkish]: "Uluslararası Hasta",
+    [Language.English]: "International Patients",
+    [Language.Russian]: "Международных Пациентов",
+    [Language.Georgian]: "საერთაშორისო პაციენტები"
+  },
+  "service.cta.title": {
+    [Language.Turkish]: "Ücretsiz Danışmanlık Alın",
+    [Language.English]: "Get Free Consultation",
+    [Language.Russian]: "Получите Бесплатную Консультацию",
+    [Language.Georgian]: "მიიღეთ უფასო კონსულტაცია"
+  },
+  "service.cta.description": {
+    [Language.Turkish]: "Saç ekimi konusunda sorularınız mı var? Deneyimli uzmanlarımızla ücretsiz danışmanlık randevusu alın.",
+    [Language.English]: "Do you have questions about hair transplantation? Schedule a free consultation with our experienced specialists.",
+    [Language.Russian]: "У вас есть вопросы о трансплантации волос? Запишитесь на бесплатную консультацию с нашими опытными специалистами.",
+    [Language.Georgian]: "გაქვთ კითხვები თმის გადანერგვის შესახებ? დანიშნეთ უფასო კონსულტაცია ჩვენს გამოცდილ სპეციალისტებთან."
+  },
+  "service.cta.button": {
+    [Language.Turkish]: "Randevu Alın",
+    [Language.English]: "Make an Appointment",
+    [Language.Russian]: "Записаться на Прием",
+    [Language.Georgian]: "დანიშნეთ შეხვედრა"
+  },
+  "service.details.title": {
+    [Language.Turkish]: "Tedavi Detayları",
+    [Language.English]: "Treatment Details",
+    [Language.Russian]: "Детали Лечения",
+    [Language.Georgian]: "მკურნალობის დეტალები"
+  },
+  "service.details.duration": {
+    [Language.Turkish]: "Süre",
+    [Language.English]: "Duration",
+    [Language.Russian]: "Продолжительность",
+    [Language.Georgian]: "ხანგრძლივობა"
+  },
+  "service.details.minutes": {
+    [Language.Turkish]: "dakika",
+    [Language.English]: "minutes",
+    [Language.Russian]: "минут",
+    [Language.Georgian]: "წუთი"
+  },
+  "service.details.hours": {
+    [Language.Turkish]: "saat",
+    [Language.English]: "hours",
+    [Language.Russian]: "часов",
+    [Language.Georgian]: "საათი"
+  },
+  "service.details.overview": {
+    [Language.Turkish]: "Genel Bakış",
+    [Language.English]: "Overview",
+    [Language.Russian]: "Обзор",
+    [Language.Georgian]: "მიმოხილვა"
+  },
+  "service.details.procedure": {
+    [Language.Turkish]: "Prosedür",
+    [Language.English]: "Procedure",
+    [Language.Russian]: "Процедура",
+    [Language.Georgian]: "პროცედურა"
+  },
+  "service.details.candidateInfo": {
+    [Language.Turkish]: "Aday Bilgisi",
+    [Language.English]: "Candidate Info",
+    [Language.Russian]: "Информация для Кандидатов",
+    [Language.Georgian]: "კანდიდატის ინფორმაცია"
+  },
+  "service.details.aftercare": {
+    [Language.Turkish]: "Bakım Sonrası",
+    [Language.English]: "Aftercare",
+    [Language.Russian]: "Послепроцедурный Уход",
+    [Language.Georgian]: "პროცედურის შემდგომი მოვლა"
+  },
+  "service.reviews.title": {
+    [Language.Turkish]: "Hasta Değerlendirmeleri",
+    [Language.English]: "Patient Reviews",
+    [Language.Russian]: "Отзывы Пациентов",
+    [Language.Georgian]: "პაციენტების გამოხმაურებები"
+  },
+  "service.reviews.subtitle": {
+    [Language.Turkish]: "Gerçek hastalarımızın deneyimleri hakkında ne söylediklerini okuyun",
+    [Language.English]: "Read what our real patients say about their experiences",
+    [Language.Russian]: "Прочитайте, что говорят наши реальные пациенты о своем опыте",
+    [Language.Georgian]: "წაიკითხეთ, რას ამბობენ ჩვენი რეალური პაციენტები თავიანთი გამოცდილების შესახებ"
+  },
+  "service.reviews.writeReview": {
+    [Language.Turkish]: "Değerlendirme Yazın",
+    [Language.English]: "Write a Review",
+    [Language.Russian]: "Написать Отзыв",
+    [Language.Georgian]: "დაწერეთ გამოხმაურება"
+  },
+  "service.reviews.verified": {
+    [Language.Turkish]: "Doğrulanmış Hasta",
+    [Language.English]: "Verified Patient",
+    [Language.Russian]: "Проверенный Пациент",
+    [Language.Georgian]: "დადასტურებული პაციენტი"
+  },
+  "service.reviews.noReviews": {
+    [Language.Turkish]: "Bu tedavi için henüz değerlendirme yok. İlk değerlendirmeyi siz yapın!",
+    [Language.English]: "No reviews yet for this treatment. Be the first to leave a review!",
+    [Language.Russian]: "Пока нет отзывов об этом лечении. Будьте первым, кто оставит отзыв!",
+    [Language.Georgian]: "ჯერ არ არის გამოხმაურებები ამ მკურნალობისთვის. იყავით პირველი, ვინც დატოვებს გამოხმაურებას!"
+  },
+  "service.reviews.form.title": {
+    [Language.Turkish]: "Değerlendirmenizi Yazın",
+    [Language.English]: "Write Your Review",
+    [Language.Russian]: "Напишите Свой Отзыв",
+    [Language.Georgian]: "დაწერეთ თქვენი გამოხმაურება"
+  },
+  "service.reviews.form.rating": {
+    [Language.Turkish]: "Puanınız",
+    [Language.English]: "Your Rating",
+    [Language.Russian]: "Ваша Оценка",
+    [Language.Georgian]: "თქვენი შეფასება"
+  },
+  "service.reviews.form.name": {
+    [Language.Turkish]: "Adınız",
+    [Language.English]: "Your Name",
+    [Language.Russian]: "Ваше Имя",
+    [Language.Georgian]: "თქვენი სახელი"
+  },
+  "service.reviews.form.email": {
+    [Language.Turkish]: "E-posta Adresiniz",
+    [Language.English]: "Your Email",
+    [Language.Russian]: "Ваш Email",
+    [Language.Georgian]: "თქვენი ელფოსტა"
+  },
+  "service.reviews.form.review": {
+    [Language.Turkish]: "Değerlendirmeniz",
+    [Language.English]: "Your Review",
+    [Language.Russian]: "Ваш Отзыв",
+    [Language.Georgian]: "თქვენი გამოხმაურება"
+  },
+  "service.reviews.form.submit": {
+    [Language.Turkish]: "Değerlendirme Gönder",
+    [Language.English]: "Submit Review",
+    [Language.Russian]: "Отправить Отзыв",
+    [Language.Georgian]: "გამოხმაურების გაგზავნა"
+  },
+  
+  // ===========================================================================
+  // ADMIN INTERFACE  
+  // ===========================================================================
+
+  "admin.settings.saveSuccess.title": {
+    [Language.Turkish]: "Ayarlar kaydedildi",
+    [Language.English]: "Settings saved",
+    [Language.Russian]: "Настройки сохранены",
+    [Language.Georgian]: "პარამეტრები შენახულია"
+  },
+  "admin.settings.saveSuccess.description": {
+    [Language.Turkish]: "{section} ayarları başarıyla kaydedildi",
+    [Language.English]: "{section} settings saved successfully",
+    [Language.Russian]: "Настройки {section} успешно сохранены",
+    [Language.Georgian]: "{section} პარამეტრები წარმატებით შეინახა"
+  },
+  "admin.settings.saveError.title": {
+    [Language.Turkish]: "Hata",
+    [Language.English]: "Error",
+    [Language.Russian]: "Ошибка",
+    [Language.Georgian]: "შეცდომა"
+  },
+  "admin.settings.saveError.description": {
+    [Language.Turkish]: "{section} ayarları kaydedilirken bir hata oluştu",
+    [Language.English]: "An error occurred while saving {section} settings",
+    [Language.Russian]: "Произошла ошибка при сохранении настроек {section}",
+    [Language.Georgian]: "შეცდომა მოხდა {section} პარამეტრების შენახვისას"
+  },
+  
+  "admin.login.title": {
+    [Language.Turkish]: "Admin Girişi",
+    [Language.English]: "Admin Login",
+    [Language.Russian]: "Вход для Администратора",
+    [Language.Georgian]: "ადმინის შესვლა"
+  },
+  "admin.login.username": {
+    [Language.Turkish]: "Kullanıcı Adı",
+    [Language.English]: "Username",
+    [Language.Russian]: "Имя пользователя",
+    [Language.Georgian]: "მომხმარებლის სახელი"
+  },
+  "admin.login.password": {
+    [Language.Turkish]: "Şifre",
+    [Language.English]: "Password",
+    [Language.Russian]: "Пароль",
+    [Language.Georgian]: "პაროლი"
+  },
+  "admin.login.submit": {
+    [Language.Turkish]: "Giriş Yap",
+    [Language.English]: "Login",
+    [Language.Russian]: "Войти",
+    [Language.Georgian]: "შესვლა"
+  },
+  "admin.dashboard.title": {
+    [Language.Turkish]: "Yönetim Paneli",
+    [Language.English]: "Admin Dashboard",
+    [Language.Russian]: "Панель Администратора",
+    [Language.Georgian]: "ადმინ პანელი"
+  },
+  "admin.dashboard.appointments": {
+    [Language.Turkish]: "Randevular",
+    [Language.English]: "Appointments",
+    [Language.Russian]: "Встречи",
+    [Language.Georgian]: "შეხვედრები"
+  },
+  "admin.dashboard.patients": {
+    [Language.Turkish]: "Hastalar",
+    [Language.English]: "Patients",
+    [Language.Russian]: "Пациенты",
+    [Language.Georgian]: "პაციენტები"
+  },
+  "admin.dashboard.services": {
+    [Language.Turkish]: "Hizmetler",
+    [Language.English]: "Services",
+    [Language.Russian]: "Услуги",
+    [Language.Georgian]: "სერვისები"
+  },
+  "admin.dashboard.packages": {
+    [Language.Turkish]: "Paketler",
+    [Language.English]: "Packages",
+    [Language.Russian]: "Пакеты",
+    [Language.Georgian]: "პაკეტები"
+  },
+  "admin.dashboard.blog": {
+    [Language.Turkish]: "Blog",
+    [Language.English]: "Blog",
+    [Language.Russian]: "Блог",
+    [Language.Georgian]: "ბლოგი"
+  },
+  "admin.dashboard.gallery": {
+    [Language.Turkish]: "Galeri",
+    [Language.English]: "Gallery",
+    [Language.Russian]: "Галерея",
+    [Language.Georgian]: "გალერეა"
+  },
+  "admin.dashboard.settings": {
+    [Language.Turkish]: "Ayarlar",
+    [Language.English]: "Settings",
+    [Language.Russian]: "Настройки",
+    [Language.Georgian]: "პარამეტრები"
+  },
+  "admin.dashboard.logout": {
+    [Language.Turkish]: "Çıkış Yap",
+    [Language.English]: "Logout",
+    [Language.Russian]: "Выход",
+    [Language.Georgian]: "გასვლა"
+  },
+  
+  // ===========================================================================
   // ERRORS & MISC
   // ===========================================================================
   
