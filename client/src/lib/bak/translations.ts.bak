@@ -50,11 +50,7 @@ function applyReplacements(text: string, replacements?: Record<string, string | 
 // Our translations object with simple key structure
 // Translations object (exported for direct usage in components)
 export const translations: Record<string, LanguageMap> = {
-  // ===========================================================================
-  // HOME PAGE TRANSLATIONS
-  // ===========================================================================
-  
-  // Home page SEO
+  // Home page translations
   "home.title": {
     [Language.Turkish]: "Tiflis Saç Ekimi ve Estetik Merkezi | MyHair Clinic",
     [Language.English]: "Tbilisi Hair Transplant and Aesthetic Center | MyHair Clinic",
@@ -68,30 +64,12 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Georgian]: "MyHair Clinic, თმის გადანერგვისა და ესთეტიკის წამყვანი ცენტრი თბილისში. ჩვენ გთავაზობთ ბუნებრივი გარეგნობის თმის, წვერის და წარბების გადანერგვის სერვისებს FUE და DHI ტექნიკების გამოყენებით."
   },
   
-  // Clinic Location Info
+  // Home - Main Slider
   "home.location.weekdaysLabel": {
     [Language.Turkish]: "Hafta içi",
     [Language.English]: "Weekdays",
     [Language.Russian]: "Будние дни",
     [Language.Georgian]: "სამუშაო დღეები"
-  },
-  "home.location.saturdayLabel": {
-    [Language.Turkish]: "Cumartesi",
-    [Language.English]: "Saturday",
-    [Language.Russian]: "Суббота",
-    [Language.Georgian]: "შაბათი"
-  },
-  "home.location.sundayLabel": {
-    [Language.Turkish]: "Pazar",
-    [Language.English]: "Sunday",
-    [Language.Russian]: "Воскресенье",
-    [Language.Georgian]: "კვირა"
-  },
-  "home.location.closed": {
-    [Language.Turkish]: "Kapalı",
-    [Language.English]: "Closed",
-    [Language.Russian]: "Закрыто",
-    [Language.Georgian]: "დახურულია"
   },
   
   // Home - Patient Journey
