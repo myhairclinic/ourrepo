@@ -8,8 +8,15 @@ export default function AdminLoginPage() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   
-  const { login } = useAdmin();
+  const { login, user } = useAdmin();
   const [, setLocation] = useLocation();
+  
+  // Kullanıcı zaten giriş yapmışsa dashboard'a yönlendir
+  useEffect(() => {
+    if (user) {
+      setLocation("/admin/dashboard");
+    }
+  }, [user, setLocation]);
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,8 +31,7 @@ export default function AdminLoginPage() {
     
     try {
       await login(username, password);
-      // Yeni admin dashboard sayfasına yönlendir
-      setLocation("/admin/dashboard");
+      // Başarılı girişten sonra yönlendirme useEffect hook'u tarafından otomatik yapılacak
     } catch (err) {
       setError("Kullanıcı adı veya şifre hatalı");
     } finally {
