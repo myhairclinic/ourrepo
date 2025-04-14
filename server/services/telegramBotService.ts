@@ -12,9 +12,23 @@ import { eq, desc, and, gt, lte, gte } from 'drizzle-orm';
 import { Appointment } from '@shared/schema';
 
 // Telegram Bot işlemleri için servis
+// Singleton pattern: Her zaman tek bir bot örneği kullanmak için
+// ÇOK ÖNEMLİ NOTE: Bu değişkenler global olarak depolanır ve her zaman kontrol edilmelidir
+let botInstance: TelegramBot | null = null;
+let isBotInitializedGlobal = false;
+
+// Aktif polling state'ini kontrol eden değişken
+let isPollingActive = false;
+
 class TelegramBotService {
-  // Bot nesnesini public yapıyoruz ama hala null olabilir
-  bot: TelegramBot | null = null;
+  // Bot nesnesini public yapıyoruz ama singleton pattern ile yönetiyoruz
+  get bot(): TelegramBot | null {
+    return botInstance;
+  }
+
+  set bot(newBot: TelegramBot | null) {
+    botInstance = newBot;
+  }
   
   // Sabit admin ID'leri (her zaman bildirim alması gereken kişiler)
   readonly primaryAdminIds: string[] = ['1062681151', '5631870985'];
@@ -38,7 +52,12 @@ class TelegramBotService {
   
   // isInitialized özelliğini dışarıdan erişilebilir yap
   get isInitialized(): boolean {
-    return this._isInitialized;
+    // Global değişkeni ekledik - çok önemli!
+    return isBotInitializedGlobal;
+  }
+  
+  set isInitialized(value: boolean) {
+    isBotInitializedGlobal = value;
   }
   
   private _isInitialized = false;
@@ -191,6 +210,7 @@ class TelegramBotService {
 
       // Başarılı bir şekilde başlatıldı
       this._isInitialized = true;
+      this.isInitialized = true; // Global değişkene de ata
       console.log('✅ Telegram bot initialization completed successfully');
       
       // Bot'un working olduğunu doğrulayalım ve durumunu bildirelim
@@ -243,6 +263,7 @@ class TelegramBotService {
       // @ts-ignore - Global örneği de temizle
       global.TELEGRAM_BOT_INSTANCE = null;
       this._isInitialized = false;
+      this.isInitialized = false; // Global değişkeni de güncelle
       console.log('Telegram bot stopped successfully');
     } catch (error) {
       console.error('Error stopping Telegram bot:', error);

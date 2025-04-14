@@ -1048,30 +1048,65 @@ export async function registerRoutes(app: Express): Promise<Server> {
   /* Hasta yönetim rotaları 285-302. satırlarda tanımlanmıştır, 
      burada tekrar tanımlamaya gerek yoktur */
 
-  // Server oluşturmadan önce telegramBotService'i başlat
-  console.log("🔄 Attempting to initialize Telegram Bot Service...");
+  // RADIKAL ÇÖZÜM - Daha önce çalışan bir Bot varsa zorla durduralım
+  // Telegram bot'u yalnızca tek bir kez başlatmak için özel bir yaklaşım kullanıyoruz
+  // Ve bot başlatma işlemi tam olarak burada yapılarak sorunları önlüyoruz
+  
+  console.log("🔄 Telegram Bot Service - CRITICAL SOLUTION MANAGER...");
+  
+  // Diğer bot örneklerini zorla temizleme
   try {
-    // Telegram Bot Service'i başlatmaya çalış
-    if (!telegramBotService.isInitialized) {
-      await telegramBotService.initialize();
-      console.log("✅ Telegram Bot Service initialized successfully");
-    } else {
-      console.log("ℹ️ Telegram Bot Service is already initialized");
-    }
-  } catch (error) {
-    console.error("❌ Failed to initialize Telegram Bot Service:", error);
-    console.log("⚠️ Server will continue without Telegram functionality");
-    
-    // Tekrar deneme yapalım (1 saniye bekleyerek)
-    console.log("🔄 Retrying Telegram Bot initialization in 1 second...");
-    setTimeout(async () => {
+    // @ts-ignore - global değişkeni kontrolü
+    if (global.TELEGRAM_BOT_INSTANCE) {
+      console.log("🛑 Found existing global bot instance, stopping it FORCEFULLY");
+      
       try {
-        await telegramBotService.initialize();
-        console.log("✅ Telegram Bot Service initialized on retry!");
-      } catch (retryError) {
-        console.error("❌ Telegram Bot Service initialization failed again:", retryError);
+        // @ts-ignore - global değişken temizleme
+        if (typeof global.TELEGRAM_BOT_INSTANCE.stopPolling === 'function') {
+          // @ts-ignore
+          await global.TELEGRAM_BOT_INSTANCE.stopPolling();
+        }
+      } catch (e) {
+        console.log("⚠️ Error while stopping global bot instance:", e);
       }
-    }, 1000);
+      
+      try {
+        // @ts-ignore - global değişken silme
+        global.TELEGRAM_BOT_INSTANCE = null;
+        console.log("🧹 Cleared global bot instance reference");
+      } catch (e) {
+        console.log("⚠️ Error while clearing global bot reference:", e);
+      }
+    }
+    
+    // telegramBotService'teki botu da temizleme
+    if (telegramBotService.bot) {
+      console.log("🛑 Found existing bot in telegramBotService, stopping it FORCEFULLY");
+      
+      try {
+        if (typeof telegramBotService.bot.stopPolling === 'function') {
+          await telegramBotService.bot.stopPolling();
+        }
+      } catch (e) {
+        console.log("⚠️ Error while stopping telegramBotService bot:", e);
+      }
+      
+      telegramBotService.bot = null;
+      telegramBotService.isInitialized = false;
+      console.log("🧹 Cleared telegramBotService bot reference");
+    }
+    
+    // 1 saniye bekleyerek tüm eski bağlantıların kapanmasını bekleyelim
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    console.log("⏱️ Waited 1 second for all connections to close");
+    
+    // Temiz bir şekilde yeniden başlat
+    console.log("🚀 Starting completely fresh Telegram Bot instance...");
+    await telegramBotService.initialize();
+    console.log("✅ Telegram Bot Service initialized with clean state");
+  } catch (criticalError) {
+    console.error("❌ CRITICAL ERROR in Telegram Bot initialization:", criticalError);
+    console.log("⚠️ Server will continue without Telegram functionality");
   }
 
   // Simple file upload handler for now, will integrate multer later
