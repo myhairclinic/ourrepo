@@ -97,6 +97,7 @@ class TelegramBotService {
   // Bot başlatma fonksiyonu
   // Bot başlatma fonksiyonu - geliştirilmiş hata yönetimi ve yeniden deneme mekanizması ile
   async initialize(retryCount = 0, maxRetries = 3): Promise<boolean> {
+    // Bot'u manuel olarak aktive etmek için bu satırları yorum satırına alabilirsiniz
     // !!! BOT TAMAMEN DEVRE DIŞI !!!
     console.log('🚫 TELEGRAM BOT IS DISABLED - INITIALIZE REQUEST IGNORED');
     return false;
