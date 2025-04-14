@@ -75,6 +75,16 @@ class TelegramBotService {
   async initialize(retryCount = 0, maxRetries = 3): Promise<boolean> {
     console.log(`🚀 Telegram bot initialization starting (attempt ${retryCount + 1} of ${maxRetries + 1})...`);
     
+    // Global bot örneği varsa onu kullan
+    // @ts-ignore - global değişkeni kontrol et
+    if (global.TELEGRAM_BOT_INSTANCE) {
+      console.log('✅ Telegram bot is already initialized globally and will be reused');
+      // @ts-ignore - global değişkeni atama
+      this.bot = global.TELEGRAM_BOT_INSTANCE;
+      this._isInitialized = true;
+      return true;
+    }
+    
     if (this.isInitialized && this.bot) {
       console.log('✅ Telegram bot is already initialized and active, skipping initialization');
       return true;
@@ -144,7 +154,9 @@ class TelegramBotService {
       // Yeni bot oluştur - doğrudan polling özelliği ile
       try {
         this.bot = new TelegramBot(token, { polling: true });
-        console.log('✅ Telegram bot created with polling enabled');
+        // @ts-ignore - global değişkeni atama
+        global.TELEGRAM_BOT_INSTANCE = this.bot;
+        console.log('✅ Telegram bot created with polling enabled and stored in global instance');
       } catch (createError) {
         console.error('❌ Error creating Telegram bot:', createError);
         
@@ -228,6 +240,8 @@ class TelegramBotService {
     try {
       await this.bot.stopPolling();
       this.bot = null;
+      // @ts-ignore - Global örneği de temizle
+      global.TELEGRAM_BOT_INSTANCE = null;
       this._isInitialized = false;
       console.log('Telegram bot stopped successfully');
     } catch (error) {
