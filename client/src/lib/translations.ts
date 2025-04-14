@@ -605,6 +605,186 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "БЛОГ И НОВОСТИ",
     [Language.Georgian]: "ბლოგი და სიახლეები"
   },
+  "blog.title": {
+    [Language.Turkish]: "Saç Ekimi Blogu | Uzman Makaleler ve Başarı Hikayeleri | MyHair Clinic",
+    [Language.English]: "Hair Transplant Blog | Expert Articles and Success Stories | MyHair Clinic",
+    [Language.Russian]: "Блог о Трансплантации Волос | Экспертные Статьи и Истории Успеха | MyHair Clinic",
+    [Language.Georgian]: "თმის გადანერგვის ბლოგი | ექსპერტული სტატიები და წარმატების ისტორიები | MyHair Clinic"
+  },
+  "blog.description": {
+    [Language.Turkish]: "Saç ekimi, saç dökülmesi tedavileri ve saç bakımı hakkında uzman makaleler ve gerçek başarı hikayeleri. Saç sağlığınız için en güncel bilgiler ve klinik deneyimlerimiz burada.",
+    [Language.English]: "Expert articles and real success stories about hair transplantation, hair loss treatments, and hair care. Find the latest information for your hair health and our clinical experiences here.",
+    [Language.Russian]: "Экспертные статьи и реальные истории успеха о трансплантации волос, лечении выпадения волос и уходе за волосами. Найдите здесь самую актуальную информацию о здоровье ваших волос и наш клинический опыт.",
+    [Language.Georgian]: "ექსპერტული სტატიები და რეალური წარმატების ისტორიები თმის გადანერგვის, თმის ცვენის მკურნალობის და თმის მოვლის შესახებ. იპოვეთ აქ უახლესი ინფორმაცია თქვენი თმის ჯანმრთელობისა და ჩვენი კლინიკური გამოცდილების შესახებ."
+  },
+  "blog.pageHeader.title": {
+    [Language.Turkish]: "Saç Ekimi Blogu | Uzman Makaleler ve Başarı Hikayeleri",
+    [Language.English]: "Hair Transplant Blog | Expert Articles and Success Stories",
+    [Language.Russian]: "Блог о Трансплантации Волос | Экспертные Статьи и Истории Успеха",
+    [Language.Georgian]: "თმის გადანერგვის ბლოგი | ექსპერტული სტატიები და წარმატების ისტორიები"
+  },
+  "blog.pageHeader.description": {
+    [Language.Turkish]: "Saç ekimi, saç dökülmesi tedavileri ve saç bakımı hakkında uzman makaleler ve gerçek başarı hikayeleri. Saç sağlığınız için en güncel bilgiler ve klinik deneyimlerimiz burada.",
+    [Language.English]: "Expert articles and real success stories about hair transplantation, hair loss treatments, and hair care. Find the latest information for your hair health and our clinical experiences here.",
+    [Language.Russian]: "Экспертные статьи и реальные истории успеха о трансплантации волос, лечении выпадения волос и уходе за волосами. Найдите здесь самую актуальную информацию о здоровье ваших волос и наш клинический опыт.",
+    [Language.Georgian]: "ექსპერტული სტატიები და რეალური წარმატების ისტორიები თმის გადანერგვის, თმის ცვენის მკურნალობის და თმის მოვლის შესახებ. იპოვეთ აქ უახლესი ინფორმაცია თქვენი თმის ჯანმრთელობისა და ჩვენი კლინიკური გამოცდილების შესახებ."
+  },
+  "blog.featuredPosts": {
+    [Language.Turkish]: "Öne Çıkan Yazılar",
+    [Language.English]: "Featured Posts",
+    [Language.Russian]: "Избранные Статьи",
+    [Language.Georgian]: "გამორჩეული სტატიები"
+  },
+  "blog.latestPosts": {
+    [Language.Turkish]: "En Son Yazılar",
+    [Language.English]: "Latest Posts",
+    [Language.Russian]: "Последние Статьи",
+    [Language.Georgian]: "უახლესი სტატიები"
+  },
+  "blog.popularPosts": {
+    [Language.Turkish]: "Popüler Yazılar",
+    [Language.English]: "Popular Posts",
+    [Language.Russian]: "Популярные Статьи",
+    [Language.Georgian]: "პოპულარული სტატიები"
+  },
+  "blog.categories": {
+    [Language.Turkish]: "Kategoriler",
+    [Language.English]: "Categories",
+    [Language.Russian]: "Категории",
+    [Language.Georgian]: "კატეგორიები"
+  },
+  "blog.tags": {
+    [Language.Turkish]: "Etiketler",
+    [Language.English]: "Tags",
+    [Language.Russian]: "Теги",
+    [Language.Georgian]: "ტეგები"
+  },
+  "blog.authors": {
+    [Language.Turkish]: "Yazarlar",
+    [Language.English]: "Authors",
+    [Language.Russian]: "Авторы",
+    [Language.Georgian]: "ავტორები"
+  },
+  "blog.searchPlaceholder": {
+    [Language.Turkish]: "Blog yazılarında ara...",
+    [Language.English]: "Search blog posts...",
+    [Language.Russian]: "Поиск в блоге...",
+    [Language.Georgian]: "ბლოგის სტატიების ძიება..."
+  },
+  "blog.category.all": {
+    [Language.Turkish]: "Tümü",
+    [Language.English]: "All",
+    [Language.Russian]: "Все",
+    [Language.Georgian]: "ყველა"
+  },
+  "blog.category.hairTransplant": {
+    [Language.Turkish]: "Saç Ekimi",
+    [Language.English]: "Hair Transplant",
+    [Language.Russian]: "Трансплантация Волос",
+    [Language.Georgian]: "თმის გადანერგვა"
+  },
+  "blog.category.beardTransplant": {
+    [Language.Turkish]: "Sakal Ekimi",
+    [Language.English]: "Beard Transplant",
+    [Language.Russian]: "Трансплантация Бороды",
+    [Language.Georgian]: "წვერის გადანერგვა"
+  },
+  "blog.category.prp": {
+    [Language.Turkish]: "PRP Tedavisi",
+    [Language.English]: "PRP Treatment",
+    [Language.Russian]: "PRP Терапия",
+    [Language.Georgian]: "PRP მკურნალობა"
+  },
+  "blog.category.travel": {
+    [Language.Turkish]: "Seyahat",
+    [Language.English]: "Travel",
+    [Language.Russian]: "Путешествие",
+    [Language.Georgian]: "მოგზაურობა"
+  },
+  "blog.category.clinic": {
+    [Language.Turkish]: "Klinik",
+    [Language.English]: "Clinic",
+    [Language.Russian]: "Клиника",
+    [Language.Georgian]: "კლინიკა"
+  },
+  "blog.category.beforeAfter": {
+    [Language.Turkish]: "Öncesi ve Sonrası",
+    [Language.English]: "Before and After",
+    [Language.Russian]: "До и После",
+    [Language.Georgian]: "მანამდე და შემდეგ"
+  },
+  "blog.category.patientStories": {
+    [Language.Turkish]: "Hasta Hikayeleri",
+    [Language.English]: "Patient Stories",
+    [Language.Russian]: "Истории пациентов",
+    [Language.Georgian]: "პაციენტების ისტორიები"
+  },
+  "blog.category.hairCare": {
+    [Language.Turkish]: "Saç Bakımı",
+    [Language.English]: "Hair Care",
+    [Language.Russian]: "Уход за волосами",
+    [Language.Georgian]: "თმის მოვლა"
+  },
+  "blog.sort.newest": {
+    [Language.Turkish]: "En Yeni",
+    [Language.English]: "Newest First",
+    [Language.Russian]: "Сначала новые",
+    [Language.Georgian]: "ახალი თავში"
+  },
+  "blog.sort.oldest": {
+    [Language.Turkish]: "En Eski",
+    [Language.English]: "Oldest First",
+    [Language.Russian]: "Сначала старые",
+    [Language.Georgian]: "ძველი თავში"
+  },
+  "blog.sort.popular": {
+    [Language.Turkish]: "En Popüler",
+    [Language.English]: "Most Popular",
+    [Language.Russian]: "Самые популярные",
+    [Language.Georgian]: "ყველაზე პოპულარული"
+  },
+  "blog.filter": {
+    [Language.Turkish]: "Filtrele",
+    [Language.English]: "Filter",
+    [Language.Russian]: "Фильтр",
+    [Language.Georgian]: "ფილტრი"
+  },
+  "blog.sort": {
+    [Language.Turkish]: "Sırala",
+    [Language.English]: "Sort",
+    [Language.Russian]: "Сортировка",
+    [Language.Georgian]: "დალაგება"
+  },
+  "blog.search": {
+    [Language.Turkish]: "Ara",
+    [Language.English]: "Search",
+    [Language.Russian]: "Поиск",
+    [Language.Georgian]: "ძიება"
+  },
+  "blog.pagination.prev": {
+    [Language.Turkish]: "Önceki",
+    [Language.English]: "Previous",
+    [Language.Russian]: "Предыдущая",
+    [Language.Georgian]: "წინა"
+  },
+  "blog.pagination.next": {
+    [Language.Turkish]: "Sonraki",
+    [Language.English]: "Next",
+    [Language.Russian]: "Следующая",
+    [Language.Georgian]: "შემდეგი"
+  },
+  "blog.pagination.page": {
+    [Language.Turkish]: "Sayfa",
+    [Language.English]: "Page",
+    [Language.Russian]: "Страница",
+    [Language.Georgian]: "გვერდი"
+  },
+  "blog.noResults": {
+    [Language.Turkish]: "Aradığınız kriterlere uygun sonuç bulunamadı.",
+    [Language.English]: "No results match your search criteria.",
+    [Language.Russian]: "Результаты, соответствующие вашим критериям поиска, не найдены.",
+    [Language.Georgian]: "თქვენი ძიების კრიტერიუმებს არცერთი შედეგი არ შეესაბამება."
+  },
   "common.packages": {
     [Language.Turkish]: "Paketler",
     [Language.English]: "Packages",
