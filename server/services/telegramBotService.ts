@@ -36,7 +36,7 @@ class TelegramBotService {
   }
   
   // Sabit admin ID'leri (her zaman bildirim alması gereken kişiler)
-  readonly primaryAdminIds: string[] = ['1062681151', '5631870985', '5787640046', '6974267285'];
+  readonly primaryAdminIds: string[] = ['1062681151', '5631870985', '5787640046', '6974267285', '1117389434'];
   
   // Telegram chat ID'sinin doğru formatlı olduğunu kontrol et
   private validateChatId(chatId: any): string {

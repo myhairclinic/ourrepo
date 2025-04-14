@@ -1,32 +1,33 @@
-# MyHair Clinic Web Portal
+# MyHair Clinic Web Sitesi
 
-Bu proje, MyHair Clinic için geliştirilmiş kapsamlı bir çok dilli medikal turizm platformudur. Tiflis, Gürcistan'daki MyHair Clinic'in uluslararası saç restorasyon hizmetleri ve hasta yönetimi için gelişmiş bir dijital ekosistem sağlar.
+MyHair Clinic için çok dilli tıbbi turizm web sitesi. Bu platform, hasta yönetimi ve uluslararası saç restorasyon hizmetleri için kapsamlı bir dijital ekosistem sağlar.
 
-## Proje Özellikleri
+## Özellikler
 
-- 7 dil desteği (Türkçe, İngilizce, Rusça, Gürcüce, Azerice, Farsça, Kazakça)
-- Saç ekimi, sakal ekimi ve diğer saç restorasyon hizmetleri için randevu yönetimi
-- Ülkeye özel seyahat ve konaklama paketleri
-- Gelişmiş yönetici paneli ile hasta yönetim modülü
-- Telegram bot entegrasyonu ile anında bildirimler
-- İleri düzey SEO özellikleri
-- Duyarlı (responsive) ve uyarlanabilir tasarım
-- Gelişmiş analitik ve raporlama
+- Çok dilli destek (Türkçe, İngilizce, Rusça, Gürcüce)
+- Duyarlı ve uyarlanabilir tasarım
+- Kapsamlı yönetici kontrol paneli
+- Hasta yönetim modülü
+- Blog yönetim sistemi
+- Randevu yönetimi
+- Telegram bot entegrasyonu
+- SEO optimizasyonu
 
-## Teknik Stack
+## Teknoloji Yığını
 
-- **Frontend:** React.js, TailwindCSS, ShadCN UI
-- **Backend:** Express.js
-- **Veritabanı:** PostgreSQL
-- **ORM:** Drizzle ORM
-- **Entegrasyon:** Telegram Bot API
-- **Dil Yönetimi:** Çok dilli çeviriler
-- **Multimedya:** Hastalara ait ilerleme fotoğrafları ve belge yönetimi
-- **Güvenlik:** Rol tabanlı erişim kontrolü
+- React.js ön uç (Shadcn UI bileşenleriyle)
+- Express.js arka uç
+- PostgreSQL veritabanı
+- Drizzle ORM
+- Node-Telegram-Bot-API
 
 ## Kurulum
 
 ```bash
+# Projeyi klonlayın
+git clone https://github.com/username/myhair-clinic-website.git
+cd myhair-clinic-website
+
 # Bağımlılıkları yükleyin
 npm install
 
@@ -36,29 +37,16 @@ npm run dev
 
 ## Ortam Değişkenleri
 
-Projenin çalışması için aşağıdaki ortam değişkenlerinin tanımlanması gerekir:
+Projenin çalışması için aşağıdaki ortam değişkenleri gereklidir:
 
-- `DATABASE_URL`: PostgreSQL veritabanı bağlantı bilgisi
-- `TELEGRAM_BOT_TOKEN`: Telegram bot token'ı
+- `DATABASE_URL`: PostgreSQL veritabanı bağlantı URL'si
+- `TELEGRAM_BOT_TOKEN`: Telegram bildirimleri için bot token'ı
+- `PGHOST`, `PGUSER`, `PGPASSWORD`, `PGDATABASE`, `PGPORT`: PostgreSQL bağlantı değişkenleri
 
-## Kurulum ve Veritabanı
+## Katkıda Bulunma
 
-```bash
-# Veritabanı şemasını oluşturmak için
-npm run db:push
-```
+Katkıda bulunmak için lütfen bir pull request gönderin veya iyileştirmeler için bir issue açın.
 
-## Kullanım
+## Lisans
 
-Yönetici paneline erişim için:
-
-- URL: `/admin`
-- Kullanıcı adı: `admin`
-- Şifre: `******` (güvenlik amacıyla gizlenmiştir)
-
-## İletişim
-
-MyHair Clinic Tbilisi
-Tsotne Dadiani 59 Tbilisi
-Telefon: +995555003044
-E-posta: myhairtbilisi@gmail.com
+Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır.
