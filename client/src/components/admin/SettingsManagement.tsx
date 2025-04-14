@@ -5,6 +5,8 @@ import * as z from "zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/hooks/use-language";
+import { useAdminTranslation } from "@/lib/admin-translations";
 
 import {
   Tabs,
@@ -482,15 +484,15 @@ const SettingsManagement = () => {
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["/api/settings"] });
       toast({
-        title: "Ayarlar kaydedildi",
-        description: `${variables.section} ayarları başarıyla güncellendi.`,
+        title: t("admin.settings.saveSuccess.title"),
+        description: t("admin.settings.saveSuccess.description", { section: variables.section }),
       });
     },
     onError: (error, variables) => {
       console.error(`${variables.section} ayarları kaydedilirken hata oluştu:`, error);
       toast({
-        title: "Ayarlar kaydedilemedi",
-        description: `${variables.section} ayarları güncellenirken bir hata oluştu.`,
+        title: t("admin.settings.saveError.title"),
+        description: t("admin.settings.saveError.description", { section: variables.section }),
         variant: "destructive",
       });
     },
