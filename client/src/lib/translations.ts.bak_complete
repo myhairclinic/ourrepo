@@ -1,0 +1,1695 @@
+import { Language } from "@shared/types";
+
+// A simple, non-nested translation record with full language support
+type LanguageMap = {
+  [Language.Turkish]: string;
+  [Language.English]: string;
+  [Language.Russian]: string;
+  [Language.Georgian]: string;
+};
+
+// Function to get a translation with support for both direct language objects and string keys
+export function getTranslation(
+  keyOrObj: string | Record<Language, string>,
+  language: Language,
+  replacements?: Record<string, string | number>
+): string {
+  // Handle direct language objects
+  if (typeof keyOrObj !== 'string') {
+    const value = keyOrObj[language];
+    return applyReplacements(value || '', replacements);
+  }
+  
+  // Handle string keys
+  const key = keyOrObj;
+  const translationObj = translations[key];
+  
+  if (!translationObj) {
+    console.warn(`Translation missing for key: "${key}" in language: "${language}"`);
+    return key; // Return the key as fallback
+  }
+  
+  const value = translationObj[language];
+  return applyReplacements(value || '', replacements);
+}
+
+// Helper function to apply replacements to a translation string
+function applyReplacements(text: string, replacements?: Record<string, string | number>): string {
+  if (!replacements) {
+    return text;
+  }
+  
+  let result = text;
+  for (const [key, value] of Object.entries(replacements)) {
+    result = result.replace(new RegExp(`{{${key}}}`, 'g'), String(value));
+  }
+  
+  return result;
+}
+
+// Our translations object with simple key structure
+// Translations object (exported for direct usage in components)
+export const translations: Record<string, LanguageMap> = {
+  // ===========================================================================
+  // HOME PAGE TRANSLATIONS
+  // ===========================================================================
+  
+  // Home page SEO
+  "home.title": {
+    [Language.Turkish]: "Tiflis Saç Ekimi ve Estetik Merkezi | MyHair Clinic",
+    [Language.English]: "Tbilisi Hair Transplant and Aesthetic Center | MyHair Clinic",
+    [Language.Russian]: "Тбилисский центр трансплантации волос и эстетики | MyHair Clinic",
+    [Language.Georgian]: "თბილისის თმის გადანერგვის და ესთეტიკური ცენტრი | MyHair Clinic"
+  },
+  "home.description": {
+    [Language.Turkish]: "MyHair Clinic, Tiflis'te lider saç ekimi ve estetik merkezi. FUE ve DHI teknikleri kullanarak doğal görünümlü saç ekimi, sakal ekimi ve kaş ekimi hizmetleri sunuyoruz.",
+    [Language.English]: "MyHair Clinic, leading hair transplant and aesthetic center in Tbilisi. We offer natural-looking hair, beard, and eyebrow transplantation services using FUE and DHI techniques.",
+    [Language.Russian]: "MyHair Clinic, ведущий центр трансплантации волос и эстетики в Тбилиси. Мы предлагаем естественно выглядящие услуги по трансплантации волос, бороды и бровей с использованием методов FUE и DHI.",
+    [Language.Georgian]: "MyHair Clinic, თმის გადანერგვისა და ესთეტიკის წამყვანი ცენტრი თბილისში. ჩვენ გთავაზობთ ბუნებრივი გარეგნობის თმის, წვერის და წარბების გადანერგვის სერვისებს FUE და DHI ტექნიკების გამოყენებით."
+  },
+  
+  // Clinic Location Info
+  "home.location.weekdaysLabel": {
+    [Language.Turkish]: "Hafta içi",
+    [Language.English]: "Weekdays",
+    [Language.Russian]: "Будние дни",
+    [Language.Georgian]: "სამუშაო დღეები"
+  },
+  "home.location.saturdayLabel": {
+    [Language.Turkish]: "Cumartesi",
+    [Language.English]: "Saturday",
+    [Language.Russian]: "Суббота",
+    [Language.Georgian]: "შაბათი"
+  },
+  "home.location.sundayLabel": {
+    [Language.Turkish]: "Pazar",
+    [Language.English]: "Sunday",
+    [Language.Russian]: "Воскресенье",
+    [Language.Georgian]: "კვირა"
+  },
+  "home.location.closed": {
+    [Language.Turkish]: "Kapalı",
+    [Language.English]: "Closed",
+    [Language.Russian]: "Закрыто",
+    [Language.Georgian]: "დახურულია"
+  },
+  
+  // Home - Patient Journey
+  "home.patientJourney.title": {
+    [Language.Turkish]: "Hasta Yolculuğu",
+    [Language.English]: "Patient Journey",
+    [Language.Russian]: "Путь Пациента",
+    [Language.Georgian]: "პაციენტის მოგზაურობა"
+  },
+  "home.patientJourney.subtitle": {
+    [Language.Turkish]: "MyHair Clinic'te saç ekimi süreciniz nasıl ilerleyecek?",
+    [Language.English]: "How will your hair transplant process progress at MyHair Clinic?",
+    [Language.Russian]: "Как будет проходить процесс трансплантации волос в MyHair Clinic?",
+    [Language.Georgian]: "როგორ წარიმართება თქვენი თმის გადანერგვის პროცესი MyHair Clinic-ში?"
+  },
+  "home.patientJourney.satisfaction": {
+    [Language.Turkish]: "99% Hasta Memnuniyeti",
+    [Language.English]: "99% Patient Satisfaction",
+    [Language.Russian]: "99% Удовлетворенность Пациентов",
+    [Language.Georgian]: "99% პაციენტთა კმაყოფილება"
+  },
+  "home.patientJourney.cta.description": {
+    [Language.Turkish]: "Saç ekimi yolculuğunuza ilk adımı atmak ve ücretsiz olarak değerlendirme almak için hemen bize ulaşın. Uzmanlarımız sizinle ilgilenecektir.",
+    [Language.English]: "Contact us today to take the first step in your hair transplant journey and get a free evaluation. Our experts will take care of you.",
+    [Language.Russian]: "Свяжитесь с нами сегодня, чтобы сделать первый шаг в своем пути к трансплантации волос и получить бесплатную оценку. Наши эксперты позаботятся о вас.",
+    [Language.Georgian]: "დაგვიკავშირდით დღესვე, რათა გადადგათ პირველი ნაბიჯი თქვენს თმის გადანერგვის გზაზე და მიიღოთ უფასო შეფასება. ჩვენი ექსპერტები იზრუნებენ თქვენზე."
+  },
+  "home.patientJourney.cta.button": {
+    [Language.Turkish]: "Ücretsiz Danışma Randevusu Alın",
+    [Language.English]: "Get Free Consultation Appointment",
+    [Language.Russian]: "Получить Бесплатную Консультацию",
+    [Language.Georgian]: "მიიღეთ უფასო კონსულტაციის შეხვედრა"
+  },
+  "home.patientJourney.steps.consultation.title": {
+    [Language.Turkish]: "İlk Konsültasyon",
+    [Language.English]: "Initial Consultation",
+    [Language.Russian]: "Первичная Консультация",
+    [Language.Georgian]: "საწყისი კონსულტაცია"
+  },
+  "home.patientJourney.steps.consultation.description": {
+    [Language.Turkish]: "Online görüşme ile saç kaybınızın değerlendirilmesi ve kişisel tedavi planı oluşturulması.",
+    [Language.English]: "Evaluation of your hair loss and creation of personalized treatment plan through online meeting.",
+    [Language.Russian]: "Оценка выпадения волос и создание индивидуального плана лечения через онлайн-встречу.",
+    [Language.Georgian]: "თქვენი თმის ცვენის შეფასება და პერსონალიზებული მკურნალობის გეგმის შექმნა ონლაინ შეხვედრის მეშვეობით."
+  },
+  "home.patientJourney.steps.scheduling.title": {
+    [Language.Turkish]: "Randevu Planlaması",
+    [Language.English]: "Appointment Scheduling",
+    [Language.Russian]: "Планирование Встречи",
+    [Language.Georgian]: "შეხვედრის დაგეგმვა"
+  },
+  "home.patientJourney.steps.scheduling.description": {
+    [Language.Turkish]: "Size en uygun tarihin belirlenmesi ve operasyon için randevunun oluşturulması.",
+    [Language.English]: "Determining the most suitable date for you and creating an appointment for the operation.",
+    [Language.Russian]: "Определение наиболее подходящей для вас даты и создание встречи для операции.",
+    [Language.Georgian]: "თქვენთვის ყველაზე შესაფერისი თარიღის განსაზღვრა და ოპერაციისთვის შეხვედრის შექმნა."
+  },
+  "home.patientJourney.steps.travel.title": {
+    [Language.Turkish]: "Tiflis'e Seyahat",
+    [Language.English]: "Travel to Tbilisi",
+    [Language.Russian]: "Поездка в Тбилиси",
+    [Language.Georgian]: "მოგზაურობა თბილისში"
+  },
+  "home.patientJourney.steps.travel.description": {
+    [Language.Turkish]: "Gürcistan'a varışınızda, havalimanından kliniğe veya otelinize özel transfer hizmeti.",
+    [Language.English]: "Upon your arrival in Georgia, private transfer service from the airport to the clinic or your hotel.",
+    [Language.Russian]: "По прибытии в Грузию, частный трансфер из аэропорта в клинику или ваш отель.",
+    [Language.Georgian]: "საქართველოში ჩამოსვლისას, კერძო ტრანსფერის სერვისი აეროპორტიდან კლინიკაში ან თქვენს სასტუმროში."
+  },
+  "home.patientJourney.steps.preOp.title": {
+    [Language.Turkish]: "Operasyon Öncesi Değerlendirme",
+    [Language.English]: "Pre-Operation Assessment",
+    [Language.Russian]: "Предоперационная Оценка",
+    [Language.Georgian]: "ოპერაციისწინა შეფასება"
+  },
+  "home.patientJourney.steps.preOp.description": {
+    [Language.Turkish]: "Yüz yüze konsültasyon, saç çizgisi tasarımı ve operasyon öncesi son hazırlıklar.",
+    [Language.English]: "Face-to-face consultation, hairline design, and final preparations before the operation.",
+    [Language.Russian]: "Очная консультация, дизайн линии роста волос и окончательная подготовка перед операцией.",
+    [Language.Georgian]: "პირადი კონსულტაცია, თმის ხაზის დიზაინი და საბოლოო მომზადება ოპერაციის წინ."
+  },
+  "home.patientJourney.steps.procedure.title": {
+    [Language.Turkish]: "Saç Ekimi İşlemi",
+    [Language.English]: "Hair Transplant Procedure",
+    [Language.Russian]: "Процедура Трансплантации Волос",
+    [Language.Georgian]: "თმის გადანერგვის პროცედურა"
+  },
+  "home.patientJourney.steps.procedure.description": {
+    [Language.Turkish]: "Konforlu bir ortamda DHI veya FUE yöntemiyle saç ekimi operasyonunun gerçekleştirilmesi.",
+    [Language.English]: "Performing the hair transplant operation using DHI or FUE method in a comfortable environment.",
+    [Language.Russian]: "Проведение операции по трансплантации волос методом DHI или FUE в комфортной обстановке.",
+    [Language.Georgian]: "თმის გადანერგვის ოპერაციის ჩატარება DHI ან FUE მეთოდით კომფორტულ გარემოში."
+  },
+  "home.patientJourney.steps.postOp.title": {
+    [Language.Turkish]: "Operasyon Sonrası Bakım",
+    [Language.English]: "Post-Operation Care",
+    [Language.Russian]: "Послеоперационный Уход",
+    [Language.Georgian]: "ოპერაციის შემდგომი მოვლა"
+  },
+  "home.patientJourney.steps.postOp.description": {
+    [Language.Turkish]: "İlk gün sonrası kontrolü ve detaylı bakım talimatlarının verilmesi.",
+    [Language.English]: "First day follow-up check and provision of detailed care instructions.",
+    [Language.Russian]: "Проверка на следующий день и предоставление подробных инструкций по уходу.",
+    [Language.Georgian]: "პირველი დღის შემდეგ შემოწმება და დეტალური მოვლის ინსტრუქციების მიწოდება."
+  },
+  "home.patientJourney.steps.tourism.title": {
+    [Language.Turkish]: "Tiflis'i Keşfedin",
+    [Language.English]: "Explore Tbilisi",
+    [Language.Russian]: "Исследуйте Тбилиси",
+    [Language.Georgian]: "აღმოაჩინეთ თბილისი"
+  },
+  "home.patientJourney.steps.tourism.description": {
+    [Language.Turkish]: "İyileşme sürecinde Tiflis'in güzelliklerini keşfetme fırsatı ve şehir turu.",
+    [Language.English]: "Opportunity to discover the beauties of Tbilisi and city tour during the recovery process.",
+    [Language.Russian]: "Возможность открыть для себя красоты Тбилиси и совершить экскурсию по городу во время процесса восстановления.",
+    [Language.Georgian]: "თბილისის სილამაზის აღმოჩენის და ქალაქის ტურის შესაძლებლობა აღდგენის პროცესში."
+  },
+  "home.patientJourney.steps.followUp.title": {
+    [Language.Turkish]: "Uzun Dönem Takip",
+    [Language.English]: "Long-Term Follow-up",
+    [Language.Russian]: "Долгосрочное Наблюдение",
+    [Language.Georgian]: "გრძელვადიანი მეთვალყურეობა"
+  },
+  "home.patientJourney.steps.followUp.description": {
+    [Language.Turkish]: "Ülkenize döndükten sonra düzenli online kontroller ve süreç takibi.",
+    [Language.English]: "Regular online check-ups and process monitoring after returning to your country.",
+    [Language.Russian]: "Регулярные онлайн-проверки и мониторинг процесса после возвращения в вашу страну.",
+    [Language.Georgian]: "რეგულარული ონლაინ შემოწმებები და პროცესის მონიტორინგი თქვენს ქვეყანაში დაბრუნების შემდეგ."
+  },
+  
+  // Home - Expert Section 
+  "home.expertSection.title": {
+    [Language.Turkish]: "Saç Ekimi Uzmanları",
+    [Language.English]: "Hair Transplant Experts",
+    [Language.Russian]: "Эксперты по Трансплантации Волос",
+    [Language.Georgian]: "თმის გადანერგვის ექსპერტები"
+  },
+  "home.expertSection.subtitle": {
+    [Language.Turkish]: "MyHair Clinic'in deneyimli ve uzman kadrosuyla tanışın",
+    [Language.English]: "Meet the experienced and expert team of MyHair Clinic",
+    [Language.Russian]: "Познакомьтесь с опытной и экспертной командой MyHair Clinic",
+    [Language.Georgian]: "გაიცანით MyHair Clinic-ის გამოცდილი და ექსპერტი გუნდი"
+  },
+  "home.expertSection.consultationCta": {
+    [Language.Turkish]: "Ücretsiz Konsültasyon Alın",
+    [Language.English]: "Get Free Consultation",
+    [Language.Russian]: "Получить Бесплатную Консультацию",
+    [Language.Georgian]: "მიიღეთ უფასო კონსულტაცია"
+  },
+  "home.expertSection.quote": {
+    [Language.Turkish]: "MyHair Clinic'te her hasta için kişiselleştirilmiş yaklaşım sunuyoruz. Amacımız sadece saç ekimi yapmak değil, hastalarımızın özgüvenlerini yeniden kazanmalarına yardımcı olmaktır.",
+    [Language.English]: "At MyHair Clinic, we offer a personalized approach for each patient. Our goal is not just to perform hair transplants, but to help our patients regain their self-confidence.",
+    [Language.Russian]: "В MyHair Clinic мы предлагаем индивидуальный подход к каждому пациенту. Наша цель не просто выполнить трансплантацию волос, а помочь нашим пациентам вернуть уверенность в себе.",
+    [Language.Georgian]: "MyHair Clinic-ში ჩვენ გთავაზობთ პერსონალიზებულ მიდგომას თითოეული პაციენტისთვის. ჩვენი მიზანია არა მხოლოდ თმის გადანერგვის განხორციელება, არამედ ჩვენი პაციენტების თვითრწმენის დაბრუნებაში დახმარება."
+  },
+  "home.expertSection.stats.years": {
+    [Language.Turkish]: "Yıllık Deneyim",
+    [Language.English]: "Years Experience",
+    [Language.Russian]: "Лет Опыта",
+    [Language.Georgian]: "წლიანი გამოცდილება"
+  },
+  "home.expertSection.stats.procedures": {
+    [Language.Turkish]: "Başarılı İşlem",
+    [Language.English]: "Successful Procedures",
+    [Language.Russian]: "Успешных Процедур",
+    [Language.Georgian]: "წარმატებული პროცედურები"
+  },
+  "home.expertSection.stats.satisfaction": {
+    [Language.Turkish]: "Hasta Memnuniyeti",
+    [Language.English]: "Patient Satisfaction",
+    [Language.Russian]: "Удовлетворенность Пациентов",
+    [Language.Georgian]: "პაციენტთა კმაყოფილება"
+  },
+  "home.expertSection.stats.rating": {
+    [Language.Turkish]: "Uzman Değerlendirmesi",
+    [Language.English]: "Expert Rating",
+    [Language.Russian]: "Рейтинг Экспертов",
+    [Language.Georgian]: "ექსპერტთა შეფასება"
+  },
+  "home.expertSection.features.technique.title": {
+    [Language.Turkish]: "İleri DHI ve FUE Teknikleri",
+    [Language.English]: "Advanced DHI and FUE Techniques",
+    [Language.Russian]: "Продвинутые Техники DHI и FUE",
+    [Language.Georgian]: "მოწინავე DHI და FUE ტექნიკები"
+  },
+  "home.expertSection.features.technique.description": {
+    [Language.Turkish]: "Doğal görünümlü sonuçlar için son teknoloji yöntemler kullanıyoruz.",
+    [Language.English]: "We use state-of-the-art methods for natural-looking results.",
+    [Language.Russian]: "Мы используем новейшие методы для естественно выглядящих результатов.",
+    [Language.Georgian]: "ჩვენ ვიყენებთ უახლეს მეთოდებს ბუნებრივი გარეგნობის შედეგებისთვის."
+  },
+  "home.expertSection.features.painless.title": {
+    [Language.Turkish]: "Ağrısız Prosedür",
+    [Language.English]: "Painless Procedure",
+    [Language.Russian]: "Безболезненная Процедура",
+    [Language.Georgian]: "უმტკივნეულო პროცედურა"
+  },
+  "home.expertSection.features.painless.description": {
+    [Language.Turkish]: "Konforlu ve minimum rahatsızlık sağlayan özel anestezi protokolü.",
+    [Language.English]: "Special anesthesia protocol that ensures comfort and minimal discomfort.",
+    [Language.Russian]: "Специальный протокол анестезии, обеспечивающий комфорт и минимальный дискомфорт.",
+    [Language.Georgian]: "სპეციალური ანესთეზიის პროტოკოლი, რომელიც უზრუნველყოფს კომფორტს და მინიმალურ დისკომფორტს."
+  },
+  "home.expertSection.features.natural.title": {
+    [Language.Turkish]: "Doğal Saç Çizgisi Tasarımı",
+    [Language.English]: "Natural Hairline Design",
+    [Language.Russian]: "Дизайн Естественной Линии Волос",
+    [Language.Georgian]: "ბუნებრივი თმის ხაზის დიზაინი"
+  },
+  "home.expertSection.features.natural.description": {
+    [Language.Turkish]: "Yüz şeklinize ve yaşınıza uygun kişiselleştirilmiş ve doğal görünümlü tasarım.",
+    [Language.English]: "Personalized and natural-looking design tailored to your face shape and age.",
+    [Language.Russian]: "Индивидуальный и естественно выглядящий дизайн, адаптированный к форме вашего лица и возрасту.",
+    [Language.Georgian]: "პერსონალიზებული და ბუნებრივი გარეგნობის დიზაინი, რომელიც მორგებულია თქვენი სახის ფორმასა და ასაკზე."
+  },
+  
+  // Services page specific translations
+  "services.needHelp": {
+    [Language.Turkish]: "Yardıma mı İhtiyacınız Var?",
+    [Language.English]: "Need Help?",
+    [Language.Russian]: "Нужна помощь?",
+    [Language.Georgian]: "გჭირდებათ დახმარება?"
+  },
+  
+  "services.contactForQuestions": {
+    [Language.Turkish]: "Saç ekimi hakkında herhangi bir sorunuz varsa veya randevu almak istiyorsanız bizimle iletişime geçin.",
+    [Language.English]: "If you have any questions about hair transplantation or would like to make an appointment, please contact us.",
+    [Language.Russian]: "Если у вас есть вопросы о трансплантации волос или вы хотите записаться на прием, пожалуйста, свяжитесь с нами.",
+    [Language.Georgian]: "თუ გაქვთ რაიმე შეკითხვა თმის გადანერგვის შესახებ ან გსურთ შეხვედრის დანიშვნა, გთხოვთ დაგვიკავშირდეთ."
+  },
+  // Why Choose Us section
+  "home.whyChooseUs.title": {
+    [Language.Turkish]: "Neden Bizi Seçmelisiniz",
+    [Language.English]: "Why Choose Us",
+    [Language.Russian]: "Почему Выбирают Нас",
+    [Language.Georgian]: "რატომ უნდა აგვირჩიოთ"
+  },
+  "home.whyChooseUs.subtitle": {
+    [Language.Turkish]: "MyHair Tbilisi ile saç ekimi konusunda en iyi hizmeti alın",
+    [Language.English]: "Get the best hair transplantation service with MyHair Tbilisi",
+    [Language.Russian]: "Получите лучший сервис по трансплантации волос с MyHair Тбилиси",
+    [Language.Georgian]: "მიიღეთ საუკეთესო თმის გადანერგვის სერვისი MyHair თბილისთან ერთად"
+  },
+  "home.whyChooseUs.experience.title": {
+    [Language.Turkish]: "Uzman Deneyimi",
+    [Language.English]: "Expert Experience",
+    [Language.Russian]: "Экспертный Опыт",
+    [Language.Georgian]: "ექსპერტული გამოცდილება"
+  },
+  "home.whyChooseUs.experience.description": {
+    [Language.Turkish]: "10+ yıllık deneyime sahip uzman saç ekimi cerrahlarımız ve ekibimiz",
+    [Language.English]: "Our expert hair transplant surgeons and team with 10+ years of experience",
+    [Language.Russian]: "Наши эксперты-хирурги по трансплантации волос и команда с более чем 10-летним опытом",
+    [Language.Georgian]: "ჩვენი ექსპერტი თმის გადანერგვის ქირურგები და გუნდი 10+ წლიანი გამოცდილებით"
+  },
+  "home.whyChooseUs.technology.title": {
+    [Language.Turkish]: "İleri Teknoloji",
+    [Language.English]: "Advanced Technology",
+    [Language.Russian]: "Передовые Технологии",
+    [Language.Georgian]: "თანამედროვე ტექნოლოგია"
+  },
+  "home.whyChooseUs.technology.description": {
+    [Language.Turkish]: "En son DHI ve FUE teknikleri ile doğal ve kalıcı sonuçlar",
+    [Language.English]: "Natural and permanent results with the latest DHI and FUE techniques",
+    [Language.Russian]: "Естественные и постоянные результаты с новейшими методами DHI и FUE",
+    [Language.Georgian]: "ბუნებრივი და მუდმივი შედეგები უახლესი DHI და FUE ტექნიკით"
+  },
+  "home.whyChooseUs.international.title": {
+    [Language.Turkish]: "Uluslararası Merkez",
+    [Language.English]: "International Center",
+    [Language.Russian]: "Международный Центр",
+    [Language.Georgian]: "საერთაშორისო ცენტრი"
+  },
+  "home.whyChooseUs.international.description": {
+    [Language.Turkish]: "Dünyanın dört bir yanından gelen hastaları ağırlayan çok dilli ekip",
+    [Language.English]: "Multilingual team hosting patients from all around the world",
+    [Language.Russian]: "Многоязычная команда, принимающая пациентов со всего мира",
+    [Language.Georgian]: "მრავალენოვანი გუნდი, რომელიც მასპინძლობს პაციენტებს მთელი მსოფლიოდან"
+  },
+  "home.whyChooseUs.care.title": {
+    [Language.Turkish]: "Kişiselleştirilmiş Bakım",
+    [Language.English]: "Personalized Care",
+    [Language.Russian]: "Персонализированный Уход",
+    [Language.Georgian]: "პერსონალიზებული ზრუნვა"
+  },
+  "home.whyChooseUs.care.description": {
+    [Language.Turkish]: "Her hastanın ihtiyaçlarına göre özelleştirilmiş tedavi ve bakım planları",
+    [Language.English]: "Treatment and care plans customized according to each patient's needs",
+    [Language.Russian]: "Планы лечения и ухода, адаптированные к потребностям каждого пациента",
+    [Language.Georgian]: "მკურნალობისა და მოვლის გეგმები, რომლებიც მორგებულია თითოეული პაციენტის საჭიროებებზე"
+  },
+
+  // Patient Journey section
+  "home.patientJourney.title": {
+    [Language.Turkish]: "Hasta Yolculuğu",
+    [Language.English]: "Patient Journey",
+    [Language.Russian]: "Путь Пациента",
+    [Language.Georgian]: "პაციენტის მოგზაურობა"
+  },
+  "home.patientJourney.subtitle": {
+    [Language.Turkish]: "Saç ekimi sürecinde adım adım sizinle birlikteyiz",
+    [Language.English]: "We are with you step by step in the hair transplantation process",
+    [Language.Russian]: "Мы с вами шаг за шагом в процессе трансплантации волос",
+    [Language.Georgian]: "ჩვენ თქვენთან ერთად ვართ ნაბიჯ-ნაბიჯ თმის გადანერგვის პროცესში"
+  },
+  "home.patientJourney.steps.consultation.title": {
+    [Language.Turkish]: "İlk Konsültasyon",
+    [Language.English]: "Initial Consultation",
+    [Language.Russian]: "Первичная Консультация",
+    [Language.Georgian]: "საწყისი კონსულტაცია"
+  },
+  "home.patientJourney.steps.consultation.description": {
+    [Language.Turkish]: "Online görüşme ile saç kaybınızın değerlendirilmesi ve kişisel tedavi planı oluşturulması.",
+    [Language.English]: "Assessment of your hair loss and creation of a personalized treatment plan via online meeting.",
+    [Language.Russian]: "Оценка выпадения волос и создание персонализированного плана лечения через онлайн-встречу.",
+    [Language.Georgian]: "თქვენი თმის ცვენის შეფასება და პერსონალიზებული მკურნალობის გეგმის შექმნა ონლაინ შეხვედრის საშუალებით."
+  },
+  "home.patientJourney.steps.scheduling.title": {
+    [Language.Turkish]: "Randevu Planlaması",
+    [Language.English]: "Appointment Scheduling",
+    [Language.Russian]: "Планирование Приема",
+    [Language.Georgian]: "შეხვედრის დაგეგმვა"
+  },
+  "home.patientJourney.steps.scheduling.description": {
+    [Language.Turkish]: "Size en uygun tarihin belirlenmesi ve operasyon için randevunun oluşturulması.",
+    [Language.English]: "Determining the most suitable date for you and creating an appointment for the operation.",
+    [Language.Russian]: "Определение наиболее подходящей для вас даты и создание записи на операцию.",
+    [Language.Georgian]: "თქვენთვის ყველაზე შესაფერისი თარიღის განსაზღვრა და ოპერაციისთვის შეხვედრის შექმნა."
+  },
+  "home.patientJourney.steps.travel.title": {
+    [Language.Turkish]: "Tiflis'e Seyahat",
+    [Language.English]: "Travel to Tbilisi",
+    [Language.Russian]: "Поездка в Тбилиси",
+    [Language.Georgian]: "მოგზაურობა თბილისში"
+  },
+  "home.patientJourney.steps.travel.description": {
+    [Language.Turkish]: "Gürcistan'a varışınızda, havalimanından kliniğe veya otelinize özel transfer hizmeti.",
+    [Language.English]: "Upon your arrival in Georgia, special transfer service from the airport to the clinic or your hotel.",
+    [Language.Russian]: "По прибытии в Грузию, специальная служба трансфера из аэропорта в клинику или ваш отель.",
+    [Language.Georgian]: "საქართველოში ჩასვლისას, სპეციალური ტრანსფერის სერვისი აეროპორტიდან კლინიკაში ან თქვენს სასტუმროში."
+  },
+  "home.patientJourney.steps.preOp.title": {
+    [Language.Turkish]: "Operasyon Öncesi Değerlendirme",
+    [Language.English]: "Pre-Operation Evaluation",
+    [Language.Russian]: "Предоперационная Оценка",
+    [Language.Georgian]: "პრე-ოპერაციული შეფასება"
+  },
+  "home.patientJourney.steps.preOp.description": {
+    [Language.Turkish]: "Yüz yüze konsültasyon, saç çizgisi tasarımı ve operasyon öncesi son hazırlıklar.",
+    [Language.English]: "Face-to-face consultation, hairline design, and final preparations before the operation.",
+    [Language.Russian]: "Консультация лицом к лицу, дизайн линии роста волос и окончательная подготовка перед операцией.",
+    [Language.Georgian]: "პირისპირ კონსულტაცია, თმის ხაზის დიზაინი და საბოლოო მომზადება ოპერაციამდე."
+  },
+  "home.patientJourney.steps.procedure.title": {
+    [Language.Turkish]: "Saç Ekimi İşlemi",
+    [Language.English]: "Hair Transplantation Procedure",
+    [Language.Russian]: "Процедура Трансплантации Волос",
+    [Language.Georgian]: "თმის გადანერგვის პროცედურა"
+  },
+  "home.patientJourney.steps.procedure.description": {
+    [Language.Turkish]: "Konforlu bir ortamda DHI veya FUE yöntemiyle saç ekimi operasyonunun gerçekleştirilmesi.",
+    [Language.English]: "Performing the hair transplantation operation with DHI or FUE method in a comfortable environment.",
+    [Language.Russian]: "Проведение операции по трансплантации волос методом DHI или FUE в комфортной обстановке.",
+    [Language.Georgian]: "თმის გადანერგვის ოპერაციის ჩატარება DHI ან FUE მეთოდით კომფორტულ გარემოში."
+  },
+  "home.patientJourney.steps.postOp.title": {
+    [Language.Turkish]: "Operasyon Sonrası Bakım",
+    [Language.English]: "Post-Operation Care",
+    [Language.Russian]: "Послеоперационный Уход",
+    [Language.Georgian]: "პოსტ-ოპერაციული მოვლა"
+  },
+  "home.patientJourney.steps.postOp.description": {
+    [Language.Turkish]: "İlk gün sonrası kontrolü ve detaylı bakım talimatlarının verilmesi.",
+    [Language.English]: "First day follow-up check and providing detailed care instructions.",
+    [Language.Russian]: "Проверка на следующий день и предоставление подробных инструкций по уходу.",
+    [Language.Georgian]: "პირველი დღის შემდგომი შემოწმება და დეტალური მოვლის ინსტრუქციების მიწოდება."
+  },
+  "home.patientJourney.steps.tourism.title": {
+    [Language.Turkish]: "Tiflis'i Keşfedin",
+    [Language.English]: "Explore Tbilisi",
+    [Language.Russian]: "Исследуйте Тбилиси",
+    [Language.Georgian]: "აღმოაჩინეთ თბილისი"
+  },
+  "home.patientJourney.steps.tourism.description": {
+    [Language.Turkish]: "İyileşme sürecinde Tiflis'in güzelliklerini keşfetme fırsatı ve şehir turu.",
+    [Language.English]: "Opportunity to discover the beauties of Tbilisi and city tour during the recovery process.",
+    [Language.Russian]: "Возможность открыть для себя красоты Тбилиси и экскурсия по городу во время процесса восстановления.",
+    [Language.Georgian]: "თბილისის სილამაზის აღმოჩენის შესაძლებლობა და ქალაქის ტური აღდგენის პროცესში."
+  },
+  "home.patientJourney.steps.followUp.title": {
+    [Language.Turkish]: "Uzun Dönem Takip",
+    [Language.English]: "Long-Term Follow-Up",
+    [Language.Russian]: "Долгосрочное Наблюдение",
+    [Language.Georgian]: "გრძელვადიანი მონიტორინგი"
+  },
+  "home.patientJourney.steps.followUp.description": {
+    [Language.Turkish]: "Ülkenize döndükten sonra düzenli online kontroller ve süreç takibi.",
+    [Language.English]: "Regular online checks and process monitoring after returning to your country.",
+    [Language.Russian]: "Регулярные онлайн-проверки и мониторинг процесса после возвращения в вашу страну.",
+    [Language.Georgian]: "რეგულარული ონლაინ შემოწმებები და პროცესის მონიტორინგი თქვენს ქვეყანაში დაბრუნების შემდეგ."
+  },
+  "home.patientJourney.satisfaction": {
+    [Language.Turkish]: "98% Hasta Memnuniyeti",
+    [Language.English]: "98% Patient Satisfaction",
+    [Language.Russian]: "98% Удовлетворенность Пациентов",
+    [Language.Georgian]: "98% პაციენტთა კმაყოფილება"
+  },
+  "home.patientJourney.cta.description": {
+    [Language.Turkish]: "Saç ekimi yolculuğunuza ilk adımı atmak ve ücretsiz olarak değerlendirme almak için hemen bize ulaşın. Uzmanlarımız sizinle ilgilenecektir.",
+    [Language.English]: "Contact us now to take the first step in your hair transplantation journey and get a free evaluation. Our experts will assist you.",
+    [Language.Russian]: "Свяжитесь с нами сейчас, чтобы сделать первый шаг в вашем путешествии по трансплантации волос и получить бесплатную оценку. Наши эксперты вам помогут.",
+    [Language.Georgian]: "დაგვიკავშირდით ახლავე, რომ გადადგათ პირველი ნაბიჯი თქვენი თმის გადანერგვის მოგზაურობაში და მიიღოთ უფასო შეფასება. ჩვენი ექსპერტები დაგეხმარებიან."
+  },
+  "home.patientJourney.cta.button": {
+    [Language.Turkish]: "Ücretsiz Danışma Randevusu Alın",
+    [Language.English]: "Get a Free Consultation Appointment",
+    [Language.Russian]: "Получите Бесплатную Консультацию",
+    [Language.Georgian]: "მიიღეთ უფასო კონსულტაცია"
+  },
+  
+  // Expert Section
+  "home.expertSection.title": {
+    [Language.Turkish]: "Saç Ekimi Uzmanları",
+    [Language.English]: "Hair Transplantation Experts",
+    [Language.Russian]: "Эксперты по Трансплантации Волос",
+    [Language.Georgian]: "თმის გადანერგვის ექსპერტები"
+  },
+  "home.expertSection.subtitle": {
+    [Language.Turkish]: "MyHair Clinic'in deneyimli ve uzman kadrosuyla tanışın",
+    [Language.English]: "Meet the experienced and expert team of MyHair Clinic",
+    [Language.Russian]: "Познакомьтесь с опытной и экспертной командой клиники MyHair",
+    [Language.Georgian]: "გაიცანით MyHair კლინიკის გამოცდილი და ექსპერტული გუნდი"
+  },
+  "home.expertSection.stats.years": {
+    [Language.Turkish]: "Yıllık Deneyim",
+    [Language.English]: "Years of Experience",
+    [Language.Russian]: "Лет Опыта",
+    [Language.Georgian]: "წლიანი გამოცდილება"
+  },
+  "home.expertSection.stats.procedures": {
+    [Language.Turkish]: "Başarılı İşlem",
+    [Language.English]: "Successful Procedures",
+    [Language.Russian]: "Успешных Процедур",
+    [Language.Georgian]: "წარმატებული პროცედურები"
+  },
+  "home.expertSection.stats.satisfaction": {
+    [Language.Turkish]: "Hasta Memnuniyeti",
+    [Language.English]: "Patient Satisfaction",
+    [Language.Russian]: "Удовлетворенность Пациентов",
+    [Language.Georgian]: "პაციენტთა კმაყოფილება"
+  },
+  "home.expertSection.stats.rating": {
+    [Language.Turkish]: "Uzman Değerlendirmesi",
+    [Language.English]: "Expert Rating",
+    [Language.Russian]: "Экспертная Оценка",
+    [Language.Georgian]: "ექსპერტული შეფასება"
+  },
+  "home.expertSection.features.technique.title": {
+    [Language.Turkish]: "İleri DHI ve FUE Teknikleri",
+    [Language.English]: "Advanced DHI and FUE Techniques",
+    [Language.Russian]: "Продвинутые Техники DHI и FUE",
+    [Language.Georgian]: "უახლესი DHI და FUE ტექნიკები"
+  },
+  "home.expertSection.features.technique.description": {
+    [Language.Turkish]: "Doğal görünümlü sonuçlar için son teknoloji yöntemler kullanıyoruz.",
+    [Language.English]: "We use state-of-the-art methods for natural-looking results.",
+    [Language.Russian]: "Мы используем современные методы для естественно выглядящих результатов.",
+    [Language.Georgian]: "ჩვენ ვიყენებთ უახლეს მეთოდებს ბუნებრივი გარეგნობის შედეგებისთვის."
+  },
+  "home.expertSection.features.painless.title": {
+    [Language.Turkish]: "Ağrısız Prosedür",
+    [Language.English]: "Painless Procedure",
+    [Language.Russian]: "Безболезненная Процедура",
+    [Language.Georgian]: "უმტკივნეულო პროცედურა"
+  },
+  "home.expertSection.features.painless.description": {
+    [Language.Turkish]: "Konforlu ve minimum rahatsızlık sağlayan özel anestezi protokolü.",
+    [Language.English]: "Special anesthesia protocol providing comfort and minimal discomfort.",
+    [Language.Russian]: "Специальный протокол анестезии, обеспечивающий комфорт и минимальный дискомфорт.",
+    [Language.Georgian]: "სპეციალური ანესთეზიის პროტოკოლი, რომელიც უზრუნველყოფს კომფორტს და მინიმალურ დისკომფორტს."
+  },
+  "home.expertSection.features.natural.title": {
+    [Language.Turkish]: "Doğal Saç Çizgisi Tasarımı",
+    [Language.English]: "Natural Hairline Design",
+    [Language.Russian]: "Естественный Дизайн Линии Роста Волос",
+    [Language.Georgian]: "ბუნებრივი თმის ხაზის დიზაინი"
+  },
+  "home.expertSection.features.natural.description": {
+    [Language.Turkish]: "Yüz şeklinize ve yaşınıza uygun kişiselleştirilmiş ve doğal görünümlü tasarım.",
+    [Language.English]: "Personalized and natural-looking design tailored to your face shape and age.",
+    [Language.Russian]: "Индивидуальный и естественно выглядящий дизайн, адаптированный к форме вашего лица и возрасту.",
+    [Language.Georgian]: "პერსონალიზებული და ბუნებრივი გარეგნობის დიზაინი, რომელიც მორგებულია თქვენი სახის ფორმასა და ასაკზე."
+  },
+  
+  // Services Section
+  "services.badge": {
+    [Language.Turkish]: "HİZMETLER",
+    [Language.English]: "SERVICES",
+    [Language.Russian]: "УСЛУГИ",
+    [Language.Georgian]: "სერვისები"
+  },
+  "common.services": {
+    [Language.Turkish]: "Hizmetlerimiz",
+    [Language.English]: "Our Services",
+    [Language.Russian]: "Наши Услуги",
+    [Language.Georgian]: "ჩვენი სერვისები"
+  },
+  "services.subtitle": {
+    [Language.Turkish]: "Saç restorasyon ve güzellik hizmetleri",
+    [Language.English]: "Hair restoration and beauty services",
+    [Language.Russian]: "Услуги по восстановлению волос и красоте",
+    [Language.Georgian]: "თმის აღდგენისა და სილამაზის სერვისები"
+  },
+  "common.viewAll": {
+    [Language.Turkish]: "Tümünü Görüntüle",
+    [Language.English]: "View All",
+    [Language.Russian]: "Посмотреть Все",
+    [Language.Georgian]: "ყველას ნახვა"
+  },
+  "services.popular.label": {
+    [Language.Turkish]: "Popüler Hizmet",
+    [Language.English]: "Popular Service",
+    [Language.Russian]: "Популярная Услуга",
+    [Language.Georgian]: "პოპულარული სერვისი"
+  },
+  "services.features.naturalResults": {
+    [Language.Turkish]: "Doğal Sonuçlar",
+    [Language.English]: "Natural Results",
+    [Language.Russian]: "Естественные Результаты",
+    [Language.Georgian]: "ბუნებრივი შედეგები"
+  },
+  "common.learnMore": {
+    [Language.Turkish]: "Daha Fazla Bilgi",
+    [Language.English]: "Learn More",
+    [Language.Russian]: "Узнать Больше",
+    [Language.Georgian]: "მეტის გაგება"
+  },
+  "services.features.customDesign": {
+    [Language.Turkish]: "Kişiye Özel Tasarım",
+    [Language.English]: "Custom Design",
+    [Language.Russian]: "Индивидуальный Дизайн",
+    [Language.Georgian]: "კუსტომ დიზაინი"
+  },
+  "services.features.densityControl": {
+    [Language.Turkish]: "Yoğunluk Kontrolü",
+    [Language.English]: "Density Control",
+    [Language.Russian]: "Контроль Плотности",
+    [Language.Georgian]: "სიმკვრივის კონტროლი"
+  },
+  "services.features.consultation": {
+    [Language.Turkish]: "Ücretsiz Konsültasyon",
+    [Language.English]: "Free Consultation",
+    [Language.Russian]: "Бесплатная Консультация",
+    [Language.Georgian]: "უფასო კონსულტაცია"
+  },
+  "services.features.aftercare": {
+    [Language.Turkish]: "Kapsamlı Bakım",
+    [Language.English]: "Comprehensive Aftercare",
+    [Language.Russian]: "Комплексный Послеоперационный Уход",
+    [Language.Georgian]: "სრული მოვლა ოპერაციის შემდეგ"
+  },
+  "services.features.support": {
+    [Language.Turkish]: "7/24 Destek",
+    [Language.English]: "24/7 Support",
+    [Language.Russian]: "Поддержка 24/7",
+    [Language.Georgian]: "24/7 მხარდაჭერა"
+  },
+  "services.features.satisfaction": {
+    [Language.Turkish]: "Müşteri Memnuniyeti",
+    [Language.English]: "Customer Satisfaction",
+    [Language.Russian]: "Удовлетворенность Клиентов",
+    [Language.Georgian]: "კლიენტის კმაყოფილება"
+  },
+  
+  // Eksik olan çeviriler
+  "services.features.noSideEffects": {
+    [Language.Turkish]: "Yan Etki Yok",
+    [Language.English]: "No Side Effects",
+    [Language.Russian]: "Отсутствие Побочных Эффектов",
+    [Language.Georgian]: "არანაირი გვერდითი ეფექტი"
+  },
+  "services.features.quickRecovery": {
+    [Language.Turkish]: "Hızlı İyileşme",
+    [Language.English]: "Quick Recovery",
+    [Language.Russian]: "Быстрое Восстановление",
+    [Language.Georgian]: "სწრაფი აღდგენა"
+  },
+  "common.duration": {
+    [Language.Turkish]: "Süre",
+    [Language.English]: "Duration",
+    [Language.Russian]: "Продолжительность",
+    [Language.Georgian]: "ხანგრძლივობა"
+  },
+  "services.features.permanentSolution": {
+    [Language.Turkish]: "Kalıcı Çözüm",
+    [Language.English]: "Permanent Solution",
+    [Language.Russian]: "Постоянное Решение",
+    [Language.Georgian]: "მუდმივი გადაწყვეტა"
+  },
+  "services.features.naturalAppearance": {
+    [Language.Turkish]: "Doğal Görünüm",
+    [Language.English]: "Natural Appearance",
+    [Language.Russian]: "Натуральный Вид",
+    [Language.Georgian]: "ბუნებრივი გარეგნობა"
+  },
+  "services.features.facialHarmony": {
+    [Language.Turkish]: "Yüz Uyumu",
+    [Language.English]: "Facial Harmony",
+    [Language.Russian]: "Гармония Лица",
+    [Language.Georgian]: "სახის ჰარმონია"
+  },
+  "common.contactUs": {
+    [Language.Turkish]: "Bize Ulaşın",
+    [Language.English]: "Contact Us",
+    [Language.Russian]: "Свяжитесь с Нами",
+    [Language.Georgian]: "დაგვიკავშირდით"
+  },
+  
+  // Package section
+  "packages.home.tagline": {
+    [Language.Turkish]: "ÜLKELERE ÖZEL PAKETLER",
+    [Language.English]: "COUNTRY-SPECIFIC PACKAGES",
+    [Language.Russian]: "ПАКЕТЫ ДЛЯ КОНКРЕТНЫХ СТРАН",
+    [Language.Georgian]: "ქვეყნის სპეციფიკური პაკეტები"
+  },
+  "packages.home.title": {
+    [Language.Turkish]: "Saç Ekimi Seyahat Paketleri",
+    [Language.English]: "Hair Transplant Travel Packages",
+    [Language.Russian]: "Пакеты Для Путешествий с Трансплантацией Волос",
+    [Language.Georgian]: "თმის გადანერგვის სამოგზაურო პაკეტები"
+  },
+  "packages.home.subtitle": {
+    [Language.Turkish]: "Konforlu konaklama ve VIP hizmetleri içeren ülkeye özel paketler",
+    [Language.English]: "Country-specific packages including comfortable accommodation and VIP services",
+    [Language.Russian]: "Пакеты для конкретных стран, включающие комфортное проживание и VIP-услуги",
+    [Language.Georgian]: "ქვეყნისთვის სპეციფიკური პაკეტები, რომლებიც მოიცავს კომფორტულ საცხოვრებელს და VIP მომსახურებას"
+  },
+  "countries.turkey": {
+    [Language.Turkish]: "Türkiye",
+    [Language.English]: "Turkey",
+    [Language.Russian]: "Турция",
+    [Language.Georgian]: "თურქეთი"
+  },
+  "countries.ru": {
+    [Language.Turkish]: "Rusya",
+    [Language.English]: "Russia",
+    [Language.Russian]: "Россия",
+    [Language.Georgian]: "რუსეთი"
+  },
+  "countries.az": {
+    [Language.Turkish]: "Azerbaycan",
+    [Language.English]: "Azerbaijan",
+    [Language.Russian]: "Азербайджан",
+    [Language.Georgian]: "აზერბაიჯანი"
+  },
+  "countries.kz": {
+    [Language.Turkish]: "Kazakistan",
+    [Language.English]: "Kazakhstan",
+    [Language.Russian]: "Казахстан",
+    [Language.Georgian]: "ყაზახეთი"
+  },
+  "countries.ua": {
+    [Language.Turkish]: "Ukrayna",
+    [Language.English]: "Ukraine",
+    [Language.Russian]: "Украина",
+    [Language.Georgian]: "უკრაინა"
+  },
+  "countries.ir": {
+    [Language.Turkish]: "İran",
+    [Language.English]: "Iran",
+    [Language.Russian]: "Иран",
+    [Language.Georgian]: "ირანი"
+  },
+  "packages.home.days": {
+    [Language.Turkish]: "gün",
+    [Language.English]: "days",
+    [Language.Russian]: "дней",
+    [Language.Georgian]: "დღე"
+  },
+  "packages.home.forPerson": {
+    [Language.Turkish]: "kişi başı",
+    [Language.English]: "per person",
+    [Language.Russian]: "на человека",
+    [Language.Georgian]: "ერთ პიროვნებაზე"
+  },
+  "packages.home.details": {
+    [Language.Turkish]: "Paket Detayları",
+    [Language.English]: "Package Details",
+    [Language.Russian]: "Детали Пакета",
+    [Language.Georgian]: "პაკეტის დეტალები"
+  },
+  "packages.home.allInclusive": {
+    [Language.Turkish]: "Her Şey Dahil",
+    [Language.English]: "All Inclusive",
+    [Language.Russian]: "Все Включено",
+    [Language.Georgian]: "ყველაფერი ჩათვლილი"
+  },
+  
+  // Footer section  
+  "footer.workingHours": {
+    [Language.Turkish]: "Çalışma Saatleri",
+    [Language.English]: "Working Hours",
+    [Language.Russian]: "Часы Работы",
+    [Language.Georgian]: "სამუშაო საათები"
+  },
+  "footer.getDirections": {
+    [Language.Turkish]: "Yol Tarifi Al",
+    [Language.English]: "Get Directions",
+    [Language.Russian]: "Получить Направления",
+    [Language.Georgian]: "მიმართულებების მიღება"
+  },
+  "footer.allRightsReserved": {
+    [Language.Turkish]: "Tüm Hakları Saklıdır",
+    [Language.English]: "All Rights Reserved",
+    [Language.Russian]: "Все Права Защищены",
+    [Language.Georgian]: "ყველა უფლება დაცულია"
+  },
+  "footer.privacyPolicy": {
+    [Language.Turkish]: "Gizlilik Politikası",
+    [Language.English]: "Privacy Policy",
+    [Language.Russian]: "Политика Конфиденциальности",
+    [Language.Georgian]: "კონფიდენციალურობის პოლიტიკა"
+  },
+  "footer.termsOfUse": {
+    [Language.Turkish]: "Kullanım Şartları",
+    [Language.English]: "Terms of Use",
+    [Language.Russian]: "Условия Использования",
+    [Language.Georgian]: "გამოყენების პირობები"
+  },
+  
+  "common.contactViaWhatsApp": {
+    [Language.Turkish]: "WhatsApp'tan Ulaşın",
+    [Language.English]: "Contact via WhatsApp",
+    [Language.Russian]: "Связаться через WhatsApp",
+    [Language.Georgian]: "დაგვიკავშირდით WhatsApp-ით"
+  },
+  "common.makeAppointment": {
+    [Language.Turkish]: "Randevu Alın",
+    [Language.English]: "Make an Appointment",
+    [Language.Russian]: "Записаться на Прием",
+    [Language.Georgian]: "დანიშნეთ შეხვედრა"
+  },
+  "home.location.saturdayLabel": {
+    [Language.Turkish]: "Cumartesi",
+    [Language.English]: "Saturday",
+    [Language.Russian]: "Суббота",
+    [Language.Georgian]: "შაბათი"
+  },
+  "home.location.sundayLabel": {
+    [Language.Turkish]: "Pazar",
+    [Language.English]: "Sunday",
+    [Language.Russian]: "Воскресенье",
+    [Language.Georgian]: "კვირა"
+  },
+  "home.location.closed": {
+    [Language.Turkish]: "Kapalı",
+    [Language.English]: "Closed",
+    [Language.Russian]: "Закрыто",
+    [Language.Georgian]: "დახურულია"
+  },
+  
+
+  
+  "footer.description": {
+    [Language.Turkish]: "MyHair Clinic, saç ekimi ve restorasyon konusunda uzmanlaşmış öncü bir kliniktir. Yüksek kaliteli bakım, ileri teknoloji ve kişiselleştirilmiş tedavi yaklaşımı sunuyoruz.",
+    [Language.English]: "MyHair Clinic is a leading clinic specializing in hair transplantation and restoration. We offer high-quality care, advanced technology, and a personalized treatment approach.",
+    [Language.Russian]: "MyHair Clinic — ведущая клиника, специализирующаяся на трансплантации и восстановлении волос. Мы предлагаем высококачественный уход, передовые технологии и персонализированный подход к лечению.",
+    [Language.Georgian]: "MyHair Clinic არის წამყვანი კლინიკა, რომელიც სპეციალიზირებულია თმის გადანერგვასა და აღდგენაში. ჩვენ გთავაზობთ მაღალი ხარისხის მოვლას, თანამედროვე ტექნოლოგიებს და პერსონალიზებულ მკურნალობის მიდგომას."
+  },
+  
+  "footer.quickLinks": {
+    [Language.Turkish]: "Hızlı Linkler",
+    [Language.English]: "Quick Links",
+    [Language.Russian]: "Быстрые Ссылки",
+    [Language.Georgian]: "სწრაფი ბმულები"
+  },
+  
+  "footer.ourServices": {
+    [Language.Turkish]: "Hizmetlerimiz",
+    [Language.English]: "Our Services",
+    [Language.Russian]: "Наши Услуги",
+    [Language.Georgian]: "ჩვენი სერვისები"
+  },
+  
+  // Menü ve kısımlar için çeviriler
+  "common.home": {
+    [Language.Turkish]: "Anasayfa",
+    [Language.English]: "Home",
+    [Language.Russian]: "Главная",
+    [Language.Georgian]: "მთავარი"
+  },
+  "common.servicesMenu": {
+    [Language.Turkish]: "Hizmetler",
+    [Language.English]: "Services",
+    [Language.Russian]: "Услуги",
+    [Language.Georgian]: "სერვისები"
+  },
+  
+  // Blog çevirileri
+  "blog.badge": {
+    [Language.Turkish]: "BLOG & HABERLER",
+    [Language.English]: "BLOG & NEWS",
+    [Language.Russian]: "БЛОГ И НОВОСТИ",
+    [Language.Georgian]: "ბლოგი და სიახლეები"
+  },
+  "common.packages": {
+    [Language.Turkish]: "Paketler",
+    [Language.English]: "Packages",
+    [Language.Russian]: "Пакеты",
+    [Language.Georgian]: "პაკეტები"
+  },
+  "common.gallery": {
+    [Language.Turkish]: "Galeri",
+    [Language.English]: "Gallery",
+    [Language.Russian]: "Галерея",
+    [Language.Georgian]: "გალერეა"
+  },
+  "common.blog": {
+    [Language.Turkish]: "Blog",
+    [Language.English]: "Blog",
+    [Language.Russian]: "Блог",
+    [Language.Georgian]: "ბლოგი"
+  },
+  "common.about": {
+    [Language.Turkish]: "Hakkımızda",
+    [Language.English]: "About",
+    [Language.Russian]: "О нас",
+    [Language.Georgian]: "ჩვენ შესახებ"
+  },
+  "common.contact": {
+    [Language.Turkish]: "İletişim",
+    [Language.English]: "Contact",
+    [Language.Russian]: "Контакты",
+    [Language.Georgian]: "კონტაქტი"
+  },
+  "common.appointment": {
+    [Language.Turkish]: "Randevu",
+    [Language.English]: "Appointment",
+    [Language.Russian]: "Запись",
+    [Language.Georgian]: "შეხვედრა"
+  },
+  
+  // Hizmet çevirileri
+  "services.hairTransplant": {
+    [Language.Turkish]: "Saç Ekimi",
+    [Language.English]: "Hair Transplantation",
+    [Language.Russian]: "Трансплантация Волос",
+    [Language.Georgian]: "თმის გადანერგვა"
+  },
+  "services.beardTransplant": {
+    [Language.Turkish]: "Sakal Ekimi",
+    [Language.English]: "Beard Transplantation",
+    [Language.Russian]: "Трансплантация Бороды",
+    [Language.Georgian]: "წვერის გადანერგვა"
+  },
+  "services.eyebrowTransplant": {
+    [Language.Turkish]: "Kaş Ekimi",
+    [Language.English]: "Eyebrow Transplantation",
+    [Language.Russian]: "Трансплантация Бровей",
+    [Language.Georgian]: "წარბების გადანერგვა"
+  },
+  "services.prpTreatment": {
+    [Language.Turkish]: "PRP Tedavisi",
+    [Language.English]: "PRP Treatment",
+    [Language.Russian]: "PRP-терапия",
+    [Language.Georgian]: "PRP მკურნალობა"
+  },
+  "services.mesotherapy": {
+    [Language.Turkish]: "Saç Mezoterapisi",
+    [Language.English]: "Hair Mesotherapy",
+    [Language.Russian]: "Мезотерапия Волос",
+    [Language.Georgian]: "თმის მეზოთერაპია"
+  },
+  
+  // Hata mesajları
+  "errors.loading_services": {
+    [Language.Turkish]: "Hizmetler yüklenirken bir hata oluştu",
+    [Language.English]: "An error occurred while loading services",
+    [Language.Russian]: "Произошла ошибка при загрузке услуг",
+    [Language.Georgian]: "სერვისების ჩატვირთვისას მოხდა შეცდომა"
+  },
+  
+  "common.latestFromOurBlog": {
+    [Language.Turkish]: "Blogdan Son Yazılar",
+    [Language.English]: "Latest From Our Blog",
+    [Language.Russian]: "Последние Записи из Нашего Блога",
+    [Language.Georgian]: "უახლესი ჩვენი ბლოგიდან"
+  },
+  "blog.readMore": {
+    [Language.Turkish]: "Devamını Oku",
+    [Language.English]: "Read More",
+    [Language.Russian]: "Читать Далее",
+    [Language.Georgian]: "მეტის წაკითხვა"
+  },
+
+  "common.viewAllBlogs": {
+    [Language.Turkish]: "Tüm Blog Yazılarını Görüntüle",
+    [Language.English]: "View All Blog Posts",
+    [Language.Russian]: "Просмотреть Все Записи Блога",
+    [Language.Georgian]: "ყველა ბლოგის ნახვა"
+  },
+  
+  // Other sections
+  "gallery.patientJourney": {
+    [Language.Turkish]: "Hasta Yolculuğu",
+    [Language.English]: "Patient Journey",
+    [Language.Russian]: "Путешествие пациента",
+    [Language.Georgian]: "პაციენტის მოგზაურობა"
+  },
+  "gallery.testimonialVideo": {
+    [Language.Turkish]: "Müşteri Yorumu",
+    [Language.English]: "Testimonial Video",
+    [Language.Russian]: "Видео с отзывом",
+    [Language.Georgian]: "სარეკომენდაციო ვიდეო"
+  },
+  "gallery.treatmentExplained": {
+    [Language.Turkish]: "Tedavi Açıklaması",
+    [Language.English]: "Treatment Explained",
+    [Language.Russian]: "Объяснение лечения",
+    [Language.Georgian]: "მკურნალობის განმარტება"
+  },
+  "gallery.facilityTour": {
+    [Language.Turkish]: "Tesis Turu",
+    [Language.English]: "Facility Tour",
+    [Language.Russian]: "Тур по объекту",
+    [Language.Georgian]: "ობიექტის ტური"
+  },
+  
+  // Temel UI çevirileri
+  "All": {
+    [Language.Turkish]: "Tümü",
+    [Language.English]: "All",
+    [Language.Russian]: "Все",
+    [Language.Georgian]: "ყველა"
+  },
+  "Start": {
+    [Language.Turkish]: "Başlangıç",
+    [Language.English]: "Start",
+    [Language.Russian]: "Начало",
+    [Language.Georgian]: "დაწყება"
+  },
+  "Complete": {
+    [Language.Turkish]: "Tamamlandı",
+    [Language.English]: "Complete",
+    [Language.Russian]: "Завершено",
+    [Language.Georgian]: "დასრულებულია"
+  },
+  "Search FAQs...": {
+    [Language.Turkish]: "SSS'larda Ara...",
+    [Language.English]: "Search FAQs...",
+    [Language.Russian]: "Поиск в часто задаваемых вопросах...",
+    [Language.Georgian]: "FAQ-ში ძიება..."
+  },
+  "No FAQs Found": {
+    [Language.Turkish]: "SSS Bulunamadı",
+    [Language.English]: "No FAQs Found",
+    [Language.Russian]: "Часто задаваемые вопросы не найдены",
+    [Language.Georgian]: "FAQ არ მოიძებნა"
+  },
+  "Try adjusting your search or filter criteria": {
+    [Language.Turkish]: "Arama veya filtre kriterlerinizi ayarlamayı deneyin",
+    [Language.English]: "Try adjusting your search or filter criteria",
+    [Language.Russian]: "Попробуйте изменить критерии поиска или фильтрации",
+    [Language.Georgian]: "სცადეთ თქვენი ძიების ან ფილტრის კრიტერიუმების შეცვლა"
+  },
+  
+  // Hizmet detay sayfası çevirileri
+  "services.faqsTitle": {
+    [Language.Turkish]: "Sık Sorulan Sorular",
+    [Language.English]: "Frequently Asked Questions",
+    [Language.Russian]: "Часто Задаваемые Вопросы",
+    [Language.Georgian]: "ხშირად დასმული შეკითხვები"
+  },
+  "services.faqsDescription": {
+    [Language.Turkish]: "Bu işlem hakkında en çok sorulan soruları ve uzmanlarımızın yanıtlarını burada bulabilirsiniz.",
+    [Language.English]: "Here you can find the most common questions about this procedure and answers from our experts.",
+    [Language.Russian]: "Здесь вы можете найти наиболее распространенные вопросы об этой процедуре и ответы от наших экспертов.",
+    [Language.Georgian]: "აქ შეგიძლიათ იხილოთ ყველაზე გავრცელებული შეკითხვები ამ პროცედურის შესახებ და პასუხები ჩვენი ექსპერტებისგან."
+  },
+  
+  // SSS sorular ve cevapları
+  "services.faqs.question1": {
+    [Language.Turkish]: "Saç ekimi kalıcı bir çözüm müdür?",
+    [Language.English]: "Is hair transplantation a permanent solution?",
+    [Language.Russian]: "Является ли трансплантация волос постоянным решением?",
+    [Language.Georgian]: "არის თუ არა თმის გადანერგვა მუდმივი გადაწყვეტილება?"
+  },
+  "services.faqs.answer1": {
+    [Language.Turkish]: "Evet, saç ekimi kalıcı bir çözümdür. Donör bölgeden alınan saç kökleri dökülmeye karşı genetik olarak dirençlidir. Bu nedenle alıcı bölgeye yerleştirilen greftler genellikle ömür boyu kalır.",
+    [Language.English]: "Yes, hair transplantation is a permanent solution. Hair follicles taken from the donor area are genetically resistant to hair loss. Therefore, the grafts placed in the recipient area generally last a lifetime.",
+    [Language.Russian]: "Да, трансплантация волос - это постоянное решение. Волосяные фолликулы, взятые из донорской области, генетически устойчивы к выпадению волос. Поэтому графты, размещенные в области реципиента, обычно сохраняются на всю жизнь.",
+    [Language.Georgian]: "დიახ, თმის გადანერგვა არის მუდმივი გადაწყვეტილება. დონორის ზონიდან აღებული თმის ფოლიკულები გენეტიკურად მდგრადია თმის ცვენის მიმართ. შესაბამისად, მიმღებ არეში განთავსებული გრაფტები ზოგადად გრძელდება მთელი სიცოცხლის განმავლობაში."
+  },
+  "services.faqs.question2": {
+    [Language.Turkish]: "Saç ekimi işlemi sırasında ağrı hissedilir mi?",
+    [Language.English]: "Is there pain during the hair transplantation procedure?",
+    [Language.Russian]: "Ощущается ли боль во время процедуры трансплантации волос?",
+    [Language.Georgian]: "არის თუ არა ტკივილი თმის გადანერგვის პროცედურის დროს?"
+  },
+  "services.faqs.answer2": {
+    [Language.Turkish]: "Hayır, işlem sırasında ağrı hissedilmez çünkü işlem lokal anestezi altında gerçekleştirilir. İşlem sonrası hafif bir rahatsızlık olabilir, ancak bu genellikle reçete edilen ağrı kesicilerle kolayca yönetilebilir.",
+    [Language.English]: "No, pain is not felt during the procedure because it is performed under local anesthesia. There may be mild discomfort after the procedure, but this can usually be easily managed with prescribed painkillers.",
+    [Language.Russian]: "Нет, боль не ощущается во время процедуры, потому что она выполняется под местной анестезией. После процедуры может возникнуть легкий дискомфорт, но обычно его можно легко устранить с помощью назначенных обезболивающих.",
+    [Language.Georgian]: "არა, ტკივილი არ იგრძნობა პროცედურის დროს, რადგან ის ტარდება ადგილობრივი ანესთეზიის ქვეშ. პროცედურის შემდეგ შეიძლება იყოს მსუბუქი დისკომფორტი, მაგრამ ეს ჩვეულებრივ ადვილად მართვადია დანიშნული ტკივილგამაყუჩებლებით."
+  },
+  "services.faqs.question3": {
+    [Language.Turkish]: "Saç ekimi sonrası ne kadar zaman içinde sonuçlar görülmeye başlar?",
+    [Language.English]: "How soon after hair transplantation do results start to become visible?",
+    [Language.Russian]: "Как скоро после трансплантации волос начинают быть видны результаты?",
+    [Language.Georgian]: "რამდენად მალე ჩანს შედეგები თმის გადანერგვის შემდეგ?"
+  },
+  "services.faqs.answer3": {
+    [Language.Turkish]: "İlk 2-3 hafta içinde nakledilen saçların çoğu dökülür, bu normal bir süreçtir. Yeni saç büyümesi genellikle 3-4 ay sonra başlar. Nihai sonuçlar için 12-18 ay beklemek gerekebilir.",
+    [Language.English]: "Most of the transplanted hair falls out within the first 2-3 weeks, which is a normal process. New hair growth typically begins after 3-4 months. Final results may take 12-18 months.",
+    [Language.Russian]: "Большинство пересаженных волос выпадает в течение первых 2-3 недель, это нормальный процесс. Рост новых волос обычно начинается через 3-4 месяца. Окончательные результаты могут занять 12-18 месяцев.",
+    [Language.Georgian]: "გადანერგილი თმის უმეტესობა ცვივა პირველი 2-3 კვირის განმავლობაში, რაც ნორმალური პროცესია. თმის ახალი ზრდა ჩვეულებრივ იწყება 3-4 თვის შემდეგ. საბოლოო შედეგებმა შეიძლება 12-18 თვე წაიღოს."
+  },
+  "services.faqs.question4": {
+    [Language.Turkish]: "Saç ekimi sonrası nasıl bir bakım gereklidir?",
+    [Language.English]: "What kind of aftercare is required after hair transplantation?",
+    [Language.Russian]: "Какой уход требуется после трансплантации волос?",
+    [Language.Georgian]: "როგორი მოვლაა საჭირო თმის გადანერგვის შემდეგ?"
+  },
+  "services.faqs.answer4": {
+    [Language.Turkish]: "İlk bir hafta doğrudan güneş ışığından kaçınmanız, grefler iyileşene kadar başınızı ovmamanız veya kaşımamanız gerekir. Size verilen özel şampuan talimatlarına uymanız önemlidir. Kliniğimiz size detaylı bir bakım kılavuzu sağlayacaktır.",
+    [Language.English]: "For the first week, you should avoid direct sunlight and not rub or scratch your head until the grafts heal. It is important to follow the special shampoo instructions given to you. Our clinic will provide you with a detailed care guide.",
+    [Language.Russian]: "В течение первой недели вы должны избегать прямых солнечных лучей и не тереть или чесать голову, пока графты не заживут. Важно следовать инструкциям по использованию специального шампуня, которые вам дали. Наша клиника предоставит вам подробное руководство по уходу.",
+    [Language.Georgian]: "პირველი კვირის განმავლობაში თავი უნდა აარიდოთ პირდაპირ მზის სხივებს და არ უნდა გაისრისოთ ან მოიფხანოთ თავი, სანამ გრაფტები არ გაჯანსაღდება. მნიშვნელოვანია, დაიცვათ თქვენთვის მიცემული სპეციალური შამპუნის ინსტრუქციები. ჩვენი კლინიკა მოგაწვდით დეტალურ მოვლის სახელმძღვანელოს."
+  },
+  "services.faqs.question5": {
+    [Language.Turkish]: "Saç ekimi kimler için uygundur?",
+    [Language.English]: "Who is a suitable candidate for hair transplantation?",
+    [Language.Russian]: "Кто является подходящим кандидатом для трансплантации волос?",
+    [Language.Georgian]: "ვინ არის შესაფერისი კანდიდატი თმის გადანერგვისთვის?"
+  },
+  "services.faqs.answer5": {
+    [Language.Turkish]: "18 yaşından büyük, sağlıklı ve yeterli donör saç yoğunluğuna sahip kişiler ideal adaylardır. Saç kaybı dengeli ve yaş ile bağlantılı olan kişiler de iyi sonuçlar alabilir. Kesin uygunluk için konsültasyon sırasında değerlendirme yapılması gerekir.",
+    [Language.English]: "People over 18 years old, healthy, and with sufficient donor hair density are ideal candidates. People with stabilized hair loss that is age-related can also achieve good results. A proper assessment during consultation is necessary for definitive eligibility.",
+    [Language.Russian]: "Люди старше 18 лет, здоровые и с достаточной плотностью волос донора являются идеальными кандидатами. Люди со стабилизированным выпадением волос, связанным с возрастом, также могут достичь хороших результатов. Для окончательного определения пригодности необходима надлежащая оценка во время консультации.",
+    [Language.Georgian]: "18 წელზე უფროსი ადამიანები, ჯანმრთელი და საკმარისი დონორის თმის სიმკვრივით არიან იდეალური კანდიდატები. ადამიანებს, რომლებსაც აქვთ სტაბილიზებული თმის ცვენა, რომელიც დაკავშირებულია ასაკთან, ასევე შეუძლიათ მიაღწიონ კარგ შედეგებს. კონსულტაციის დროს საჭიროა სათანადო შეფასება საბოლოო შესაბამისობისთვის."
+  },
+  "services.faqs.question6": {
+    [Language.Turkish]: "Saç ekimi sonrası normal aktivitelerime ne zaman dönebilirim?",
+    [Language.English]: "When can I return to my normal activities after hair transplantation?",
+    [Language.Russian]: "Когда я могу вернуться к своей нормальной деятельности после трансплантации волос?",
+    [Language.Georgian]: "როდის შემიძლია დავბრუნდე ჩემს ჩვეულებრივ საქმიანობაზე თმის გადანერგვის შემდეგ?"
+  },
+  "services.faqs.answer6": {
+    [Language.Turkish]: "Çoğu hasta işlemi takip eden gün normal, fiziksel olmayan aktivitelerine dönebilir. Ağır egzersiz ve fiziksel aktivitelerden yaklaşık 2 hafta kaçınmanızı öneririz. İş yerinde veya sosyal ortamlarda şapka veya gevşek başlık ile donör ve alıcı bölgelerini gizlemek mümkündür.",
+    [Language.English]: "Most patients can return to normal, non-physical activities the day after the procedure. We recommend avoiding heavy exercise and physical activities for about 2 weeks. It is possible to conceal the donor and recipient areas with a hat or loose headwear in workplace or social settings.",
+    [Language.Russian]: "Большинство пациентов могут вернуться к нормальной, нефизической деятельности на следующий день после процедуры. Мы рекомендуем избегать тяжелых упражнений и физической активности в течение примерно 2 недель. На рабочем месте или в социальной обстановке можно скрыть донорские и принимающие области шляпой или свободным головным убором.",
+    [Language.Georgian]: "პაციენტების უმეტესობას შეუძლია დაუბრუნდეს ნორმალურ, არაფიზიკურ აქტივობებს პროცედურის მეორე დღეს. ჩვენ გირჩევთ თავი აარიდოთ მძიმე ვარჯიშს და ფიზიკურ აქტივობას დაახლოებით 2 კვირის განმავლობაში. სამუშაო ადგილზე ან სოციალურ გარემოში შესაძლებელია დონორისა და მიმღების ტერიტორიების დამალვა ქუდით ან თავისუფალი თავსაბურავით."
+  },
+  "services.faqs.question7": {
+    [Language.Turkish]: "FUE ve DHI teknikleri arasındaki fark nedir?",
+    [Language.English]: "What is the difference between FUE and DHI techniques?",
+    [Language.Russian]: "В чем разница между техниками FUE и DHI?",
+    [Language.Georgian]: "რა განსხვავებაა FUE და DHI ტექნიკებს შორის?"
+  },
+  "services.faqs.answer7": {
+    [Language.Turkish]: "FUE tekniğinde saç kökleri tek tek çıkarılır ve önceden açılmış kanallara yerleştirilir. DHI tekniğinde ise, özel bir kalem cihazı (Choi implanter) ile greftler doğrudan alıcı bölgeye yerleştirilir, kanal açmaya gerek kalmaz. DHI daha yoğun sonuçlar ve daha hızlı iyileşme sağlayabilir, ancak genellikle daha maliyetlidir.",
+    [Language.English]: "In the FUE technique, hair follicles are extracted one by one and placed into pre-made channels. In the DHI technique, grafts are placed directly into the recipient area using a special pen device (Choi implanter), eliminating the need for channel creation. DHI can provide denser results and faster healing, but it is usually more costly.",
+    [Language.Russian]: "В технике FUE волосяные фолликулы извлекаются один за другим и помещаются в предварительно созданные каналы. В технике DHI трансплантаты помещаются непосредственно в область реципиента с помощью специального ручного устройства (имплантера Choi), что устраняет необходимость создания канала. DHI может обеспечить более плотные результаты и более быстрое заживление, но обычно стоит дороже.",
+    [Language.Georgian]: "FUE ტექნიკაში თმის ფოლიკულები ამოღებულია ერთი-ერთზე და განთავსებულია წინასწარ დამზადებულ არხებში. DHI ტექნიკაში გრაფტები პირდაპირ მიმღებ ზონაში თავსდება სპეციალური კალმის მოწყობილობის (Choi implanter) გამოყენებით, რაც გამორიცხავს არხის შექმნის საჭიროებას. DHI-ს შეუძლია უზრუნველყოს უფრო მჭიდრო შედეგები და სწრაფი შეხორცება, მაგრამ ჩვეულებრივ უფრო ძვირია."
+  },
+  "services.faqs.question8": {
+    [Language.Turkish]: "Saç ekimi işlemi sırasında riskler var mı?",
+    [Language.English]: "Are there any risks during the hair transplantation procedure?",
+    [Language.Russian]: "Существуют ли какие-либо риски во время процедуры трансплантации волос?",
+    [Language.Georgian]: "არსებობს თუ არა რაიმე რისკი თმის გადანერგვის პროცედურის დროს?"
+  },
+  "services.faqs.answer8": {
+    [Language.Turkish]: "Saç ekimi oldukça güvenli bir prosedürdür, ancak her cerrahi işlem gibi minimal riskler taşır. Bunlar arasında enfeksiyon, kanama, şişlik ve geçici uyuşukluk sayılabilir. MyHair Clinic'te deneyimli ekibimiz, steril koşullar ve modern ekipman kullanımı ile bu riskleri en aza indiriyor. Kapsamlı işlem öncesi değerlendirme ve yakın işlem sonrası takip sayesinde komplikasyon riski minimize edilir.",
+    [Language.English]: "Hair transplantation is a very safe procedure, but like any surgical procedure, it carries minimal risks. These include infection, bleeding, swelling, and temporary numbness. At MyHair Clinic, our experienced team minimizes these risks with sterile conditions and modern equipment. The risk of complications is minimized through comprehensive pre-procedure assessment and close post-procedure follow-up.",
+    [Language.Russian]: "Трансплантация волос - очень безопасная процедура, но, как и любая хирургическая процедура, она несет минимальные риски. К ним относятся инфекция, кровотечение, отек и временное онемение. В клинике MyHair наша опытная команда минимизирует эти риски с помощью стерильных условий и современного оборудования. Риск осложнений сводится к минимуму благодаря комплексной предпроцедурной оценке и тщательному последующему наблюдению после процедуры.",
+    [Language.Georgian]: "თმის გადანერგვა არის ძალიან უსაფრთხო პროცედურა, მაგრამ ნებისმიერი ქირურგიული პროცედურის მსგავსად, მას აქვს მინიმალური რისკები. ესენი მოიცავს ინფექციას, სისხლდენას, შეშუპებას და დროებით გაბუჟებას. MyHair Clinic-ში ჩვენი გამოცდილი გუნდი ამცირებს ამ რისკებს სტერილური პირობებისა და თანამედროვე აღჭურვილობის გამოყენებით. გართულებების რისკი მინიმუმამდე მცირდება ყოვლისმომცველი წინასწარი პროცედურის შეფასებითა და მჭიდრო შემდგომი მეთვალყურეობით."
+  },
+  "services.timelineDescription": {
+    [Language.Turkish]: "İşlem adımları ve iyileşme süreci",
+    [Language.English]: "Procedure steps and recovery process",
+    [Language.Russian]: "Этапы процедуры и процесс восстановления",
+    [Language.Georgian]: "პროცედურის ეტაპები და აღდგენის პროცესი"
+  },
+  "services.timeline.step1Title": {
+    [Language.Turkish]: "Ücretsiz Konsültasyon",
+    [Language.English]: "Free Consultation",
+    [Language.Russian]: "Бесплатная консультация",
+    [Language.Georgian]: "უფასო კონსულტაცია"
+  },
+  "services.timeline.step1Description": {
+    [Language.Turkish]: "Saç dökülmesi probleminizi değerlendirmek ve uygun tedavi yöntemini belirlemek için ücretsiz konsültasyon hizmeti sunuyoruz",
+    [Language.English]: "We offer a free consultation service to assess your hair loss problem and determine the appropriate treatment method",
+    [Language.Russian]: "Мы предлагаем бесплатную консультацию для оценки проблемы выпадения волос и определения подходящего метода лечения",
+    [Language.Georgian]: "ჩვენ გთავაზობთ უფასო საკონსულტაციო მომსახურებას თქვენი თმის ცვენის პრობლემის შესაფასებლად და შესაბამისი მკურნალობის მეთოდის განსასაზღვრად"
+  },
+  "services.timeline.step1Highlight1": {
+    [Language.Turkish]: "Detaylı saç analizi",
+    [Language.English]: "Detailed hair analysis",
+    [Language.Russian]: "Детальный анализ волос",
+    [Language.Georgian]: "დეტალური თმის ანალიზი"
+  },
+  "services.timeline.step1Highlight2": {
+    [Language.Turkish]: "Tedavi planı oluşturma",
+    [Language.English]: "Treatment planning",
+    [Language.Russian]: "Планирование лечения",
+    [Language.Georgian]: "მკურნალობის დაგეგმვა"
+  },
+  "services.timeline.step2Title": {
+    [Language.Turkish]: "Hazırlık ve Tasarım",
+    [Language.English]: "Preparation and Design",
+    [Language.Russian]: "Подготовка и Дизайн",
+    [Language.Georgian]: "მომზადება და დიზაინი"
+  },
+  "services.timeline.step2Description": {
+    [Language.Turkish]: "İşlem günü saçınız kısaltılır ve doğal saç çizginiz oluşturulur",
+    [Language.English]: "On the day of the procedure, your hair is shortened and your natural hairline is created",
+    [Language.Russian]: "В день процедуры ваши волосы укорачиваются и создается естественная линия роста волос",
+    [Language.Georgian]: "პროცედურის დღეს თქვენი თმა მოკლდება და შეიქმნება თქვენი ბუნებრივი თმის ხაზი"
+  },
+  "services.timeline.step2Highlight1": {
+    [Language.Turkish]: "Saç çizgisi tasarımı",
+    [Language.English]: "Hairline design",
+    [Language.Russian]: "Дизайн линии роста волос",
+    [Language.Georgian]: "თმის ხაზის დიზაინი"
+  },
+  "services.timeline.step2Highlight2": {
+    [Language.Turkish]: "Donör bölge hazırlığı",
+    [Language.English]: "Donor area preparation",
+    [Language.Russian]: "Подготовка донорской зоны",
+    [Language.Georgian]: "დონორის ზონის მომზადება"
+  },
+  "services.timeline.step3Title": {
+    [Language.Turkish]: "Greft Çıkarma",
+    [Language.English]: "Graft Extraction",
+    [Language.Russian]: "Извлечение Графтов",
+    [Language.Georgian]: "გრაფტის ექსტრაქცია"
+  },
+  "services.timeline.step3Description": {
+    [Language.Turkish]: "Özel mikrocerrahi aletlerle donör bölgeden kıl kökleri tek tek çıkarılır",
+    [Language.English]: "Hair follicles are individually extracted from the donor area with special microsurgical tools",
+    [Language.Russian]: "Волосяные фолликулы индивидуально извлекаются из донорской области с помощью специальных микрохирургических инструментов",
+    [Language.Georgian]: "თმის ფოლიკულები ინდივიდუალურად მოიპოვება დონორის ზონიდან სპეციალური მიკროქირურგიული ინსტრუმენტებით"
+  },
+  "services.timeline.step3Highlight1": {
+    [Language.Turkish]: "Hassas FUE tekniği",
+    [Language.English]: "Precise FUE technique",
+    [Language.Russian]: "Точная техника FUE",
+    [Language.Georgian]: "ზუსტი FUE ტექნიკა"
+  },
+  "services.timeline.step3Highlight2": {
+    [Language.Turkish]: "Minimal skar oluşumu",
+    [Language.English]: "Minimal scarring",
+    [Language.Russian]: "Минимальное образование рубцов",
+    [Language.Georgian]: "მინიმალური დანაწიბურება"
+  },
+  "services.timeline.step4Title": {
+    [Language.Turkish]: "Kanal Açma ve Yerleştirme",
+    [Language.English]: "Channel Creation and Placement",
+    [Language.Russian]: "Создание Каналов и Размещение",
+    [Language.Georgian]: "არხის შექმნა და განთავსება"
+  },
+  "services.timeline.step4Description": {
+    [Language.Turkish]: "Alıcı bölgede mikroskobik kanallar açılır ve greftler yerleştirilir",
+    [Language.English]: "Microscopic channels are created in the recipient area and grafts are placed",
+    [Language.Russian]: "В принимающей области создаются микроскопические каналы и размещаются графты",
+    [Language.Georgian]: "მიმღებ ზონაში იქმნება მიკროსკოპული არხები და ხდება გრაფტების განთავსება"
+  },
+  "services.timeline.step4Highlight1": {
+    [Language.Turkish]: "Doğal açılı yerleştirme",
+    [Language.English]: "Natural angle placement",
+    [Language.Russian]: "Размещение под естественным углом",
+    [Language.Georgian]: "ბუნებრივი კუთხით განთავსება"
+  },
+  "services.timeline.step4Highlight2": {
+    [Language.Turkish]: "Yüksek greft canlılık oranı",
+    [Language.English]: "High graft survival rate",
+    [Language.Russian]: "Высокий показатель приживаемости графтов",
+    [Language.Georgian]: "გრაფტის გადარჩენის მაღალი მაჩვენებელი"
+  },
+  "services.timeline.step5Title": {
+    [Language.Turkish]: "İyileşme ve Sonuç",
+    [Language.English]: "Recovery and Results",
+    [Language.Russian]: "Восстановление и Результаты",
+    [Language.Georgian]: "აღდგენა და შედეგები"
+  },
+  "services.timeline.step5Description": {
+    [Language.Turkish]: "İlk haftalarda kabuklanma ve dökülme olur, 6-12 ay içinde tam sonuçlar görülür",
+    [Language.English]: "Crusting and shedding occur in the first weeks, full results are seen within 6-12 months",
+    [Language.Russian]: "В первые недели происходит образование корок и выпадение, полные результаты видны через 6-12 месяцев",
+    [Language.Georgian]: "პირველ კვირებში ხდება ქერქის წარმოქმნა და ცვენა, სრული შედეგები ჩანს 6-12 თვის განმავლობაში"
+  },
+  "services.timeline.step5Highlight1": {
+    [Language.Turkish]: "Kalıcı sonuçlar",
+    [Language.English]: "Permanent results",
+    [Language.Russian]: "Постоянные результаты",
+    [Language.Georgian]: "მუდმივი შედეგები"
+  },
+  "services.timeline.step5Highlight2": {
+    [Language.Turkish]: "Doğal büyüme",
+    [Language.English]: "Natural growth",
+    [Language.Russian]: "Естественный рост",
+    [Language.Georgian]: "ბუნებრივი ზრდა"
+  },
+  "services.beforeAfter": {
+    [Language.Turkish]: "Öncesi ve Sonrası",
+    [Language.English]: "Before & After",
+    [Language.Russian]: "До и После",
+    [Language.Georgian]: "მკურნალობამდე და მკურნალობის შემდეგ"
+  },
+  "services.beforeAfterDescription": {
+    [Language.Turkish]: "Gerçek hasta sonuçlarımızdan bazı örnekler",
+    [Language.English]: "Some examples from our real patient results",
+    [Language.Russian]: "Некоторые примеры из результатов наших реальных пациентов",
+    [Language.Georgian]: "რამდენიმე მაგალითი ჩვენი რეალური პაციენტების შედეგებიდან"
+  },
+  "services.beforeAfterDisclaimer": {
+    [Language.Turkish]: "* Sonuçlar kişiden kişiye değişiklik gösterebilir",
+    [Language.English]: "* Results may vary from person to person",
+    [Language.Russian]: "* Результаты могут отличаться в зависимости от человека",
+    [Language.Georgian]: "* შედეგები შეიძლება განსხვავდებოდეს პიროვნებიდან პიროვნებამდე"
+  },
+  "services.viewMoreResults": {
+    [Language.Turkish]: "Daha Fazla Sonuç Gör",
+    [Language.English]: "View More Results",
+    [Language.Russian]: "Посмотреть Больше Результатов",
+    [Language.Georgian]: "მეტი შედეგის ნახვა"
+  },
+  "Before": {
+    [Language.Turkish]: "Öncesi",
+    [Language.English]: "Before",
+    [Language.Russian]: "До",
+    [Language.Georgian]: "მანამდე"
+  },
+  "After": {
+    [Language.Turkish]: "Sonrası",
+    [Language.English]: "After",
+    [Language.Russian]: "После",
+    [Language.Georgian]: "შემდეგ"
+  },
+  "Before & After Results": {
+    [Language.Turkish]: "Öncesi ve Sonrası Sonuçları",
+    [Language.English]: "Before & After Results",
+    [Language.Russian]: "Результаты До и После",
+    [Language.Georgian]: "შედეგები მკურნალობამდე და მკურნალობის შემდეგ"
+  },
+  "Grid View": {
+    [Language.Turkish]: "Izgara Görünümü",
+    [Language.English]: "Grid View",
+    [Language.Russian]: "Вид Сетки",
+    [Language.Georgian]: "ბადის ხედი"
+  },
+  "Slider View": {
+    [Language.Turkish]: "Kaydırıcı Görünümü",
+    [Language.English]: "Slider View",
+    [Language.Russian]: "Вид Слайдера",
+    [Language.Georgian]: "სლაიდერის ხედი"
+  },
+  
+  // İnceleme bölümü çevirileri
+  "reviews": {
+    [Language.Turkish]: "İncelemeler",
+    [Language.English]: "Reviews",
+    [Language.Russian]: "Отзывы",
+    [Language.Georgian]: "მიმოხილვები"
+  },
+  "reviews.title": {
+    [Language.Turkish]: "Hasta İncelemeleri",
+    [Language.English]: "Patient Reviews",
+    [Language.Russian]: "Отзывы Пациентов",
+    [Language.Georgian]: "პაციენტების მიმოხილვები"
+  },
+  "reviews.subtitle": {
+    [Language.Turkish]: "Gerçek hastaların deneyimleri",
+    [Language.English]: "Real patients' experiences",
+    [Language.Russian]: "Опыт реальных пациентов",
+    [Language.Georgian]: "რეალური პაციენტების გამოცდილება"
+  },
+  "reviews.basedOn": {
+    [Language.Turkish]: "Toplam değerlendirme puanı",
+    [Language.English]: "Based on",
+    [Language.Russian]: "На основе",
+    [Language.Georgian]: "ეფუძნება"
+  },
+  "reviews.satisfactionGuarantee": {
+    [Language.Turkish]: "Memnuniyet Garantisi",
+    [Language.English]: "Satisfaction Guarantee",
+    [Language.Russian]: "Гарантия Удовлетворения",
+    [Language.Georgian]: "კმაყოფილების გარანტია"
+  },
+  "reviews.experienceRating": {
+    [Language.Turkish]: "Genel Deneyim",
+    [Language.English]: "Overall Experience",
+    [Language.Russian]: "Общий Опыт",
+    [Language.Georgian]: "საერთო გამოცდილება"
+  },
+  "reviews.staffRating": {
+    [Language.Turkish]: "Personel",
+    [Language.English]: "Staff",
+    [Language.Russian]: "Персонал",
+    [Language.Georgian]: "პერსონალი"
+  },
+  "reviews.facilityRating": {
+    [Language.Turkish]: "Tesis",
+    [Language.English]: "Facility",
+    [Language.Russian]: "Учреждение",
+    [Language.Georgian]: "ობიექტი"
+  },
+  "reviews.valueRating": {
+    [Language.Turkish]: "Fiyat/Değer",
+    [Language.English]: "Value",
+    [Language.Russian]: "Ценность",
+    [Language.Georgian]: "ღირებულება"
+  },
+  "Loading reviews...": {
+    [Language.Turkish]: "İncelemeler yükleniyor...",
+    [Language.English]: "Loading reviews...",
+    [Language.Russian]: "Загрузка отзывов...",
+    [Language.Georgian]: "მიმოხილვების ჩატვირთვა..."
+  },
+  "All Reviews": {
+    [Language.Turkish]: "Tüm İncelemeler",
+    [Language.English]: "All Reviews",
+    [Language.Russian]: "Все Отзывы",
+    [Language.Georgian]: "ყველა მიმოხილვა"
+  },
+  "5 Stars": {
+    [Language.Turkish]: "5 Yıldız",
+    [Language.English]: "5 Stars",
+    [Language.Russian]: "5 Звезд",
+    [Language.Georgian]: "5 ვარსკვლავი"
+  },
+  "4 Stars": {
+    [Language.Turkish]: "4 Yıldız",
+    [Language.English]: "4 Stars",
+    [Language.Russian]: "4 Звезды",
+    [Language.Georgian]: "4 ვარსკვლავი"
+  },
+  "3 Stars & Below": {
+    [Language.Turkish]: "3 Yıldız ve Altı",
+    [Language.English]: "3 Stars & Below",
+    [Language.Russian]: "3 Звезды и Ниже",
+    [Language.Georgian]: "3 ვარსკვლავი და ქვემოთ"
+  },
+  "Sort by": {
+    [Language.Turkish]: "Sırala",
+    [Language.English]: "Sort by",
+    [Language.Russian]: "Сортировать по",
+    [Language.Georgian]: "დალაგება"
+  },
+  "reviews.recentlyAdded": {
+    [Language.Turkish]: "En Yeniler",
+    [Language.English]: "Recently Added",
+    [Language.Russian]: "Недавно Добавленные",
+    [Language.Georgian]: "ახლახანს დამატებული"
+  },
+  "reviews.overview": {
+    [Language.Turkish]: "Genel Bakış",
+    [Language.English]: "Overview",
+    [Language.Russian]: "Обзор",
+    [Language.Georgian]: "მიმოხილვა"
+  },
+  "reviews.byCategory": {
+    [Language.Turkish]: "Kategoriye Göre",
+    [Language.English]: "By Category",
+    [Language.Russian]: "По Категории",
+    [Language.Georgian]: "კატეგორიის მიხედვით"
+  },
+  "Featured Review": {
+    [Language.Turkish]: "Öne Çıkan İnceleme",
+    [Language.English]: "Featured Review",
+    [Language.Russian]: "Рекомендуемый Отзыв",
+    [Language.Georgian]: "რჩეული მიმოხილვა"
+  },
+  "No 4-star reviews yet": {
+    [Language.Turkish]: "Henüz 4 yıldızlı inceleme yok",
+    [Language.English]: "No 4-star reviews yet",
+    [Language.Russian]: "Пока нет отзывов с 4 звездами",
+    [Language.Georgian]: "ჯერ არ არის 4-ვარსკვლავიანი მიმოხილვები"
+  },
+  "No reviews with 3 stars or below yet": {
+    [Language.Turkish]: "Henüz 3 yıldız veya altında inceleme yok",
+    [Language.English]: "No reviews with 3 stars or below yet",
+    [Language.Russian]: "Пока нет отзывов с 3 звездами или ниже",
+    [Language.Georgian]: "ჯერ არ არის მიმოხილვები 3 ვარსკვლავით ან ქვემოთ"
+  },
+  "reviews.verifiedCustomer": {
+    [Language.Turkish]: "Doğrulanmış Müşteri",
+    [Language.English]: "Verified Customer",
+    [Language.Russian]: "Проверенный Клиент",
+    [Language.Georgian]: "გადამოწმებული მომხმარებელი"
+  },
+  "Read More": {
+    [Language.Turkish]: "Devamını Oku",
+    [Language.English]: "Read More",
+    [Language.Russian]: "Читать Далее",
+    [Language.Georgian]: "მეტის წაკითხვა"
+  },
+  "Share": {
+    [Language.Turkish]: "Paylaş",
+    [Language.English]: "Share",
+    [Language.Russian]: "Поделиться",
+    [Language.Georgian]: "გაზიარება"
+  },
+  "Helpful": {
+    [Language.Turkish]: "Yararlı",
+    [Language.English]: "Helpful",
+    [Language.Russian]: "Полезно",
+    [Language.Georgian]: "სასარგებლო"
+  },
+  
+  // Sonuç istatistikleri ve değerler bölümü
+  "services.results": {
+    [Language.Turkish]: "Sonuçlar",
+    [Language.English]: "Results",
+    [Language.Russian]: "Результаты",
+    [Language.Georgian]: "შედეგები"
+  },
+  "services.bookAppointment": {
+    [Language.Turkish]: "Randevu Al",
+    [Language.English]: "Book Appointment",
+    [Language.Russian]: "Записаться На Приём",
+    [Language.Georgian]: "დაჯავშნეთ შეხვედრა"
+  },
+  "services.allServices": {
+    [Language.Turkish]: "Tüm Hizmetler",
+    [Language.English]: "All Services",
+    [Language.Russian]: "Все Услуги",
+    [Language.Georgian]: "ყველა სერვისი"
+  },
+  "services.procedureSteps": {
+    [Language.Turkish]: "İşlem Adımları",
+    [Language.English]: "Procedure Steps",
+    [Language.Russian]: "Этапы Процедуры",
+    [Language.Georgian]: "პროცედურის ეტაპები"
+  },
+  "services.candidateInfo": {
+    [Language.Turkish]: "Aday Bilgileri",
+    [Language.English]: "Candidate Information",
+    [Language.Russian]: "Информация для Кандидатов",
+    [Language.Georgian]: "კანდიდატის ინფორმაცია"
+  },
+  "services.details": {
+    [Language.Turkish]: "Detaylar",
+    [Language.English]: "Details",
+    [Language.Russian]: "Подробности",
+    [Language.Georgian]: "დეტალები"
+  },
+  "services.overview": {
+    [Language.Turkish]: "Genel Bakış",
+    [Language.English]: "Overview",
+    [Language.Russian]: "Обзор",
+    [Language.Georgian]: "მიმოხილვა"
+  },
+  "services.postCare": {
+    [Language.Turkish]: "İşlem Sonrası Bakım",
+    [Language.English]: "Post-Procedure Care",
+    [Language.Russian]: "Уход После Процедуры",
+    [Language.Georgian]: "პროცედურის შემდგომი მოვლა"
+  },
+  "services.keyFeatures": {
+    [Language.Turkish]: "Öne Çıkan Özellikler",
+    [Language.English]: "Key Features",
+    [Language.Russian]: "Ключевые Особенности",
+    [Language.Georgian]: "ძირითადი მახასიათებლები"
+  },
+  "services.popular": {
+    [Language.Turkish]: "Popüler",
+    [Language.English]: "Popular",
+    [Language.Russian]: "Популярный",
+    [Language.Georgian]: "პოპულარული"
+  },
+  "common.share": {
+    [Language.Turkish]: "Paylaş",
+    [Language.English]: "Share",
+    [Language.Russian]: "Поделиться",
+    [Language.Georgian]: "გაზიარება"
+  },
+  "common.follow_us": {
+    [Language.Turkish]: "Bizi Takip Edin",
+    [Language.English]: "Follow Us",
+    [Language.Russian]: "Подписывайтесь На Нас",
+    [Language.Georgian]: "გამოგვყევით"
+  },
+  "services.exclusive": {
+    [Language.Turkish]: "Özel",
+    [Language.English]: "Exclusive",
+    [Language.Russian]: "Эксклюзивный",
+    [Language.Georgian]: "ექსკლუზიური"
+  },
+  "services.readyToStart": {
+    [Language.Turkish]: "Başlamaya Hazır mısınız?",
+    [Language.English]: "Ready to Start?",
+    [Language.Russian]: "Готовы Начать?",
+    [Language.Georgian]: "მზად ხართ დასაწყებად?"
+  },
+  "services.appointmentCTA": {
+    [Language.Turkish]: "Ücretsiz konsültasyon için hemen randevu alın",
+    [Language.English]: "Book an appointment now for a free consultation",
+    [Language.Russian]: "Запишитесь на прием сейчас для бесплатной консультации",
+    [Language.Georgian]: "დაჯავშნეთ შეხვედრა ახლავე უფასო კონსულტაციისთვის"
+  },
+  "services.satisfaction": {
+    [Language.Turkish]: "Memnuniyet",
+    [Language.English]: "Satisfaction",
+    [Language.Russian]: "Удовлетворение",
+    [Language.Georgian]: "კმაყოფილება"
+  },
+  "services.procedureTimeline": {
+    [Language.Turkish]: "İşlem Zaman Çizelgesi",
+    [Language.English]: "Procedure Timeline",
+    [Language.Russian]: "График Процедуры",
+    [Language.Georgian]: "პროცედურის დროის განრიგი"
+  },
+  "services.resultsStats": {
+    [Language.Turkish]: "Sonuçlarımızla Gurur Duyuyoruz",
+    [Language.English]: "We Take Pride in Our Results",
+    [Language.Russian]: "Мы Гордимся Нашими Результатами",
+    [Language.Georgian]: "ჩვენ ვამაყობთ ჩვენი შედეგებით"
+  },
+  "services.resultsDescription": {
+    [Language.Turkish]: "Yüksek müşteri memnuniyetiyle saç ekimi alanında kendimizi kanıtladık",
+    [Language.English]: "We've proven ourselves in the field of hair transplantation with high customer satisfaction",
+    [Language.Russian]: "Мы доказали себя в области трансплантации волос с высокой степенью удовлетворенности клиентов",
+    [Language.Georgian]: "ჩვენ დავამტკიცეთ თავი თმის გადანერგვის სფეროში მომხმარებელთა მაღალი კმაყოფილებით"
+  },
+  "services.statHappyPatients": {
+    [Language.Turkish]: "Mutlu Hastalar",
+    [Language.English]: "Happy Patients",
+    [Language.Russian]: "Довольные Пациенты",
+    [Language.Georgian]: "კმაყოფილი პაციენტები"
+  },
+  "services.statSuccessRate": {
+    [Language.Turkish]: "Başarı Oranı",
+    [Language.English]: "Success Rate",
+    [Language.Russian]: "Коэффициент Успеха",
+    [Language.Georgian]: "წარმატების მაჩვენებელი"
+  },
+  "services.statYearsExperience": {
+    [Language.Turkish]: "Yıllık Tecrübe",
+    [Language.English]: "Years Experience",
+    [Language.Russian]: "Лет Опыта",
+    [Language.Georgian]: "წლების გამოცდილება"
+  },
+  "services.statCountries": {
+    [Language.Turkish]: "Ülkeden Hasta",
+    [Language.English]: "Countries",
+    [Language.Russian]: "Стран",
+    [Language.Georgian]: "ქვეყნები"
+  },
+  
+  // Home page title and description
+
+};
+
+// Type for the hook's return
+interface UseTranslationOutput {
+  t: (key: string) => string | undefined;
+  formatCurrency: (value: number) => string;
+  formatDate: (date: Date | string) => string;
+}
+
+// Hook to get translations based on the current language
+export function useTranslation(language: Language): UseTranslationOutput {
+  return {
+    t: (key: string) => {
+      const translation = translations[key];
+      
+      if (!translation) {
+        console.warn(`Translation missing for key: "${key}"`);
+        return undefined;
+      }
+      
+      return translation[language];
+    },
+    
+    // Format number as currency according to the current language
+    formatCurrency: (value: number) => {
+      const formatter = new Intl.NumberFormat(
+        language === Language.Turkish ? 'tr-TR' : 
+        language === Language.English ? 'en-US' : 
+        language === Language.Russian ? 'ru-RU' : 'ka-GE', 
+      {
+        style: 'currency',
+        currency: 'USD'
+      });
+      
+      return formatter.format(value);
+    },
+    
+    // Format a date to the current language format
+    formatDate: (date: Date | string) => {
+      const dateObj = typeof date === 'string' ? new Date(date) : date;
+      
+      return dateObj.toLocaleDateString(
+        language === Language.Turkish ? 'tr-TR' : 
+        language === Language.English ? 'en-US' : 
+        language === Language.Russian ? 'ru-RU' : 'ka-GE'
+      );
+    }
+  };
+}
