@@ -1958,6 +1958,78 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Russian]: "Здесь вы найдете наиболее часто задаваемые вопросы и ответы об уходе после трансплантации волос.",
     [Language.Georgian]: "აქ შეგიძლიათ იპოვოთ ყველაზე ხშირად დასმული კითხვები და პასუხები თმის გადანერგვის შემდგომი მოვლის შესახებ."
   },
+  "aftercare.noGuides": {
+    [Language.Turkish]: "Henüz ameliyat sonrası bakım rehberi eklenmemiş.",
+    [Language.English]: "No post-procedure care guides have been added yet.",
+    [Language.Russian]: "Руководства по уходу после процедуры еще не добавлены.",
+    [Language.Georgian]: "პროცედურის შემდგომი მოვლის გზამკვლევები ჯერ არ არის დამატებული."
+  },
+  "aftercare.downloadPdf": {
+    [Language.Turkish]: "PDF Olarak İndir",
+    [Language.English]: "Download PDF",
+    [Language.Russian]: "Скачать в формате PDF",
+    [Language.Georgian]: "PDF-ის ჩამოტვირთვა"
+  },
+  "aftercare.viewGuide": {
+    [Language.Turkish]: "Rehberi Görüntüle",
+    [Language.English]: "View Guide",
+    [Language.Russian]: "Просмотреть руководство",
+    [Language.Georgian]: "გზამკვლევის ნახვა"
+  },
+  "aftercare.allGuides": {
+    [Language.Turkish]: "Tüm Bakım Rehberleri",
+    [Language.English]: "All Care Guides",
+    [Language.Russian]: "Все руководства по уходу",
+    [Language.Georgian]: "ყველა მოვლის გზამკვლევი"
+  },
+  "aftercare.careGuideLabel": {
+    [Language.Turkish]: "Bakım Rehberi",
+    [Language.English]: "Care Guide",
+    [Language.Russian]: "Руководство по уходу",
+    [Language.Georgian]: "მოვლის გზამკვლევი"
+  },
+  "aftercare.details": {
+    [Language.Turkish]: "Detaylar",
+    [Language.English]: "Details",
+    [Language.Russian]: "Подробнее",
+    [Language.Georgian]: "დეტალები"
+  },
+  "aftercare.importantReminders": {
+    [Language.Turkish]: "Önemli Hatırlatmalar",
+    [Language.English]: "Important Reminders",
+    [Language.Russian]: "Важные напоминания",
+    [Language.Georgian]: "მნიშვნელოვანი შეხსენებები"
+  },
+  "aftercare.reminder.followInstructions": {
+    [Language.Turkish]: "Tedavi sonrası bakım talimatlarını dikkatle uygulayın.",
+    [Language.English]: "Follow post-treatment care instructions carefully.",
+    [Language.Russian]: "Тщательно следуйте инструкциям по уходу после лечения.",
+    [Language.Georgian]: "ყურადღებით გაითვალისწინეთ მკურნალობის შემდგომი მოვლის ინსტრუქციები."
+  },
+  "aftercare.reminder.contactClinic": {
+    [Language.Turkish]: "Sorularınız için her zaman kliniğimizle iletişime geçin.",
+    [Language.English]: "Always contact our clinic if you have questions.",
+    [Language.Russian]: "Всегда обращайтесь в нашу клинику, если у вас есть вопросы.",
+    [Language.Georgian]: "ყოველთვის დაუკავშირდით ჩვენს კლინიკას თუ გაქვთ შეკითხვები."
+  },
+  "aftercare.reminder.appointmentCheckup": {
+    [Language.Turkish]: "Düzenli kontrol randevularınızı kaçırmayın.",
+    [Language.English]: "Don't miss your regular check-up appointments.",
+    [Language.Russian]: "Не пропускайте регулярные контрольные приемы.",
+    [Language.Georgian]: "არ გამოტოვოთ თქვენი რეგულარული შემოწმების შეხვედრები."
+  },
+  "aftercare.disclaimer": {
+    [Language.Turkish]: "Bu rehberler genel bilgi amaçlıdır ve kişisel tıbbi tavsiye yerine geçmez.",
+    [Language.English]: "These guides are for general information and do not replace personal medical advice.",
+    [Language.Russian]: "Эти руководства предназначены для общей информации и не заменяют персональную медицинскую консультацию.",
+    [Language.Georgian]: "ეს გზამკვლევები ზოგადი ინფორმაციისთვისაა და არ ანაცვლებს პირად სამედიცინო რჩევას."
+  },
+  "common.information": {
+    [Language.Turkish]: "Bilgi",
+    [Language.English]: "Information",
+    [Language.Russian]: "Информация",
+    [Language.Georgian]: "ინფორმაცია"
+  },
 
   // ===========================================================================
   // PRODUCT PAGE

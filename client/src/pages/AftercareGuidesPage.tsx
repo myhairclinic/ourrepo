@@ -7,6 +7,7 @@ import { API_ROUTES } from "@/lib/constants";
 import { Helmet } from "react-helmet";
 import { useTranslation } from "@/hooks/use-translation";
 import { cn } from "@/lib/utils";
+import { Language } from "@shared/types";
 
 // Custom hook to use language context
 const useLanguage = () => {
@@ -110,50 +111,23 @@ export default function AftercareGuidesPage() {
     }
   };
 
-  // Translations
-  const pageTitle = {
-    TR: "Ameliyat Sonrası Bakım Rehberleri",
-    EN: "Post-Procedure Care Guides",
-    RU: "Руководства по уходу после процедуры",
-    KA: "პროცედურის შემდგომი მოვლის გზამკვლევები",
-  };
+  // Define translation constants
+  const noGuidesText = "aftercare.noGuides";
+  const downloadPdfText = "aftercare.downloadPdf";
+  const viewGuideText = "aftercare.viewGuide";
 
-  const pageDescription = {
-    TR: "Saç ekimi ve diğer prosedürler sonrası en iyi sonuçlar için bakım rehberlerimizi inceleyin.",
-    EN: "Explore our care guides for best results after hair transplantation and other procedures.",
-    RU: "Ознакомьтесь с нашими руководствами по уходу для достижения наилучших результатов после трансплантации волос и других процедур.",
-    KA: "გაეცანით ჩვენს მოვლის გზამკვლევებს საუკეთესო შედეგებისთვის თმის გადანერგვის და სხვა პროცედურების შემდეგ.",
-  };
-
-  const noGuidesText = {
-    TR: "Henüz ameliyat sonrası bakım rehberi eklenmemiş.",
-    EN: "No post-procedure care guides have been added yet.",
-    RU: "Руководства по уходу после процедуры еще не добавлены.",
-    KA: "პროცედურის შემდგომი მოვლის გზამკვლევები ჯერ არ არის დამატებული.",
-  };
-
-  const downloadPdfText = {
-    TR: "PDF Olarak İndir",
-    EN: "Download PDF",
-    RU: "Скачать в формате PDF",
-    KA: "PDF-ის ჩამოტვირთვა",
-  };
-
-  const viewGuideText = {
-    TR: "Rehberi Görüntüle",
-    EN: "View Guide",
-    RU: "Просмотреть руководство",
-    KA: "გზამკვლევის ნახვა",
-  };
-
+  // Use translation keys instead of hardcoded objects
   return (
     <>
       <Helmet>
-        <title>{t(pageTitle)}</title>
-        <meta name="description" content={t(pageDescription)} />
+        <title>{t("aftercare.title")}</title>
+        <meta name="description" content={t("aftercare.description")} />
       </Helmet>
 
-      <PageHeader title={t(pageTitle)} description={t(pageDescription)} />
+      <PageHeader 
+        title={t("aftercare.header.title")} 
+        description={t("aftercare.header.description")} 
+      />
 
       <section className="container py-12">
         {isLoading ? (
@@ -167,12 +141,7 @@ export default function AftercareGuidesPage() {
           </div>
         ) : activeGuides.length === 0 ? (
           <Alert>
-            <AlertTitle>{t({
-              TR: "Bilgi",
-              EN: "Information",
-              RU: "Информация",
-              KA: "ინფორმაცია"
-            })}</AlertTitle>
+            <AlertTitle>{t("common.information")}</AlertTitle>
             <AlertDescription>{t(noGuidesText)}</AlertDescription>
           </Alert>
         ) : (
