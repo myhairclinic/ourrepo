@@ -50,6 +50,242 @@ function applyReplacements(text: string, replacements?: Record<string, string | 
 // Our translations object with simple key structure
 // Translations object (exported for direct usage in components)
 export const translations: Record<string, LanguageMap> = {
+  // Home page translations
+  "home.title": {
+    [Language.Turkish]: "Tiflis Saç Ekimi ve Estetik Merkezi | MyHair Clinic",
+    [Language.English]: "Tbilisi Hair Transplant and Aesthetic Center | MyHair Clinic",
+    [Language.Russian]: "Тбилисский центр трансплантации волос и эстетики | MyHair Clinic",
+    [Language.Georgian]: "თბილისის თმის გადანერგვის და ესთეტიკური ცენტრი | MyHair Clinic"
+  },
+  "home.description": {
+    [Language.Turkish]: "MyHair Clinic, Tiflis'te lider saç ekimi ve estetik merkezi. FUE ve DHI teknikleri kullanarak doğal görünümlü saç ekimi, sakal ekimi ve kaş ekimi hizmetleri sunuyoruz.",
+    [Language.English]: "MyHair Clinic, leading hair transplant and aesthetic center in Tbilisi. We offer natural-looking hair, beard, and eyebrow transplantation services using FUE and DHI techniques.",
+    [Language.Russian]: "MyHair Clinic, ведущий центр трансплантации волос и эстетики в Тбилиси. Мы предлагаем естественно выглядящие услуги по трансплантации волос, бороды и бровей с использованием методов FUE и DHI.",
+    [Language.Georgian]: "MyHair Clinic, თმის გადანერგვისა და ესთეტიკის წამყვანი ცენტრი თბილისში. ჩვენ გთავაზობთ ბუნებრივი გარეგნობის თმის, წვერის და წარბების გადანერგვის სერვისებს FUE და DHI ტექნიკების გამოყენებით."
+  },
+  
+  // Home - Main Slider
+  "home.location.weekdaysLabel": {
+    [Language.Turkish]: "Hafta içi",
+    [Language.English]: "Weekdays",
+    [Language.Russian]: "Будние дни",
+    [Language.Georgian]: "სამუშაო დღეები"
+  },
+  
+  // Home - Patient Journey
+  "home.patientJourney.title": {
+    [Language.Turkish]: "Hasta Yolculuğu",
+    [Language.English]: "Patient Journey",
+    [Language.Russian]: "Путь Пациента",
+    [Language.Georgian]: "პაციენტის მოგზაურობა"
+  },
+  "home.patientJourney.subtitle": {
+    [Language.Turkish]: "MyHair Clinic'te saç ekimi süreciniz nasıl ilerleyecek?",
+    [Language.English]: "How will your hair transplant process progress at MyHair Clinic?",
+    [Language.Russian]: "Как будет проходить процесс трансплантации волос в MyHair Clinic?",
+    [Language.Georgian]: "როგორ წარიმართება თქვენი თმის გადანერგვის პროცესი MyHair Clinic-ში?"
+  },
+  "home.patientJourney.satisfaction": {
+    [Language.Turkish]: "99% Hasta Memnuniyeti",
+    [Language.English]: "99% Patient Satisfaction",
+    [Language.Russian]: "99% Удовлетворенность Пациентов",
+    [Language.Georgian]: "99% პაციენტთა კმაყოფილება"
+  },
+  "home.patientJourney.cta.description": {
+    [Language.Turkish]: "Saç ekimi yolculuğunuza ilk adımı atmak ve ücretsiz olarak değerlendirme almak için hemen bize ulaşın. Uzmanlarımız sizinle ilgilenecektir.",
+    [Language.English]: "Contact us today to take the first step in your hair transplant journey and get a free evaluation. Our experts will take care of you.",
+    [Language.Russian]: "Свяжитесь с нами сегодня, чтобы сделать первый шаг в своем пути к трансплантации волос и получить бесплатную оценку. Наши эксперты позаботятся о вас.",
+    [Language.Georgian]: "დაგვიკავშირდით დღესვე, რათა გადადგათ პირველი ნაბიჯი თქვენს თმის გადანერგვის გზაზე და მიიღოთ უფასო შეფასება. ჩვენი ექსპერტები იზრუნებენ თქვენზე."
+  },
+  "home.patientJourney.cta.button": {
+    [Language.Turkish]: "Ücretsiz Danışma Randevusu Alın",
+    [Language.English]: "Get Free Consultation Appointment",
+    [Language.Russian]: "Получить Бесплатную Консультацию",
+    [Language.Georgian]: "მიიღეთ უფასო კონსულტაციის შეხვედრა"
+  },
+  "home.patientJourney.steps.consultation.title": {
+    [Language.Turkish]: "İlk Konsültasyon",
+    [Language.English]: "Initial Consultation",
+    [Language.Russian]: "Первичная Консультация",
+    [Language.Georgian]: "საწყისი კონსულტაცია"
+  },
+  "home.patientJourney.steps.consultation.description": {
+    [Language.Turkish]: "Online görüşme ile saç kaybınızın değerlendirilmesi ve kişisel tedavi planı oluşturulması.",
+    [Language.English]: "Evaluation of your hair loss and creation of personalized treatment plan through online meeting.",
+    [Language.Russian]: "Оценка выпадения волос и создание индивидуального плана лечения через онлайн-встречу.",
+    [Language.Georgian]: "თქვენი თმის ცვენის შეფასება და პერსონალიზებული მკურნალობის გეგმის შექმნა ონლაინ შეხვედრის მეშვეობით."
+  },
+  "home.patientJourney.steps.scheduling.title": {
+    [Language.Turkish]: "Randevu Planlaması",
+    [Language.English]: "Appointment Scheduling",
+    [Language.Russian]: "Планирование Встречи",
+    [Language.Georgian]: "შეხვედრის დაგეგმვა"
+  },
+  "home.patientJourney.steps.scheduling.description": {
+    [Language.Turkish]: "Size en uygun tarihin belirlenmesi ve operasyon için randevunun oluşturulması.",
+    [Language.English]: "Determining the most suitable date for you and creating an appointment for the operation.",
+    [Language.Russian]: "Определение наиболее подходящей для вас даты и создание встречи для операции.",
+    [Language.Georgian]: "თქვენთვის ყველაზე შესაფერისი თარიღის განსაზღვრა და ოპერაციისთვის შეხვედრის შექმნა."
+  },
+  "home.patientJourney.steps.travel.title": {
+    [Language.Turkish]: "Tiflis'e Seyahat",
+    [Language.English]: "Travel to Tbilisi",
+    [Language.Russian]: "Поездка в Тбилиси",
+    [Language.Georgian]: "მოგზაურობა თბილისში"
+  },
+  "home.patientJourney.steps.travel.description": {
+    [Language.Turkish]: "Gürcistan'a varışınızda, havalimanından kliniğe veya otelinize özel transfer hizmeti.",
+    [Language.English]: "Upon your arrival in Georgia, private transfer service from the airport to the clinic or your hotel.",
+    [Language.Russian]: "По прибытии в Грузию, частный трансфер из аэропорта в клинику или ваш отель.",
+    [Language.Georgian]: "საქართველოში ჩამოსვლისას, კერძო ტრანსფერის სერვისი აეროპორტიდან კლინიკაში ან თქვენს სასტუმროში."
+  },
+  "home.patientJourney.steps.preOp.title": {
+    [Language.Turkish]: "Operasyon Öncesi Değerlendirme",
+    [Language.English]: "Pre-Operation Assessment",
+    [Language.Russian]: "Предоперационная Оценка",
+    [Language.Georgian]: "ოპერაციისწინა შეფასება"
+  },
+  "home.patientJourney.steps.preOp.description": {
+    [Language.Turkish]: "Yüz yüze konsültasyon, saç çizgisi tasarımı ve operasyon öncesi son hazırlıklar.",
+    [Language.English]: "Face-to-face consultation, hairline design, and final preparations before the operation.",
+    [Language.Russian]: "Очная консультация, дизайн линии роста волос и окончательная подготовка перед операцией.",
+    [Language.Georgian]: "პირადი კონსულტაცია, თმის ხაზის დიზაინი და საბოლოო მომზადება ოპერაციის წინ."
+  },
+  "home.patientJourney.steps.procedure.title": {
+    [Language.Turkish]: "Saç Ekimi İşlemi",
+    [Language.English]: "Hair Transplant Procedure",
+    [Language.Russian]: "Процедура Трансплантации Волос",
+    [Language.Georgian]: "თმის გადანერგვის პროცედურა"
+  },
+  "home.patientJourney.steps.procedure.description": {
+    [Language.Turkish]: "Konforlu bir ortamda DHI veya FUE yöntemiyle saç ekimi operasyonunun gerçekleştirilmesi.",
+    [Language.English]: "Performing the hair transplant operation using DHI or FUE method in a comfortable environment.",
+    [Language.Russian]: "Проведение операции по трансплантации волос методом DHI или FUE в комфортной обстановке.",
+    [Language.Georgian]: "თმის გადანერგვის ოპერაციის ჩატარება DHI ან FUE მეთოდით კომფორტულ გარემოში."
+  },
+  "home.patientJourney.steps.postOp.title": {
+    [Language.Turkish]: "Operasyon Sonrası Bakım",
+    [Language.English]: "Post-Operation Care",
+    [Language.Russian]: "Послеоперационный Уход",
+    [Language.Georgian]: "ოპერაციის შემდგომი მოვლა"
+  },
+  "home.patientJourney.steps.postOp.description": {
+    [Language.Turkish]: "İlk gün sonrası kontrolü ve detaylı bakım talimatlarının verilmesi.",
+    [Language.English]: "First day follow-up check and provision of detailed care instructions.",
+    [Language.Russian]: "Проверка на следующий день и предоставление подробных инструкций по уходу.",
+    [Language.Georgian]: "პირველი დღის შემდეგ შემოწმება და დეტალური მოვლის ინსტრუქციების მიწოდება."
+  },
+  "home.patientJourney.steps.tourism.title": {
+    [Language.Turkish]: "Tiflis'i Keşfedin",
+    [Language.English]: "Explore Tbilisi",
+    [Language.Russian]: "Исследуйте Тбилиси",
+    [Language.Georgian]: "აღმოაჩინეთ თბილისი"
+  },
+  "home.patientJourney.steps.tourism.description": {
+    [Language.Turkish]: "İyileşme sürecinde Tiflis'in güzelliklerini keşfetme fırsatı ve şehir turu.",
+    [Language.English]: "Opportunity to discover the beauties of Tbilisi and city tour during the recovery process.",
+    [Language.Russian]: "Возможность открыть для себя красоты Тбилиси и совершить экскурсию по городу во время процесса восстановления.",
+    [Language.Georgian]: "თბილისის სილამაზის აღმოჩენის და ქალაქის ტურის შესაძლებლობა აღდგენის პროცესში."
+  },
+  "home.patientJourney.steps.followUp.title": {
+    [Language.Turkish]: "Uzun Dönem Takip",
+    [Language.English]: "Long-Term Follow-up",
+    [Language.Russian]: "Долгосрочное Наблюдение",
+    [Language.Georgian]: "გრძელვადიანი მეთვალყურეობა"
+  },
+  "home.patientJourney.steps.followUp.description": {
+    [Language.Turkish]: "Ülkenize döndükten sonra düzenli online kontroller ve süreç takibi.",
+    [Language.English]: "Regular online check-ups and process monitoring after returning to your country.",
+    [Language.Russian]: "Регулярные онлайн-проверки и мониторинг процесса после возвращения в вашу страну.",
+    [Language.Georgian]: "რეგულარული ონლაინ შემოწმებები და პროცესის მონიტორინგი თქვენს ქვეყანაში დაბრუნების შემდეგ."
+  },
+  
+  // Home - Expert Section 
+  "home.expertSection.title": {
+    [Language.Turkish]: "Saç Ekimi Uzmanları",
+    [Language.English]: "Hair Transplant Experts",
+    [Language.Russian]: "Эксперты по Трансплантации Волос",
+    [Language.Georgian]: "თმის გადანერგვის ექსპერტები"
+  },
+  "home.expertSection.subtitle": {
+    [Language.Turkish]: "MyHair Clinic'in deneyimli ve uzman kadrosuyla tanışın",
+    [Language.English]: "Meet the experienced and expert team of MyHair Clinic",
+    [Language.Russian]: "Познакомьтесь с опытной и экспертной командой MyHair Clinic",
+    [Language.Georgian]: "გაიცანით MyHair Clinic-ის გამოცდილი და ექსპერტი გუნდი"
+  },
+  "home.expertSection.consultationCta": {
+    [Language.Turkish]: "Ücretsiz Konsültasyon Alın",
+    [Language.English]: "Get Free Consultation",
+    [Language.Russian]: "Получить Бесплатную Консультацию",
+    [Language.Georgian]: "მიიღეთ უფასო კონსულტაცია"
+  },
+  "home.expertSection.quote": {
+    [Language.Turkish]: "MyHair Clinic'te her hasta için kişiselleştirilmiş yaklaşım sunuyoruz. Amacımız sadece saç ekimi yapmak değil, hastalarımızın özgüvenlerini yeniden kazanmalarına yardımcı olmaktır.",
+    [Language.English]: "At MyHair Clinic, we offer a personalized approach for each patient. Our goal is not just to perform hair transplants, but to help our patients regain their self-confidence.",
+    [Language.Russian]: "В MyHair Clinic мы предлагаем индивидуальный подход к каждому пациенту. Наша цель не просто выполнить трансплантацию волос, а помочь нашим пациентам вернуть уверенность в себе.",
+    [Language.Georgian]: "MyHair Clinic-ში ჩვენ გთავაზობთ პერსონალიზებულ მიდგომას თითოეული პაციენტისთვის. ჩვენი მიზანია არა მხოლოდ თმის გადანერგვის განხორციელება, არამედ ჩვენი პაციენტების თვითრწმენის დაბრუნებაში დახმარება."
+  },
+  "home.expertSection.stats.years": {
+    [Language.Turkish]: "Yıllık Deneyim",
+    [Language.English]: "Years Experience",
+    [Language.Russian]: "Лет Опыта",
+    [Language.Georgian]: "წლიანი გამოცდილება"
+  },
+  "home.expertSection.stats.procedures": {
+    [Language.Turkish]: "Başarılı İşlem",
+    [Language.English]: "Successful Procedures",
+    [Language.Russian]: "Успешных Процедур",
+    [Language.Georgian]: "წარმატებული პროცედურები"
+  },
+  "home.expertSection.stats.satisfaction": {
+    [Language.Turkish]: "Hasta Memnuniyeti",
+    [Language.English]: "Patient Satisfaction",
+    [Language.Russian]: "Удовлетворенность Пациентов",
+    [Language.Georgian]: "პაციენტთა კმაყოფილება"
+  },
+  "home.expertSection.stats.rating": {
+    [Language.Turkish]: "Uzman Değerlendirmesi",
+    [Language.English]: "Expert Rating",
+    [Language.Russian]: "Рейтинг Экспертов",
+    [Language.Georgian]: "ექსპერტთა შეფასება"
+  },
+  "home.expertSection.features.technique.title": {
+    [Language.Turkish]: "İleri DHI ve FUE Teknikleri",
+    [Language.English]: "Advanced DHI and FUE Techniques",
+    [Language.Russian]: "Продвинутые Техники DHI и FUE",
+    [Language.Georgian]: "მოწინავე DHI და FUE ტექნიკები"
+  },
+  "home.expertSection.features.technique.description": {
+    [Language.Turkish]: "Doğal görünümlü sonuçlar için son teknoloji yöntemler kullanıyoruz.",
+    [Language.English]: "We use state-of-the-art methods for natural-looking results.",
+    [Language.Russian]: "Мы используем новейшие методы для естественно выглядящих результатов.",
+    [Language.Georgian]: "ჩვენ ვიყენებთ უახლეს მეთოდებს ბუნებრივი გარეგნობის შედეგებისთვის."
+  },
+  "home.expertSection.features.painless.title": {
+    [Language.Turkish]: "Ağrısız Prosedür",
+    [Language.English]: "Painless Procedure",
+    [Language.Russian]: "Безболезненная Процедура",
+    [Language.Georgian]: "უმტკივნეულო პროცედურა"
+  },
+  "home.expertSection.features.painless.description": {
+    [Language.Turkish]: "Konforlu ve minimum rahatsızlık sağlayan özel anestezi protokolü.",
+    [Language.English]: "Special anesthesia protocol that ensures comfort and minimal discomfort.",
+    [Language.Russian]: "Специальный протокол анестезии, обеспечивающий комфорт и минимальный дискомфорт.",
+    [Language.Georgian]: "სპეციალური ანესთეზიის პროტოკოლი, რომელიც უზრუნველყოფს კომფორტს და მინიმალურ დისკომფორტს."
+  },
+  "home.expertSection.features.natural.title": {
+    [Language.Turkish]: "Doğal Saç Çizgisi Tasarımı",
+    [Language.English]: "Natural Hairline Design",
+    [Language.Russian]: "Дизайн Естественной Линии Волос",
+    [Language.Georgian]: "ბუნებრივი თმის ხაზის დიზაინი"
+  },
+  "home.expertSection.features.natural.description": {
+    [Language.Turkish]: "Yüz şeklinize ve yaşınıza uygun kişiselleştirilmiş ve doğal görünümlü tasarım.",
+    [Language.English]: "Personalized and natural-looking design tailored to your face shape and age.",
+    [Language.Russian]: "Индивидуальный и естественно выглядящий дизайн, адаптированный к форме вашего лица и возрасту.",
+    [Language.Georgian]: "პერსონალიზებული და ბუნებრივი გარეგნობის დიზაინი, რომელიც მორგებულია თქვენი სახის ფორმასა და ასაკზე."
+  },
+  
   // Services page specific translations
   "services.needHelp": {
     [Language.Turkish]: "Yardıma mı İhtiyacınız Var?",
@@ -323,29 +559,9 @@ export const translations: Record<string, LanguageMap> = {
   },
   "home.expertSection.features.natural.description": {
     [Language.Turkish]: "Yüz şeklinize ve yaşınıza uygun kişiselleştirilmiş ve doğal görünümlü tasarım.",
-    [Language.English]: "Personalized and natural-looking design suitable for your face shape and age.",
-    [Language.Russian]: "Индивидуальный и естественно выглядящий дизайн, подходящий для формы вашего лица и возраста.",
-    [Language.Georgian]: "პერსონალიზებული და ბუნებრივი გარეგნობის დიზაინი, რომელიც შეესაბამება თქვენი სახის ფორმას და ასაკს."
-  },
-  "home.expertSection.consultationCta": {
-    [Language.Turkish]: "Ücretsiz Konsültasyon Alın",
-    [Language.English]: "Get a Free Consultation",
-    [Language.Russian]: "Получить Бесплатную Консультацию",
-    [Language.Georgian]: "მიიღეთ უფასო კონსულტაცია"
-  },
-  "home.expertSection.quote": {
-    [Language.Turkish]: "MyHair Clinic'te her hasta için kişiselleştirilmiş yaklaşım sunuyoruz. Amacımız sadece saç ekimi yapmak değil, hastalarımızın özgüvenlerini yeniden kazanmalarına yardımcı olmaktır.",
-    [Language.English]: "At MyHair Clinic, we offer a personalized approach for each patient. Our goal is not just to perform hair transplantation, but to help our patients regain their self-confidence.",
-    [Language.Russian]: "В клинике MyHair мы предлагаем индивидуальный подход к каждому пациенту. Наша цель не просто провести трансплантацию волос, а помочь нашим пациентам вернуть уверенность в себе.",
-    [Language.Georgian]: "MyHair კლინიკაში ჩვენ გთავაზობთ პერსონალიზებულ მიდგომას თითოეული პაციენტისთვის. ჩვენი მიზანია არა მხოლოდ თმის გადანერგვა, არამედ პაციენტების დახმარება თვითრწმენის დაბრუნებაში."
-  },
-  
-  // Location Section
-  "home.location.weekdaysLabel": {
-    [Language.Turkish]: "Pazartesi - Cumartesi",
-    [Language.English]: "Monday - Saturday",
-    [Language.Russian]: "Понедельник - Суббота",
-    [Language.Georgian]: "ორშაბათი - შაბათი"
+    [Language.English]: "Personalized and natural-looking design tailored to your face shape and age.",
+    [Language.Russian]: "Индивидуальный и естественно выглядящий дизайн, адаптированный к форме вашего лица и возрасту.",
+    [Language.Georgian]: "პერსონალიზებული და ბუნებრივი გარეგნობის დიზაინი, რომელიც მორგებულია თქვენი სახის ფორმასა და ასაკზე."
   },
   
   // Services Section
@@ -1405,18 +1621,7 @@ export const translations: Record<string, LanguageMap> = {
   },
   
   // Home page title and description
-  "home.title": {
-    [Language.Turkish]: "Tiflis Saç Ekimi ve Estetik Merkezi",
-    [Language.English]: "Tbilisi Hair Transplantation and Aesthetic Center",
-    [Language.Russian]: "Центр Трансплантации Волос и Эстетики в Тбилиси",
-    [Language.Georgian]: "თბილისის თმის გადანერგვისა და ესთეტიკის ცენტრი"
-  },
-  "home.description": {
-    [Language.Turkish]: "MyHair Clinic, Tiflis'te lider saç ekimi ve estetik merkezi. FUE ve DHI teknikleri kullanarak doğal görünümlü saç ekimi, sakal ekimi ve kaş ekimi hizmetleri sunuyoruz.",
-    [Language.English]: "MyHair Clinic, the leading hair transplantation and aesthetic center in Tbilisi. We offer natural-looking hair, beard, and eyebrow transplantation services using FUE and DHI techniques.",
-    [Language.Russian]: "MyHair Clinic, ведущий центр трансплантации волос и эстетики в Тбилиси. Мы предлагаем услуги по трансплантации волос, бороды и бровей с естественным видом, используя методы FUE и DHI.",
-    [Language.Georgian]: "MyHair Clinic, წამყვანი თმის გადანერგვის და ესთეტიკის ცენტრი თბილისში. ჩვენ გთავაზობთ ბუნებრივი იერსახის თმის, წვერის და წარბების გადანერგვის სერვისებს FUE და DHI ტექნიკების გამოყენებით."
-  }
+
 };
 
 // Type for the hook's return
