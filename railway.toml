@@ -4,6 +4,6 @@ buildCommand = "npm run build"
 
 [deploy]
 startCommand = "NODE_ENV=production node dist/index.js"
-healthcheckPath = "/"
-healthcheckTimeout = 100
-restartPolicyType = "never" 
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+restartPolicyType = "on-failure" 

@@ -42,6 +42,11 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Health check endpoint - Railway için hayati önem taşıyor
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok', message: 'Server is running' });
+});
+
 // Uploads klasörünü statik dosya olarak servis et
 const uploadsDir = path.join(dirname(__dirname), 'uploads');
 if (!fs.existsSync(uploadsDir)) {
