@@ -120,6 +120,12 @@ app.use((req, res, next) => {
     }
     
     console.log('✅ Server nesnesi başarıyla oluşturuldu');
+    
+    // API rotalarını izleme middleware'i
+    app.use('/api', (req, res, next) => {
+      console.log(`🔌 API İsteği: ${req.method} ${req.path}`);
+      next();
+    });
 
     app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
       const status = err.status || err.statusCode || 500;
