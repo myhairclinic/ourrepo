@@ -115,17 +115,21 @@ const productSchema = z.object({
   ingredientsRU: z.string().min(2, { message: "Rusça içerik bilgisi en az 2 karakter olmalıdır" }),
   ingredientsKA: z.string().min(2, { message: "Gürcüce içerik bilgisi en az 2 karakter olmalıdır" }),
   imageUrl: z.string().min(2, { message: "Görsel URL'si gereklidir" }),
-  price: z.preprocess(
-    (a) => parseInt(z.string().parse(a), 10),
-    z.number().min(0).optional().default(0)
-  ),
+  price: z
+    .union([
+      z.string().transform(val => Number(val) || 0),
+      z.number()
+    ])
+    .transform(val => Number(val) || 0),
   isNew: z.boolean().default(false),
   categoryId: z.string().optional(),
   categoryName: z.string().optional(),
-  order: z.preprocess(
-    (a) => parseInt(z.string().parse(a), 10),
-    z.number().min(0).default(0)
-  ),
+  order: z
+    .union([
+      z.string().transform(val => Number(val) || 0),
+      z.number()
+    ])
+    .transform(val => Number(val) || 0),
   isActive: z.boolean().default(true),
 });
 
@@ -151,61 +155,112 @@ const ProductManagement = () => {
     direction: "ascending",
   });
 
+  // Define better empty defaults for all form fields
+  const DEFAULT_PRODUCT = {
+    nameTR: "",
+    nameEN: "",
+    nameRU: "",
+    nameKA: "",
+    descriptionTR: "",
+    descriptionEN: "",
+    descriptionRU: "",
+    descriptionKA: "",
+    usageTR: "",
+    usageEN: "",
+    usageRU: "",
+    usageKA: "",
+    ingredientsTR: "",
+    ingredientsEN: "",
+    ingredientsRU: "",
+    ingredientsKA: "",
+    imageUrl: "",
+    price: 0,
+    isNew: false,
+    categoryId: "",
+    categoryName: "",
+    order: 0,
+    isActive: true,
+    slug: "",
+  };
+
   // Ürünleri getir
   const {
-    data: products = [],
+    data: productsResponse = { success: false, data: [] },
     isLoading,
     isError,
     refetch,
   } = useQuery({
     queryKey: ["/api/products"],
     queryFn: async () => {
-      const res = await apiRequest("GET", "/api/products");
-      return await res.json();
+      try {
+        console.log("Fetching products...");
+        const res = await apiRequest("GET", "/api/products");
+        const responseData = await res.json();
+        console.log("Products fetched successfully:", responseData);
+        return responseData;
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        toast({
+          title: "Ürünler yüklenemedi",
+          description: error instanceof Error ? error.message : "Unknown error occurred",
+          variant: "destructive",
+        });
+        throw error;
+      }
     },
   });
+  
+  // Extract the products array from the response
+  const products = productsResponse?.data || [];
 
   // Form tanımlaması
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
-    defaultValues: {
-      nameTR: "",
-      nameEN: "",
-      nameRU: "",
-      nameKA: "",
-      descriptionTR: "",
-      descriptionEN: "",
-      descriptionRU: "",
-      descriptionKA: "",
-      usageTR: "",
-      usageEN: "",
-      usageRU: "",
-      usageKA: "",
-      ingredientsTR: "",
-      ingredientsEN: "",
-      ingredientsRU: "",
-      ingredientsKA: "",
-      imageUrl: "",
-      price: 0,
-      isNew: false,
-      categoryId: "",
-      categoryName: "",
-      order: 0,
-      isActive: true,
-      slug: "",
-    },
+    defaultValues: DEFAULT_PRODUCT,
+    mode: "onChange",
   });
 
   // Ürün ekleme/güncelleme
   const productMutation = useMutation({
     mutationFn: async (data: ProductFormValues) => {
-      const isUpdate = !!data.id;
-      const url = isUpdate ? `/api/products/${data.id}` : "/api/products";
-      const method = isUpdate ? "PUT" : "POST";
-      const res = await apiRequest(method, url, data);
-      return await res.json();
+      try {
+        const isUpdate = !!data.id;
+        const url = isUpdate ? `/api/products/${data.id}` : "/api/products";
+        const method = isUpdate ? "PUT" : "POST";
+        
+        console.log(`${isUpdate ? "Updating" : "Creating"} product with data:`, JSON.stringify(data, null, 2));
+        
+        // Try to send the request
+        const res = await apiRequest(method, url, data);
+        
+        // Log the full response
+        const responseText = await res.clone().text();
+        console.log(`Product ${isUpdate ? "update" : "creation"} raw response:`, responseText);
+        
+        try {
+          // Try to parse the JSON
+          if (responseText.trim() === '') {
+            console.warn('Empty response received from server');
+            return { success: true, data: null };
+          }
+          
+          const jsonData = JSON.parse(responseText);
+          console.log(`Product ${isUpdate ? "updated" : "created"} successfully. Parsed response:`, jsonData);
+          
+          // Return the product data from the response
+          return jsonData.data || jsonData;
+        } catch (jsonError) {
+          console.error("Failed to parse JSON response:", jsonError);
+          console.error("Raw response text:", responseText);
+          throw new Error(`Server returned invalid JSON: ${responseText.substring(0, 200)}...`);
+        }
+      } catch (error) {
+        console.error(`Error ${data.id ? "updating" : "creating"} product:`, error);
+        throw error;
+      }
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log('Mutation succeeded with data:', data);
       toast({
         title: selectedProduct?.id ? "Ürün güncellendi" : "Ürün eklendi",
         description: selectedProduct?.id 
@@ -217,6 +272,10 @@ const ProductManagement = () => {
       queryClient.invalidateQueries({ queryKey: ["/api/products"] });
     },
     onError: (error: any) => {
+      console.error("Product mutation error:", error);
+      if (error.cause) console.error("Cause:", error.cause);
+      if (error.stack) console.error("Stack:", error.stack);
+      
       toast({
         title: "Hata",
         description: `Ürün ${selectedProduct?.id ? "güncellenirken" : "eklenirken"} bir hata oluştu: ${error.message}`,
@@ -228,8 +287,30 @@ const ProductManagement = () => {
   // Ürün silme
   const deleteProductMutation = useMutation({
     mutationFn: async (id: number) => {
-      const res = await apiRequest("DELETE", `/api/products/${id}`);
-      return await res.json();
+      try {
+        console.log("Deleting product with ID:", id);
+        const res = await apiRequest("DELETE", `/api/products/${id}`);
+        
+        // Check if there's a response body to parse
+        const contentType = res.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          try {
+            const data = await res.json();
+            console.log("Product deleted successfully:", data);
+            return data;
+          } catch (jsonError) {
+            // If we can't parse the JSON but the request was successful, that's okay
+            console.log("Delete successful but no valid JSON response");
+            return { success: true };
+          }
+        } else {
+          console.log("Delete successful with no JSON content");
+          return { success: true };
+        }
+      } catch (error) {
+        console.error("Error deleting product:", error);
+        throw error;
+      }
     },
     onSuccess: () => {
       toast({
@@ -246,6 +327,7 @@ const ProductManagement = () => {
         description: `Ürün silinirken bir hata oluştu: ${error.message}`,
         variant: "destructive",
       });
+      console.error("Product deletion error details:", error);
     },
   });
 
@@ -299,44 +381,27 @@ const ProductManagement = () => {
 
   // Ürün güncelleme form açılışı
   const handleEditProduct = (product: any) => {
+    console.log("Opening edit form for product:", product);
     setSelectedProduct(product);
-    form.reset({
+    // Ensure all fields are properly defined
+    const formData = {
+      ...DEFAULT_PRODUCT,
       ...product,
-      price: product.price || 0,
-      order: product.order || 0,
-    });
+      // Ensure numeric fields are numbers and not strings
+      price: typeof product.price === 'number' ? product.price : 0,
+      order: typeof product.order === 'number' ? product.order : 0,
+    };
+    console.log("Setting form values:", formData);
+    form.reset(formData);
     setIsDialogOpen(true);
   };
 
   // Yeni ürün ekleme form açılışı
   const handleAddProduct = () => {
+    console.log("Opening new product form");
     setSelectedProduct(null);
-    form.reset({
-      nameTR: "",
-      nameEN: "",
-      nameRU: "",
-      nameKA: "",
-      descriptionTR: "",
-      descriptionEN: "",
-      descriptionRU: "",
-      descriptionKA: "",
-      usageTR: "",
-      usageEN: "",
-      usageRU: "",
-      usageKA: "",
-      ingredientsTR: "",
-      ingredientsEN: "",
-      ingredientsRU: "",
-      ingredientsKA: "",
-      imageUrl: "",
-      price: 0,
-      isNew: false,
-      categoryId: "",
-      categoryName: "",
-      order: 0,
-      isActive: true,
-      slug: "",
-    });
+    // Reset form with default values
+    form.reset(DEFAULT_PRODUCT);
     setIsDialogOpen(true);
   };
 
@@ -346,9 +411,62 @@ const ProductManagement = () => {
     setIsDeleteDialogOpen(true);
   };
 
-  // Form gönderimi
-  const onSubmit = (data: ProductFormValues) => {
-    productMutation.mutate(data);
+  // Add manual form submission handler
+  const handleManualSubmit = async () => {
+    console.log('Manual form submission triggered');
+    
+    // Get the raw form values
+    const rawFormData = form.getValues();
+    console.log('Raw form values:', rawFormData);
+    
+    try {
+      // Use the schema to validate and transform the data
+      const validationResult = productSchema.safeParse(rawFormData);
+      
+      if (validationResult.success) {
+        // Data is valid, use the validated and transformed data
+        const validData = validationResult.data;
+        console.log('Validated form data:', validData);
+        
+        // Submit the valid data
+        productMutation.mutate(validData);
+      } else {
+        // Data is invalid, handle the validation errors
+        console.error('Validation failed:', validationResult.error.format());
+        
+        // Format errors for better display
+        const errorFormatted = validationResult.error.format();
+        console.log('Formatted validation errors:', errorFormatted);
+        
+        // Show a toast with validation error info
+        toast({
+          title: "Form doğrulama hatası",
+          description: "Lütfen form alanlarını kontrol edin",
+          variant: "destructive",
+        });
+        
+        // Set the errors manually on the form
+        Object.entries(errorFormatted).forEach(([field, error]) => {
+          if (field !== '_errors') {
+            // Type safety for error object
+            const zodError = error as { _errors: string[] };
+            if (zodError._errors && zodError._errors.length > 0) {
+              form.setError(field as any, {
+                type: 'manual',
+                message: zodError._errors[0]
+              });
+            }
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Error during manual validation:', error);
+      toast({
+        title: "Doğrulama hatası",
+        description: error instanceof Error ? error.message : "Bilinmeyen hata",
+        variant: "destructive",
+      });
+    }
   };
 
   // Sıralama fonksiyonu
@@ -364,7 +482,8 @@ const ProductManagement = () => {
 
   // Ürünleri filtrele ve sırala
   const filteredProducts = React.useMemo(() => {
-    let tempProducts = [...products];
+    // Ensure products is an array before spreading
+    let tempProducts = Array.isArray(products) ? [...products] : [];
     
     // Arama filtreleme
     if (searchTerm) {
@@ -425,6 +544,82 @@ const ProductManagement = () => {
     }
   }, [form.watch("nameTR"), selectedProduct, form]);
 
+  // Add test function for direct API access
+  const testDirectApiCall = async () => {
+    try {
+      console.log("Testing direct API call...");
+      
+      // Create a simple test product
+      const testProduct = {
+        slug: "test-product-" + Date.now(),
+        nameTR: "Test Ürünü",
+        nameEN: "Test Product",
+        nameRU: "Тестовый продукт",
+        nameKA: "სატესტო პროდუქტი",
+        descriptionTR: "Test açıklaması",
+        descriptionEN: "Test description",
+        descriptionRU: "Тестовое описание",
+        descriptionKA: "სატესტო აღწერა",
+        usageTR: "Test kullanımı",
+        usageEN: "Test usage",
+        usageRU: "Тестовое использование",
+        usageKA: "სატესტო გამოყენება",
+        ingredientsTR: "Test içerikleri",
+        ingredientsEN: "Test ingredients",
+        ingredientsRU: "Тестовые ингредиенты",
+        ingredientsKA: "სატესტო ინგრედიენტები",
+        imageUrl: "https://placehold.co/200x200",
+        price: 0,
+        isNew: true,
+        order: 0,
+        isActive: true
+      };
+      
+      console.log("Sending test product:", testProduct);
+      
+      // Make direct fetch call
+      const response = await fetch("/api/products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(testProduct)
+      });
+      
+      console.log("Response status:", response.status);
+      
+      const responseText = await response.text();
+      console.log("Raw response:", responseText);
+      
+      try {
+        const data = JSON.parse(responseText);
+        console.log("Parsed response:", data);
+        
+        toast({
+          title: "Test başarılı",
+          description: "API direkt çağrısı başarılı oldu",
+        });
+        
+        // Refresh product list
+        queryClient.invalidateQueries({ queryKey: ["/api/products"] });
+      } catch (parseError) {
+        console.error("Failed to parse response:", parseError);
+        toast({
+          title: "JSON ayrıştırma hatası",
+          description: "Yanıt JSON formatında değil",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error testing API:", error);
+      toast({
+        title: "API test hatası",
+        description: error instanceof Error ? error.message : "Bilinmeyen hata",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -440,6 +635,15 @@ const ProductManagement = () => {
           >
             <PlusCircle className="h-4 w-4" />
             Yeni Ürün Ekle
+          </Button>
+
+          <Button 
+            onClick={testDirectApiCall} 
+            variant="secondary"
+            className="flex items-center gap-2"
+          >
+            <RefreshCw className="h-4 w-4" />
+            API Test Et
           </Button>
 
           <DropdownMenu>
@@ -691,7 +895,14 @@ const ProductManagement = () => {
           </DialogHeader>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form 
+              onSubmit={(e) => {
+                // Prevent form from submitting normally
+                e.preventDefault();
+                console.log('Form native submit prevented');
+              }} 
+              className="space-y-6"
+            >
               <Tabs defaultValue="general" className="w-full">
                 <TabsList className="grid grid-cols-2 sm:grid-cols-4 mb-4">
                   <TabsTrigger value="general">Genel Bilgiler</TabsTrigger>
@@ -1089,7 +1300,8 @@ const ProductManagement = () => {
                   İptal
                 </Button>
                 <Button
-                  type="submit"
+                  type="button" 
+                  onClick={handleManualSubmit}
                   disabled={productMutation.isPending}
                   className="ml-2"
                 >

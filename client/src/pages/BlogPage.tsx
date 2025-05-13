@@ -36,10 +36,12 @@ import { BlogListSection } from "@/components/blog/BlogListSection";
 import { BlogSidebar } from "@/components/blog/BlogSidebar";
 import { FeaturedPostsSection } from "@/components/blog/FeaturedPostsSection";
 
-// Örnek blog etiketleri
+// Önerilen blog etiketleri - Kullanıcının belirttiği tüm başlıkları içeriyor
 const POPULAR_TAGS = [
   'saç ekimi', 'fue yöntemi', 'saç dökülmesi', 'doğal saç çizgisi', 
-  'kaş ekimi', 'sakal ekimi', 'saç bakımı', 'prp tedavisi', 'tıbbi turizm'
+  'kaş ekimi', 'sakal ekimi', 'saç bakımı', 'prp tedavisi', 'tıbbi turizm',
+  'medikal turizm', 'saç ekimi sonrası bakım', 'saç ekimi öncesi', 
+  'saç ekimi maliyeti', 'saç ekimi teknikleri', 'dhi yöntemi'
 ];
 
 // Örnek popüler yazar
@@ -334,12 +336,14 @@ export default function BlogPage() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={getBlogTranslation('blog.title', language as Language)} />
         <meta name="twitter:description" content={getBlogTranslation('blog.description', language as Language)} />
+        <meta property="og:image" content="/images/blog-seo.jpg" />
+        <meta property="og:image:alt" content={getBlogTranslation('blog.title', language as Language)} />
       </Helmet>
       
       <PageHeader
-        title="Saç Ekimi Blogu | Uzman Makaleler ve Başarı Hikayeleri"
-        description="Saç ekimi, saç dökülmesi tedavileri ve saç bakımı hakkında uzman makaleler ve gerçek başarı hikayeleri. Saç sağlığınız için en güncel bilgiler ve klinik deneyimlerimiz burada."
-        imageUrl="/images/blog/blog-header-bg.jpg"
+        title={getBlogTranslation('blog.pageTitle', language as Language)}
+        description={getBlogTranslation('blog.pageSubtitle', language as Language)}
+        imageUrl="/images/blog-header.jpg"
         className="blog-header"
       />
       

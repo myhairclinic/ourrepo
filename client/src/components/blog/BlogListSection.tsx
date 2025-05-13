@@ -5,6 +5,9 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useLanguage } from "@/hooks/use-language";
+import { getBlogTranslation } from "@/lib/blogTranslations";
+import { Language } from "@shared/types";
 
 // Blog Post tipi
 interface BlogPost {
@@ -64,6 +67,7 @@ export function BlogListSection({
   isLoading
 }: BlogListSectionProps) {
   const { t } = useTranslation();
+  const { language } = useLanguage();
   
   // Blog gönderisi yüklenirken görünecek iskelet yükleyici
   const renderSkeletons = () => {
@@ -93,9 +97,11 @@ export function BlogListSection({
   // Blog yazısı yoksa gösterilecek boş durum
   const renderEmptyState = () => (
     <div className="text-center py-12">
-      <h3 className="text-lg font-medium">{t('blog.noPosts')}</h3>
+      <h3 className="text-lg font-medium">
+        {getBlogTranslation('blog.noPosts', language as Language)}
+      </h3>
       <p className="text-muted-foreground mt-2">
-        {t('blog.noPosts')}
+        {getBlogTranslation('blog.noPostsDescription', language as Language)}
       </p>
     </div>
   );
@@ -113,13 +119,13 @@ export function BlogListSection({
             value="latest" 
             className="data-[state=active]:bg-background data-[state=active]:shadow-sm rounded-md transition-all h-8 md:h-10 text-xs md:text-sm"
           >
-            {t('blog.newest')}
+            {getBlogTranslation('blog.newest', language as Language)}
           </TabsTrigger>
           <TabsTrigger 
             value="popular" 
             className="data-[state=active]:bg-background data-[state=active]:shadow-sm rounded-md transition-all h-8 md:h-10 text-xs md:text-sm"
           >
-            {t('blog.mostPopular')}
+            {getBlogTranslation('blog.mostPopular', language as Language)}
           </TabsTrigger>
         </TabsList>
       </Tabs>

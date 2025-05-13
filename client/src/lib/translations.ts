@@ -958,21 +958,99 @@ export const translations: Record<string, LanguageMap> = {
   
   "contact.title": {
     [Language.Turkish]: "İletişim | MyHair Clinic",
-    [Language.English]: "Contact | MyHair Clinic",
+    [Language.English]: "Contact Us | MyHair Clinic",
     [Language.Russian]: "Контакты | MyHair Clinic",
     [Language.Georgian]: "კონტაქტი | MyHair Clinic"
   },
   "contact.description": {
-    [Language.Turkish]: "MyHair Clinic ile iletişime geçin. Tiflis'teki kliniğimize ulaşın, saç ekimi hakkında sorularınızı sorun veya randevu alın. Saç ekimi ve saç bakımı konusunda tüm sorularınızı yanıtlamak için buradayız.",
-    [Language.English]: "Contact MyHair Clinic. Reach our clinic in Tbilisi, ask questions about hair transplantation, or make an appointment. We are here to answer all your questions about hair transplantation and hair care.",
-    [Language.Russian]: "Свяжитесь с MyHair Clinic. Свяжитесь с нашей клиникой в Тбилиси, задайте вопросы о трансплантации волос или запишитесь на прием. Мы здесь, чтобы ответить на все ваши вопросы о трансплантации волос и уходе за волосами.",
-    [Language.Georgian]: "დაუკავშირდით MyHair Clinic-ს. დაუკავშირდით ჩვენს კლინიკას თბილისში, დასვით კითხვები თმის გადანერგვის შესახებ ან დანიშნეთ შეხვედრა. ჩვენ აქ ვართ, რომ ვუპასუხოთ თქვენს ყველა კითხვას თმის გადანერგვისა და თმის მოვლის შესახებ."
+    [Language.Turkish]: "MyHair Clinic ile iletişime geçin. Saç ekimi ve estetik hizmetlerimiz hakkında bilgi almak ve randevu oluşturmak için bize ulaşın.",
+    [Language.English]: "Contact MyHair Clinic. Reach us to get information about our hair transplant and aesthetic services and to create an appointment.",
+    [Language.Russian]: "Свяжитесь с MyHair Clinic. Свяжитесь с нами, чтобы получить информацию о наших услугах по трансплантации волос и эстетике и записаться на прием.",
+    [Language.Georgian]: "დაუკავშირდით MyHair Clinic-ს. დაგვიკავშირდით თმის გადანერგვისა და ესთეტიკური სერვისების შესახებ ინფორმაციის მისაღებად და შეხვედრის დასაგეგმად."
   },
   "contact.getInTouch": {
     [Language.Turkish]: "İletişime Geçin",
     [Language.English]: "Get in Touch",
     [Language.Russian]: "Свяжитесь с Нами",
     [Language.Georgian]: "დაგვიკავშირდით"
+  },
+  "contact.formTitle": {
+    [Language.Turkish]: "Bizimle İletişime Geçin",
+    [Language.English]: "Contact Us",
+    [Language.Russian]: "Свяжитесь с Нами",
+    [Language.Georgian]: "დაგვიკავშირდით"
+  },
+  "contact.formDescription": {
+    [Language.Turkish]: "Soru ve talepleriniz için bizimle iletişime geçebilirsiniz.",
+    [Language.English]: "You can contact us for your questions and requests.",
+    [Language.Russian]: "Вы можете связаться с нами по вопросам и запросам.",
+    [Language.Georgian]: "შეგიძლიათ დაგვიკავშირდეთ თქვენი კითხვებისა და მოთხოვნებისთვის."
+  },
+  "contact.responseTime": {
+    [Language.Turkish]: "24 saat içinde dönüş yapıyoruz",
+    [Language.English]: "We respond within 24 hours",
+    [Language.Russian]: "Мы отвечаем в течение 24 часов",
+    [Language.Georgian]: "ვპასუხობთ 24 საათის განმავლობაში"
+  },
+  "contact.frequentlyAsked": {
+    [Language.Turkish]: "Sık Sorulan Sorular",
+    [Language.English]: "Frequently Asked Questions",
+    [Language.Russian]: "Часто Задаваемые Вопросы",
+    [Language.Georgian]: "ხშირად დასმული კითხვები"
+  },
+  "contact.faqDescription": {
+    [Language.Turkish]: "Aşağıdaki cevaplar size yardımcı olabilir",
+    [Language.English]: "The answers below may help you",
+    [Language.Russian]: "Ответы ниже могут вам помочь",
+    [Language.Georgian]: "ქვემოთ მოცემულმა პასუხებმა შეიძლება დაგეხმაროთ"
+  },
+  "contact.faq1Title": {
+    [Language.Turkish]: "Saç ekimi ne kadar sürer?",
+    [Language.English]: "How long does hair transplantation take?",
+    [Language.Russian]: "Сколько времени занимает трансплантация волос?",
+    [Language.Georgian]: "რამდენ ხანს გრძელდება თმის გადანერგვა?"
+  },
+  "contact.faq1Content": {
+    [Language.Turkish]: "Saç ekimi işlemi ortalama 6-8 saat sürer. İşlem sonrası iyileşme süreci yaklaşık 10-14 gündür.",
+    [Language.English]: "The hair transplantation procedure takes an average of 6-8 hours. The post-procedure recovery process is approximately 10-14 days.",
+    [Language.Russian]: "Процедура трансплантации волос занимает в среднем 6-8 часов. Процесс восстановления после процедуры составляет примерно 10-14 дней.",
+    [Language.Georgian]: "თმის გადანერგვის პროცედურა საშუალოდ 6-8 საათი გრძელდება. პროცედურის შემდგომი აღდგენის პროცესი დაახლოებით 10-14 დღეა."
+  },
+  "contact.faq2Title": {
+    [Language.Turkish]: "Kaç ekimi ne zaman sonuç verir?",
+    [Language.English]: "When do hair transplantation results become visible?",
+    [Language.Russian]: "Когда становятся видны результаты трансплантации волос?",
+    [Language.Georgian]: "როდის ხდება თმის გადანერგვის შედეგები ხილული?"
+  },
+  "contact.faq2Content": {
+    [Language.Turkish]: "Saç ekimi sonuçları genellikle 6-9 ay içinde tam olarak görülür. İlk 3 ay içinde yeni saç büyümesi başlar.",
+    [Language.English]: "Hair transplantation results are usually fully visible within 6-9 months. New hair growth begins within the first 3 months.",
+    [Language.Russian]: "Результаты трансплантации волос обычно полностью видны в течение 6-9 месяцев. Рост новых волос начинается в течение первых 3 месяцев.",
+    [Language.Georgian]: "თმის გადანერგვის შედეგები ჩვეულებრივ სრულად ხილვადია 6-9 თვის განმავლობაში. ახალი თმის ზრდა იწყება პირველი 3 თვის განმავლობაში."
+  },
+  "contact.faq3Title": {
+    [Language.Turkish]: "Sonuçlar doğal görünür mü?",
+    [Language.English]: "Do the results look natural?",
+    [Language.Russian]: "Выглядят ли результаты естественно?",
+    [Language.Georgian]: "შედეგები ბუნებრივად გამოიყურება?"
+  },
+  "contact.faq3Content": {
+    [Language.Turkish]: "Evet, modern saç ekimi teknikleri ile tamamen doğal görünümlü sonuçlar elde edilir. DHI ve Safir FUE teknikleri doğal saç çizgisi ve yoğunluğu sağlar.",
+    [Language.English]: "Yes, completely natural-looking results are achieved with modern hair transplantation techniques. DHI and Sapphire FUE techniques provide a natural hairline and density.",
+    [Language.Russian]: "Да, с помощью современных методов трансплантации волос достигаются полностью естественные результаты. Методы DHI и Sapphire FUE обеспечивают естественную линию роста волос и плотность.",
+    [Language.Georgian]: "დიახ, თანამედროვე თმის გადანერგვის ტექნიკებით მიიღწევა სრულიად ბუნებრივი შედეგები. DHI და Sapphire FUE ტექნიკები უზრუნველყოფს ბუნებრივ თმის ხაზსა და სიმკვრივეს."
+  },
+  "contact.faq4Title": {
+    [Language.Turkish]: "Saç ekimi sonrası dikkat edilmesi gerekenler nelerdir?",
+    [Language.English]: "What precautions should be taken after hair transplantation?",
+    [Language.Russian]: "Какие меры предосторожности следует принимать после трансплантации волос?",
+    [Language.Georgian]: "რა სიფრთხილის ზომები უნდა იქნას მიღებული თმის გადანერგვის შემდეგ?"
+  },
+  "contact.faq4Content": {
+    [Language.Turkish]: "İlk hafta yatarken dikkatli olmalı, tuz ve alkol tüketmemeli, sigara içmemeli, direkt güneş ışığından korunmalı ve doktorunuzun önerdiği bakım ürünlerini kullanmalısınız.",
+    [Language.English]: "During the first week, you should be careful when lying down, avoid consuming salt and alcohol, avoid smoking, protect yourself from direct sunlight, and use the care products recommended by your doctor.",
+    [Language.Russian]: "В течение первой недели следует быть осторожным при лежании, избегать употребления соли и алкоголя, избегать курения, защищаться от прямых солнечных лучей и использовать средства ухода, рекомендованные врачом.",
+    [Language.Georgian]: "პირველი კვირის განმავლობაში უნდა იყოთ ფრთხილად დაწოლისას, თავი აარიდოთ მარილისა და ალკოჰოლის მოხმარებას, თავი აარიდოთ მოწევას, დაიცვათ თავი პირდაპირი მზის სხივებისგან და გამოიყენოთ ექიმის მიერ რეკომენდებული მოვლის პროდუქტები."
   },
   "contact.form.title": {
     [Language.Turkish]: "Bize Mesaj Gönderin",
@@ -1204,7 +1282,7 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Turkish]: "Telefon Numaranız",
     [Language.English]: "Phone Number",
     [Language.Russian]: "Номер Телефона",
-    [Language.Georgian]: "ტელეფონის ნომერი"
+    [Language.Georgian]: "თქვენი ტელეფონის ნომერი"
   },
   "appointment.form.country": {
     [Language.Turkish]: "Ülkeniz",
@@ -1956,7 +2034,7 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Turkish]: "Saç ekimi sonrası bakım hakkında en sık sorulan soruları ve cevaplarını burada bulabilirsiniz.",
     [Language.English]: "Find the most frequently asked questions and answers about hair transplant aftercare here.",
     [Language.Russian]: "Здесь вы найдете наиболее часто задаваемые вопросы и ответы об уходе после трансплантации волос.",
-    [Language.Georgian]: "აქ შეგიძლიათ იპოვოთ ყველაზე ხშირად დასმული კითხვები და პასუხები თმის გადანერგვის შემდგომი მოვლის შესახებ."
+    [Language.Georgian]: "აქ შეგიძლიათ იპოვოთ ყველაზე ხშირად დასმული კითხვები და პასუხები თმის გადანერგვის შემდეგი მოვლის შესახებ."
   },
   "aftercare.noGuides": {
     [Language.Turkish]: "Henüz ameliyat sonrası bakım rehberi eklenmemiş.",
@@ -2147,7 +2225,7 @@ export const translations: Record<string, LanguageMap> = {
     [Language.Turkish]: "Seçilen filtrelere uygun ürün bulunamadı.",
     [Language.English]: "No products found matching the selected filters.",
     [Language.Russian]: "Не найдено продуктов, соответствующих выбранным фильтрам.",
-    [Language.Georgian]: "არჩეული ფილტრების შესაბამისი პროდუქტები არ მოიძებნა."
+    [Language.Georgian]: "არჩეული ფილტრებისთვის შესაბამისი პროდუქტები არ მოიძებნა."
   },
   "products.productCount": {
     [Language.Turkish]: "Toplam {count} ürün",
@@ -2213,7 +2291,239 @@ export const translations: Record<string, LanguageMap> = {
     [Language.English]: "Start",
     [Language.Russian]: "Начало",
     [Language.Georgian]: "დაწყება"
-  }
+  },
+
+  // Contact page header
+  "contact.contactUs": {
+    [Language.Turkish]: "Bizimle İletişime Geçin",
+    [Language.English]: "Contact Us",
+    [Language.Russian]: "Свяжитесь с Нами",
+    [Language.Georgian]: "დაგვიკავშირდით"
+  },
+  "contact.headerTitle": {
+    [Language.Turkish]: "İletişim",
+    [Language.English]: "Contact",
+    [Language.Russian]: "Контакты",
+    [Language.Georgian]: "კონტაქტი"
+  },
+  "contact.headerSubtitle": {
+    [Language.Turkish]: "Saç ekimi ve diğer hizmetlerimizle ilgili sorularınız için tüm iletişim kanallarımızdan bizimle iletişime geçebilirsiniz.",
+    [Language.English]: "You can contact us through all our communication channels for your questions about hair transplantation and our other services.",
+    [Language.Russian]: "Вы можете связаться с нами по всем нашим каналам связи для получения ответов на вопросы о трансплантации волос и наших других услугах.",
+    [Language.Georgian]: "შეგიძლიათ დაგვიკავშირდეთ ჩვენი კომუნიკაციის ყველა არხის საშუალებით თმის გადანერგვისა და ჩვენი სხვა სერვისების შესახებ კითხვებისთვის."
+  },
+
+  // Header navigation
+  "header.home": {
+    [Language.Turkish]: "Ana Sayfa",
+    [Language.English]: "Home",
+    [Language.Russian]: "Главная",
+    [Language.Georgian]: "მთავარი"
+  },
+  "header.services": {
+    [Language.Turkish]: "Hizmetlerimiz",
+    [Language.English]: "Our Services",
+    [Language.Russian]: "Услуги",
+    [Language.Georgian]: "სერვისები"
+  },
+  "header.packages": {
+    [Language.Turkish]: "Paketler",
+    [Language.English]: "Packages",
+    [Language.Russian]: "Пакеты",
+    [Language.Georgian]: "პაკეტები"
+  },
+  "header.gallery": {
+    [Language.Turkish]: "Galeri",
+    [Language.English]: "Gallery",
+    [Language.Russian]: "Галерея",
+    [Language.Georgian]: "გალერეა"
+  },
+  "header.blog": {
+    [Language.Turkish]: "Blog",
+    [Language.English]: "Blog",
+    [Language.Russian]: "Блог",
+    [Language.Georgian]: "ბლოგი"
+  },
+  "header.socialMedia": {
+    [Language.Turkish]: "Sosyal Medya",
+    [Language.English]: "Social Media",
+    [Language.Russian]: "Социальные сети",
+    [Language.Georgian]: "სოციალური მედია"
+  },
+  "header.products": {
+    [Language.Turkish]: "Ürünler",
+    [Language.English]: "Products",
+    [Language.Russian]: "Продукты",
+    [Language.Georgian]: "პროდუქტები"
+  },
+  "header.contact": {
+    [Language.Turkish]: "İletişim",
+    [Language.English]: "Contact",
+    [Language.Russian]: "Контакты",
+    [Language.Georgian]: "კონტაქტი"
+  },
+  "header.appointment": {
+    [Language.Turkish]: "Randevu Al",
+    [Language.English]: "Make Appointment",
+    [Language.Russian]: "Записаться",
+    [Language.Georgian]: "დაჯავშნა"
+  },
+  "header.languageSelection": {
+    [Language.Turkish]: "Dil Seçimi",
+    [Language.English]: "Language Selection",
+    [Language.Russian]: "Выбор языка",
+    [Language.Georgian]: "ენის არჩევა"
+  },
+
+  // Contact form labels and placeholders
+  "contact.nameLabel": {
+    [Language.Turkish]: "Adınız",
+    [Language.English]: "Your Name",
+    [Language.Russian]: "Ваше имя",
+    [Language.Georgian]: "თქვენი სახელი"
+  },
+  "contact.namePlaceholder": {
+    [Language.Turkish]: "Adınızı girin",
+    [Language.English]: "Enter your name",
+    [Language.Russian]: "Введите ваше имя",
+    [Language.Georgian]: "შეიყვანეთ თქვენი სახელი"
+  },
+  "contact.emailLabel": {
+    [Language.Turkish]: "E-posta Adresiniz",
+    [Language.English]: "Your Email",
+    [Language.Russian]: "Ваш Email",
+    [Language.Georgian]: "თქვენი ელფოსტა"
+  },
+  "contact.emailPlaceholder": {
+    [Language.Turkish]: "E-posta adresinizi girin",
+    [Language.English]: "Enter your email address",
+    [Language.Russian]: "Введите ваш email адрес",
+    [Language.Georgian]: "შეიყვანეთ თქვენი ელფოსტის მისამართი"
+  },
+  "contact.phoneLabel": {
+    [Language.Turkish]: "Telefon Numaranız",
+    [Language.English]: "Your Phone Number",
+    [Language.Russian]: "Ваш номер телефона",
+    [Language.Georgian]: "თქვენი ტელეფონის ნომერი"
+  },
+  "contact.phonePlaceholder": {
+    [Language.Turkish]: "Telefon numaranızı girin",
+    [Language.English]: "Enter your phone number",
+    [Language.Russian]: "Введите ваш номер телефона",
+    [Language.Georgian]: "შეიყვანეთ თქვენი ტელეფონის ნომერი"
+  },
+  "contact.messageLabel": {
+    [Language.Turkish]: "Mesajınız",
+    [Language.English]: "Your Message",
+    [Language.Russian]: "Ваше сообщение",
+    [Language.Georgian]: "თქვენი შეტყობინება"
+  },
+  "contact.messagePlaceholder": {
+    [Language.Turkish]: "Mesajınızı buraya yazın",
+    [Language.English]: "Write your message here",
+    [Language.Russian]: "Напишите ваше сообщение здесь",
+    [Language.Georgian]: "დაწერეთ თქვენი შეტყობინება აქ"
+  },
+  "contact.submitButton": {
+    [Language.Turkish]: "Mesajı Gönder",
+    [Language.English]: "Send Message",
+    [Language.Russian]: "Отправить сообщение",
+    [Language.Georgian]: "შეტყობინების გაგზავნა"
+  },
+  "contact.sending": {
+    [Language.Turkish]: "Gönderiliyor...",
+    [Language.English]: "Sending...",
+    [Language.Russian]: "Отправка...",
+    [Language.Georgian]: "იგზავნება..."
+  },
+
+  // Social Media page translations
+  "socialMedia.title": {
+    [Language.Turkish]: "Sosyal Medya | MyHair Clinic",
+    [Language.English]: "Social Media | MyHair Clinic",
+    [Language.Russian]: "Социальные Сети | MyHair Clinic",
+    [Language.Georgian]: "სოციალური მედია | MyHair Clinic"
+  },
+  "socialMedia.description": {
+    [Language.Turkish]: "MyHair Clinic'in sosyal medya sayfalarını takip edin и en son güncellemelerden haberdar olun.",
+    [Language.English]: "Follow MyHair Clinic's social media pages and stay updated with the latest news.",
+    [Language.Russian]: "Подписывайтесь на страницы MyHair Clinic в социальных сетях и будьте в курсе последних новостей.",
+    [Language.Georgian]: "გამოიწერეთ MyHair Clinic-ის სოციალური მედიის გვერდები და მიიღეთ უახლესი სიახლეები."
+  },
+  "socialMedia.followUs": {
+    [Language.Turkish]: "Bizi Takip Edin",
+    [Language.English]: "Follow Us",
+    [Language.Russian]: "Подписывайтесь на нас",
+    [Language.Georgian]: "გამოგვყევით"
+  },
+  "socialMedia.followUsDescription": {
+    [Language.Turkish]: "Sosyal medya hesaplarımızdan bizi takip ederek en son güncellemeler, hasta yorumları ve özel tekliflerden haberdar olun.",
+    [Language.English]: "Follow us on our social media accounts to stay updated with the latest news, patient testimonials, and special offers.",
+    [Language.Russian]: "Подписывайтесь на наши социальные сети, чтобы быть в курсе последних новостей, отзывов пациентов и специальных предложений.",
+    [Language.Georgian]: "შეგიძლიათ გაეცნოთ ჩვენს სოციალურ ქსელებში, რომ მიიღოთ უახლესი სიახლეები, პაციენტთა შეფასებები და სპეციალური შეთავაზებები."
+  },
+  "socialMedia.follow": {
+    [Language.Turkish]: "Takip Et",
+    [Language.English]: "Follow",
+    [Language.Russian]: "Подписаться",
+    [Language.Georgian]: "გამოწერა"
+  },
+  "socialMedia.featuredPosts": {
+    [Language.Turkish]: "Öne Çıkan Gönderiler",
+    [Language.English]: "Featured Posts",
+    [Language.Russian]: "Избранные Публикации",
+    [Language.Georgian]: "გამორჩეული პოსტები"
+  },
+  "socialMedia.allPosts": {
+    [Language.Turkish]: "Tüm Gönderiler",
+    [Language.English]: "All Posts",
+    [Language.Russian]: "Все Публикации",
+    [Language.Georgian]: "ყველა პოსტი"
+  },
+  "socialMedia.viewAllPosts": {
+    [Language.Turkish]: "Tüm Gönderileri Görüntüle",
+    [Language.English]: "View All Posts",
+    [Language.Russian]: "Посмотреть Все Публикации",
+    [Language.Georgian]: "ყველა პოსტის ნახვა"
+  },
+  "socialMedia.clientReviews": {
+    [Language.Turkish]: "Müşteri Değerlendirmeleri",
+    [Language.English]: "Client Reviews",
+    [Language.Russian]: "Отзывы Клиентов",
+    [Language.Georgian]: "კლიენტთა შეფასებები"
+  },
+  "socialMedia.latestReviews": {
+    [Language.Turkish]: "Son Değerlendirmeler",
+    [Language.English]: "Latest Reviews",
+    [Language.Russian]: "Последние Отзывы",
+    [Language.Georgian]: "უახლესი შეფასებები"
+  },
+  "socialMedia.joinCommunity": {
+    [Language.Turkish]: "Topluluğumuza Katılın",
+    [Language.English]: "Join Our Community",
+    [Language.Russian]: "Присоединяйтесь к Нашему Сообществу",
+    [Language.Georgian]: "შემოუერთდით ჩვენს საზოგადოებას"
+  },
+  "socialMedia.joinCommunityDescription": {
+    [Language.Turkish]: "En son güncellemelerimizi, hasta başarı hikayelerini ve özel tekliflerimizi takip etmek için sosyal medya hesaplarımıza göz atın.",
+    [Language.English]: "Check out our social media accounts to follow our latest updates, patient success stories and special offers.",
+    [Language.Russian]: "Следите за нашими аккаунтами в социальных сетях, чтобы получать наши последние обновления, истории успеха пациентов и специальные предложения.",
+    [Language.Georgian]: "შეამოწმეთ ჩვენი სოციალური მედიის ანგარიშები ჩვენი უახლესი განახლებების, პაციენტის წარმატების ისტორიებისა და სპეციალური შეთავაზებების გასაცნობად."
+  },
+  "socialMedia.video": {
+    [Language.Turkish]: "Video",
+    [Language.English]: "Video",
+    [Language.Russian]: "Видео",
+    [Language.Georgian]: "ვიდეო"
+  },
+  "socialMedia.carousel": {
+    [Language.Turkish]: "Galeri",
+    [Language.English]: "Carousel",
+    [Language.Russian]: "Карусель",
+    [Language.Georgian]: "კარუსელი"
+  },
+
+  // ... existing code ...
 };
 
 // Type for the hook's return

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/context/LanguageContext";
 import { Package } from "@shared/schema";
@@ -15,6 +15,16 @@ interface PackageCardProps {
 // Yeni ve güzel kart tasarım bileşeni
 const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
   const { language, addPrefix } = useLanguage();
+  
+  // Apply default values to ensure consistent display
+  const pkgWithDefaults = {
+    ...pkg,
+    durationDays: pkg.durationDays || 3,
+    price: pkg.price || 1500,
+    packageType: pkg.packageType || "standard",
+    isFeatured: pkg.isFeatured !== undefined ? pkg.isFeatured : false,
+    isAllInclusive: pkg.isAllInclusive !== undefined ? pkg.isAllInclusive : false
+  };
   
   // Get the title and description based on language
   const titleFieldMap: Record<Language, keyof Package> = {
@@ -36,13 +46,11 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
   
   const descriptionField = descriptionFieldMap[language];
   const description = pkg[descriptionField] as string || '';
-  const country = pkg.countryOrigin;
-  
-  // Get translated country name
-  const countryName = getPackageTranslation(`countries.${country.toLowerCase()}`, language) || country;
   
   // Helper function to get country flag
-  const getCountryFlag = (code: string): string => {
+  const getCountryFlag = (code?: string): string => {
+    if (!code || code === '') return '🌍'; // Default to globe if no country code
+    
     const flagMap: Record<string, string> = {
       'TR': '🇹🇷', // Türkiye
       'RU': '🇷🇺', // Rusya
@@ -57,13 +65,44 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
       'GR': '🇬🇷', // Yunanistan
       'BG': '🇧🇬', // Bulgaristan
       'RO': '🇷🇴', // Romanya
+      'UNKNOWN': '🌍' // Unknown country
     };
     
-    return flagMap[code] || '🏳️';
+    // Convert code to uppercase for case-insensitive matching
+    const upperCode = code.toUpperCase();
+    return flagMap[upperCode] || '🌍'; // Bulunamazsa dünya emoji'si
   };
 
+  // Ülke bilgisini pkg.countryOrigin veya pkg.countryCode'dan al
+  const country = pkg.countryOrigin || pkg.countryCode || '';
+  
+  // Get translated country name based on the package's real country
+  const countryName = country 
+    ? getPackageTranslation(`countries.${country.toUpperCase()}`, language) || country
+    : getPackageTranslation("countries.international", language); // Default to international if no country specified
+  
   // Helper function to get country-specific image
-  const getCountrySpecificImage = (code: string): string => {
+  const getCountrySpecificImage = (code?: string): string => {
+    if (!code) return '';
+    
+    // Check if premium package type to use special premium images
+    if (pkg.packageType === 'premium') {
+      const premiumImageMap: Record<string, string> = {
+        'TR': '/images/packages/premium-package-tr.jpg',
+        'RU': '/images/packages/premium-package-ru.jpg', 
+        'UA': '/images/packages/premium-package-ua.jpg',
+        'AZ': '/images/packages/premium-package-az.jpg',
+        'IR': '/images/packages/premium-package-ir.jpg',
+        'KZ': '/images/packages/premium-package-kz.jpg',
+        'DEFAULT': '/images/packages/luxury-package.jpg'
+      };
+      
+      // Convert code to uppercase for case-insensitive matching
+      const upperCode = code.toUpperCase();
+      return premiumImageMap[upperCode] || premiumImageMap['DEFAULT'];
+    }
+    
+    // Regular package images
     const imageMap: Record<string, string> = {
       'TR': '/images/packages/turkey-package.webp',
       'RU': '/images/packages/russia-package.jpg',
@@ -71,9 +110,13 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
       'AZ': '/images/packages/azerbaijan-package.jpg',
       'IR': '/images/packages/iran-package.jpg',
       'KZ': '/images/packages/kazakhstan-package.jpg',
+      'LUXURY': '/images/packages/luxury-package.jpg',
+      'UNKNOWN': '/images/packages/general-package.jpg'
     };
     
-    return imageMap[code] || '';
+    // Convert code to uppercase for case-insensitive matching
+    const upperCode = code.toUpperCase();
+    return imageMap[upperCode] || '';
   };
   
   // Extract features from highlights if available
@@ -146,6 +189,11 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
     return bgClasses[index % bgClasses.length];
   };
   
+  // Paketteki countryOrigin bilgisini debug için yazdır
+  useEffect(() => {
+    //console.log(`PackageCard - Package ID: ${pkg.id}, Country: ${pkg.countryOrigin || "undefined"}, CountryCode: ${pkg.countryCode || "undefined"}`);
+  }, [pkg]);
+  
   return (
     <div className="group relative h-full">
       {/* Softened hover effect - more subtle glow */}
@@ -165,7 +213,7 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
         <div className="absolute top-0 left-0 right-0 z-30 bg-gradient-to-r from-primary via-indigo-500 to-violet-600 h-1.5"></div>
         
         {/* Featured star marker - Azerbaycan ve Kazakistan için gösterme */}
-        {pkg.isFeatured && country !== 'AZ' && country !== 'KZ' && (
+        {pkg.isFeatured && country && country !== 'AZ' && country !== 'KZ' && (
           <div className="absolute top-0 left-0 z-30 w-0 h-0 border-t-[60px] border-l-[60px] border-t-amber-500 border-l-transparent border-r-transparent rotate-90">
             <Star className="absolute text-white h-4 w-4 left-[-52px] top-[-48px] fill-white" />
           </div>
@@ -188,12 +236,6 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
             <span className="font-bold text-sm text-white">{countryName}</span>
           </div>
           
-          {/* Duration badge */}
-          <div className="absolute bottom-4 right-4 z-20 bg-black/50 backdrop-blur-sm text-white text-xs py-1.5 px-3 rounded-lg shadow-sm flex items-center">
-            <Clock className="h-3.5 w-3.5 mr-1.5 text-amber-400" />
-            {pkg.durationDays} {getPackageTranslation("packages.days", language)}
-          </div>
-          
           {/* Title banner at bottom of image */}
           <div className="absolute left-0 right-0 bottom-0 z-20 p-4">
             <h3 className="text-lg sm:text-xl font-bold leading-tight text-white drop-shadow-md">
@@ -202,8 +244,20 @@ const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
           </div>
         </div>
         
+        {/* Days and Per Person information row */}
+        <div className="flex items-center space-x-4 px-5 py-3 border-b border-gray-100 dark:border-gray-800">
+          <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+            <Calendar className="h-4 w-4 mr-1.5 text-blue-500" />
+            <span>{pkgWithDefaults.durationDays} {getPackageTranslation("packages.days", language)}</span>
+          </div>
+          <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
+            <Users className="h-4 w-4 mr-1.5 text-blue-500" />
+            <span>{language === Language.Turkish ? "Kişi Başına" : getPackageTranslation("packages.perPerson", language)}</span>
+          </div>
+        </div>
+        
         {/* Card content */}
-        <div className="p-5">
+        <div className="p-5 pt-4">
           {/* Description */}
           <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 mb-4">{description}</p>
           

@@ -1,46 +1,54 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useLanguage } from '@/context/LanguageContext';
-import { Package } from '@shared/schema';
 import { Language } from '@shared/types';
-import Container from '@/components/ui/container';
-import PageHeader from '@/components/ui/PageHeader';
-import { Loader2, Plane, MapPin, Clock, LucideHotel, Users, HeartPulse, Sparkles, Globe, Shield, Check } from 'lucide-react';
+import { Package } from '@shared/schema';
 import PackageCard from '@/components/packages/PackageCard';
-import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import CountryFilter from '@/components/packages/CountryFilter';
+import Container from '@/components/ui/container';
+import { Separator } from '@/components/ui/separator';
 import { getTranslation } from "@/lib/translations";
 import { getPackageTranslation } from "@/lib/packageTranslations";
+import { Loader2, Plane, MapPin, Clock, LucideHotel, Users, HeartPulse, Sparkles, Globe, Shield, Check } from 'lucide-react';
+import PageHeader from '@/components/ui/PageHeader';
+import { Card, CardContent } from "@/components/ui/card";
 
 // Function to get country flag emoji
 const getCountryFlag = (countryCode: string): string => {
-  switch (countryCode.toLowerCase()) {
-    case 'tr':
+  if (!countryCode) return '🌍';
+  
+  // Convert to uppercase for case-insensitive matching
+  const code = countryCode.toUpperCase();
+  
+  switch (code) {
+    case 'TR':
       return '🇹🇷';
-    case 'ru':
+    case 'RU':
       return '🇷🇺';
-    case 'az':
+    case 'AZ':
       return '🇦🇿';
-    case 'kz':
+    case 'KZ':
       return '🇰🇿';
-    case 'ua':
+    case 'UA':
       return '🇺🇦';
-    case 'ir':
+    case 'IR':
       return '🇮🇷';
-    case 'ge':
+    case 'GE':
       return '🇬🇪';
-    case 'am':
+    case 'AM':
       return '🇦🇲';
-    case 'by':
+    case 'BY':
       return '🇧🇾';
-    case 'md':
+    case 'MD':
       return '🇲🇩';
-    case 'gr':
+    case 'GR':
       return '🇬🇷';
-    case 'bg':
+    case 'BG':
       return '🇧🇬';
-    case 'ro':
+    case 'RO':
       return '🇷🇴';
+    case 'UNKNOWN':
+      return '🌎';
     default:
       return '🌍';
   }
@@ -48,61 +56,108 @@ const getCountryFlag = (countryCode: string): string => {
 
 const PackagesPage: React.FC = () => {
   const { language } = useLanguage();
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [allPackages, setAllPackages] = useState<Package[]>([]);
+  const [filteredPackages, setFilteredPackages] = useState<Package[]>([]);
+  const [countryCounts, setCountryCounts] = useState<Record<string, number>>({});
+  const [isLoading, setIsLoading] = useState(true);
   
-  // Fetch all packages
-  const { data: packages, isLoading, error } = useQuery<Package[]>({
-    queryKey: ['/api/packages'],
-    queryFn: async () => {
-      const res = await fetch('/api/packages');
-      if (!res.ok) {
-        throw new Error('Failed to fetch packages');
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        setIsLoading(true);
+        // API isteği yapmak yerine doğrudan fetch kullanıyoruz
+        const response = await fetch('/api/packages');
+        if (!response.ok) {
+          throw new Error('Failed to fetch packages');
+        }
+        const fetchedPackages = await response.json();
+        
+        // Paketleri sakla
+        setAllPackages(fetchedPackages);
+        
+        // Ülkelere göre sayısını hesapla
+        const uniqueCountries = new Map<string, number>();
+        
+        fetchedPackages.forEach((pkg: Package) => {
+          // countryOrigin alanını kullan ve case insensitive olarak ek
+          const countryCode = (pkg.countryOrigin || pkg.countryCode || "").toUpperCase();
+          if (countryCode) {
+            const currentCount = uniqueCountries.get(countryCode) || 0;
+            uniqueCountries.set(countryCode, currentCount + 1);
+            //console.log(`Paket ID: ${pkg.id}, Ülke: ${countryCode}`);
+          }
+        });
+        
+        // Debug her ülke için paket sayısını log'la
+        //uniqueCountries.forEach((count, code) => {
+        //  console.log(`Ülke ${code} için ${count} paket var.`);
+        //});
+        
+        // Country Counts güncelle
+        setCountryCounts(Object.fromEntries(uniqueCountries));
+        
+        // Ülke filtresine göre filtreleme yap
+        if (selectedCountry) {
+          filterPackagesByCountry(selectedCountry, fetchedPackages);
+        } else {
+          setFilteredPackages(fetchedPackages);
+        }
+      } catch (error) {
+        console.error("Error fetching packages:", error);
+        // Hata mesajını konsola yazdır
+        console.error("Paketler yüklenirken bir hata oluştu");
+      } finally {
+        setIsLoading(false);
       }
-      return res.json();
-    },
-  });
+    };
 
-  // Get one package per country - keep only the most recently added package for each country
-  const uniqueCountryPackages = packages?.reduce((acc, pkg) => {
-    // Get existing package for this country, if any
-    const existingPkg = acc.find(p => p.countryOrigin === pkg.countryOrigin);
-    
-    // If no package exists for this country yet, add the current one
-    if (!existingPkg) {
-      return [...acc, pkg];
+    fetchPackages();
+  }, [selectedCountry]);
+  
+  // Ülkeye göre paketleri filtrele
+  const filterPackagesByCountry = (countryCode: string, packages: Package[] = allPackages) => {
+    if (!countryCode || countryCode === "all") {
+      setFilteredPackages(packages);
+      return;
     }
     
-    // Otherwise, replace the existing one if this one is newer (has a higher ID)
-    if (pkg.id > existingPkg.id) {
-      return [...acc.filter(p => p.countryOrigin !== pkg.countryOrigin), pkg];
-    }
+    // countryCode'u büyük harfe çevir
+    const upperCountryCode = countryCode.toUpperCase();
     
-    // Keep the existing package
-    return acc;
-  }, [] as Package[]) || [];
+    // Seçilen ülkeye göre paketleri filtrele
+    const filtered = packages.filter(pkg => {
+      // Mevcut ülke bilgisi (countryOrigin veya countryCode alanlarından birini kontrol et)
+      const pkgCountryOrigin = pkg.countryOrigin?.toUpperCase() || "";
+      const pkgCountryCode = pkg.countryCode?.toUpperCase() || "";
+      
+      // Debug: Ülke filtreleme bilgisini konsola yazdır
+      // console.log(`Package ${pkg.id} - Country: ${pkgCountryOrigin || pkgCountryCode}, Selected: ${upperCountryCode}`);
+      
+      // Eğer seçilen ülkeye ait paketleri göster
+      return pkgCountryOrigin === upperCountryCode || pkgCountryCode === upperCountryCode;
+    });
+    
+    console.log(`Filtered packages for ${countryCode}: ${filtered.length} out of ${packages.length}`);
+    setFilteredPackages(filtered);
+  };
+  
+  // Function to handle country selection
+  const handleCountrySelect = (countryCode: string | null) => {
+    setSelectedCountry(countryCode);
+    
+    if (!countryCode || countryCode === "all") {
+      setFilteredPackages(allPackages);
+    } else {
+      filterPackagesByCountry(countryCode);
+    }
+  };
   
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
-    );
-  }
-  
-  if (error) {
-    return (
-      <Container>
-        <div className="py-12 text-center">
-          <h2 className="text-2xl font-bold text-red-500">
-            {language === Language.Turkish ? 'Bir hata oluştu!' : 
-             language === Language.English ? 'An error occurred!' : 
-             language === Language.Russian ? 'Произошла ошибка!' : 
-             'შეცდომა მოხდა!'}
-          </h2>
-          <p className="mt-2 text-muted-foreground">
-            {error instanceof Error ? error.message : 'Unknown error'}
-          </p>
-        </div>
-      </Container>
     );
   }
   
@@ -231,28 +286,40 @@ const PackagesPage: React.FC = () => {
           </div>
           
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-16">
-            {['tr', 'ru', 'az', 'ua', 'ir', 'kz'].map((countryCode, index) => {
-              // Count packages for this country
-              const countryPackages = packages?.filter(pkg => pkg.countryOrigin === countryCode) || [];
+            {['TR', 'RU', 'AZ', 'UA', 'IR', 'KZ'].map((countryCode, index) => {
+              // Her ülke için o ülkeye ait paketleri say
+              const countryPackages = allPackages.filter(pkg => 
+                (pkg.countryOrigin?.toUpperCase() === countryCode || pkg.countryCode?.toUpperCase() === countryCode)
+              ) || [];
               
               const delayClass = `delay-${(index + 1) * 100}`;
               
               // Get background image for countries
               let bgImage = '';
-              if (countryCode === 'tr') bgImage = "bg-[url('/images/kız-kulesi.webp')]";
-              else if (countryCode === 'ru') bgImage = "bg-[url('/images/U-kremlin-sarayi-rusya-sehir-manzarasi-dunyaca-unlu-sehirler-kanvas-tablo1455893402-800.jpg')]";
-              else if (countryCode === 'az') bgImage = "bg-[url('/images/azerbaycan-giris-Jy5Z_cover.jpg')]";
-              else if (countryCode === 'ua') bgImage = "bg-[url('/images/st-andrew-s-church.jpg')]";
-              else if (countryCode === 'ir') bgImage = "bg-[url('/images/iran-resimleri.jpg')]";
-              else if (countryCode === 'kz') bgImage = "bg-[url('/images/kazakistanin-ruhu-bu-topr-700.jpg')]";
+              if (countryCode === 'TR') bgImage = "bg-[url('/images/kız-kulesi.webp')]";
+              else if (countryCode === 'RU') bgImage = "bg-[url('/images/U-kremlin-sarayi-rusya-sehir-manzarasi-dunyaca-unlu-sehirler-kanvas-tablo1455893402-800.jpg')]";
+              else if (countryCode === 'AZ') bgImage = "bg-[url('/images/azerbaycan-giris-Jy5Z_cover.jpg')]";
+              else if (countryCode === 'UA') bgImage = "bg-[url('/images/st-andrew-s-church.jpg')]";
+              else if (countryCode === 'IR') bgImage = "bg-[url('/images/iran-resimleri.jpg')]";
+              else if (countryCode === 'KZ') bgImage = "bg-[url('/images/kazakistanin-ruhu-bu-topr-700.jpg')]";
               
               // Animation classes - removed animations to fix layout issues
               const animationClasses = "";
               
+              // Highlight the selected country
+              const isSelected = selectedCountry === countryCode;
+              const selectedClass = isSelected 
+                ? "ring-4 ring-primary ring-offset-2 scale-105 transform" 
+                : "";
+              
               return (
-                <div key={countryCode} className="group perspective-1000">
+                <button 
+                  key={countryCode} 
+                  className="group perspective-1000 focus:outline-none"
+                  onClick={() => handleCountrySelect(countryCode)}
+                >
                   <div 
-                    className={`h-44 relative overflow-hidden rounded-2xl shadow-lg group-hover:scale-105 transition-transform duration-500`}
+                    className={`h-44 relative overflow-hidden rounded-2xl shadow-lg group-hover:scale-105 transition-transform duration-500 ${selectedClass}`}
                   >
                     {/* Background with image */}
                     <div className={`absolute inset-0 ${bgImage} bg-cover bg-center`}></div>
@@ -267,7 +334,7 @@ const PackagesPage: React.FC = () => {
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-4 z-10">
                       {/* Country flag */}
                       <div className="mb-1 transform group-hover:scale-110 transition-transform duration-500 group-hover:-translate-y-1">
-                        <span className="text-5xl drop-shadow-lg">{getCountryFlag(countryCode)}</span>
+                        <span className="text-5xl drop-shadow-lg">{getCountryFlag(countryCode || 'unknown')}</span>
                       </div>
                       
                       {/* Country name */}
@@ -283,7 +350,7 @@ const PackagesPage: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -295,17 +362,28 @@ const PackagesPage: React.FC = () => {
             <div className="flex items-center gap-3">
               <div className="h-1.5 w-12 bg-gradient-to-r from-primary to-purple-500 rounded-full"></div>
               <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">
-                {getPackageTranslation("packages.availablePackages", language)}
+                {selectedCountry 
+                  ? `${getPackageTranslation(`countries.${selectedCountry}`, language)} ${getPackageTranslation("packages.packagesTitle", language)}`
+                  : getPackageTranslation("packages.availablePackages", language)}
               </h2>
             </div>
+            {selectedCountry && (
+              <button
+                onClick={() => setSelectedCountry(null)}
+                className="px-3 py-1.5 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-xs font-medium transition-colors flex items-center gap-1.5"
+              >
+                {getPackageTranslation("packages.showAll", language)}
+                <Globe className="h-3.5 w-3.5" />
+              </button>
+            )}
             <div className="bg-gradient-to-br from-amber-100 to-orange-100 dark:from-amber-900/30 dark:to-orange-900/30 h-10 w-10 rounded-full flex items-center justify-center shadow-sm">
               <Sparkles className="h-5 w-5 text-amber-500" />
             </div>
           </div>
           
-          {uniqueCountryPackages && uniqueCountryPackages.length > 0 ? (
+          {filteredPackages && filteredPackages.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-              {uniqueCountryPackages.map(pkg => (
+              {filteredPackages.map(pkg => (
                 <PackageCard key={pkg.id} pkg={pkg} />
               ))}
             </div>

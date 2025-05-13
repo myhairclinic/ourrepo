@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { storage } from "../storage";
 import { z } from "zod";
+import { executeQuery, mapProductFromDB } from "../db/index";
 
 // Doğrudan şema tiplerini dahil etmek yerine local tipleri tanımlıyoruz
 // Bu, @shared/schema modülünden gelen bağımlılığı kaldırmak için yapılmıştır
@@ -241,52 +242,188 @@ export const getProductBySlug = async (req: Request, res: Response) => {
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
-    // Validate request
-    const validData = insertProductSchema.parse(req.body);
+    console.log('createProduct controller called with body:', JSON.stringify(req.body, null, 2));
     
-    // Create product
-    const product = await storage.createProduct(validData);
-    res.status(201).json(product);
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return res.status(400).json({ message: "Validation error", errors: error.errors });
+    // Validate the request body
+    const productData = insertProductSchema.parse(req.body);
+    
+    // Log the parsed data for debugging
+    console.log('Product data after validation:', JSON.stringify(productData, null, 2));
+    
+    try {
+      // Use our database utility instead of direct Pool management
+      const result = await executeQuery(
+        `INSERT INTO products (
+          slug, name_tr, name_en, name_ru, name_ka, 
+          description_tr, description_en, description_ru, description_ka,
+          usage_tr, usage_en, usage_ru, usage_ka,
+          ingredients_tr, ingredients_en, ingredients_ru, ingredients_ka,
+          image_url, price, is_new, category_id, category_name, 
+          "order", is_active
+        ) VALUES (
+          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, 
+          $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24
+        ) RETURNING *`,
+        [
+          productData.slug,
+          productData.nameTR,
+          productData.nameEN,
+          productData.nameRU,
+          productData.nameKA,
+          productData.descriptionTR,
+          productData.descriptionEN,
+          productData.descriptionRU,
+          productData.descriptionKA,
+          productData.usageTR,
+          productData.usageEN,
+          productData.usageRU,
+          productData.usageKA,
+          productData.ingredientsTR,
+          productData.ingredientsEN,
+          productData.ingredientsRU,
+          productData.ingredientsKA,
+          productData.imageUrl,
+          productData.price || 0,
+          productData.isNew || false,
+          productData.categoryId || null,
+          productData.categoryName || null,
+          productData.order || 0,
+          productData.isActive !== undefined ? productData.isActive : true
+        ]
+      );
+      
+      // Map database column names to camelCase using our utility
+      const product = mapProductFromDB(result.rows[0]);
+      console.log('Product created successfully:', JSON.stringify(product, null, 2));
+      
+      // Return a properly formatted JSON response
+      return res.status(201).json({ 
+        success: true, 
+        message: 'Product created successfully', 
+        data: product 
+      });
+    } catch (dbError: unknown) {
+      console.error('Database error creating product:', dbError);
+      const errorMessage = dbError instanceof Error ? dbError.message : 'Unknown database error';
+      return res.status(500).json({ 
+        success: false, 
+        message: 'Database error creating product', 
+        error: errorMessage 
+      });
     }
-    res.status(500).json({ message: "Failed to create product" });
+  } catch (error: unknown) {
+    console.error('Error creating product:', error);
+    
+    // Check if it's a Zod validation error
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Invalid product data', 
+        errors: error.errors 
+      });
+    }
+    
+    // Handle other types of errors
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return res.status(500).json({ 
+      success: false, 
+      message: 'Failed to create product', 
+      error: errorMessage 
+    });
   }
 };
 
 export const updateProduct = async (req: Request, res: Response) => {
   try {
-    const id = parseInt(req.params.id);
+    const { id } = req.params;
     
-    // Validate request
-    const validData = insertProductSchema.partial().parse(req.body);
-    
-    // Update product
-    const product = await storage.updateProduct(id, validData);
-    if (!product) {
-      return res.status(404).json({ message: "Product not found" });
+    if (!id) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Product ID is required' 
+      });
     }
     
-    res.json(product);
-  } catch (error) {
+    const productData = insertProductSchema.parse(req.body);
+    
+    // Log the update operation for debugging
+    console.log(`Updating product ${id} with data:`, JSON.stringify(productData, null, 2));
+    
+    // @ts-ignore - Storage implementation has this method
+    const result = await storage.updateProduct(id, productData);
+    
+    if (!result) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Product not found' 
+      });
+    }
+    
+    // Ensure the response is properly formatted JSON
+    return res.status(200).json({ 
+      success: true, 
+      message: 'Product updated successfully', 
+      data: result 
+    });
+  } catch (error: unknown) {
+    console.error(`Error updating product:`, error);
+    
+    // Check if it's a Zod validation error
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ message: "Validation error", errors: error.errors });
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Invalid product data', 
+        errors: error.errors 
+      });
     }
-    res.status(500).json({ message: "Failed to update product" });
+    
+    // Handle other types of errors
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return res.status(500).json({ 
+      success: false, 
+      message: 'Failed to update product', 
+      error: errorMessage 
+    });
   }
 };
 
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
-    const id = parseInt(req.params.id);
-    const result = await storage.deleteProduct(id);
-    if (!result) {
-      return res.status(404).json({ message: "Product not found" });
+    const { id } = req.params;
+    
+    if (!id) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Product ID is required' 
+      });
     }
-    res.status(204).send();
-  } catch (error) {
-    res.status(500).json({ message: "Failed to delete product" });
+    
+    // Log the delete operation for debugging
+    console.log(`Deleting product with ID: ${id}`);
+    
+    // @ts-ignore - Storage implementation has this method
+    const result = await storage.deleteProduct(id);
+    
+    if (!result) {
+      return res.status(404).json({ 
+        success: false, 
+        message: 'Product not found' 
+      });
+    }
+    
+    return res.status(200).json({ 
+      success: true, 
+      message: 'Product deleted successfully' 
+    });
+  } catch (error: unknown) {
+    console.error('Error deleting product:', error);
+    
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return res.status(500).json({ 
+      success: false, 
+      message: 'Failed to delete product', 
+      error: errorMessage 
+    });
   }
 };
 

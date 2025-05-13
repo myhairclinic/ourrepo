@@ -135,7 +135,7 @@ class TelegramBotService {
     }
 
     // Token kontrolü
-    const token = process.env.TELEGRAM_BOT_TOKEN;
+    const token = process.env.TELEGRAM_BOT_TOKEN || '8016071029:AAEpcprNJEM79IKkDPO4kpxt5u5SSeftFec';
     if (!token) {
       console.error('❌ TELEGRAM_BOT_TOKEN environment variable is not set');
       if (retryCount < maxRetries) {

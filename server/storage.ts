@@ -24,7 +24,7 @@ import {
 import session from "express-session";
 import createMemoryStore from "memorystore";
 import { db, pool } from "./db";
-import { eq, desc, asc, sql } from "drizzle-orm";
+import { eq, desc, asc, sql, or } from "drizzle-orm";
 import connectPg from "connect-pg-simple";
 
 const MemoryStore = createMemoryStore(session);
@@ -695,8 +695,14 @@ export class MemStorage implements IStorage {
     
     // Her ülke için sadece bir paket ekle (son eklenen paket kalır)
     for (const pkg of packages) {
-      if (pkg.country) {
-        countryMap.set(pkg.country, pkg);
+      // countryOrigin alanını kullan, eski country alanı kullanım dışı
+      if (pkg.countryOrigin) {
+        const countryCode = pkg.countryOrigin.toUpperCase();
+        // Sadece daha yüksek ID'li (daha yeni) paketleri ekle
+        const existingPkg = countryMap.get(countryCode);
+        if (!existingPkg || pkg.id > existingPkg.id) {
+          countryMap.set(countryCode, pkg);
+        }
       }
     }
     
@@ -1445,6 +1451,16 @@ export class DatabaseStorage implements IStorage {
     });
   }
   
+  // Helper method for raw SQL queries
+  async query(sql: string, params: any[] = []) {
+    const client = await pool.connect();
+    try {
+      return await client.query(sql, params);
+    } finally {
+      client.release();
+    }
+  }
+  
   // Patient Progress Images operations
   async getPatientProgressImages(patientId: number): Promise<PatientProgressImage[]> {
     return await db.select().from(patientProgressImages)
@@ -1792,45 +1808,115 @@ export class DatabaseStorage implements IStorage {
 
   // Product operations
   async getProducts(): Promise<Product[]> {
-    return await db.select().from(products);
+    try {
+      const sql = `
+        SELECT * FROM products
+        ORDER BY created_at DESC
+      `;
+      
+      const result = await this.query(sql);
+      
+      // Map the database column names to the expected API format
+      return result.rows.map(product => ({
+        id: product.id,
+        slug: product.slug,
+        titleTR: product.name_tr,
+        titleEN: product.name_en,
+        titleRU: product.name_ru,
+        titleKA: product.name_ka,
+        descriptionTR: product.description_tr,
+        descriptionEN: product.description_en,
+        descriptionRU: product.description_ru,
+        descriptionKA: product.description_ka,
+        price: product.price,
+        currency: product.currency,
+        category: product.category,
+        imageUrl: product.image_url,
+        isActive: product.is_active,
+        createdAt: product.created_at
+      }));
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      throw error;
+    }
   }
 
-  async getProductById(id: number): Promise<Product | undefined> {
-    const [product] = await db.select().from(products).where(eq(products.id, id));
-    return product;
-  }
-
-  async getProductBySlug(slug: string): Promise<Product | undefined> {
-    const [product] = await db.select().from(products).where(eq(products.slug, slug));
-    return product;
-  }
-
-  async createProduct(product: InsertProduct): Promise<Product> {
-    const [newProduct] = await db.insert(products).values(product).returning();
-    return newProduct;
-  }
-
-  async updateProduct(id: number, product: Partial<InsertProduct>): Promise<Product | undefined> {
-    const [updatedProduct] = await db.update(products)
-      .set({ ...product, updatedAt: new Date() })
-      .where(eq(products.id, id))
-      .returning();
-    return updatedProduct;
-  }
-
-  async deleteProduct(id: number): Promise<boolean> {
-    await db.delete(products).where(eq(products.id, id));
-    return true;
-  }
-
-  async clearProducts(): Promise<boolean> {
-    await db.delete(products);
-    return true;
+  async getProductBySlug(slug: string): Promise<Product | null> {
+    try {
+      const sql = `
+        SELECT * FROM products
+        WHERE slug = $1
+      `;
+      
+      const result = await this.query(sql, [slug]);
+      
+      if (result.rows.length === 0) {
+        return null;
+      }
+      
+      const product = result.rows[0];
+      
+      return {
+        id: product.id,
+        slug: product.slug,
+        titleTR: product.name_tr,
+        titleEN: product.name_en,
+        titleRU: product.name_ru,
+        titleKA: product.name_ka,
+        descriptionTR: product.description_tr,
+        descriptionEN: product.description_en,
+        descriptionRU: product.description_ru,
+        descriptionKA: product.description_ka,
+        price: product.price,
+        currency: product.currency,
+        category: product.category,
+        imageUrl: product.image_url,
+        isActive: product.is_active,
+        createdAt: product.created_at
+      };
+    } catch (error) {
+      console.error("Error fetching product by slug:", error);
+      throw error;
+    }
   }
 
   // Package operations
   async getPackages(): Promise<Package[]> {
-    return await db.select().from(packages);
+    try {
+      const sql = `
+        SELECT * FROM packages
+        ORDER BY featured_order ASC, created_at DESC
+      `;
+      
+      const result = await this.query(sql);
+      
+      // Map the database column names to the expected API format
+      return result.rows.map(pkg => ({
+        id: pkg.id,
+        slug: pkg.slug,
+        titleTR: pkg.name_tr,
+        titleEN: pkg.name_en,
+        titleRU: pkg.name_ru,
+        titleKA: pkg.name_ka,
+        descriptionTR: pkg.description_tr,
+        descriptionEN: pkg.description_en,
+        descriptionRU: pkg.description_ru,
+        descriptionKA: pkg.description_ka,
+        price: pkg.price,
+        currency: pkg.currency,
+        packageType: pkg.package_type,
+        duration: pkg.duration,
+        includes: pkg.includes,
+        countryCode: pkg.country_code,
+        imageUrl: pkg.image_url,
+        isActive: pkg.is_active,
+        featuredOrder: pkg.featured_order,
+        createdAt: pkg.created_at
+      }));
+    } catch (error) {
+      console.error("Error fetching packages:", error);
+      throw error;
+    }
   }
 
   async getPackageById(id: number): Promise<Package | undefined> {
@@ -1840,69 +1926,52 @@ export class DatabaseStorage implements IStorage {
   
   async getOnePackagePerCountry(): Promise<Package[]> {
     try {
-      // Her ülkeden bir paket getirme stratejisi ama her seferinde benzersiz ID'ler ile
-      // SQL ile doğrudan her ülke için bir paket sorgular
-      // Önce her ülkeyi belirtelim
-      const countryList = ['TR', 'RU', 'AZ', 'KZ', 'UA', 'IR'];
+      console.log('Fetching one package per country...');
       
-      // Benzersiz ülke-paket haritası oluşturalım, her ülke için sadece bir paket
-      const countryPackageMap = new Map<string, Package & { _uniqueKey?: string }>();
+      const sql = `
+        WITH RankedPackages AS (
+          SELECT 
+            *,
+            ROW_NUMBER() OVER (PARTITION BY UPPER(country_code) ORDER BY id DESC) as rn
+          FROM packages
+          WHERE country_code IS NOT NULL AND country_code != ''
+        )
+        SELECT * FROM RankedPackages WHERE rn = 1
+      `;
       
-      // Tüm paketleri bir kerede çekelim - performans için daha iyi
-      const allPackages = await db.select().from(packages)
-        .where(eq(packages.isActive, true));
+      const result = await this.query(sql);
       
-      // Ülke bazında filtreleme yapalım
-      for (const countryCode of countryList) {
-        const packagesForCountry = allPackages.filter(
-          pkg => pkg.countryOrigin === countryCode
-        );
-        
-        if (packagesForCountry.length > 0) {
-          // Rastgele bir paket seçelim
-          const randomIndex = Math.floor(Math.random() * packagesForCountry.length);
-          const selectedPackage = packagesForCountry[randomIndex];
-          
-          // Her pakete benzersiz bir anahtar ekleyelim (ülke kodu + package id)
-          const uniquePackage = {
-            ...selectedPackage,
-            _uniqueKey: `${selectedPackage.id}-${countryCode}`
-          };
-          
-          // Map'e ekleyelim
-          countryPackageMap.set(countryCode, uniquePackage);
-          
-          console.log(`Selected package for ${countryCode}: ${selectedPackage.titleTR} (ID: ${selectedPackage.id})`);
-        }
-      }
+      console.log(`Found ${result.rows.length} unique country packages`);
       
-      // Sonuç dizisi oluştur
-      const result = Array.from(countryPackageMap.values());
-      
-      // Toplam paket sayısını logla
-      console.log(`Found packages from ${result.length} different countries`);
-      
-      // Sonuçları kontrol et ve çakışmaları bildir
-      const usedIds = new Set<number>();
-      const duplicateIds = new Set<number>();
-      
-      for (const pkg of result) {
-        if (usedIds.has(pkg.id)) {
-          duplicateIds.add(pkg.id);
-        }
-        usedIds.add(pkg.id);
-        
-        console.log(`Package from ${pkg.countryOrigin}: "${pkg.titleTR}" (ID: ${pkg._uniqueKey || pkg.id})`);
-      }
-      
-      // Varsa çakışan ID'leri logla
-      if (duplicateIds.size > 0) {
-        console.log(`Warning: Found ${duplicateIds.size} duplicate package IDs! Using unique keys for React components.`);
-      }
-      
-      return result;
+      // Map database column names to expected API format
+      return result.rows.map(pkg => ({
+        id: pkg.id,
+        slug: pkg.slug,
+        titleTR: pkg.name_tr,
+        titleEN: pkg.name_en,
+        titleRU: pkg.name_ru,
+        titleKA: pkg.name_ka,
+        descriptionTR: pkg.description_tr,
+        descriptionEN: pkg.description_en,
+        descriptionRU: pkg.description_ru,
+        descriptionKA: pkg.description_ka,
+        price: pkg.price,
+        currency: pkg.currency,
+        packageType: pkg.package_type,
+        durationDays: pkg.duration_days,
+        includes: pkg.includes,
+        countryOrigin: pkg.country_code,
+        countryCode: pkg.country_code,
+        imageUrl: pkg.image_url,
+        isActive: pkg.is_active,
+        isFeatured: pkg.is_featured,
+        isAllInclusive: pkg.is_all_inclusive,
+        featuredOrder: pkg.featured_order,
+        createdAt: pkg.created_at,
+        updatedAt: pkg.updated_at
+      }));
     } catch (error) {
-      console.error("Error in getOnePackagePerCountry:", error);
+      console.error('Error in getOnePackagePerCountry:', error);
       return [];
     }
   }
@@ -1919,8 +1988,53 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getPackageBySlug(slug: string): Promise<Package | undefined> {
-    const [pkg] = await db.select().from(packages).where(eq(packages.slug, slug));
-    return pkg;
+    try {
+      const sql = `
+        SELECT * FROM packages
+        WHERE slug = $1
+        LIMIT 1
+      `;
+      
+      const result = await this.query(sql, [slug]);
+      
+      if (result.rows.length === 0) {
+        return undefined;
+      }
+      
+      const pkg = result.rows[0];
+      
+      // Map the database column names to the expected API format
+      return {
+        id: pkg.id,
+        slug: pkg.slug,
+        titleTR: pkg.name_tr,
+        titleEN: pkg.name_en,
+        titleRU: pkg.name_ru,
+        titleKA: pkg.name_ka,
+        descriptionTR: pkg.description_tr,
+        descriptionEN: pkg.description_en,
+        descriptionRU: pkg.description_ru,
+        descriptionKA: pkg.description_ka,
+        price: pkg.price,
+        currency: pkg.currency,
+        packageType: pkg.package_type,
+        durationDays: pkg.duration_days,
+        includes: pkg.includes,
+        countryOrigin: pkg.country_code,
+        imageUrl: pkg.image_url,
+        isActive: pkg.is_active,
+        isFeatured: pkg.is_featured,
+        isAllInclusive: pkg.is_all_inclusive,
+        featuredOrder: pkg.featured_order,
+        createdAt: pkg.created_at,
+        updatedAt: pkg.updated_at,
+        highlights: pkg.highlights,
+        galleryImages: pkg.gallery_images
+      };
+    } catch (error) {
+      console.error(`Error fetching package with slug ${slug}:`, error);
+      throw error;
+    }
   }
 
   async createPackage(pkg: InsertPackage): Promise<Package> {
@@ -2493,6 +2607,29 @@ export class DatabaseStorage implements IStorage {
       .where(eq(treatmentRecords.id, id))
       .returning();
     return record;
+  }
+
+  async getPackagesByCountry(countryCode: string): Promise<Package[]> {
+    try {
+      // countryCode'u büyük harfe çevirerek case-insensitive yapalım
+      const upperCountryCode = countryCode.toUpperCase();
+      console.log(`Fetching packages for country code: ${upperCountryCode}`);
+      
+      const result = await db.select().from(packages)
+        .where(
+          or(
+            sql`UPPER(countryOrigin) = ${upperCountryCode}`,
+            sql`UPPER(countryCode) = ${upperCountryCode}`
+          )
+        )
+        .orderBy(desc(packages.createdAt));
+      
+      console.log(`Found ${result.length} packages for country ${upperCountryCode}`);
+      return result;
+    } catch (error) {
+      console.error("Error getting packages by country:", error);
+      return [];
+    }
   }
 }
 

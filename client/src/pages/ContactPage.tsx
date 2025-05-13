@@ -133,13 +133,13 @@ export default function ContactPage() {
           <div className="container mx-auto px-4 py-16 md:py-24 relative z-10 max-w-7xl">
             <div className="max-w-3xl mx-auto text-center">
               <Badge variant="outline" className="rounded-full border-white border-opacity-50 text-white px-4 py-1 text-sm mb-4 backdrop-blur-sm bg-white/10">
-                Bizimle İletişime Geçin
+                {t('contact.contactUs')}
               </Badge>
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 drop-shadow-md">
-                İletişim
+                {t('contact.headerTitle')}
               </h1>
               <p className="text-lg md:text-xl opacity-90 max-w-2xl mx-auto mb-10">
-                Saç ekimi ve diğer hizmetlerimizle ilgili sorularınız için tüm iletişim kanallarımızdan bizimle iletişime geçebilirsiniz.
+                {t('contact.headerSubtitle')}
               </p>
               
               {/* Quick Contact Buttons */}
@@ -197,7 +197,7 @@ export default function ContactPage() {
                         <MapPin className="h-6 w-6" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-lg mb-2">Adres</h3>
+                        <h3 className="font-semibold text-lg mb-2">{t('contact.address')}</h3>
                         <p className="text-muted-foreground">{CONTACT.ADDRESS[language.toUpperCase() as keyof typeof CONTACT.ADDRESS]}</p>
                       </div>
                     </div>
@@ -210,7 +210,7 @@ export default function ContactPage() {
                         <Phone className="h-6 w-6" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-lg mb-2">Telefon</h3>
+                        <h3 className="font-semibold text-lg mb-2">{t('contact.phone')}</h3>
                         <p className="text-muted-foreground mb-1">{CONTACT.PHONE}</p>
                       </div>
                     </div>
@@ -223,7 +223,7 @@ export default function ContactPage() {
                         <Mail className="h-6 w-6" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-lg mb-2">E-posta</h3>
+                        <h3 className="font-semibold text-lg mb-2">{t('contact.email')}</h3>
                         <p className="text-muted-foreground">{CONTACT.EMAIL}</p>
                       </div>
                     </div>
@@ -236,19 +236,19 @@ export default function ContactPage() {
                         <Clock className="h-6 w-6" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-lg mb-2">Çalışma Saatleri</h3>
+                        <h3 className="font-semibold text-lg mb-2">{t('contact.workingHours')}</h3>
                         <div className="space-y-1 text-muted-foreground">
                           <div className="flex justify-between">
-                            <span>Pazartesi - Cuma</span>
+                            <span>{t('contact.mondayFriday')}</span>
                             <span className="font-medium">09:00 - 18:00</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>Cumartesi</span>
+                            <span>{t('contact.saturday')}</span>
                             <span className="font-medium">10:00 - 16:00</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>Pazar</span>
-                            <span className="font-medium">Kapalı</span>
+                            <span>{t('contact.sunday')}</span>
+                            <span className="font-medium">{t('contact.closed')}</span>
                           </div>
                         </div>
                       </div>
@@ -258,7 +258,7 @@ export default function ContactPage() {
                 
                 {/* Social Media Links */}
                 <div className="p-6 bg-gray-50 dark:bg-gray-900">
-                  <h3 className="font-semibold text-lg mb-4">{getTranslation('contact.followUs', 'Bizi Takip Edin')}</h3>
+                  <h3 className="font-semibold text-lg mb-4">{t('contact.followUs')}</h3>
                   <div className="flex gap-3">
                     <a 
                       href={SOCIAL.FACEBOOK}
@@ -338,10 +338,10 @@ export default function ContactPage() {
               <div className="h-2 bg-gradient-to-r from-primary to-primary/50"></div>
               <CardHeader className="p-8 pb-4 text-center">
                 <CardTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
-                  {getTranslation('contact.formTitle', 'Bizimle İletişime Geçin')}
+                  {t('contact.formTitle')}
                 </CardTitle>
                 <CardDescription className="text-center mt-3 text-base max-w-2xl mx-auto">
-                  {getTranslation('contact.formDescription', 'Soru ve talepleriniz için bizimle iletişime geçebilirsiniz.')} <span className="text-primary font-medium">{getTranslation('contact.responseTime', '24 saat içinde dönüş yapıyoruz')}</span>
+                  {t('contact.formDescription')} <span className="text-primary font-medium">{t('contact.responseTime')}</span>
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-8">
@@ -352,12 +352,12 @@ export default function ContactPage() {
                         <div className="bg-primary/10 p-1.5 rounded-full">
                           <User className="h-4 w-4 text-primary" />
                         </div>
-                        Ad Soyad*
+                        {t('contact.nameLabel')}
                       </Label>
                       <Input
                         id="name"
                         type="text"
-                        placeholder="Adınız ve soyadınız"
+                        placeholder={t('contact.namePlaceholder')}
                         className={`py-6 px-4 text-base ${errors.name ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'}`}
                         {...register("name")}
                       />
@@ -369,12 +369,12 @@ export default function ContactPage() {
                         <div className="bg-primary/10 p-1.5 rounded-full">
                           <AtSign className="h-4 w-4 text-primary" />
                         </div>
-                        E-posta*
+                        {t('contact.emailLabel')}
                       </Label>
                       <Input
                         id="email"
                         type="email"
-                        placeholder="E-posta adresiniz"
+                        placeholder={t('contact.emailPlaceholder')}
                         className={`py-6 px-4 text-base ${errors.email ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'}`}
                         {...register("email")}
                       />
@@ -387,12 +387,12 @@ export default function ContactPage() {
                       <div className="bg-primary/10 p-1.5 rounded-full">
                         <Phone className="h-4 w-4 text-primary" />
                       </div>
-                      Telefon Numarası
+                      {t('contact.phoneLabel')}
                     </Label>
                     <Input
                       id="phone"
                       type="tel"
-                      placeholder="Telefon numaranız"
+                      placeholder={t('contact.phonePlaceholder')}
                       className="py-6 px-4 text-base border-gray-200 dark:border-gray-700"
                       {...register("phone")}
                     />
@@ -403,12 +403,12 @@ export default function ContactPage() {
                       <div className="bg-primary/10 p-1.5 rounded-full">
                         <MessageSquare className="h-4 w-4 text-primary" />
                       </div>
-                      Mesaj*
+                      {t('contact.messageLabel')}
                     </Label>
                     <Textarea
                       id="message"
                       rows={6}
-                      placeholder="Mesajınızı buraya yazın..."
+                      placeholder={t('contact.messagePlaceholder')}
                       className={`px-4 py-3 text-base resize-none ${errors.message ? 'border-red-500' : 'border-gray-200 dark:border-gray-700'}`}
                       {...register("message")}
                     />
@@ -427,12 +427,12 @@ export default function ContactPage() {
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        Gönderiliyor...
+                        {t('contact.sending')}
                       </span>
                     ) : (
                       <span className="flex items-center gap-2">
                         <Send className="h-5 w-5" />
-                        Mesaj Gönder
+                        {t('contact.submitButton')}
                       </span>
                     )}
                   </Button>
@@ -444,44 +444,44 @@ export default function ContactPage() {
           {/* FAQ Section */}
           <div className="max-w-4xl mx-auto mb-16">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold">{getTranslation('contact.frequentlyAsked', 'Sık Sorulan Sorular')}</h2>
-              <p className="text-muted-foreground mt-3">{getTranslation('contact.faqDescription', 'Aşağıdaki cevaplar size yardımcı olabilir')}</p>
+              <h2 className="text-3xl font-bold">{t('contact.frequentlyAsked')}</h2>
+              <p className="text-muted-foreground mt-3">{t('contact.faqDescription')}</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card className="overflow-hidden hover:shadow-md transition-shadow duration-300">
                 <CardHeader>
-                  <CardTitle className="text-xl">{getTranslation('contact.faq1Title', 'Saç ekimi ne kadar sürer?')}</CardTitle>
+                  <CardTitle className="text-xl">{t('contact.faq1Title')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">{getTranslation('contact.faq1Content', 'Saç ekimi işlemi ortalama 6-8 saat sürer. İşlem sonrası iyileşme süreci yaklaşık 10-14 gündür.')}</p>
+                  <p className="text-muted-foreground">{t('contact.faq1Content')}</p>
                 </CardContent>
               </Card>
               
               <Card className="overflow-hidden hover:shadow-md transition-shadow duration-300">
                 <CardHeader>
-                  <CardTitle className="text-xl">{getTranslation('contact.faq2Title', 'Kaç ekimi ne zaman sonuç verir?')}</CardTitle>
+                  <CardTitle className="text-xl">{t('contact.faq2Title')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">{getTranslation('contact.faq2Content', 'Saç ekimi sonuçları genellikle 6-9 ay içinde tam olarak görülür. İlk 3 ay içinde yeni saç büyümesi başlar.')}</p>
+                  <p className="text-muted-foreground">{t('contact.faq2Content')}</p>
                 </CardContent>
               </Card>
               
               <Card className="overflow-hidden hover:shadow-md transition-shadow duration-300">
                 <CardHeader>
-                  <CardTitle className="text-xl">{getTranslation('contact.faq3Title', 'Sonuçlar doğal görünür mü?')}</CardTitle>
+                  <CardTitle className="text-xl">{t('contact.faq3Title')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">{getTranslation('contact.faq3Content', 'Evet, modern saç ekimi teknikleri ile tamamen doğal görünümlü sonuçlar elde edilir. DHI ve Safir FUE teknikleri doğal saç çizgisi ve yoğunluğu sağlar.')}</p>
+                  <p className="text-muted-foreground">{t('contact.faq3Content')}</p>
                 </CardContent>
               </Card>
               
               <Card className="overflow-hidden hover:shadow-md transition-shadow duration-300">
                 <CardHeader>
-                  <CardTitle className="text-xl">{getTranslation('contact.faq4Title', 'Saç ekimi sonrası dikkat edilmesi gerekenler nelerdir?')}</CardTitle>
+                  <CardTitle className="text-xl">{t('contact.faq4Title')}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">{getTranslation('contact.faq4Content', 'İlk hafta yatarken dikkatli olmalı, tuz ve alkol tüketmemeli, sigara içmemeli, direkt güneş ışığından korunmalı ve doktorunuzun önerdiği bakım ürünlerini kullanmalısınız.')}</p>
+                  <p className="text-muted-foreground">{t('contact.faq4Content')}</p>
                 </CardContent>
               </Card>
             </div>

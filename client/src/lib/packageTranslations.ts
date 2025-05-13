@@ -4,7 +4,7 @@ import { Language } from "@shared/types";
 type LanguageMap = Record<Language, string>;
 
 // Additional translations for package filters and features
-export const packageTranslations: Record<string, LanguageMap> = {
+export const packageTranslations: Record<string, Record<Language, string>> = {
   // Page Sections
   "packages.pageTitle": {
     [Language.Turkish]: "MyHair Clinic Özel Tedavi ve Seyahat Paketleri",
@@ -150,6 +150,48 @@ export const packageTranslations: Record<string, LanguageMap> = {
     [Language.English]: "Romania",
     [Language.Russian]: "Румыния",
     [Language.Georgian]: "რუმინეთი"
+  },
+  "countries.unknown": {
+    [Language.Turkish]: "Bilinmeyen",
+    [Language.English]: "Unknown",
+    [Language.Russian]: "Неизвестно",
+    [Language.Georgian]: "უცნობი"
+  },
+  "countries.TR": {
+    [Language.Turkish]: "Türkiye",
+    [Language.English]: "Turkey",
+    [Language.Russian]: "Турция",
+    [Language.Georgian]: "თურქეთი"
+  },
+  "countries.RU": {
+    [Language.Turkish]: "Rusya",
+    [Language.English]: "Russia",
+    [Language.Russian]: "Россия",
+    [Language.Georgian]: "რუსეთი"
+  },
+  "countries.AZ": {
+    [Language.Turkish]: "Azerbaycan",
+    [Language.English]: "Azerbaijan",
+    [Language.Russian]: "Азербайджан",
+    [Language.Georgian]: "აზერბაიჯანი"
+  },
+  "countries.KZ": {
+    [Language.Turkish]: "Kazakistan",
+    [Language.English]: "Kazakhstan",
+    [Language.Russian]: "Казахстан",
+    [Language.Georgian]: "ყაზახეთი"
+  },
+  "countries.UA": {
+    [Language.Turkish]: "Ukrayna",
+    [Language.English]: "Ukraine",
+    [Language.Russian]: "Украина",
+    [Language.Georgian]: "უკრაინა"
+  },
+  "countries.IR": {
+    [Language.Turkish]: "İran",
+    [Language.English]: "Iran",
+    [Language.Russian]: "Иран",
+    [Language.Georgian]: "ირანი"
   },
   // Package Filters
   "packages.filters": {
@@ -799,7 +841,21 @@ export const packageTranslations: Record<string, LanguageMap> = {
     [Language.English]: "All Inclusive",
     [Language.Russian]: "Всё включено",
     [Language.Georgian]: "ყველაფერი ჩართულია"
-  }
+  },
+  
+  "packages.packagesTitle": {
+    [Language.Turkish]: "Paketleri",
+    [Language.English]: "Packages",
+    [Language.Russian]: "Пакеты",
+    [Language.Georgian]: "პაკეტები",
+  },
+  
+  "packages.showAll": {
+    [Language.Turkish]: "Tüm paketleri göster",
+    [Language.English]: "Show all packages",
+    [Language.Russian]: "Показать все пакеты",
+    [Language.Georgian]: "ყველა პაკეტის ჩვენება",
+  },
 };
 
 // Get translation function for package translations

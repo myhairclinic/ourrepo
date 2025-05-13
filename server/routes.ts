@@ -174,75 +174,121 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put("/api/faqs/:id", updateFaq);
   app.delete("/api/faqs/:id", deleteFaq);
 
-  // Product routes
-  app.get("/api/products", getProducts);
-  app.get("/api/products/:slug", getProductBySlug);
-  app.post("/api/products", createProduct);
-  app.put("/api/products/:id", updateProduct);
-  app.delete("/api/products/:id", deleteProduct);
+  // Products routes
+  app.get('/api/products', async (req, res) => {
+    try {
+      const products = await storage.getProducts();
+      res.json({
+        success: true,
+        data: products
+      });
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      res.status(500).json({ 
+        success: false, 
+        message: 'Failed to fetch products',
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
+
+  // Add logging middleware for the products POST route
+  // Delete any other POST /api/products routes to prevent conflicts
+  app.post('/api/products', createProduct);
+  app.put('/api/products/:id', updateProduct);
+  app.delete('/api/products/:id', deleteProduct);
+
+  app.get('/api/products/:slug', async (req, res) => {
+    try {
+      const { slug } = req.params;
+      const product = await storage.getProductBySlug(slug);
+      
+      if (!product) {
+        return res.status(404).json({ 
+          success: false, 
+          message: 'Product not found' 
+        });
+      }
+      
+      res.json({
+        success: true,
+        data: product
+      });
+    } catch (error) {
+      console.error(`Error fetching product with slug ${req.params.slug}:`, error);
+      res.status(500).json({ 
+        success: false, 
+        message: 'Failed to fetch product',
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
+    }
+  });
   
   // Vithair ürünlerini çekme endpoint'i
   app.post("/api/products/fetch-vithair", fetchVithairProducts);
   
   // Tüm ürünleri temizleme endpoint'i için /api/admin/clear-products kullanılmaktadır
 
-  // Package routes
-  app.get("/api/packages", async (req, res) => {
+  // Packages routes
+  app.get('/api/packages', async (req, res) => {
     try {
       const packages = await storage.getPackages();
       res.json(packages);
     } catch (error) {
-      console.error("Error fetching packages:", error);
-      res.status(500).json({ message: "Failed to fetch packages" });
+      console.error('Error fetching packages:', error);
+      res.status(500).json({ message: 'Failed to fetch packages' });
     }
   });
   
-  app.get("/api/packages/one-per-country", async (req, res) => {
+  app.get('/api/packages/one-per-country', async (req, res) => {
     try {
       const packages = await storage.getOnePackagePerCountry();
-      console.log("One package per country fetched:", packages.length);
+      console.log(`One package per country fetched: ${packages.length}`);
       res.json(packages);
     } catch (error) {
-      console.error("Error fetching one package per country:", error);
-      res.status(500).json({ message: "Failed to fetch packages by country" });
+      console.error('Error in getOnePackagePerCountry:', error);
+      res.status(500).json({ message: 'Failed to fetch one package per country' });
     }
   });
   
-  app.get("/api/packages/featured", async (req, res) => {
+  app.get('/api/packages/featured', async (req, res) => {
     try {
       const packages = await storage.getFeaturedPackages();
-      console.log("Featured packages fetched:", packages.length);
       res.json(packages);
     } catch (error) {
-      console.error("Error fetching featured packages:", error);
-      res.status(500).json({ message: "Failed to fetch featured packages" });
+      console.error('Error fetching featured packages:', error);
+      res.status(500).json({ message: 'Failed to fetch featured packages' });
     }
   });
   
-  app.get("/api/packages/country/:countryCode", async (req, res) => {
-    try {
-      const { countryCode } = req.params;
-      const packages = await storage.getPackagesByCountry(countryCode);
-      res.json(packages);
-    } catch (error) {
-      console.error("Error fetching packages by country:", error);
-      res.status(500).json({ message: "Failed to fetch packages by country" });
-    }
-  });
-  
-  app.get("/api/packages/slug/:slug", async (req, res) => {
+  app.get('/api/packages/slug/:slug', async (req, res) => {
     try {
       const { slug } = req.params;
       const pkg = await storage.getPackageBySlug(slug);
       
       if (!pkg) {
-        return res.status(404).json({ message: "Package not found" });
+        return res.status(404).json({ message: 'Package not found' });
       }
       
       res.json(pkg);
     } catch (error) {
-      console.error("Error fetching package:", error);
-      res.status(500).json({ message: "Failed to fetch package" });
+      console.error(`Error fetching package with slug ${req.params.slug}:`, error);
+      res.status(500).json({ message: 'Failed to fetch package' });
+    }
+  });
+  
+  app.get('/api/packages/country/:countryCode', async (req, res) => {
+    try {
+      const countryCode = req.params.countryCode.toUpperCase();
+      console.log(`API Request: Packages for country ${countryCode}`);
+      
+      const packages = await storage.getPackagesByCountry(countryCode);
+      
+      console.log(`Found ${packages.length} packages for country ${countryCode}`);
+      res.json(packages);
+    } catch (error) {
+      console.error('Error getting packages by country:', error);
+      res.status(500).json({ error: 'Failed to get packages by country' });
     }
   });
   

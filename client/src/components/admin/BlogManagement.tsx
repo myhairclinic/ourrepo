@@ -52,7 +52,7 @@ export default function BlogManagement() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
   const [selectedBlogId, setSelectedBlogId] = useState<number | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
@@ -340,13 +340,16 @@ export default function BlogManagement() {
       blog.titleTR.toLowerCase().includes(searchTerm.toLowerCase()) || 
       blog.titleEN.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesCategory = !categoryFilter || blog.category === categoryFilter;
+    const matchesCategory = categoryFilter === "all" || blog.category === categoryFilter;
     
     return matchesSearch && matchesCategory;
   }) : [];
   
   // Kategori listesi
-  const categories = blogs ? Array.from(new Set(blogs.map((blog: any) => blog.category).filter(Boolean))) : [];
+  const categories = blogs ? Array.from(new Set(blogs
+    .map((blog: any) => blog.category)
+    .filter((category: string | null | undefined) => category && category !== "")
+  )) : [];
   
   // Formata edilmiş tarih
   const formatDate = (dateString: string) => {
@@ -389,12 +392,14 @@ export default function BlogManagement() {
                 <SelectValue placeholder="Tüm Kategoriler" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Tüm Kategoriler</SelectItem>
-                {categories.map((category) => (
-                  <SelectItem key={category as string} value={category as string}>
-                    {category as string}
-                  </SelectItem>
-                ))}
+                <SelectItem value="all">Tüm Kategoriler</SelectItem>
+                {categories
+                  .filter((category) => category && category !== "")
+                  .map((category) => (
+                    <SelectItem key={category as string} value={category as string}>
+                      {category as string}
+                    </SelectItem>
+                  ))}
               </SelectContent>
             </Select>
           </div>

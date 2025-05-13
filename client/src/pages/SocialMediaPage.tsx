@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useLocation } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
-import { useTranslation } from "@/lib/translations";
+import { useTranslation } from "@/hooks/use-translation";
+import { Language } from "@shared/types";
 import { 
   Instagram, 
   Facebook, 
@@ -197,7 +198,7 @@ const reviews = [
 
 export default function SocialMediaPage() {
   const { language, addPrefix } = useLanguage();
-  const { t } = useTranslation(language);
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -223,8 +224,13 @@ export default function SocialMediaPage() {
   return (
     <>
       <Helmet>
-        <title>Sosyal Medya | MyHair Clinic</title>
-        <meta name="description" content="MyHair Clinic'in sosyal medya sayfalarını takip edin ve en son güncellemelerden haberdar olun." />
+        <title>{t('socialMedia.title')}</title>
+        <meta name="description" content={t('socialMedia.description')} />
+        <link rel="canonical" href={window.location.origin + addPrefix("/social-media")} />
+        <link rel="alternate" hrefLang="tr" href={window.location.origin + "/tr/social-media"} />
+        <link rel="alternate" hrefLang="en" href={window.location.origin + "/en/social-media"} />
+        <link rel="alternate" hrefLang="ru" href={window.location.origin + "/ru/social-media"} />
+        <link rel="alternate" hrefLang="ka" href={window.location.origin + "/ka/social-media"} />
       </Helmet>
 
       <main className="container mx-auto px-4 py-8 max-w-7xl">
@@ -247,10 +253,10 @@ export default function SocialMediaPage() {
               <div className="flex flex-col md:flex-row items-center justify-between">
                 <div className="mb-8 md:mb-0 md:w-3/5">
                   <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-                    Sosyal Medyada Bizi Takip Edin
+                    {t('socialMedia.followUs')}
                   </h1>
                   <p className="text-lg md:text-xl opacity-90 max-w-3xl mb-8">
-                    En son haberleri, saç ekimi ipuçlarını ve özel tekliflerimizi sosyal medya hesaplarımızdan takip edebilirsiniz. Sorularınızı sosyal medya üzerinden hızlıca yanıtlıyoruz.
+                    {t('socialMedia.followUsDescription')}
                   </p>
                   <div className="flex flex-wrap gap-3">
                     {socialPlatforms.map((platform, index) => (
@@ -292,7 +298,7 @@ export default function SocialMediaPage() {
         <section className="mb-16">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">
-              Bizi Takip Edin
+              {t('socialMedia.followUs')}
             </h2>
           </div>
 
@@ -313,8 +319,6 @@ export default function SocialMediaPage() {
                     </div>
                   </div>
                   
-                  {/* Takipçi sayısı kaldırıldı */}
-                  
                   <a 
                     href={platform.url}
                     target="_blank" 
@@ -322,7 +326,7 @@ export default function SocialMediaPage() {
                     className="w-full"
                   >
                     <Button variant="outline" className="w-full" size="sm">
-                      Takip Et
+                      {t('socialMedia.follow')}
                     </Button>
                   </a>
                 </CardContent>
@@ -335,17 +339,17 @@ export default function SocialMediaPage() {
         <section className="mb-16">
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100">
-              Öne Çıkan Gönderiler
+              {t('socialMedia.featuredPosts')}
             </h2>
             <Button variant="ghost" className="gap-1">
-              Tüm Gönderileri Görüntüle
+              {t('socialMedia.viewAllPosts')}
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
 
           <Tabs defaultValue="all" className="mb-8">
             <TabsList className="mb-6">
-              <TabsTrigger value="all">Tüm Gönderiler</TabsTrigger>
+              <TabsTrigger value="all">{t('socialMedia.allPosts')}</TabsTrigger>
               <TabsTrigger value="instagram">Instagram</TabsTrigger>
               <TabsTrigger value="facebook">Facebook</TabsTrigger>
               <TabsTrigger value="youtube">YouTube</TabsTrigger>
@@ -398,14 +402,14 @@ export default function SocialMediaPage() {
                         {post.type === 'video' && (
                           <div className="absolute top-3 right-3">
                             <Badge variant="secondary" className="bg-black/70 text-white font-medium">
-                              Video
+                              {t('socialMedia.video')}
                             </Badge>
                           </div>
                         )}
                         {post.type === 'carousel' && (
                           <div className="absolute top-3 right-3">
                             <Badge variant="secondary" className="bg-black/70 text-white font-medium">
-                              Carousel
+                              {t('socialMedia.carousel')}
                             </Badge>
                           </div>
                         )}
@@ -503,14 +507,12 @@ export default function SocialMediaPage() {
               </div>
             </TabsContent>
             
-            {/* Similar content for other tab contents (facebook, youtube, tiktok) */}
             <TabsContent value="facebook">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {featuredPosts
                   .filter(post => post.platform === "Facebook")
                   .map((post) => (
                     <Card key={post.id} className="overflow-hidden group">
-                      {/* Facebook post content similar to Instagram above */}
                       <div className="relative h-64 overflow-hidden">
                         <img 
                           src={post.imageUrl} 
@@ -692,10 +694,10 @@ export default function SocialMediaPage() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
             <div>
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                Sosyal Medya Yorumları
+                {t('socialMedia.clientReviews')}
               </h2>
               <p className="text-muted-foreground max-w-2xl">
-                Müşterilerimizin sosyal medya platformlarında bizimle ilgili deneyimlerini ve yorumlarını inceleyin.
+                {t('socialMedia.latestReviews')}
               </p>
             </div>
             <div className="mt-4 md:mt-0">
@@ -765,30 +767,15 @@ export default function SocialMediaPage() {
         </section>
         
         {/* Call to Action Section */}
-        <section>
-          <div className="bg-gradient-to-r from-primary/10 to-primary/5 rounded-2xl overflow-hidden relative shadow-xl">
-            {/* Background pattern */}
-            <div className="absolute inset-0 opacity-5">
-              <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <pattern id="ctaPattern" patternUnits="userSpaceOnUse" width="40" height="40" patternTransform="rotate(45)">
-                    <circle cx="20" cy="20" r="4" fill="currentColor" />
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#ctaPattern)" />
-              </svg>
-            </div>
-            
-            <div className="px-6 py-12 md:py-16 md:px-12 text-center relative z-10">
-              <div className="flex flex-col items-center">
-                <div className="bg-primary/10 p-3 rounded-full inline-flex mb-6">
-                  <Share2 className="h-8 w-8 text-primary" />
-                </div>
-                <h2 className="text-2xl md:text-3xl font-bold mb-4 text-primary">
-                  Sosyal Medyada Bizi Takip Edin
+        <section className="mb-16">
+          <div className="bg-gradient-to-r from-primary/90 to-primary rounded-2xl overflow-hidden relative shadow-xl">
+            <div className="px-6 py-16 md:px-12 text-white relative z-10">
+              <div className="max-w-3xl mx-auto text-center">
+                <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                  {t('socialMedia.joinCommunity')}
                 </h2>
                 <p className="text-lg opacity-90 max-w-2xl mx-auto mb-8">
-                  En son güncellemelerimizi, hasta başarı hikayelerini ve özel tekliflerimizi takip etmek için sosyal medya hesaplarımıza göz atın.
+                  {t('socialMedia.joinCommunityDescription')}
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 w-full max-w-3xl mx-auto">
                   {socialPlatforms.map((platform, index) => (
@@ -806,7 +793,6 @@ export default function SocialMediaPage() {
                     >
                       <div className="flex flex-col items-center">
                         <div className="mb-2">
-                          {/* Clone the icon element with updated properties */}
                           <span className="h-6 w-6">{platform.icon}</span>
                         </div>
                         <span className="text-sm font-medium">{platform.name}</span>

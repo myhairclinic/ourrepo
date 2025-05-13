@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { useLanguage } from "@/hooks/use-language";
+import { useTranslation } from "@/hooks/use-translation";
 import { ALL_LANGUAGES } from "@/lib/languages";
 import { PUBLIC_PATHS } from "@/lib/constants";
 import { Globe, ChevronDown, Menu, X, Phone, Calendar, Clock, MapPin, Mail } from "lucide-react";
@@ -8,6 +9,7 @@ import { FlagIcon } from "@/components/flags";
 
 export default function Header() {
   const { language, changeLanguage, addPrefix } = useLanguage();
+  const { t } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
@@ -113,42 +115,42 @@ export default function Header() {
             <nav className="hidden md:flex space-x-5 lg:space-x-6">
               <Link href={addPrefix("/")} 
                     className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
-                Ana Sayfa
+                {t('header.home')}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link href={addPrefix("/services")} 
                     className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
-                Hizmetlerimiz
+                {t('header.services')}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link href={addPrefix("/packages")} 
                     className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
-                Paketler
+                {t('header.packages')}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link href={addPrefix("/gallery")} 
                     className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
-                Galeri
+                {t('header.gallery')}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link href={addPrefix("/blog")} 
                     className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
-                Blog
+                {t('header.blog')}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link href={addPrefix("/social-media")} 
                     className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
-                Sosyal Medya
+                {t('header.socialMedia')}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link href={addPrefix("/products")} 
                     className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
-                Ürünler
+                {t('header.products')}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link href={addPrefix("/contact")} 
                     className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
-                İletişim
+                {t('header.contact')}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
               </Link>
             </nav>
@@ -160,7 +162,7 @@ export default function Header() {
                 className="bg-primary text-white px-6 py-2.5 rounded-md text-sm font-medium hover:bg-primary/90 transition-colors shadow-md hover:shadow-lg flex items-center"
               >
                 <Calendar size={16} className="mr-2" />
-                <span>Randevu Al</span>
+                <span>{t('header.appointment')}</span>
               </Link>
             </div>
 
@@ -237,35 +239,35 @@ export default function Header() {
             <nav className="flex flex-col">
               <Link href={addPrefix("/")} 
                     className="flex items-center text-neutral-700 py-2.5 px-2 hover:text-primary hover:bg-blue-50/50 rounded-md transition-colors">
-                <span>Ana Sayfa</span>
+                <span>{t('header.home')}</span>
               </Link>
               <Link href={addPrefix("/services")} 
                     className="flex items-center text-neutral-700 py-2.5 px-2 hover:text-primary hover:bg-blue-50/50 rounded-md transition-colors">
-                <span>Hizmetlerimiz</span>
+                <span>{t('header.services')}</span>
               </Link>
               <Link href={addPrefix("/packages")} 
                     className="flex items-center text-neutral-700 py-2.5 px-2 hover:text-primary hover:bg-blue-50/50 rounded-md transition-colors">
-                <span>Paketler</span>
+                <span>{t('header.packages')}</span>
               </Link>
               <Link href={addPrefix("/gallery")} 
                     className="flex items-center text-neutral-700 py-2.5 px-2 hover:text-primary hover:bg-blue-50/50 rounded-md transition-colors">
-                <span>Galeri</span>
+                <span>{t('header.gallery')}</span>
               </Link>
               <Link href={addPrefix("/blog")} 
                     className="flex items-center text-neutral-700 py-2.5 px-2 hover:text-primary hover:bg-blue-50/50 rounded-md transition-colors">
-                <span>Blog</span>
+                <span>{t('header.blog')}</span>
               </Link>
               <Link href={addPrefix("/social-media")} 
                     className="flex items-center text-neutral-700 py-2.5 px-2 hover:text-primary hover:bg-blue-50/50 rounded-md transition-colors">
-                <span>Sosyal Medya</span>
+                <span>{t('header.socialMedia')}</span>
               </Link>
               <Link href={addPrefix("/products")} 
                     className="flex items-center text-neutral-700 py-2.5 px-2 hover:text-primary hover:bg-blue-50/50 rounded-md transition-colors">
-                <span>Ürünler</span>
+                <span>{t('header.products')}</span>
               </Link>
               <Link href={addPrefix("/contact")} 
                     className="flex items-center text-neutral-700 py-2.5 px-2 hover:text-primary hover:bg-blue-50/50 rounded-md transition-colors">
-                <span>İletişim</span>
+                <span>{t('header.contact')}</span>
               </Link>
             </nav>
           

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useLanguage } from "@/hooks/use-language";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Package } from "@shared/schema";
+import { Package, PackageType } from "@shared/schema";
 import { getTranslation } from "@/lib/translations";
 import { getPackageTranslation } from "@/lib/packageTranslations";
 import { Button } from "@/components/ui/button";
@@ -130,6 +130,21 @@ export default function PackageDetailPage() {
   const highlights = parseJsonString(packageData.highlights);
   // Base gallery images from package data
   let galleryImages = parseJsonString(packageData.galleryImages, []);
+  
+  // Add default values for important fields if missing
+  const packageDefaults = {
+    durationDays: 3,
+    groupSize: getPackageTranslation("packages.individual", language),
+    priceDescription: getPackageTranslation("packages.perPerson", language),
+    currency: "EUR",
+    packageType: "standard" as PackageType,
+  };
+
+  // Merge package data with defaults
+  const packageWithDefaults = {
+    ...packageDefaults,
+    ...packageData
+  };
   
   // Add Tbilisi landmark images to every package's gallery
   const tbilisiLandmarkImages = [
@@ -518,7 +533,14 @@ export default function PackageDetailPage() {
                   </div>
                   <div>
                     <div className="text-sm text-muted-foreground">{getPackageTranslation("packages.fromCountry", language)}</div>
-                    <div className="font-medium">{getTranslation(`countries.${packageData.countryOrigin.toLowerCase()}`, language)}</div>
+                    <div className="font-medium">
+                      {packageData.countryOrigin ? 
+                        getTranslation(`countries.${packageData.countryOrigin.toLowerCase()}`, language) : 
+                        packageData.countryCode ? 
+                          getTranslation(`countries.${packageData.countryCode.toLowerCase()}`, language) : 
+                          getTranslation("countries.international", language)
+                      }
+                    </div>
                   </div>
                 </div>
                 
@@ -528,7 +550,7 @@ export default function PackageDetailPage() {
                   </div>
                   <div>
                     <div className="text-sm text-muted-foreground">{getPackageTranslation("packages.duration", language)}</div>
-                    <div className="font-medium">{packageData.durationDays} {getPackageTranslation("packages.days", language)}</div>
+                    <div className="font-medium">{packageWithDefaults.durationDays} {getPackageTranslation("packages.days", language)}</div>
                   </div>
                 </div>
                 
@@ -538,7 +560,17 @@ export default function PackageDetailPage() {
                   </div>
                   <div>
                     <div className="text-sm text-muted-foreground">{getPackageTranslation("packages.groupSize", language)}</div>
-                    <div className="font-medium">{getPackageTranslation("packages.individual", language)}</div>
+                    <div className="font-medium">{packageWithDefaults.groupSize}</div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3 bg-muted/80 p-3 rounded-lg">
+                  <div className="bg-white dark:bg-black/20 w-10 h-10 rounded-full flex items-center justify-center shrink-0 shadow-sm">
+                    <Star className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                  </div>
+                  <div>
+                    <div className="text-sm text-muted-foreground">{getPackageTranslation("packages.price", language)}</div>
+                    <div className="font-medium">{packageWithDefaults.price} EUR <span className="text-xs text-muted-foreground">{packageWithDefaults.priceDescription}</span></div>
                   </div>
                 </div>
                 

@@ -50,16 +50,16 @@ function applyReplacements(text: string, replacements?: Record<string, string | 
 export const blogTranslations: Record<string, LanguageMap> = {
   // Sayfa başlıkları
   "blog.title": {
-    [Language.Turkish]: "Blog - MyHair Clinic",
-    [Language.English]: "Blog - MyHair Clinic",
-    [Language.Russian]: "Блог - MyHair Clinic",
-    [Language.Georgian]: "ბლოგი - MyHair Clinic"
+    [Language.Turkish]: "Saç Ekimi Blogu | Uzman Makaleler ve Başarı Hikayeleri",
+    [Language.English]: "Hair Transplant Blog | Expert Articles and Success Stories",
+    [Language.Russian]: "Блог о трансплантации волос | Экспертные статьи и истории успеха",
+    [Language.Georgian]: "თმის გადანერგვის ბლოგი | ექსპერტთა სტატიები და წარმატების ისტორიები"
   },
   "blog.description": {
-    [Language.Turkish]: "Saç ekimi, bakımı ve tedavisi hakkında en son güncellemeler, ipuçları ve makaleler",
-    [Language.English]: "Latest updates, tips and articles about hair transplantation, care and treatment",
-    [Language.Russian]: "Последние обновления, советы и статьи о трансплантации волос, уходе и лечении",
-    [Language.Georgian]: "უახლესი განახლებები, რჩევები და სტატიები თმის გადანერგვის, მოვლისა და მკურნალობის შესახებ"
+    [Language.Turkish]: "Saç ekimi, saç dökülmesi tedavileri ve saç bakımı hakkında uzman makaleler ve gerçek başarı hikayeleri. Saç sağlığınız için en güncel bilgiler ve klinik deneyimlerimiz burada.",
+    [Language.English]: "Expert articles and real success stories about hair transplantation, hair loss treatments, and hair care. Find the most up-to-date information and clinical experiences here for your hair health.",
+    [Language.Russian]: "Экспертные статьи и реальные истории успеха о трансплантации волос, лечении выпадения волос и уходе за волосами. Найдите здесь самую актуальную информацию и клинический опыт для здоровья ваших волос.",
+    [Language.Georgian]: "ექსპერტთა სტატიები და რეალური წარმატების ისტორიები თმის გადანერგვის, თმის ცვენის მკურნალობისა და თმის მოვლის შესახებ. აქ შეგიძლიათ იპოვოთ უახლესი ინფორმაცია და კლინიკური გამოცდილება თქვენი თმის ჯანმრთელობისთვის."
   },
   "blog.searchPosts": {
     [Language.Turkish]: "Blog Yazılarını Ara",
@@ -276,5 +276,29 @@ export const blogTranslations: Record<string, LanguageMap> = {
     [Language.English]: "No results found",
     [Language.Russian]: "Результатов не найдено",
     [Language.Georgian]: "შედეგები არ მოიძებნა"
+  },
+  "blog.pageTitle": {
+    [Language.Turkish]: "Blog ve Makaleler",
+    [Language.English]: "Blog & Articles",
+    [Language.Russian]: "Блог и Статьи",
+    [Language.Georgian]: "ბლოგი და სტატიები"
+  },
+  "blog.pageSubtitle": {
+    [Language.Turkish]: "Saç ekimi, saç bakımı ve tedavileri hakkında en güncel bilgiler",
+    [Language.English]: "The latest information about hair transplantation, hair care and treatments",
+    [Language.Russian]: "Актуальная информация о трансплантации волос, уходе за волосами и лечении",
+    [Language.Georgian]: "უახლესი ინფორმაცია თმის გადანერგვის, თმის მოვლისა და მკურნალობის შესახებ"
+  },
+  "blog.noPosts": {
+    [Language.Turkish]: "Henüz Blog Yazısı Bulunmuyor",
+    [Language.English]: "No Blog Posts Yet",
+    [Language.Russian]: "Записей блога пока нет",
+    [Language.Georgian]: "ბლოგის პოსტები ჯერ არ არის"
+  },
+  "blog.noPostsDescription": {
+    [Language.Turkish]: "Yakında saç ekimi ve bakımı hakkında değerli içerikler eklenecektir.",
+    [Language.English]: "Valuable content about hair transplantation and care will be added soon.",
+    [Language.Russian]: "Скоро будут добавлены ценные материалы о трансплантации и уходе за волосами.",
+    [Language.Georgian]: "მალე დაემატება ღირებული მასალები თმის გადანერგვისა და მოვლის შესახებ."
   }
 };

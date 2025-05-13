@@ -41,12 +41,11 @@ export function BlogSidebar({
   const { t } = useTranslation();
   const { language } = useLanguage();
 
-  // Etiket bulutu için farklı boyut ve renk tonları
-  const getTagClasses = (index: number) => {
-    const sizes = ['text-xs', 'text-sm', 'text-base', 'text-lg'];
-    const size = sizes[Math.floor(Math.random() * sizes.length)];
-    
-    return `${size} ${index % 3 === 0 ? 'bg-primary/10 hover:bg-primary/20 text-primary' : ''}`;
+  // Simplified tag styling - now we'll use consistent styling (white bg for unselected, blue for selected)
+  const getTagClasses = (index: number, isSelected: boolean = false) => {
+    return isSelected 
+      ? "bg-primary text-primary-foreground hover:bg-primary/90" 
+      : "bg-white text-foreground border border-gray-200 hover:bg-muted/10";
   };
 
   const handleSearch = (e: React.FormEvent) => {
@@ -139,19 +138,18 @@ export function BlogSidebar({
         </CardHeader>
         <CardContent className="pt-2 md:pt-4 px-3 md:px-6 pb-3 md:pb-4">
           <div className="flex flex-wrap gap-1.5 md:gap-2">
-            {popularTags && Array.isArray(popularTags) && popularTags.length > 0 && popularTags.map((tag, index) => (
-              <Badge
-                key={tag}
-                variant={index % 3 === 0 ? "default" : "secondary"}
-                className={`${getTagClasses(index)} cursor-pointer transition-all hover:scale-105 py-0.5 h-5 md:h-6 text-[10px] md:text-xs ${
-                  index % 3 === 0 
-                    ? "bg-primary/80 hover:bg-primary text-primary-foreground" 
-                    : "bg-muted hover:bg-muted/80"
-                }`}
-              >
-                {tag}
-              </Badge>
-            ))}
+            {popularTags && Array.isArray(popularTags) && popularTags.length > 0 && popularTags.map((tag, index) => {
+              const isSelected = index % 3 === 0; // This is just for demonstration, replace with actual selection logic
+              return (
+                <Badge
+                  key={tag}
+                  variant={isSelected ? "default" : "outline"}
+                  className={`cursor-pointer transition-all hover:scale-105 py-0.5 h-5 md:h-6 text-[10px] md:text-xs ${getTagClasses(index, isSelected)}`}
+                >
+                  {tag}
+                </Badge>
+              );
+            })}
           </div>
         </CardContent>
       </Card>

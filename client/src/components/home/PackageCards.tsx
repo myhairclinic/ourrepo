@@ -50,6 +50,8 @@ interface Package {
   countryOrigin: string;
   createdAt: string;
   updatedAt: string;
+  price?: number;
+  packageType?: string;
 }
 
 // Paket kartı bileşeni
@@ -125,7 +127,8 @@ function getCountryImage(countryCode: string): string {
 }
 
 function PackageCard({ package: pkg, getTitle, getDescription, addPrefix, t }: PackageCardProps) {
-  const title = getTitle(pkg);
+  // Get base title text
+  const baseTitle = getTitle(pkg);
   const description = getDescription(pkg);
   const packageUrl = addPrefix(`/packages/${pkg.slug}`);
   
@@ -140,12 +143,44 @@ function PackageCard({ package: pkg, getTitle, getDescription, addPrefix, t }: P
     image: '/images/packages/default-package.jpg'
   };
   
+  // Create enhanced title with package type and country info
+  let enhancedTitle = baseTitle;
+  
+  // If the title doesn't already include package type terminology, enhance it
+  if (!baseTitle.toLowerCase().includes('package') && 
+      !baseTitle.toLowerCase().includes('paket')) {
+    
+    // Get package type in proper format
+    let packageType = '';
+    if (pkg.packageType === 'premium' || baseTitle.toLowerCase().includes('premium')) {
+      packageType = t("packages.home.luxury");
+    } else if (pkg.packageType === 'standard' || pkg.isAllInclusive) {
+      packageType = t("packages.home.allinclusive");
+    } else {
+      packageType = t("packages.home.standard");
+    }
+    
+    // Add hair transplant terminology if not present
+    const hairTerms = ['saç', 'hair', 'трансплант', 'пересадка'];
+    const hasHairTerms = hairTerms.some(term => baseTitle.toLowerCase().includes(term));
+    
+    if (!hasHairTerms) {
+      enhancedTitle = `${packageType} ${t("packages.home.hairTransplant")} - ${countryInfo.name}`;
+    } else {
+      enhancedTitle = `${packageType} ${baseTitle}`;
+    }
+  }
+  
+  // Ensure we have default values when data is missing
+  const durationDays = pkg.durationDays || 3;
+  const price = pkg.price || 1500;
+  
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 h-full flex flex-col border border-border/30 group">
       <div className="relative overflow-hidden aspect-[16/9]">
         <img 
           src={countryInfo.image} 
-          alt={title} 
+          alt={enhancedTitle} 
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-50"></div>
@@ -186,20 +221,25 @@ function PackageCard({ package: pkg, getTitle, getDescription, addPrefix, t }: P
       </div>
       
       <div className="p-6 flex-grow flex flex-col">
-        {/* Duration and Guest info */}
-        <div className="flex items-center gap-3 mb-4 text-sm text-muted-foreground">
-          <span className="flex items-center gap-1">
-            <Calendar className="h-4 w-4 text-primary/80" />
-            {pkg.durationDays} {t("packages.home.days")}
-          </span>
-          <span className="flex items-center gap-1">
-            <Users className="h-4 w-4 text-primary/80" />
-            {t("packages.home.forPerson")}
-          </span>
+        {/* Duration and Guest info - Enhanced with better styling */}
+        <div className="flex flex-row items-center justify-between mb-4 text-sm text-muted-foreground">
+          <div className="flex space-x-2">
+            <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800/30 px-3 py-2 rounded-md">
+              <Calendar className="h-4 w-4 text-blue-500" />
+              <span className="font-medium">{durationDays} {t("packages.home.days")}</span>
+            </div>
+            <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-800/30 px-3 py-2 rounded-md">
+              <Users className="h-4 w-4 text-blue-500" />
+              <span className="font-medium">{t("packages.home.forPerson")}</span>
+            </div>
+          </div>
+          <div className="flex items-center">
+            <span className="font-semibold text-gray-700 dark:text-gray-200">{price} €</span>
+          </div>
         </div>
         
         <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors line-clamp-2">
-          {title}
+          {enhancedTitle}
         </h3>
         
         <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
@@ -294,6 +334,8 @@ export function PackageCards() {
     refetchOnMount: true,
     refetchOnWindowFocus: true,
     staleTime: 1000 * 60, // 1 dakika
+    retry: 3,
+    placeholderData: [] as Package[],
   });
 
   // Helper function to get the title based on the current language
@@ -349,16 +391,6 @@ export function PackageCards() {
         return { flag: '🌍', name: t("countries.international") };
     }
   };
-  
-  // Debug: Konsola paketleri ve ülke bilgilerini yazdır
-  console.log("Paketler:", packages);
-  
-  // Ülke görselleri ve countryOrigin bilgilerini kontrol et
-  if (packages && packages.length > 0) {
-    packages.forEach(pkg => {
-      console.log(`Paket: ${pkg.titleTR}, Ülke: ${pkg.countryOrigin}, Görsel URL: ${getCountryImage(pkg.countryOrigin || '')}`);
-    });
-  }
   
   return (
     <section 
