@@ -115,6 +115,10 @@ import {
   deleteFaq
 } from "./controllers/adminController";
 
+// ES Module'de __dirname eşdeğeri
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication routes
   setupAuth(app);
