@@ -135,15 +135,11 @@ class TelegramBotService {
     }
 
     // Token kontrolü
-    const token = process.env.TELEGRAM_BOT_TOKEN || '8016071029:AAEpcprNJEM79IKkDPO4kpxt5u5SSeftFec';
+    const token = process.env.TELEGRAM_BOT_TOKEN;
     if (!token) {
       console.error('❌ TELEGRAM_BOT_TOKEN environment variable is not set');
-      if (retryCount < maxRetries) {
-        const delay = Math.pow(2, retryCount) * 1000; // Exponential backoff
-        console.log(`⏱️ Will retry in ${delay}ms...`);
-        await new Promise(resolve => setTimeout(resolve, delay));
-        return this.initialize(retryCount + 1, maxRetries);
-      }
+      console.error('Please set this variable in your .env file');
+      // Return early to prevent initialization with empty token
       return false;
     }
     
