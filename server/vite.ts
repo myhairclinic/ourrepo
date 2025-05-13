@@ -68,18 +68,41 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(import.meta.dirname, "public");
-
+  // Doğru dizin yolu: dist/client veya dist klasörü
+  // Önce dist/client'ı deneyelim, yoksa dist'i kullanacağız
+  let distPath = path.resolve(import.meta.dirname, "..", "dist", "client");
+  
+  // dist/client klasörü yoksa, dist'i deneyelim
   if (!fs.existsSync(distPath)) {
+    distPath = path.resolve(import.meta.dirname, "..", "dist");
+    console.log(`dist/client bulunamadı, dist klasörü deneniyor: ${distPath}`);
+  }
+
+  // Son olarak genel dist klasörü de yoksa hata fırlat
+  if (!fs.existsSync(distPath)) {
+    console.error(`Hata: Build edilmiş frontend dosyaları bulunamadı!`);
+    console.error(`Aranan yerler:`);
+    console.error(`- ${path.resolve(import.meta.dirname, "..", "dist", "client")}`);
+    console.error(`- ${path.resolve(import.meta.dirname, "..", "dist")}`);
+    
     throw new Error(
-      `Could not find the build directory: ${distPath}, make sure to build the client first`,
+      `Could not find the build directory: ${distPath}, make sure to build the client first`
     );
   }
 
-  app.use(express.static(distPath));
+  console.log(`✅ Statik dosyalar şu konumdan servis ediliyor: ${distPath}`);
+  app.use(express.static(distPath, { maxAge: '1d' }));
 
   // fall through to index.html if the file doesn't exist
-  app.use("*", (_req, res) => {
-    res.sendFile(path.resolve(distPath, "index.html"));
+  app.use("*", (req, res) => {
+    console.log(`📌 Fallback: ${req.originalUrl} -> index.html`);
+    const indexPath = path.resolve(distPath, "index.html");
+    
+    if (fs.existsSync(indexPath)) {
+      res.sendFile(indexPath);
+    } else {
+      console.error(`❌ index.html bulunamadı: ${indexPath}`);
+      res.status(500).send('index.html bulunamadı. Build süreci tamamlandı mı?');
+    }
   });
 }
