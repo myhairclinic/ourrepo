@@ -735,57 +735,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       const result = await telegramBotService.updateContactTags(req.params.chatId, tags);
       res.json(result);
-      
-  // Telegram bildirim gönderme endpoint'i
-  app.post("/api/telegram/send-notification/:appointmentId", async (req, res) => {
-    try {
-      const appointmentId = parseInt(req.params.appointmentId);
-      if (isNaN(appointmentId)) {
-        console.error(`Invalid appointment ID received: ${req.params.appointmentId}`);
-        return res.status(400).json({ error: "Invalid appointment ID" });
-      }
-      
-      console.log(`Processing notification request for appointment ID: ${appointmentId}`);
-      
-      // Randevu bilgilerini al
-      const appointment = await storage.getAppointmentById(appointmentId);
-      if (!appointment) {
-        console.error(`Appointment not found with ID: ${appointmentId}`);
-        return res.status(404).json({ error: "Appointment not found" });
-      }
-      
-      // Bildirim gönder
-      if (req.query.type === 'reminder') {
-        // Hatırlatma bildirimi
-        // Bu mantıken scheduleAppointmentReminder tarafından otomatik olarak çağrılır,
-        // ama manuel tetikleme için de bir endpoint sağlıyoruz
-        console.log(`Scheduling reminder notification for appointment ID: ${appointmentId}`);
-        const reminderTime = new Date(Date.now() + 5000); // 5 saniye sonra (test amaçlı)
-        await telegramService.scheduleAppointmentReminder(appointmentId, reminderTime);
-        res.json({ success: true, message: "Reminder notification scheduled" });
-      } else {
-        // Onay bildirimi
-        console.log(`Sending confirmation notification for appointment ID: ${appointmentId}`);
-        const appointmentTime = appointment.appointmentTime || "09:00";
-        
-        try {
-          // Async fonksiyonu await ile çağır
-          await telegramService.notifyAppointmentConfirmation(appointment, appointmentTime);
-          console.log(`Confirmation notification successfully sent for appointment ID: ${appointmentId}`);
-          res.json({ success: true, message: "Confirmation notification sent" });
-        } catch (notificationError: any) {
-          console.error(`Failed to send confirmation notification: ${notificationError.message}`);
-          throw notificationError; // Re-throw error for global error handler
-        }
-      }
-    } catch (error: any) {
-      console.error(`Error in notification process: ${error.message}`, error);
-      res.status(500).json({ 
-        error: "Failed to send telegram notification",
-        details: error.message 
-      });
-    }
-  });
     } catch (error) {
       console.error("Error updating contact tags:", error);
       res.status(500).json({ error: "Failed to update contact tags" });
@@ -1123,14 +1072,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  console.log("🚀 Creating HTTP server...");
   const httpServer = createServer(app);
+  
+  // Herhangi bir uncaught exception'ı loglayalım
+  process.on('uncaughtException', (err) => {
+    console.error('💥 UNCAUGHT EXCEPTION! Server kapanmayacak:', err);
+    // process.exit(1); // Bu satırı kaldırdık, server kapanmasın
+  });
+
+  // Herhangi bir unhandled rejection'ı loglayalım
+  process.on('unhandledRejection', (reason, promise) => {
+    console.error('💥 UNHANDLED REJECTION! Server kapanmayacak:', reason);
+    // process.exit(1); // Bu satırı kaldırdık, server kapanmasın
+  });
   
   // Server başladıktan sonra LOG mesajı göster ve Telegram Bot'un aktif olduğunu bildir
   httpServer.on('listening', () => {
+    console.log("✅ SERVER SUCCESSFULLY STARTED AND LISTENING");
     console.log("✅ TELEGRAM BOT AUTO-INITIALIZATION ENABLED");
     console.log("✅ Server started successfully with Telegram Bot");
     console.log("💡 TIP: Bot settings can be managed from admin panel");
   });
 
+  // ERROR event listener ekleyelim
+  httpServer.on('error', (error) => {
+    console.error('💥 HTTP SERVER ERROR:', error);
+  });
+
+  console.log("✅ HTTP Server created, returning to index.ts");
   return httpServer;
 }

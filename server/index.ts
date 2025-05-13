@@ -11,6 +11,33 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Process exit events - Railway'in nedensiz kapanmaları için
+process.on('exit', (code) => {
+  console.log(`🛑 Process çıkış yapıyor, kod: ${code}`);
+});
+
+process.on('SIGINT', () => {
+  console.log('👋 SIGINT alındı (Ctrl+C gibi)');
+  // Signal'i process.exit() yapmadan önce işle
+  console.log('Temiz kapanış için bekliyor...');
+  setTimeout(() => {
+    console.log('⏱️ Timeout doldu, çıkış yapılıyor');
+    process.exit(0);
+  }, 1000);
+});
+
+process.on('SIGTERM', () => {
+  console.log('👋 SIGTERM alındı (process kill gibi)');
+  // Signal'i process.exit() yapmadan önce işle
+  console.log('Temiz kapanış için bekliyor...');
+  setTimeout(() => {
+    console.log('⏱️ Timeout doldu, çıkış yapılıyor');
+    process.exit(0);
+  }, 1000);
+});
+
+console.log('🚀 Uygulama başlatılıyor...');
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -84,12 +111,15 @@ app.use((req, res, next) => {
 
 (async () => {
   try {
+    console.log('📡 registerRoutes çağırılıyor...');
     const server = await registerRoutes(app);
     
     if (!server) {
       console.error("❌ KRITIK HATA: registerRoutes fonksiyonu server dönmedi!");
       process.exit(1); // Uygulama hata ile çıkacak, Railway bunu görecek
     }
+    
+    console.log('✅ Server nesnesi başarıyla oluşturuldu');
 
     app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
       const status = err.status || err.statusCode || 500;
@@ -111,9 +141,29 @@ app.use((req, res, next) => {
     // Railway deployment için process.env.PORT kullanılmalı
     // Yoksa dönüş port için 5000 varsayılan değerini kullan
     const port = process.env.PORT || 5000;
+    
+    console.log(`🔊 Server dinlemeye başlıyor, port: ${port}`);
     server.listen(port, () => {
       log(`✅ Server başarıyla ${port} portunda çalışıyor`);
+      
+      // Görev döngüsünü canlı tutmak için hafif bir interval
+      const keepAlive = setInterval(() => {
+        console.log(`💓 Server çalışmaya devam ediyor: ${new Date().toISOString()}`);
+      }, 60000); // Her dakika log
+      
+      // Kapanış zamanı geldiğinde interval'ı temizle
+      process.on('SIGINT', () => {
+        clearInterval(keepAlive);
+      });
+      
+      process.on('SIGTERM', () => {
+        clearInterval(keepAlive);
+      });
     });
+    
+    // Server başladıktan sonra bile uygulama çalışmaya devam etmeli
+    console.log('✅ Event loop aktif, uygulama çalışmaya devam ediyor');
+    
   } catch (error) {
     console.error("❌ KRITIK HATA: Server başlatılırken bir hata oluştu:", error);
     process.exit(1); // Uygulama hata ile çıkacak, Railway bunu görecek
