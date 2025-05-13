@@ -36,7 +36,7 @@ process.on('SIGTERM', () => {
   }, 1000);
 });
 
-console.log('🚀 Uygulama başlatılıyor...');
+console.log('🚀 Uygulama başlatılıyor - İlk çalıştırma ve middleware kontrolleri');
 
 const app = express();
 app.use(express.json());
@@ -111,7 +111,7 @@ app.use((req, res, next) => {
 
 (async () => {
   try {
-    console.log('📡 registerRoutes çağırılıyor...');
+    console.log('📡 registerRoutes çağırılıyor - API rotaları yüklenecek...');
     const server = await registerRoutes(app);
     
     if (!server) {
@@ -121,28 +121,44 @@ app.use((req, res, next) => {
     
     console.log('✅ Server nesnesi başarıyla oluşturuldu');
     
-    // API rotalarını izleme middleware'i
-    app.use('/api', (req, res, next) => {
+    // Tüm istekleri loglayalım
+    app.use((req, res, next) => {
+      console.log(`👉 Gelen istek: ${req.method} ${req.path}`);
+      next();
+    });
+    
+    // API rotalarını izleme middleware'i - önce API'lere izin verelim,
+    // SPA fallback'i bu rotaları maskelemesin
+    app.get('/api*', (req, res, next) => {
       console.log(`🔌 API İsteği: ${req.method} ${req.path}`);
       next();
     });
 
+    // Hata handler'ı
     app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
       const status = err.status || err.statusCode || 500;
       const message = err.message || "Internal Server Error";
-
-      res.status(status).json({ message });
-      console.error("❌ Uygulama hatası:", err);
+      
+      console.error("❌ API HATASI:", err);
+      res.status(status).json({ message, error: true });
     });
 
-    // importantly only setup vite in development and after
-    // setting up all the other routes so the catch-all route
-    // doesn't interfere with the other routes
+    // Static dosya servis etme - development veya production moduna göre
+    console.log(`📂 Statik dosya servisi başlatılıyor (NODE_ENV: ${process.env.NODE_ENV || 'development'})`);
     if (app.get("env") === "development") {
       await setupVite(app, server);
     } else {
       serveStatic(app);
     }
+    
+    // Hala işlenmeyen API rotaları için 404 handler (statik dosya fallback'inden sonra çalışır)
+    app.use('/api*', (req, res) => {
+      console.log(`❌ İşlenmeyen API isteği: ${req.method} ${req.path}`);
+      res.status(404).json({ 
+        error: true, 
+        message: `API endpoint bulunamadı: ${req.path}` 
+      });
+    });
 
     // Railway deployment için process.env.PORT kullanılmalı
     // Yoksa dönüş port için 5000 varsayılan değerini kullan

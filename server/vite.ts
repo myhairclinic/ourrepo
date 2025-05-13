@@ -68,43 +68,103 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
+  console.log('🚀 serveStatic fonksiyonu çağrıldı');
+  
   // Build logs'dan anlaşıldığı üzere, dosyalar dist/public klasöründe
   let distPath = path.resolve(import.meta.dirname, "..", "dist", "public");
+  console.log(`🔍 Aranacak distPath: ${distPath}`);
   
-  console.log(`🔍 Statik dosyalar için aranan konum: ${distPath}`);
-
-  // Klasör yoksa hata fırlat
+  // ÖNEMLİ: Railway'de çalışırken dosya sistemi farklı olabilir
+  // Daha doğrudan bir yol deneyelim
   if (!fs.existsSync(distPath)) {
-    console.error(`❌ Hata: Build edilmiş frontend dosyaları bulunamadı!`);
-    console.error(`Aranan yer: ${distPath}`);
+    console.log('❌ dist/public dizini bulunamadı, alternatif yollar deneniyor...');
     
-    // Fallback olarak ../dist klasörünü deneyelim
-    const fallbackPath = path.resolve(import.meta.dirname, "..", "dist");
-    console.error(`Fallback olarak denenen yer: ${fallbackPath}`);
+    // Alternatif 1: /app/dist/public (Railway container path)
+    distPath = '/app/dist/public';
+    console.log(`⚡ Alternatif 1 deneniyor: ${distPath}`);
     
-    if (fs.existsSync(fallbackPath)) {
-      console.log(`✅ Fallback konum bulundu: ${fallbackPath}`);
-      distPath = fallbackPath;
-    } else {
-      throw new Error(
-        `Could not find the build directory: ${distPath}, make sure to build the client first`
-      );
+    if (!fs.existsSync(distPath)) {
+      // Alternatif 2: /dist/public
+      distPath = '/dist/public';
+      console.log(`⚡ Alternatif 2 deneniyor: ${distPath}`);
+      
+      if (!fs.existsSync(distPath)) {
+        // Alternatif 3: Sadece /app/dist
+        distPath = '/app/dist';
+        console.log(`⚡ Alternatif 3 deneniyor: ${distPath}`);
+        
+        if (!fs.existsSync(distPath)) {
+          // Alternatif 4: Process çalışma dizininden dist/public
+          distPath = path.resolve(process.cwd(), 'dist', 'public');
+          console.log(`⚡ Alternatif 4 deneniyor: ${distPath}`);
+          
+          if (!fs.existsSync(distPath)) {
+            console.error('‼️ Hiçbir alternatif dizin bulunamadı! Mevcut dizinleri listeleyelim:');
+            
+            try {
+              const rootDir = '/app';
+              const rootFiles = fs.existsSync(rootDir) ? fs.readdirSync(rootDir) : ['❌ /app dizini bulunamadı'];
+              console.log(`/app içeriği:`, rootFiles);
+              
+              const distDir = '/app/dist';
+              const distFiles = fs.existsSync(distDir) ? fs.readdirSync(distDir) : ['❌ /app/dist dizini bulunamadı'];
+              console.log(`/app/dist içeriği:`, distFiles);
+              
+              // Son çare: Tüm yapılandırmayı atlayıp sadece fallback'e güvenelim
+              console.warn('⚠️ Son çare: Statik dosya servisi atlanıyor, sadece API istekleriniz çalışabilir');
+              return; // serveStatic fonksiyonundan çık, middleware'leri ekleme
+            } catch (err) {
+              console.error('Dizin listelenirken hata:', err);
+            }
+          }
+        }
+      }
     }
   }
-
-  console.log(`✅ Statik dosyalar şu konumdan servis ediliyor: ${distPath}`);
-  app.use(express.static(distPath, { maxAge: '1d' }));
   
-  // fall through to index.html if the file doesn't exist
-  app.use("*", (req, res) => {
-    console.log(`📌 Fallback: ${req.method} ${req.originalUrl} -> index.html`);
-    const indexPath = path.resolve(distPath, "index.html");
+  // Eğer distPath'e ulaşabildiyse, static dosyaları servis et
+  if (fs.existsSync(distPath)) {
+    console.log(`✅ Statik dosyalar servis edilecek: ${distPath}`);
+    console.log(`📁 Dizin içeriği:`, fs.readdirSync(distPath));
     
+    // Statik dosyaları servis et
+    app.use(express.static(distPath, { 
+      maxAge: '1d',
+      index: ['index.html']
+    }));
+    
+    const indexPath = path.resolve(distPath, "index.html");
     if (fs.existsSync(indexPath)) {
-      res.sendFile(indexPath);
+      console.log(`✅ index.html bulundu: ${indexPath}`);
+      
+      // SPA için gerekli fallback - API route'larını engellememesi için /api ile başlayanları hariç tut
+      app.get('*', (req, res, next) => {
+        if (req.path.startsWith('/api')) {
+          console.log(`➡️ API isteği tespit edildi, bir sonraki handler'a geçiliyor: ${req.path}`);
+          return next();
+        }
+        
+        console.log(`📄 Statik sayfa isteği: ${req.path} → index.html`);
+        res.sendFile(indexPath);
+      });
     } else {
       console.error(`❌ index.html bulunamadı: ${indexPath}`);
-      res.status(500).send('index.html bulunamadı. Build süreci tamamlandı mı?');
+      // index.html yoksa basit bir mesaj göster
+      app.use('*', (req, res, next) => {
+        if (req.path.startsWith('/api')) {
+          return next();
+        }
+        res.status(500).send(`
+          <html>
+            <body>
+              <h1>Site Yapım Aşamasında</h1>
+              <p>index.html dosyası bulunamadı. Lütfen daha sonra tekrar deneyin.</p>
+            </body>
+          </html>
+        `);
+      });
     }
-  });
+  } else {
+    console.error(`❌ Hiçbir geçerli statik dosya dizini bulunamadı!`);
+  }
 }
