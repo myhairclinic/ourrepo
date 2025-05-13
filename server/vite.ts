@@ -5,6 +5,11 @@ import { createServer as createViteServer, createLogger } from "vite";
 import { type Server } from "http";
 import viteConfig from "../vite.config";
 import { nanoid } from "nanoid";
+import { fileURLToPath } from 'url';
+
+// ES Module'de __dirname eşdeğeri
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const viteLogger = createLogger();
 
@@ -46,7 +51,7 @@ export async function setupVite(app: Express, server: Server) {
 
     try {
       const clientTemplate = path.resolve(
-        import.meta.dirname,
+        __dirname,
         "..",
         "client",
         "index.html",
@@ -71,7 +76,7 @@ export function serveStatic(app: Express) {
   console.log('🚀 serveStatic fonksiyonu çağrıldı');
   
   // Build logs'dan anlaşıldığı üzere, dosyalar dist/public klasöründe
-  let distPath = path.resolve(import.meta.dirname, "..", "dist", "public");
+  let distPath = path.resolve(__dirname, "..", "dist", "public");
   console.log(`🔍 Aranacak distPath: ${distPath}`);
   
   // ÖNEMLİ: Railway'de çalışırken dosya sistemi farklı olabilir
