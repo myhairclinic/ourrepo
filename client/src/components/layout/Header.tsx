@@ -48,7 +48,7 @@ export default function Header() {
               </a>
               <div className="flex items-center">
                 <MapPin size={14} className="mr-1.5" />
-                <span>Tsotne Dadiani 59, Tbilisi</span>
+                <span>Tsotne Dadiani 599, Tbilisi</span>
               </div>
             </div>
             
