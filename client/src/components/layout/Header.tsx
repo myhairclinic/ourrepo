@@ -35,7 +35,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 transition-all duration-300">
       {/* Top Bar with Contact Info */}
       <div className="bg-gradient-to-r from-blue-600 to-blue-500 text-white py-2 hidden md:block">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto  px-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-6 text-sm">
               <a href="tel:+995555003044" className="flex items-center hover:text-blue-100 transition-colors">
@@ -99,7 +99,7 @@ export default function Header() {
           <div className="flex justify-between items-center">
             {/* Logo */}
             <Link href={addPrefix("/")} className="flex items-center">
-              <div className="w-72 h-full flex items-center justify-start">
+              <div className="w-22 h-full flex items-center justify-start">
                 <img 
                   src="/images/logo.png" 
                   alt="MyHair Clinic" 
@@ -275,7 +275,7 @@ export default function Header() {
             <div className="mt-5 border-t pt-4">
               <p className="text-neutral-600 text-xs font-medium mb-3 flex items-center">
                 <Globe size={14} className="mr-2 text-primary" />
-                Dil Seçimi:
+                Language:
               </p>
               <div className="grid grid-cols-2 gap-2">
                 {ALL_LANGUAGES.map((lang) => (
@@ -307,7 +307,7 @@ export default function Header() {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <Calendar size={16} className="mr-1.5" />
-                <span>Randevu Al</span>
+                <span>Book an Appointment</span>
               </Link>
             </div>
           </div>
