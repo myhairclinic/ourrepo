@@ -33,8 +33,8 @@ export const CONTACT = {
 };
 
 export const SOCIAL = {
-  FACEBOOK: "https://facebook.com/myhairclinic",
-  INSTAGRAM: "https://instagram.com/myhairclinic",
+  FACEBOOK: "https://www.facebook.com/profile.php?id=61568798653170",
+  INSTAGRAM: "https://instagram.com/my_hair_transplantation",
   TIKTOK: "https://www.tiktok.com/@myhairtbilisi",
   WHATSAPP: "https://wa.me/995555003044?text=Merhaba%2C%20web%20sitesinden%20geliyorum."
 };
@@ -69,6 +69,7 @@ export const PUBLIC_PATHS = {
   PRODUCTS: "products",
   BLOG: "blog",
   GALLERY: "gallery",
+  
   TESTIMONIALS: "testimonials",
   FAQ: "faq",
   CONTACT: "contact",
