@@ -46,14 +46,14 @@ const socialPlatforms = [
   { 
     name: "Instagram", 
     handle: "@myhair_clinic", 
-    url: "https://instagram.com/myhair_clinic", 
+    url: "https://instagram.com/my_hair_transplantation", 
     icon: <Instagram className="h-5 w-5" />,
     color: "bg-gradient-to-r from-purple-500 to-pink-500"
   },
   { 
     name: "Facebook", 
     handle: "MyHair Clinic", 
-    url: "https://facebook.com/myhairclinic", 
+    url: "https://www.facebook.com/profile.php?id=61568798653170", 
     icon: <Facebook className="h-5 w-5" />,
     color: "bg-blue-600"
   },
