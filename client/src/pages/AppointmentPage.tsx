@@ -1,76 +1,44 @@
 import { Helmet } from "react-helmet";
-import { useTranslation } from "@/hooks/use-translation";
-import { useLanguage } from "@/hooks/use-language";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
 import { useQuery } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { META } from "@/lib/constants";
 import SectionTitle from "@/components/shared/SectionTitle";
 
-// Appointment form schema - will be updated with translations
-const createAppointmentFormSchema = (language: string) => {
-  // Get validation messages based on language
-  const validationMessages = {
-    nameRequired: language === 'tr' ? "İsim gereklidir" : 
-                   language === 'ru' ? "Имя обязательно" : 
-                   language === 'ka' ? "სახელი აუცილებელია" : 
-                   "Name is required",
-                   
-    emailRequired: language === 'tr' ? "Geçerli bir e-posta adresi gereklidir" : 
-                   language === 'ru' ? "Требуется действительный адрес электронной почты" : 
-                   language === 'ka' ? "საჭიროა სწორი ელ-ფოსტის მისამართი" : 
-                   "Valid email is required",
-                   
-    phoneRequired: language === 'tr' ? "Telefon numarası gereklidir" : 
-                   language === 'ru' ? "Требуется номер телефона" : 
-                   language === 'ka' ? "ტელეფონის ნომერი აუცილებელია" : 
-                   "Phone number is required",
-                   
-    serviceRequired: language === 'tr' ? "Lütfen bir hizmet seçin" : 
-                     language === 'ru' ? "Пожалуйста, выберите услугу" : 
-                     language === 'ka' ? "გთხოვთ აირჩიოთ სერვისი" : 
-                     "Please select a service",
-                     
-    consentRequired: language === 'tr' ? "Veri işlemeyi kabul etmelisiniz" : 
-                     language === 'ru' ? "Вы должны согласиться на обработку данных" : 
-                     language === 'ka' ? "უნდა დაეთანხმოთ მონაცემთა დამუშავებას" : 
-                     "You must agree to the data processing",
-  };
-  
-  return z.object({
-    name: z.string().min(2, validationMessages.nameRequired),
-    email: z.string().email(validationMessages.emailRequired),
-    phone: z.string().min(5, validationMessages.phoneRequired),
-    serviceId: z.coerce.number().positive(validationMessages.serviceRequired),
-    message: z.string().optional(),
-    preferredDate: z.string().optional(),
-    consent: z.boolean().refine((val) => val === true, {
-      message: validationMessages.consentRequired,
-    }),
-  });
-};
+// Appointment form schema
+const appointmentFormSchema = z.object({
+  name: z.string().min(2, "Name is required"),
+  email: z.string().email("Valid email is required"),
+  phone: z.string().min(5, "Phone number is required"),
+  serviceId: z.coerce.number().positive("Please select a service"),
+  message: z.string().optional(),
+  preferredDate: z.string().optional(),
+  consent: z.boolean().refine((val) => val === true, {
+    message: "You must agree to the data processing",
+  }),
+});
 
-// Create a dynamic form schema based on the current language
-type AppointmentFormData = z.infer<ReturnType<typeof createAppointmentFormSchema>>;
+type AppointmentFormData = z.infer<typeof appointmentFormSchema>;
+
+// Telegram configuration
+const TELEGRAM_BOT_TOKEN = "8346738369:AAFSMTw4aYBWe1I5vYonc0uAICsBKSMfGMY";
+const TELEGRAM_CHAT_ID = "8471574157";
 
 export default function AppointmentPage() {
-  const { language, addPrefix } = useLanguage();
-  const { t } = useTranslation();
   const { toast } = useToast();
   
-  // Create a schema for the current language
-  const appointmentFormSchema = createAppointmentFormSchema(language);
-  
-  // Fetch services for the dropdown
   const { data: services = [] } = useQuery<any[]>({
     queryKey: ["/api/services"],
   });
   
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<AppointmentFormData>({
+  const { 
+    register, 
+    handleSubmit, 
+    reset, 
+    formState: { errors } 
+  } = useForm<AppointmentFormData>({
     resolver: zodResolver(appointmentFormSchema),
     defaultValues: {
       name: "",
@@ -84,31 +52,55 @@ export default function AppointmentPage() {
   
   const appointmentMutation = useMutation({
     mutationFn: async (data: Omit<AppointmentFormData, 'consent'>) => {
+      // Format message for Telegram
+      const formattedMessage = `
+📅 *New Appointment Request* 📅
+👤 *Name:* ${data.name}
+📧 *Email:* ${data.email}
+📱 *Phone:* ${data.phone}
+🎉 *Service:* ${data.serviceId}
+📆 *Preferred Date:* ${data.preferredDate || 'Not specified'}
+💬 *Message:* ${data.message || 'None'}
+      `;
+
       try {
-        console.log("Sending appointment data:", data);
-        const res = await apiRequest("POST", "/api/appointments", data);
-        const result = await res.json();
-        console.log("Appointment response:", result);
-        return result;
+        // Send to Telegram
+        const response = await fetch(
+          `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              chat_id: TELEGRAM_CHAT_ID,
+              text: formattedMessage,
+              parse_mode: "Markdown"
+            })
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Telegram API error: " + response.statusText);
+        }
+
+        return response.json();
       } catch (err) {
         console.error("Appointment submission error:", err);
-        throw err;
+        throw new Error("Failed to send appointment");
       }
     },
-    onSuccess: (data) => {
-      console.log("Appointment created successfully:", data);
+    onSuccess: () => {
       toast({
-        title: t('appointment.success'),
-        description: t('appointment.successMessage'),
+        title: 'Appointment Received!',
+        description: 'We will contact you shortly to confirm your appointment.',
         variant: "default",
       });
       reset();
     },
     onError: (error) => {
-      console.error("Appointment mutation error:", error);
+      console.error("Appointment error:", error);
       toast({
-        title: t('appointment.error'),
-        description: error.message || t('appointment.errorMessage'),
+        title: 'Submission Failed',
+        description: error.message || 'Please try again later.',
         variant: "destructive",
       });
     }
@@ -122,20 +114,15 @@ export default function AppointmentPage() {
   return (
     <>
       <Helmet>
-        <title>Randevu Al | MyHair Clinic</title>
-        <meta name="description" content="MyHair Clinic'te ücretsiz saç analizi ve saç ekimi randevusu alın. Uzman ekibimiz en son teknoloji ile kişiselleştirilmiş çözümler sunuyor." />
-        <link rel="canonical" href={window.location.origin + addPrefix("/appointment")} />
-        <link rel="alternate" hrefLang="tr" href={window.location.origin + "/tr/appointment"} />
-        <link rel="alternate" hrefLang="en" href={window.location.origin + "/en/appointment"} />
-        <link rel="alternate" hrefLang="ru" href={window.location.origin + "/ru/appointment"} />
-        <link rel="alternate" hrefLang="ka" href={window.location.origin + "/ka/appointment"} />
+        <title>Book Appointment | MyHair Clinic</title>
+        <meta name="description" content="Book a free hair analysis and hair transplant appointment at MyHair Clinic. Our expert team offers personalized solutions with the latest technology." />
       </Helmet>
       
       <main className="py-16">
         <div className="container mx-auto px-4">
           <SectionTitle 
-            title="Randevu Al"
-            description="Saç ekimi ve tedavileri için uzman ekibimizle görüşmek üzere randevu alabilirsiniz. Size özel çözümler için ilk adımı atın."
+            title="Book an Appointment"
+            description="Schedule a consultation with our expert team for hair transplant and treatments. Take the first step towards personalized solutions."
           />
           
           <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
@@ -149,35 +136,35 @@ export default function AppointmentPage() {
               </div>
               <div className="md:col-span-3 p-4 md:p-6 lg:p-8">
                 <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-bold text-secondary mb-2 md:mb-4">
-                  Online Randevu Formu
+                  Online Appointment Form
                 </h2>
                 <p className="text-neutral-600 text-sm md:text-base mb-4 md:mb-6">
-                  Aşağıdaki formu doldurarak saç ekimi için ücretsiz konsültasyon randevusu alabilirsiniz. Uzmanlarımız en kısa sürede sizinle iletişime geçecektir.
+                  Fill out the form below to book a free consultation appointment for hair transplant. Our specialists will contact you shortly.
                 </p>
                 <form className="space-y-3 md:space-y-4" onSubmit={handleSubmit(onSubmit)}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                     <div>
                       <label className="block text-xs md:text-sm font-medium text-neutral-600 mb-1" htmlFor="name">
-                        Adınız Soyadınız*
+                        Full Name*
                       </label>
                       <input 
                         type="text" 
                         id="name" 
                         className={`w-full rounded-md border ${errors.name ? 'border-red-500' : 'border-neutral-300'} px-3 md:px-4 py-1.5 md:py-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-primary`}
-                        placeholder={t('home.appointment.namePlaceholder')}
+                        placeholder="John Doe"
                         {...register("name")}
                       />
                       {errors.name && <p className="text-red-500 text-[10px] md:text-xs mt-0.5 md:mt-1">{errors.name.message}</p>}
                     </div>
                     <div>
                       <label className="block text-xs md:text-sm font-medium text-neutral-600 mb-1" htmlFor="phone">
-                        Telefon Numaranız*
+                        Phone Number*
                       </label>
                       <input 
                         type="tel" 
                         id="phone" 
                         className={`w-full rounded-md border ${errors.phone ? 'border-red-500' : 'border-neutral-300'} px-3 md:px-4 py-1.5 md:py-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-primary`}
-                        placeholder={t('home.appointment.phonePlaceholder')}
+                        placeholder="+995 123 456 7890"
                         {...register("phone")}
                       />
                       {errors.phone && <p className="text-red-500 text-[10px] md:text-xs mt-0.5 md:mt-1">{errors.phone.message}</p>}
@@ -185,47 +172,38 @@ export default function AppointmentPage() {
                   </div>
                   <div>
                     <label className="block text-xs md:text-sm font-medium text-neutral-600 mb-1" htmlFor="email">
-                      E-posta Adresiniz*
+                      Email Address*
                     </label>
                     <input 
                       type="email" 
                       id="email" 
                       className={`w-full rounded-md border ${errors.email ? 'border-red-500' : 'border-neutral-300'} px-3 md:px-4 py-1.5 md:py-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-primary`}
-                      placeholder={t('home.appointment.emailPlaceholder')}
+                      placeholder="john@example.com"
                       {...register("email")}
                     />
                     {errors.email && <p className="text-red-500 text-[10px] md:text-xs mt-0.5 md:mt-1">{errors.email.message}</p>}
                   </div>
                   <div>
                     <label className="block text-xs md:text-sm font-medium text-neutral-600 mb-1" htmlFor="serviceId">
-                      Hizmet Seçiniz*
+                      Select Service*
                     </label>
                     <select 
                       id="serviceId" 
                       className={`w-full rounded-md border ${errors.serviceId ? 'border-red-500' : 'border-neutral-300'} px-3 md:px-4 py-1.5 md:py-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-primary`}
                       {...register("serviceId")}
                     >
-                      <option value="">Lütfen bir hizmet seçin</option>
-                      {services && services.map((service: any) => (
+                      <option value="">Please select a service</option>
+                      {services && services.map((service) => (  
                         <option key={service.id} value={service.id}>
-                          {service[`title${language.toUpperCase()}`]}
-                        </option>
+                          {service.titleEN}
+                        </option> 
                       ))}
-                      {!services && (
-                        <>
-                          <option value="1">Saç Ekimi</option>
-                          <option value="2">Kaş Ekimi</option>
-                          <option value="3">Sakal/Bıyık Ekimi</option>
-                          <option value="4">PRP Tedavisi</option>
-                          <option value="5">Saç Mezoterapisi</option>
-                        </>
-                      )}
                     </select>
                     {errors.serviceId && <p className="text-red-500 text-[10px] md:text-xs mt-0.5 md:mt-1">{errors.serviceId.message}</p>}
                   </div>
                   <div>
                     <label className="block text-xs md:text-sm font-medium text-neutral-600 mb-1" htmlFor="preferredDate">
-                      Tercih Ettiğiniz Tarih
+                      Preferred Date
                     </label>
                     <input 
                       type="date" 
@@ -237,13 +215,13 @@ export default function AppointmentPage() {
                   </div>
                   <div>
                     <label className="block text-xs md:text-sm font-medium text-neutral-600 mb-1" htmlFor="message">
-                      Mesajınız
+                      Your Message
                     </label>
                     <textarea
                       id="message"
                       rows={3}
                       className="w-full rounded-md border border-neutral-300 px-3 md:px-4 py-1.5 md:py-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-primary"
-                      placeholder={t('home.appointment.messagePlaceholder')}
+                      placeholder="Any special requests or information"
                       {...register("message")}
                     />
                   </div>
@@ -255,7 +233,7 @@ export default function AppointmentPage() {
                       {...register("consent")}
                     />
                     <label className="ml-2 block text-xs md:text-sm text-neutral-600" htmlFor="consent">
-                      Kişisel verilerimin kullanılmasına ve benimle iletişime geçilmesine izin veriyorum*
+                      I agree to the processing of my personal data*
                     </label>
                   </div>
                   {errors.consent && <p className="text-red-500 text-[10px] md:text-xs">{errors.consent.message}</p>}
@@ -264,7 +242,7 @@ export default function AppointmentPage() {
                     className="bg-primary hover:bg-primary/90 text-white font-medium text-sm md:text-base px-4 md:px-6 py-2 md:py-3 rounded-md transition duration-200 w-full"
                     disabled={appointmentMutation.isPending}
                   >
-                    {appointmentMutation.isPending ? "Gönderiliyor..." : "Randevu Al"}
+                    {appointmentMutation.isPending ? "Sending..." : "Book Appointment"}
                   </button>
                 </form>
               </div>
@@ -276,15 +254,15 @@ export default function AppointmentPage() {
             <div className="bg-neutral-100 rounded-lg p-4 md:p-6 shadow-md">
               <h3 className="font-heading text-lg md:text-xl font-semibold mb-2 md:mb-4 flex items-center">
                 <i className="fas fa-info-circle text-primary mr-2"></i>
-                Yerel Hastalar İçin Bilgiler
+                Information for Local Patients
               </h3>
               <div className="prose prose-xs md:prose-sm max-w-none">
-                <p className="text-sm md:text-base">MyHair Clinic, Gürcistan'da saç ekimi hizmetleri için uygun fiyatlarla profesyonel çözümler sunmaktadır.</p>
-                <p className="text-sm md:text-base">Yerel hastalar için özel avantajlar ve ödeme seçenekleri mevcuttur.</p>
+                <p className="text-sm md:text-base">MyHair Clinic offers professional hair transplant solutions at competitive prices in Georgia.</p>
+                <p className="text-sm md:text-base">Special advantages and payment options are available for local patients.</p>
                 <ul className="text-xs md:text-sm space-y-1">
-                  <li>Ücretsiz konsültasyon randevusu alabilirsiniz</li>
-                  <li>Tedavi sonrası takip randevuları dahildir</li>
-                  <li>Yerel hastalar için esnek ödeme planları mevcuttur</li>
+                  <li>Free consultation appointments available</li>
+                  <li>Post-treatment follow-up appointments included</li>
+                  <li>Flexible payment plans for local patients</li>
                 </ul>
               </div>
             </div>
@@ -292,15 +270,15 @@ export default function AppointmentPage() {
             <div className="bg-neutral-100 rounded-lg p-4 md:p-6 shadow-md">
               <h3 className="font-heading text-lg md:text-xl font-semibold mb-2 md:mb-4 flex items-center">
                 <i className="fas fa-globe text-primary mr-2"></i>
-                Uluslararası Hastalar İçin Bilgiler
+                Information for International Patients
               </h3>
               <div className="prose prose-xs md:prose-sm max-w-none">
-                <p className="text-sm md:text-base">MyHair Clinic olarak yurtdışından gelen hastalarımız için özel paketler sunuyoruz.</p>
-                <p className="text-sm md:text-base">Paketlerimize konaklama, havalimanı transferi ve çevirmen hizmeti dahildir.</p>
+                <p className="text-sm md:text-base">We offer special packages for patients traveling from abroad.</p>
+                <p className="text-sm md:text-base">Packages include accommodation, airport transfers, and interpreter services.</p>
                 <ul className="text-xs md:text-sm space-y-1">
-                  <li>Ülkenize özel seyahat ve tedavi paketleri</li>
-                  <li>Vize işlemlerinde destek ve yönlendirme</li>
-                  <li>Tbilisi'de konaklamanız boyunca 7/24 asistanlık hizmeti</li>
+                  <li>Country-specific travel and treatment packages</li>
+                  <li>Visa process support and guidance</li>
+                  <li>24/7 assistance during your stay in Tbilisi</li>
                 </ul>
               </div>
             </div>
