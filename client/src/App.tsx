@@ -83,8 +83,8 @@ function Router() {
       <Route path="/:lang/gallery" component={GalleryPage} />
       <Route path="/:lang/packages" component={PackagesPage} />
       <Route path="/:lang/packages/:slug" component={PackageDetailPage} />
-      <Route path="/:lang/products" component={ProductsPage} />
-      <Route path="/:lang/products/:productSlug" component={ProductPage} />
+      <Route path="/:lang/products" component={NotFound} />
+      <Route path="/:lang/products/:productSlug" component={NotFound} />
       <Route path="/:lang/blog" component={BlogPage} />
       <Route path="/:lang/blog/:slug" component={BlogPostPage} />
       <Route path="/:lang/about" component={AboutPage} />
