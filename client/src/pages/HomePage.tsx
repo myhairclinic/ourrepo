@@ -19,9 +19,11 @@ export default function HomePage() {
   const { t, formatCurrency } = useTranslation();
   
   // Sayfa başlık ve açıklaması - çeviri sistemi kullanılıyor
-  const pageTitle = t("home.title") || "Tiflis Saç Ekimi ve Estetik Merkezi";
-  const pageDescription = t("home.description") || "MyHair Clinic, Tiflis'te lider saç ekimi ve estetik merkezi. FUE ve DHI teknikleri kullanarak doğal görünümlü saç ekimi, sakal ekimi ve kaş ekimi hizmetleri sunuyoruz.";
-  
+const pageTitle = t("home.title") || "MyHair Clinic | თმის გადანერგვისა და ესთეტიკის წამყვანი კლინიკა თბილისში";
+
+const pageDescription = t("home.description") || 
+  "MyHair Clinic არის წამყვანი თმის გადანერგვისა და ესთეტიკური კლინიკა თბილისში, რომელიც სთავაზობს მაღალი ხარისხის მომსახურებებს FUE და DHI ტექნოლოგიებით. ბუნებრივი ეფექტის მქონე თმის, წვერისა და წარბების გადანერგვა – პროფესიონალური და სანდო მიდგომით.";
+
   // Para birimi formatlama örneği
   const packagePrice = formatCurrency(1500);
   
