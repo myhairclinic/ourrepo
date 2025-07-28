@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset 
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+>
+
+  <!-- Ana Sayfa -->
+  <url>
+    <loc>https://myhairclinic.ge/tr</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en"/>
+    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru"/>
+  </url>
+
+  <!-- Statik Sayfalar (Hepsi dil destekli) -->
+  <url>
+    <loc>https://myhairclinic.ge/tr/about</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/about"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/about"/>
+    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/about"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/about"/>
+  </url>
+
+  <url>
+    <loc>https://myhairclinic.ge/tr/contact</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/contact"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/contact"/>
+    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/contact"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/contact"/>
+  </url>
+
+  <url>
+    <loc>https://myhairclinic.ge/tr/services</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/services"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/services"/>
+    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/services"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/services"/>
+  </url>
+
+  <url>
+    <loc>https://myhairclinic.ge/tr/packages</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/packages"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/packages"/>
+    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/packages"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/packages"/>
+  </url>
+
+  <url>
+    <loc>https://myhairclinic.ge/tr/products</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/products"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/products"/>
+    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/products"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/products"/>
+  </url>
+
+  <url>
+    <loc>https://myhairclinic.ge/tr/blog</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/blog"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/blog"/>
+    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/blog"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/blog"/>
+  </url>
+
+  <url>
+    <loc>https://myhairclinic.ge/tr/gallery</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/gallery"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/gallery"/>
+    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/gallery"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/gallery"/>
+  </url>
+
+  <url>
+    <loc>https://myhairclinic.ge/tr/appointment</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/appointment"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/appointment"/>
+    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/appointment"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/appointment"/>
+  </url>
+
+  <url>
+    <loc>https://myhairclinic.ge/tr/appointment-tracker</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/appointment-tracker"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/appointment-tracker"/>
+    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/appointment-tracker"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/appointment-tracker"/>
+  </url>
+
+  <url>
+    <loc>https://myhairclinic.ge/tr/social</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/social"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/social"/>
+    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/social"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/social"/>
+  </url>
+
+  <url>
+    <loc>https://myhairclinic.ge/tr/aftercare-guides</loc>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/aftercare-guides"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/aftercare-guides"/>
+    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/aftercare-guides"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/aftercare-guides"/>
+  </url>
+
+</urlset>
