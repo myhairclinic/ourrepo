@@ -1,105 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset 
-  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
-  xmlns:xhtml="http://www.w3.org/1999/xhtml"
->
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 
+                      http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
-  <!-- Ana Sayfa -->
   <url>
     <loc>https://myhairclinic.ge/tr</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en"/>
-    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru"/>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
   </url>
-
-  <!-- Statik Sayfalar (Hepsi dil destekli) -->
   <url>
     <loc>https://myhairclinic.ge/tr/about</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/about"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/about"/>
-    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/about"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/about"/>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
-
   <url>
     <loc>https://myhairclinic.ge/tr/contact</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/contact"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/contact"/>
-    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/contact"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/contact"/>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
-
   <url>
     <loc>https://myhairclinic.ge/tr/services</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/services"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/services"/>
-    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/services"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/services"/>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
-
   <url>
     <loc>https://myhairclinic.ge/tr/packages</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/packages"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/packages"/>
-    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/packages"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/packages"/>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
-
   <url>
     <loc>https://myhairclinic.ge/tr/products</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/products"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/products"/>
-    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/products"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/products"/>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
-
   <url>
     <loc>https://myhairclinic.ge/tr/blog</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/blog"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/blog"/>
-    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/blog"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/blog"/>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
-
   <url>
     <loc>https://myhairclinic.ge/tr/gallery</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/gallery"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/gallery"/>
-    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/gallery"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/gallery"/>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
-
   <url>
     <loc>https://myhairclinic.ge/tr/appointment</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/appointment"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/appointment"/>
-    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/appointment"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/appointment"/>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
-
   <url>
     <loc>https://myhairclinic.ge/tr/appointment-tracker</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/appointment-tracker"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/appointment-tracker"/>
-    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/appointment-tracker"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/appointment-tracker"/>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
-
   <url>
     <loc>https://myhairclinic.ge/tr/social</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/social"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/social"/>
-    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/social"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/social"/>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
-
   <url>
     <loc>https://myhairclinic.ge/tr/aftercare-guides</loc>
-    <xhtml:link rel="alternate" hreflang="tr" href="https://myhairclinic.ge/tr/aftercare-guides"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://myhairclinic.ge/en/aftercare-guides"/>
-    <xhtml:link rel="alternate" hreflang="ka" href="https://myhairclinic.ge/ka/aftercare-guides"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://myhairclinic.ge/ru/aftercare-guides"/>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 
 </urlset>
