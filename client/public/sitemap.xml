@@ -29,6 +29,12 @@
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
+    <url>
+    <loc>https://myhairclinic.ge/ka/social</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
   <url>
     <loc>https://myhairclinic.ge/ka/packages</loc>
     <lastmod>2025-07-28</lastmod>
@@ -66,7 +72,7 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://myhairclinic.ge/ka/social</loc>
+    <loc>https://myhairclinic.ge/ka/blog/tmis-datgena-da-misi-sargebloebi</loc>
     <lastmod>2025-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
