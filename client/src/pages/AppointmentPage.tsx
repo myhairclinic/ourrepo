@@ -88,14 +88,21 @@ export default function AppointmentPage() {
         throw new Error("Failed to send appointment");
       }
     },
-    onSuccess: () => {
-      toast({
-        title: 'Appointment Received!',
-        description: 'We will contact you shortly to confirm your appointment.',
-        variant: "default",
-      });
-      reset();
-    },
+onSuccess: () => {
+  // Google Ads dönüşüm izleme tetikle
+  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+    window.gtag('event', 'conversion', {
+      send_to: 'AW-17374801773/6kCrCLywofsaEO3e-dxA'
+    });
+  }
+
+  toast({
+    title: 'Appointment Received!',
+    description: 'We will contact you shortly to confirm your appointment.',
+    variant: "default",
+  });
+  reset();
+},
     onError: (error) => {
       console.error("Appointment error:", error);
       toast({
