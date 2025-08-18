@@ -1,1 +1,9 @@
+User-agent: *
+Allow: /
+Sitemap: https://myhairclinic.ge/sitemap.xml
 
+# Disallows (example - customize as needed)
+Disallow: /admin/
+
+# Crawl-delay for aggressive bots
+Crawl-delay: 5
