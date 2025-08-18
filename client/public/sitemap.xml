@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 
-                      http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 
+                            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  
+  <!-- Core Pages (Existing) -->
   <url>
     <loc>https://myhairclinic.ge/ka</loc>
     <lastmod>2025-07-28</lastmod>
@@ -23,17 +23,25 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  
+  <!-- Services & Packages -->
   <url>
     <loc>https://myhairclinic.ge/ka/services</loc>
     <lastmod>2025-07-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-    <url>
-    <loc>https://myhairclinic.ge/ka/social</loc>
+  <url>
+    <loc>https://myhairclinic.ge/ka/services/kas-ekimi</loc>
     <lastmod>2025-07-28</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ka/services/sac-ekimi</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://myhairclinic.ge/ka/packages</loc>
@@ -42,11 +50,25 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://myhairclinic.ge/ka/products</loc>
+    <loc>https://myhairclinic.ge/ka/packages/luks-sac-ekimi</loc>
     <lastmod>2025-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://myhairclinic.ge/ka/packages/premium-sac-ekimi-iran</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ka/packages/premium-sac-ekimi-rusya</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Blog & Content -->
   <url>
     <loc>https://myhairclinic.ge/ka/blog</loc>
     <lastmod>2025-07-28</lastmod>
@@ -54,11 +76,69 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://myhairclinic.ge/ka/gallery</loc>
+    <loc>https://myhairclinic.ge/ka/blog/sac-bakim-ipuclari</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ka/blog/qalebis-thmis-gadanergvis-movlis-rchevebi</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ka/blog/kadinlarda-sac-dokulmesi-sebepleri</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ka/blog/posle-peresadki-volos-7-zolotyh-pravil</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ka/blog/thmis-gadanergvis-procesi-nabij-nabij</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ka/blog/tmis-datgena-da-misi-sargebloebi</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- Multilingual Medical Tourism Post -->
+  <url>
+    <loc>https://myhairclinic.ge/ka/blog/medicinuri-turizmis-popularoba</loc>
     <lastmod>2025-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://myhairclinic.ge/ru/blog/medicinskij-turizm-populyarnost</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/en/blog/medical-tourism-popularity</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/tr/blog/tibbi-turizmin-popularitesi-artiyor</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Functional Pages -->
   <url>
     <loc>https://myhairclinic.ge/ka/appointment</loc>
     <lastmod>2025-07-28</lastmod>
@@ -72,10 +152,22 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://myhairclinic.ge/ka/blog/tmis-datgena-da-misi-sargebloebi</loc>
+    <loc>https://myhairclinic.ge/ka/gallery</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ka/social</loc>
     <lastmod>2025-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ka/products</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://myhairclinic.ge/ka/aftercare-guides</loc>
@@ -83,5 +175,4 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
 </urlset>
