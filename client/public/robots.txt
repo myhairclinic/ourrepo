@@ -1,8 +1,226 @@
+# ================================================
+# MyHairClinic.ge - ROBOTS.TXT
+# Ultra-Optimized for Search Engine Ranking
+# Last Updated: 2025-08-26
+# ================================================
+
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /includes/
+Disallow: /config/
+Disallow: /vendor/
+Disallow: /node_modules/
+Disallow: /cgi-bin/
+Disallow: /*.php$
+Disallow: /*.inc$
+Disallow: /private/
+Disallow: /tmp/
+Disallow: /logs/
+
+# Optimal crawl delay for SEO ranking
+Crawl-delay: 1
+
+# Sitemap declaration (absolute URL)
 Sitemap: https://myhairclinic.ge/sitemap.xml
 
-Disallow: /admin/
+# ================================================
+# BLOG CONTENT PRIORITY CRAWLING DIRECTIVES
+# ================================================
 
-# Crawl-delay for aggressive bots
+# Priority access to blog content for all crawlers
+Allow: /ka/blog/
+Allow: /en/blog/
+Allow: /ru/blog/
+Allow: /tr/blog/
+
+# Allow all blog post patterns
+Allow: /*/blog/*
+Allow: /*/blog/*/*
+Allow: /*/blog/*/*/*
+
+# Priority access to medical tourism series
+Allow: /*/blog/medicinuri-turizmis-popularoba
+Allow: /*/blog/medicinskij-turizm-populyarnost
+Allow: /*/blog/medical-tourism-popularity
+Allow: /*/blog/tibbi-turizmin-popularitesi-artiyor
+
+# ================================================
+# SEARCH ENGINE SPECIFIC DIRECTIVES
+# ================================================
+
+# Googlebot - priority access to blog content
+User-agent: Googlebot
+Allow: /*/blog/
+Allow: /*/blog/*/
+Allow: /*/blog/*/*/
+Crawl-delay: 1
+Request-rate: 1/1
+
+# Bingbot - priority access
+User-agent: bingbot
+Allow: /*/blog/
+Crawl-delay: 1
+
+# Yandex - priority access
+User-agent: Yandex
+Allow: /*/blog/
+Crawl-delay: 2
+
+# Baiduspider - priority access
+User-agent: Baiduspider
+Allow: /*/blog/
+Crawl-delay: 3
+
+# ================================================
+# AGGRESSIVE SCRAPER CONTROL
+# ================================================
+
+# Block AI data collectors
+User-agent: CCBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /blog/
+
+# Limit aggressive SEO tools
+User-agent: MJ12bot
+Crawl-delay: 10
+Disallow: /blog/
+
+User-agent: AhrefsBot
+Crawl-delay: 7
+Disallow: /blog/
+
+User-agent: SemrushBot
+Crawl-delay: 7
+Disallow: /blog/
+
+User-agent: DotBot
 Crawl-delay: 5
+Disallow: /blog/
+
+User-agent: MojeekBot
+Crawl-delay: 5
+
+# ================================================
+# CONTENT PRIORITIZATION DIRECTIVES
+# ================================================
+
+# Priority access to services and treatments
+Allow: /ka/services/
+Allow: /en/services/
+Allow: /ru/services/
+Allow: /tr/services/
+
+# Priority access to appointment booking
+Allow: /*/appointment
+
+# Allow all image content for rich results
+Allow: /*.jpg$
+Allow: /*.png$
+Allow: /*.gif$
+Allow: /*.webp$
+Allow: /*.svg$
+
+# Allow video content
+Allow: /*.mp4$
+Allow: /*.webm$
+
+# Allow CSS and JS for proper rendering
+Allow: /*.css$
+Allow: /*.js$
+
+# ================================================
+# SECURITY & PRIVACY PROTECTION
+# ================================================
+
+# Protect sensitive areas
+Disallow: /phpmyadmin/
+Disallow: /mysql-admin/
+Disallow: /wp-admin/
+Disallow: /administrator/
+Disallow: /backup/
+Disallow: /database/
+Disallow: /includes/
+Disallow: /config/
+
+# Block parameter-based crawling that creates duplicates
+Disallow: /*?*
+Disallow: /*&*
+Disallow: /*=*
+Disallow: /*sessionid=
+Disallow: /*phpsessid=
+Disallow: /*referrer=
+Disallow: /*utm_
+
+# Block email harvesting patterns
+Disallow: /*?email=
+Disallow: /*?mail=
+Disallow: /*?user=
+Disallow: /*?username=
+
+# ================================================
+# PERFORMANCE OPTIMIZATION DIRECTIVES
+# ================================================
+
+# Prevent crawling of print versions
+Disallow: /*?print
+Disallow: /*print=true
+
+# Prevent crawling of sorted versions
+Disallow: /*?sort
+Disallow: /*sort=
+
+# Prevent crawling of filtered versions
+Disallow: /*?filter
+Disallow: /*filter=
+
+# Prevent crawling of pagination beyond page 3
+Disallow: /*?page=4
+Disallow: /*?page=5
+Disallow: /*?p=4
+Disallow: /*?p=5
+Disallow: /*/page/4/
+Disallow: /*/page/5/
+
+# ================================================
+# MULTILINGUAL CONTENT DIRECTIVES
+# ================================================
+
+# Allow all language variants with priority
+Allow: /ka/
+Allow: /en/
+Allow: /ru/
+Allow: /tr/
+
+# ================================================
+# ADDITIONAL SEO RECOMMENDATIONS
+# ================================================
+
+# For optimal SEO performance:
+# 1. Implement schema markup for blog posts (Article, FAQ, HowTo)
+# 2. Use hreflang tags for multilingual content
+# 3. Optimize blog post titles with target keywords
+# 4. Create internal links between related blog posts
+# 5. Ensure mobile responsiveness for all blog content
+# 6. Optimize images with descriptive alt text
+# 7. Implement AMP for blog posts for faster loading
+
+# For ranking improvement:
+# 1. Focus on long-tail keywords in blog posts
+# 2. Update and refresh blog content regularly
+# 3. Build quality backlinks to blog content
+# 4. Share blog posts on social media platforms
+# 5. Encourage user engagement with comments
+
+# ========== END OF ROBOTS.TXT ==========
