@@ -120,12 +120,6 @@ function Router() {
       <Route path="/packages/:slug">
         {({slug}) => { setLocation(addPrefix(`/packages/${slug}`)); return null; }}
       </Route>
-      <Route path="/products">
-        {() => { setLocation(addPrefix('/products')); return null; }}
-      </Route>
-      <Route path="/products/:productSlug">
-        {({productSlug}) => { setLocation(addPrefix(`/products/${productSlug}`)); return null; }}
-      </Route>
       <Route path="/blog">
         {() => { setLocation(addPrefix('/blog')); return null; }}
       </Route>
@@ -152,7 +146,7 @@ function Router() {
       </Route>
       
       {/* Fallback to 404 */}
-      <Route component={NotFound} />
+       <Route path="*" component={NotFound} />
     </Switch>
   );
 }
