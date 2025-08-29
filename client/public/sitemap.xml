@@ -27,7 +27,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
-
+  
   <!-- Turkish (tr) -->
   <url>
     <loc>https://myhairclinic.ge/tr</loc>
@@ -47,7 +47,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
-
+  
   <!-- English (en) -->
   <url>
     <loc>https://myhairclinic.ge/en</loc>
@@ -67,7 +67,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.80</priority>
   </url>
-
+  
   <!-- Russian (ru) -->
   <url>
     <loc>https://myhairclinic.ge/ru</loc>
@@ -111,7 +111,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
-
+  
   <!-- Turkish (tr) -->
   <url>
     <loc>https://myhairclinic.ge/tr/services</loc>
@@ -131,7 +131,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
-
+  
   <!-- English (en) -->
   <url>
     <loc>https://myhairclinic.ge/en/services</loc>
@@ -151,7 +151,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
-
+  
   <!-- Russian (ru) -->
   <url>
     <loc>https://myhairclinic.ge/ru/services</loc>
@@ -201,7 +201,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
-
+  
   <!-- Turkish (tr) -->
   <url>
     <loc>https://myhairclinic.ge/tr/packages</loc>
@@ -227,7 +227,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
-
+  
   <!-- English (en) -->
   <url>
     <loc>https://myhairclinic.ge/en/packages</loc>
@@ -253,7 +253,7 @@
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
-
+  
   <!-- Russian (ru) -->
   <url>
     <loc>https://myhairclinic.ge/ru/packages</loc>
@@ -284,7 +284,7 @@
   <!-- CONTENT LIBRARY -->
   <!-- ================ -->
   
-  <!-- Georgian (ka) Blog -->
+  <!-- Georgian (ka) -->
   <url>
     <loc>https://myhairclinic.ge/ka/blog</loc>
     <lastmod>2025-08-18</lastmod>
@@ -327,8 +327,8 @@
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
   </url>
-
-  <!-- Turkish (tr) Blog -->
+  
+  <!-- Turkish (tr) -->
   <url>
     <loc>https://myhairclinic.ge/tr/blog</loc>
     <lastmod>2025-08-18</lastmod>
@@ -342,81 +342,21 @@
     <priority>0.70</priority>
   </url>
   <url>
-    <loc>https://myhairclinic.ge/tr/blog/qalebis-thmis-gadanergvis-movlis-rchevebi</loc>
-    <lastmod>2025-07-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-  <url>
     <loc>https://myhairclinic.ge/tr/blog/kadinlarda-sac-dokulmesi-sebepleri</loc>
     <lastmod>2025-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
   </url>
-  <url>
-    <loc>https://myhairclinic.ge/tr/blog/posle-peresadki-volos-7-zolotyh-pravil</loc>
-    <lastmod>2025-07-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://myhairclinic.ge/tr/blog/thmis-gadanergvis-procesi-nabij-nabij</loc>
-    <lastmod>2025-07-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://myhairclinic.ge/tr/blog/tmis-datgena-da-misi-sargebloebi</loc>
-    <lastmod>2025-07-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-
-  <!-- English (en) Blog -->
+  
+  <!-- English (en) -->
   <url>
     <loc>https://myhairclinic.ge/en/blog</loc>
     <lastmod>2025-08-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.90</priority>
   </url>
-  <url>
-    <loc>https://myhairclinic.ge/en/blog/sac-bakim-ipuclari</loc>
-    <lastmod>2025-07-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://myhairclinic.ge/en/blog/qalebis-thmis-gadanergvis-movlis-rchevebi</loc>
-    <lastmod>2025-07-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://myhairclinic.ge/en/blog/kadinlarda-sac-dokulmesi-sebepleri</loc>
-    <lastmod>2025-07-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://myhairclinic.ge/en/blog/posle-peresadki-volos-7-zolotyh-pravil</loc>
-    <lastmod>2025-07-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://myhairclinic.ge/en/blog/thmis-gadanergvis-procesi-nabij-nabij</loc>
-    <lastmod>2025-07-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://myhairclinic.ge/en/blog/tmis-datgena-da-misi-sargebloebi</loc>
-    <lastmod>2025-07-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-
-  <!-- Russian (ru) Blog -->
+  
+  <!-- Russian (ru) -->
   <url>
     <loc>https://myhairclinic.ge/ru/blog</loc>
     <lastmod>2025-08-18</lastmod>
@@ -424,37 +364,7 @@
     <priority>0.90</priority>
   </url>
   <url>
-    <loc>https://myhairclinic.ge/ru/blog/sac-bakim-ipuclari</loc>
-    <lastmod>2025-07-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://myhairclinic.ge/ru/blog/qalebis-thmis-gadanergvis-movlis-rchevebi</loc>
-    <lastmod>2025-07-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://myhairclinic.ge/ru/blog/kadinlarda-sac-dokulmesi-sebepleri</loc>
-    <lastmod>2025-07-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-  <url>
     <loc>https://myhairclinic.ge/ru/blog/posle-peresadki-volos-7-zolotyh-pravil</loc>
-    <lastmod>2025-07-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://myhairclinic.ge/ru/blog/thmis-gadanergvis-procesi-nabij-nabij</loc>
-    <lastmod>2025-07-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.70</priority>
-  </url>
-  <url>
-    <loc>https://myhairclinic.ge/ru/blog/tmis-datgena-da-misi-sargebloebi</loc>
     <lastmod>2025-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.70</priority>
@@ -529,7 +439,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
-
+  
   <!-- Turkish (tr) -->
   <url>
     <loc>https://myhairclinic.ge/tr/appointment</loc>
@@ -567,7 +477,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
-
+  
   <!-- English (en) -->
   <url>
     <loc>https://myhairclinic.ge/en/appointment</loc>
@@ -605,7 +515,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
   </url>
-
+  
   <!-- Russian (ru) -->
   <url>
     <loc>https://myhairclinic.ge/ru/appointment</loc>
