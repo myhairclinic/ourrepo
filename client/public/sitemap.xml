@@ -7,6 +7,8 @@
   <!-- ====================== -->
   <!-- CORE WEBSITE STRUCTURE -->
   <!-- ====================== -->
+  
+  <!-- Georgian (ka) -->
   <url>
     <loc>https://myhairclinic.ge/ka</loc>
     <lastmod>2025-08-18</lastmod>
@@ -26,9 +28,71 @@
     <priority>0.80</priority>
   </url>
 
+  <!-- Turkish (tr) -->
+  <url>
+    <loc>https://myhairclinic.ge/tr</loc>
+    <lastmod>2025-08-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/tr/about</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/tr/contact</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- English (en) -->
+  <url>
+    <loc>https://myhairclinic.ge/en</loc>
+    <lastmod>2025-08-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/en/about</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/en/contact</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Russian (ru) -->
+  <url>
+    <loc>https://myhairclinic.ge/ru</loc>
+    <lastmod>2025-08-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ru/about</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ru/contact</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
   <!-- ====================== -->
   <!-- SERVICES & TREATMENTS -->
   <!-- ====================== -->
+  
+  <!-- Georgian (ka) -->
   <url>
     <loc>https://myhairclinic.ge/ka/services</loc>
     <lastmod>2025-08-18</lastmod>
@@ -47,10 +111,72 @@
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
+
+  <!-- Turkish (tr) -->
+  <url>
+    <loc>https://myhairclinic.ge/tr/services</loc>
+    <lastmod>2025-08-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/tr/services/kas-ekimi</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/tr/services/sac-ekimi</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- English (en) -->
+  <url>
+    <loc>https://myhairclinic.ge/en/services</loc>
+    <lastmod>2025-08-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/en/services/kas-ekimi</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/en/services/sac-ekimi</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Russian (ru) -->
+  <url>
+    <loc>https://myhairclinic.ge/ru/services</loc>
+    <lastmod>2025-08-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ru/services/kas-ekimi</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ru/services/sac-ekimi</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
   
   <!-- ============= -->
   <!-- PACKAGE DEALS -->
   <!-- ============= -->
+  
+  <!-- Georgian (ka) -->
   <url>
     <loc>https://myhairclinic.ge/ka/packages</loc>
     <lastmod>2025-07-28</lastmod>
@@ -76,9 +202,89 @@
     <priority>0.75</priority>
   </url>
 
+  <!-- Turkish (tr) -->
+  <url>
+    <loc>https://myhairclinic.ge/tr/packages</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/tr/packages/luks-sac-ekimi</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/tr/packages/premium-sac-ekimi-iran</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/tr/packages/premium-sac-ekimi-rusya</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <!-- English (en) -->
+  <url>
+    <loc>https://myhairclinic.ge/en/packages</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/en/packages/luks-sac-ekimi</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/en/packages/premium-sac-ekimi-iran</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/en/packages/premium-sac-ekimi-rusya</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <!-- Russian (ru) -->
+  <url>
+    <loc>https://myhairclinic.ge/ru/packages</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ru/packages/luks-sac-ekimi</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ru/packages/premium-sac-ekimi-iran</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ru/packages/premium-sac-ekimi-rusya</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
   <!-- ================ -->
   <!-- CONTENT LIBRARY -->
   <!-- ================ -->
+  
+  <!-- Georgian (ka) Blog -->
   <url>
     <loc>https://myhairclinic.ge/ka/blog</loc>
     <lastmod>2025-08-18</lastmod>
@@ -122,6 +328,138 @@
     <priority>0.70</priority>
   </url>
 
+  <!-- Turkish (tr) Blog -->
+  <url>
+    <loc>https://myhairclinic.ge/tr/blog</loc>
+    <lastmod>2025-08-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/tr/blog/sac-bakim-ipuclari</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/tr/blog/qalebis-thmis-gadanergvis-movlis-rchevebi</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/tr/blog/kadinlarda-sac-dokulmesi-sebepleri</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/tr/blog/posle-peresadki-volos-7-zolotyh-pravil</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/tr/blog/thmis-gadanergvis-procesi-nabij-nabij</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/tr/blog/tmis-datgena-da-misi-sargebloebi</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+
+  <!-- English (en) Blog -->
+  <url>
+    <loc>https://myhairclinic.ge/en/blog</loc>
+    <lastmod>2025-08-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/en/blog/sac-bakim-ipuclari</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/en/blog/qalebis-thmis-gadanergvis-movlis-rchevebi</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/en/blog/kadinlarda-sac-dokulmesi-sebepleri</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/en/blog/posle-peresadki-volos-7-zolotyh-pravil</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/en/blog/thmis-gadanergvis-procesi-nabij-nabij</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/en/blog/tmis-datgena-da-misi-sargebloebi</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+
+  <!-- Russian (ru) Blog -->
+  <url>
+    <loc>https://myhairclinic.ge/ru/blog</loc>
+    <lastmod>2025-08-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ru/blog/sac-bakim-ipuclari</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ru/blog/qalebis-thmis-gadanergvis-movlis-rchevebi</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ru/blog/kadinlarda-sac-dokulmesi-sebepleri</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ru/blog/posle-peresadki-volos-7-zolotyh-pravil</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ru/blog/thmis-gadanergvis-procesi-nabij-nabij</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ru/blog/tmis-datgena-da-misi-sargebloebi</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+
   <!-- ======================= -->
   <!-- MEDICAL TOURISM SERIES -->
   <!-- ======================= -->
@@ -153,6 +491,8 @@
   <!-- ================= -->
   <!-- FUNCTIONAL PAGES -->
   <!-- ================= -->
+  
+  <!-- Georgian (ka) -->
   <url>
     <loc>https://myhairclinic.ge/ka/appointment</loc>
     <lastmod>2025-08-18</lastmod>
@@ -185,6 +525,120 @@
   </url>
   <url>
     <loc>https://myhairclinic.ge/ka/aftercare-guides</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Turkish (tr) -->
+  <url>
+    <loc>https://myhairclinic.ge/tr/appointment</loc>
+    <lastmod>2025-08-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/tr/appointment-tracker</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/tr/gallery</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/tr/social</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.50</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/tr/products</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/tr/aftercare-guides</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- English (en) -->
+  <url>
+    <loc>https://myhairclinic.ge/en/appointment</loc>
+    <lastmod>2025-08-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/en/appointment-tracker</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/en/gallery</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/en/social</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.50</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/en/products</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/en/aftercare-guides</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Russian (ru) -->
+  <url>
+    <loc>https://myhairclinic.ge/ru/appointment</loc>
+    <lastmod>2025-08-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ru/appointment-tracker</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ru/gallery</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.70</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ru/social</loc>
+    <lastmod>2025-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.50</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ru/products</loc>
+    <lastmod>2025-08-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://myhairclinic.ge/ru/aftercare-guides</loc>
     <lastmod>2025-08-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.80</priority>
