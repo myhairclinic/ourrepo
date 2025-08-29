@@ -143,11 +143,7 @@ export default function Header() {
                 {t('header.socialMedia')}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
               </Link>
-              <Link href={addPrefix("/products")} 
-                    className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
-                {t('header.products')}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-              </Link>
+         
               <Link href={addPrefix("/contact")} 
                     className="text-neutral-700 hover:text-primary font-medium transition-colors relative py-2 group">
                 {t('header.contact')}
@@ -261,10 +257,7 @@ export default function Header() {
                     className="flex items-center text-neutral-700 py-2.5 px-2 hover:text-primary hover:bg-blue-50/50 rounded-md transition-colors">
                 <span>{t('header.socialMedia')}</span>
               </Link>
-              <Link href={addPrefix("/products")} 
-                    className="flex items-center text-neutral-700 py-2.5 px-2 hover:text-primary hover:bg-blue-50/50 rounded-md transition-colors">
-                <span>{t('header.products')}</span>
-              </Link>
+
               <Link href={addPrefix("/contact")} 
                     className="flex items-center text-neutral-700 py-2.5 px-2 hover:text-primary hover:bg-blue-50/50 rounded-md transition-colors">
                 <span>{t('header.contact')}</span>
