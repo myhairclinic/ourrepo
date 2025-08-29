@@ -56,7 +56,7 @@ interface Package {
 
 // Paket kartı bileşeni
 interface PackageCardProps {
-  package: Package;
+  pkg: Package;
   getTitle: (p: Package) => string;
   getDescription: (p: Package) => string;
   addPrefix: (path: string) => string;
@@ -126,7 +126,7 @@ function getCountryImage(countryCode: string): string {
   }
 }
 
-function PackageCard({ package: pkg, getTitle, getDescription, addPrefix, t }: PackageCardProps) {
+function PackageCard({ pkg, getTitle, getDescription, addPrefix, t }: PackageCardProps) {
   // Get base title text
   const baseTitle = getTitle(pkg);
   const description = getDescription(pkg);
@@ -153,7 +153,7 @@ function PackageCard({ package: pkg, getTitle, getDescription, addPrefix, t }: P
     // Get package type in proper format
     let packageType = '';
     if (pkg.packageType === 'premium' || baseTitle.toLowerCase().includes('premium')) {
-      packageType = t("packages.home.luxury");
+      packageType = t("");
     } else if (pkg.packageType === 'standard' || pkg.isAllInclusive) {
       packageType = t("packages.home.allinclusive");
     } else {
@@ -238,7 +238,7 @@ function PackageCard({ package: pkg, getTitle, getDescription, addPrefix, t }: P
           </div>
         </div>
         
-        <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors line-clamp-2">
+        <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
           {enhancedTitle}
         </h3>
         
@@ -370,28 +370,6 @@ export function PackageCards() {
     }
   };
   
-  // Helper function to get country flag and name
-  const getCountryInfo = (countryCode: string) => {
-    switch (countryCode) {
-      case 'TR':
-        return { flag: '🇹🇷', name: t("countries.turkey") };
-      case 'RU':
-        return { flag: '🇷🇺', name: t("countries.ru") };
-      case 'AZ':
-        return { flag: '🇦🇿', name: t("countries.az") };
-      case 'KZ':
-        return { flag: '🇰🇿', name: t("countries.kz") };
-      case 'IR':
-        return { flag: '🇮🇷', name: t("countries.ir") };
-      case 'UA':
-        return { flag: '🇺🇦', name: t("countries.ua") };
-      case 'EU':
-        return { flag: '🇪🇺', name: t("countries.eu") };
-      default:
-        return { flag: '🌍', name: t("countries.international") };
-    }
-  };
-  
   return (
     <section 
       ref={sectionRef}
@@ -481,7 +459,7 @@ export function PackageCards() {
                       style={{ transitionDelay: `${index * 120}ms` }}
                     >
                       <PackageCard
-                        package={pkg}
+                        pkg={pkg}
                         getTitle={getLocalizedTitle}
                         getDescription={getLocalizedDescription}
                         addPrefix={addPrefix}
@@ -523,8 +501,6 @@ export function PackageCards() {
                 <ChevronRight className="h-5 w-5 text-primary" />
               </Button>
             </div>
-            
-            {/* Alt butonu kaldırıldı - üstte artık */}
           </div>
         )}
         
@@ -533,8 +509,6 @@ export function PackageCards() {
              style={{ transitionDelay: '600ms' }}>
           <div className="h-px w-full bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
         </div>
-        
-        {/* Sosyal medya alanı kaldırıldı */}
       </div>
     </section>
   );
